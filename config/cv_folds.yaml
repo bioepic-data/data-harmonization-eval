@@ -48,41 +48,41 @@ folds:
     exemplar_pool: [1, 2, 3, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18, 23, 24, 25, 26, 27]
 
   - fold_id: 4
-    held_out_dataset: 5
+    held_out_datasets: 5
     exemplar_pool: [1, 2, 3, 4, 6, 7, 8, 9, 10, 15, 16, 17, 18, 23, 24, 25, 26, 27]
 
   - fold_id: 5
-    held_out_dataset: 7
+    held_out_datasets: 7
     exemplar_pool: [1, 2, 3, 4, 5, 6, 8, 9, 10, 15, 16, 17, 18, 23, 24, 25, 26, 27]
 
   - fold_id: 6
-    held_out_dataset: 8
+    held_out_datasets: 8
     exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 9, 10, 15, 16, 17, 18, 23, 24, 25, 26, 27]
 
   - fold_id: 7
-    held_out_dataset: 9
+    held_out_datasets: 9
     exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 10, 15, 16, 17, 18, 23, 24, 25, 26, 27]
 
   - fold_id: 8
-    held_out_dataset: 10
+    held_out_datasets: 10
     exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 18, 23, 24, 25, 26, 27]
 
   - fold_id: 9
-    held_out_dataset: 17
+    held_out_datasets: 17
     exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 18, 23, 24, 25, 26, 27]
 
   - fold_id: 10
-    held_out_dataset: 18
+    held_out_datasets: 18
     exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 23, 24, 25, 26, 27]
 
   - fold_id: 11
-    held_out_dataset: 23
+    held_out_datasets: 23
     exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 23, 24, 25, 26, 27]
 
   - fold_id: 12
-    held_out_dataset: 24
+    held_out_datasets: 24
     exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 23, 25, 26, 27]
 
   - fold_id: 13
-    held_out_dataset: 25
+    held_out_datasets: 25
     exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 23, 24, 26, 27]
