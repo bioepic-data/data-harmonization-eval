@@ -1,0 +1,60 @@
+{
+  "fold": "fold-09-holdout-17",
+  "dataset_indices": [
+    17
+  ],
+  "trace_forbidden_path_scan_matches": 0,
+  "agent_output": {
+    "rows": 225524,
+    "target_columns_present": 9,
+    "schema_equal": true,
+    "extra_columns": []
+  },
+  "gold_output": {
+    "rows": 226080,
+    "columns": 9
+  },
+  "output_equivalence": {
+    "key_includes_dataset_index": false,
+    "unique_agent_keys": 225504,
+    "unique_gold_keys": 226060,
+    "key_intersection": 225504,
+    "agent_extra_keys": 0,
+    "agent_missing_gold_keys": 556,
+    "common_rows": 225564,
+    "shared_row_value_matches": {
+      "interval_min": "225502/225564",
+      "volumetric_water_content_m3_m3": "225556/225564",
+      "gravimetric_water_content_gH2O_gs": "225564/225564",
+      "water_potential_kPa": "225564/225564",
+      "is_timeseries": "225564/225564"
+    },
+    "row_precision": 1.0,
+    "gold_recall": 0.9975404759798283
+  },
+  "json_mapping_equivalence": {
+    "top_level_exact_matches": "7/7",
+    "top_level_matches": {
+      "index": true,
+      "dataset_identifier": true,
+      "doi": true,
+      "archive_repository": true,
+      "data_payload_files": true,
+      "location_metadata_files": true,
+      "sensor_metadata_files": true
+    },
+    "gold_mapping_categories_present": "7/7",
+    "extra_agent_categories": [
+      "soil_water_potential"
+    ],
+    "missing_gold_categories": [],
+    "field_level_exact_matches": "21/35",
+    "field_exact_matches_by_name": {
+      "destination_variable": "7/7",
+      "source_pattern": "5/7",
+      "source_files": "6/7",
+      "transformation": "0/7",
+      "unit_conversion": "3/7"
+    }
+  }
+}
