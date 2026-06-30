@@ -1,0 +1,94 @@
+# Grouped cross-validation fold definitions
+# Each fold holds out one dataset (or cluster), using others as exemplar pool
+# Grouped folds ensure datasets from same source/lab/instrument are held out together
+
+cv_strategy: "grouped_loo"  # grouped leave-one-out
+
+# Dataset clustering for grouped CV
+# Datasets from same cluster should not appear in each other's exemplar pools
+clusters:
+  cluster_1:
+    name: "East River SMN sensors"
+    description: "East River watershed soil moisture network"
+    datasets: [1, 2, 3]  # indices from mapping JSON
+
+  cluster_2:
+    name: "East River SMS sensors"
+    description: "East River watershed additional sensors"
+    datasets: [4, 5]
+
+  cluster_3:
+    name: "NGEE Arctic Barrow"
+    description: "Next-Generation Ecosystem Experiments Arctic site"
+    datasets: [6, 7, 8]
+
+  cluster_4:
+    name: "NGEE Arctic discrete sampling"
+    description: "Discrete sampling campaigns"
+    datasets: [9, 10]
+
+  cluster_5:
+    name: "Independent datasets"
+    description: "Datasets with unique sources, no clustering needed"
+    datasets: [11, 12, 13, 14, 15, 16, 17, 18, 19]
+
+# Explicit fold definitions
+# For each fold, held_out can be dataset ID or cluster ID
+# exemplar_pool lists which datasets are visible as references
+folds:
+  - fold_id: 1
+    held_out_cluster: "cluster_1"
+    held_out_datasets: [1, 2, 3]
+    exemplar_pool: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+
+  - fold_id: 2
+    held_out_cluster: "cluster_2"
+    held_out_datasets: [4, 5]
+    exemplar_pool: [1, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+
+  - fold_id: 3
+    held_out_cluster: "cluster_3"
+    held_out_datasets: [6, 7, 8]
+    exemplar_pool: [1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+
+  - fold_id: 4
+    held_out_cluster: "cluster_4"
+    held_out_datasets: [9, 10]
+    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+
+  # Individual folds for cluster_5 (independent datasets)
+  - fold_id: 5
+    held_out_dataset: 11
+    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19]
+
+  - fold_id: 6
+    held_out_dataset: 12
+    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19]
+
+  - fold_id: 7
+    held_out_dataset: 13
+    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19]
+
+  - fold_id: 8
+    held_out_dataset: 14
+    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19]
+
+  - fold_id: 9
+    held_out_dataset: 15
+    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19]
+
+  - fold_id: 10
+    held_out_dataset: 16
+    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19]
+
+  - fold_id: 11
+    held_out_dataset: 17
+    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19]
+
+  - fold_id: 12
+    held_out_dataset: 18
+    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19]
+
+  - fold_id: 13
+    held_out_dataset: 19
+    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]

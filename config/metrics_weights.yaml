@@ -1,0 +1,57 @@
+# Weights for composite scoring (explicit, versioned)
+# These encode our domain priorities: output correctness >> documentation >> style
+
+version: "1.0"
+description: "Metric weights for WFSFA harmonization evaluation"
+
+# Skill 1 (Curator) composite weights
+skill1_weights:
+  decision_accuracy: 0.30          # correct include/exclude decision
+  file_selection_f1: 0.20          # identified correct payload/metadata files
+  timeseries_accuracy: 0.15        # correct time series vs discrete determination
+  interval_error: 0.10             # accuracy of interval_min inference
+  location_resolution: 0.10        # found coordinates via correct source
+  qc_flag_accuracy: 0.05           # correct qc_flag assignment
+  manipulation_detection: 0.05     # detected experimental treatments
+  exemplar_match_quality: 0.03     # selected appropriate similar dataset
+  deferral_calibration: 0.02       # FLAG decisions were well-calibrated
+
+# Skill 2 (Harmonizer) composite weights
+skill2_weights:
+  output_equivalence: 0.50         # PRIMARY: harmonized data matches expert (cell-level)
+  schema_conformance: 0.15         # output has correct columns, types, constraints
+  semantic_mapping_f1: 0.12        # transformation mappings correct and complete
+  code_executability: 0.10         # generated code runs without errors
+  documentation_completeness: 0.08 # change-mapping JSON documents all transforms
+  ontology_validity: 0.05          # uses correct controlled vocabulary terms
+
+# End-to-end weights (combines both skills)
+end_to_end_weights:
+  task_success: 0.60               # final harmonized output correct
+  skill1_contribution: 0.20        # curator decisions enabled success
+  skill2_contribution: 0.15        # harmonizer quality given correct input
+  error_propagation: 0.05          # system resilience to upstream errors
+
+# Sub-metric weights for output_equivalence
+output_equivalence_submetrics:
+  row_alignment_f1: 0.30           # correct rows present
+  cell_agreement_overall: 0.40     # cell-level data accuracy
+  datetime_accuracy: 0.10          # timestamps correctly parsed/converted
+  coordinate_accuracy: 0.10        # lat/lon correctly resolved
+  depth_accuracy: 0.05             # depth correctly extracted/converted
+  unit_conversion_accuracy: 0.05   # VWC/GWC/potential units correct
+
+# Thresholds for binary success classification
+success_thresholds:
+  skill1_composite_min: 0.70
+  skill2_composite_min: 0.80
+  end_to_end_composite_min: 0.75
+  output_equivalence_min: 0.95     # strict: data must be nearly perfect
+
+# Weights for error taxonomy classification
+error_taxonomy_weights:
+  # Used to attribute end-to-end failures to root causes
+  skill1_error_propagated: 0.40    # curator error caused downstream failure
+  skill2_error_independent: 0.35   # harmonizer error despite correct input
+  interface_inconsistency: 0.15    # bundle schema mismatch
+  genuinely_ambiguous: 0.10        # expert also uncertain on this case
