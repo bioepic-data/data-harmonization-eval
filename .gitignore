@@ -54,6 +54,7 @@ htmlcov/
 dmypy.json
 
 # Data (large files should not be in git)
+data/gold/harmonized_outputs/*.csv
 data/raw_cache/*.json
 data/raw_cache/**/*.csv
 data/prospective/expert_blind/*.csv
