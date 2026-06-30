@@ -1,9 +1,10 @@
-# Evaluating an LLM Agent Workflow for Soil Moisture Data Harmonization
+# Evaluating an LLM Agent Workflow for Environmental Data Harmonization
 
 ## Overview
 This repository stores a formal evaluation framework for an LLM agent workflow 
-(curator + harmonizer) that automates soil moisture data harmonization. Combines 
-retrospective leave-one-out cross-validation against expert ground truth with 
+(curator + harmonizer) that automates environmental data harmonization. Evaluation 
+case is the corpus of soil moisture data published on the US DOE ESS-DIVE repository. 
+Combines retrospective leave-one-out cross-validation against expert ground truth with 
 prospective blind evaluation on novel datasets.
 
 ## Motivation
