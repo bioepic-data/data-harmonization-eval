@@ -1,0 +1,145 @@
+{
+  "package_id": "ess-dive-6c7085e9c544cc6-20250424T164534831",
+  "doi": null,
+  "doi_note": "DOI was not present in the allowed fold-local files or raw package files inspected; no network lookup was performed under the anti-leak constraints.",
+  "curator_decision": "INCLUDE",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    {
+      "filename": "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_data.csv",
+      "columns": [
+        "txmax",
+        "txmin",
+        "tomax",
+        "tomin",
+        "u",
+        "vpd",
+        "pa",
+        "precip",
+        "srad",
+        "nsrad",
+        "nlrad",
+        "rn",
+        "g",
+        "lai",
+        "swc",
+        "swp",
+        "xT",
+        "xu",
+        "h",
+        "ET"
+      ],
+      "row_count_estimate": 1001,
+      "file_size_mb": 0.109,
+      "column_preview": "txmax,txmin,tomax,tomin,u,vpd,pa,precip,srad,nsrad,nlrad,rn,g,lai,swc,swp,xT,xu,h,ET\n295.05,283.55,301.29,276.87,1.52,1194,70402,0,284.87,227.45,-99.84,127.61,4.42,2.26,0.165,-145.67,3.75,3.75,0.24,3.38",
+      "classification_reasoning": "Machine-readable daily meteorological, vegetation, and soil data. Data dictionary defines swc as 24-hour average depth-averaged soil water content in m3/m3 and swp as soil water potential in kPa."
+    }
+  ],
+  "location_metadata_files": [
+    {
+      "filename": "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_meta.csv",
+      "columns": [
+        "site",
+        "datetime",
+        "year",
+        "doy"
+      ],
+      "content_preview": "site,datetime,year,doy\nsg5,2022-07-22,2022,203\ntb,2022-10-15,2022,288",
+      "classification_reasoning": "Row-aligned site/date metadata for df_data.csv."
+    },
+    {
+      "filename": "data/East_Taylor_Watershed_Community_Observatory_Sites___Point_Locations__Surface_v3_2_20250327.csv",
+      "source_package_id": "ess-dive_b924ba040ecefee_20250707T154402200",
+      "columns": [
+        "Location_ID",
+        "Location_Name",
+        "Location_Alias",
+        "Latitude",
+        "Longitude",
+        "Variables_Measured"
+      ],
+      "content_preview": "Used as allowed shared location-reference package from mapping index 0."
+    }
+  ],
+  "sensor_metadata_files": null,
+  "documentation_files": [
+    "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/README.txt",
+    "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_data_dd.csv",
+    "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_meta_dd.csv",
+    "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/flmd.csv"
+  ],
+  "readme_content": "README describes notebooks for DAE observation repair and ET prediction neural networks. It states df_data.csv has one variable per column and one data instance per row; df_meta.csv has rows for sites used to collect df_data.",
+  "location_resolution": {
+    "source": "varadharajan_lookup_partial",
+    "qc_flag_recommendation": "g1 for matched East Taylor reference sites; g2 for unresolved tb if no operator-approved match is available",
+    "site_coordinates": [
+      {
+        "site_id": "ph1",
+        "matched_reference_id": "ER-PHS1",
+        "latitude": 38.92,
+        "longitude": -106.95,
+        "qc_flag": "g1",
+        "confidence": "moderate",
+        "reason": "ph1 appears to correspond to Pumphouse sensor tower 1; reference site measures WC/WP."
+      },
+      {
+        "site_id": "ph2",
+        "matched_reference_id": "ER-PHS2",
+        "latitude": 38.922583,
+        "longitude": -106.947288,
+        "qc_flag": "g1",
+        "confidence": "moderate",
+        "reason": "ph2 appears to correspond to Pumphouse sensor tower 2; reference site measures WC/WP."
+      },
+      {
+        "site_id": "sg5",
+        "matched_reference_id": "SG-EHS5",
+        "latitude": 38.92625,
+        "longitude": -106.98,
+        "qc_flag": "g1",
+        "confidence": "moderate",
+        "reason": "sg5 appears to correspond to Snodgrass tower 5; reference site measures WC/WP."
+      },
+      {
+        "site_id": "tb",
+        "matched_reference_id": null,
+        "latitude": null,
+        "longitude": null,
+        "qc_flag": "g2",
+        "confidence": "low",
+        "reason": "Only weak literal candidate WC-TBA1/TB1 was found; it is an ERT profile and was not used automatically."
+      }
+    ]
+  },
+  "time_series_inference": {
+    "is_timeseries": true,
+    "interval_min": 1440.0,
+    "reasoning": "Each site has many dated daily records; data dictionary defines swc as a 24-hour average. Dates are irregular with gaps, but median within-site interval is 1 day."
+  },
+  "experimental_context": {
+    "manipulation_detected": false,
+    "manipulation_type": null,
+    "has_control_data": null,
+    "recommendation": "include_all"
+  },
+  "similar_dataset_reference": {
+    "index": 26,
+    "reason": "Uses the fold-local reference location dataset at mapping index 0 for site-coordinate lookup when package files do not provide coordinates."
+  },
+  "harmonization_plan": {
+    "join_strategy": "Concatenate df_meta columns to df_data by row order after verifying equal row counts.",
+    "datetime": "Parse df_meta.datetime as a date in America/Denver and convert to UTC ISO-8601.",
+    "site_id": "Use df_meta.site as reported.",
+    "depth_m": "Set to NaN because source defines swc as depth-averaged but gives no depth interval.",
+    "replicate": "Set to 1; no replicate field is provided.",
+    "volumetric_water_content_m3_m3": "Use df_data.swc directly; source units are m3/m3.",
+    "water_potential_kPa": "Use df_data.swp directly; source units are kPa.",
+    "gravimetric_water_content_gH2O_gs": "Set to NaN; not reported."
+  },
+  "open_questions": [
+    "Package DOI is unknown from allowed local evidence.",
+    "Depth is only described as depth-averaged; no depth interval is documented in allowed files.",
+    "Site abbreviation tb was not confidently resolved to a coordinate in the allowed East Taylor reference package.",
+    "The package contains neural-network code and ET predictions, but df_data.csv appears to contain observed/direct predictor variables; ET was not harmonized because it is derived and outside the target schema."
+  ]
+}
