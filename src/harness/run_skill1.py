@@ -4,13 +4,16 @@ This module provides the interface for invoking the curator skill
 with specified exemplar pools and recording outputs in a reproducible way.
 """
 from __future__ import annotations
-from pathlib import Path
-import json
+
 import hashlib
-from datetime import datetime
+import json
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Optional
 
 from src.schemas.skill1_bundle import CuratorBundle
+
+from .skill_invoker import SkillInvoker
 
 
 def invoke_curator(
@@ -20,10 +23,9 @@ def invoke_curator(
     model_id: str,
     random_seed: int,
     output_dir: Path,
+    api_key: Optional[str] = None,
 ) -> CuratorBundle:
     """Run Skill 1 on a single identifier.
-
-    PLACEHOLDER: Wire to actual skill invocation (Claude API/SDK).
 
     Args:
         identifier: DOI or ESS-DIVE package ID
@@ -33,45 +35,95 @@ def invoke_curator(
         model_id: Exact model identifier for reproducibility
         random_seed: Random seed for stochastic generation
         output_dir: Directory to write bundle JSON
+        api_key: Optional Anthropic API key (defaults to ANTHROPIC_API_KEY env var)
 
     Returns:
-        Validated CuratorBundle
+        Validated CuratorBundle with all fields populated
 
-    Implementation notes:
-        - Must restrict skill's access to only datasets in exemplar_pool
-        - Must set model parameters (temp, seed) for reproducibility
-        - Must capture full conversation transcript for auditing
-        - Must validate output against CuratorBundle schema
+    Raises:
+        ValueError: If API key not provided or skill invocation fails
+        pydantic.ValidationError: If output doesn't match CuratorBundle schema
     """
-    # PLACEHOLDER: Actual implementation would:
-    # 1. Load curator skill from skills/essdive_sm_curator/SKILL.md
-    # 2. Filter mapping JSON to only include exemplar_pool datasets
-    # 3. Invoke Claude API with skill prompt + identifier
-    # 4. Parse output into CuratorBundle structure
-    # 5. Validate against schema
-    # 6. Save to output_dir
+    # Setup paths
+    project_root = Path(__file__).parent.parent.parent
+    skills_dir = project_root / "skills"
+    data_dir = project_root / "data"
 
-    raise NotImplementedError(
-        "invoke_curator must be connected to actual Claude API/SDK. "
-        "See skills/essdive_sm_curator/SKILL.md for skill definition."
+    # Initialize skill invoker
+    invoker = SkillInvoker(
+        skills_dir=skills_dir,
+        data_dir=data_dir,
+        api_key=api_key,
     )
 
-    # Expected return structure:
-    # bundle = CuratorBundle(
-    #     package_id=...,
-    #     doi=...,
-    #     curator_decision=...,
-    #     # ... all other fields
-    #     skill_version=skill_version,
-    #     run_id=generate_run_id(identifier, random_seed),
-    #     timestamp=datetime.utcnow().isoformat(),
-    # )
-    #
-    # # Save bundle
-    # bundle_path = output_dir / f"{bundle.package_id}_{bundle.run_id}.json"
-    # bundle_path.write_text(bundle.model_dump_json(indent=2))
-    #
-    # return bundle
+    # Build curator prompt
+    user_prompt = f"""Evaluate this ESS-DIVE soil moisture dataset for inclusion in the harmonization pipeline:
+
+**Dataset Identifier**: {identifier}
+
+Your task:
+1. Retrieve package metadata (check local cache in data/external/ess-dive_meta/ first, then ESS-DIVE API if needed)
+2. Inspect all files in the package
+3. Make an INCLUDE/EXCLUDE/FLAG_FOR_REVIEW decision based on the criteria in your system prompt
+4. Extract all required information for the curator bundle
+
+**Available exemplar datasets (indices)**: {exemplar_pool}
+
+When selecting a similar dataset reference, choose from this exemplar pool based on structural similarity.
+
+**Output your complete curator bundle as a JSON object matching the CuratorBundle schema.**
+Include all required fields:
+- package_id, doi, curator_decision
+- data_payload_files (with filename, columns, row_count_estimate)
+- location_metadata_files, sensor_metadata_files
+- location_resolution (with site_coordinates)
+- time_series_inference (is_timeseries, interval_min, reasoning)
+- experimental_context (manipulation_detected, recommendation)
+- similar_dataset_reference (index from exemplar pool, reason)
+- open_questions (if any uncertainties)
+
+If EXCLUDE, provide clear exclusion_reason.
+If FLAG_FOR_REVIEW, document specific open_questions.
+"""
+
+    # Create output directory
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Invoke skill with output validation
+    result = invoker.invoke_skill(
+        skill_name="essdive_sm_curator",
+        user_prompt=user_prompt,
+        model_id=model_id,
+        temperature=1.0,  # Allow natural variation
+        max_tokens=16384,  # Curator needs space for file inspections
+        output_schema=CuratorBundle,
+        exemplar_pool=exemplar_pool,
+    )
+
+    # Extract validated bundle
+    bundle = result["parsed_output"]
+
+    # Add metadata
+    bundle.skill_version = skill_version
+    bundle.run_id = SkillInvoker.generate_run_id(identifier, random_seed)
+    bundle.timestamp = datetime.now(timezone.utc).isoformat()
+
+    # Save bundle
+    bundle_path = output_dir / f"{bundle.package_id}_{bundle.run_id}.json"
+    bundle_path.write_text(bundle.model_dump_json(indent=2))
+
+    # Save full API response for audit trail
+    transcript_path = output_dir / f"{bundle.package_id}_{bundle.run_id}_transcript.json"
+    transcript_path.write_text(json.dumps({
+        "user_prompt": user_prompt,
+        "model_id": model_id,
+        "exemplar_pool": exemplar_pool,
+        "usage": result["run_metadata"]["usage"],
+        "response_text": result["response_text"],
+    }, indent=2))
+
+    return bundle
 
 
 def run_skill1_isolated(
