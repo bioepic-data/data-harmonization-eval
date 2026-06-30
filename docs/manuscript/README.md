@@ -23,6 +23,8 @@ Working drafts for the paper describing this study:
 | `figures_and_tables.md` | Display-item manifest | Mapped to analysis code |
 | `references.md` | Bibliography | Drafted (research-backed) |
 | `research_notes.md` | Raw literature research (provenance/verification) | Reference material |
+| `figures/` | Figure 1 schematic (Mermaid source + HTML render) | Drafted |
+| `slides/index.html` | HTML slide deck (reveal.js) | Drafted |
 
 Read in numeric order for a continuous draft. The intended journal/venue is TBD
 (candidates: *Scientific Data*, *Environmental Modelling & Software*, *PVLDB /

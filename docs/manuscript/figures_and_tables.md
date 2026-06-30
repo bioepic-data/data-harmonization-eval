@@ -34,4 +34,11 @@
 
 | # | Title | Notes |
 |---|---|---|
-| 0 | Workflow + evaluation design schematic | Curator → bundle → Harmonizer → code+mapping → executed output vs. expert; three modes; two phases. Good candidate for **Figure 1 (main)**. Draft as a diagram (e.g., Mermaid/Figma) before results. |
+| 1 | Workflow + evaluation design schematic | **Drafted** — `figures/figure1_workflow.mmd` (Mermaid source) + `figures/figure1_workflow.html` (in-browser SVG render). Curator → bundle → Harmonizer → code+mapping → executed output vs. expert; three modes; gap. This is the main **Figure 1**. |
+
+## Presentation
+
+- `slides/index.html` — self-contained reveal.js deck summarizing motivation,
+  the agent pair, design, metrics, positioning, and results placeholders. Renders
+  Figure 1 live via Mermaid. Open in a browser; press <kbd>Esc</kbd> for overview,
+  <kbd>?</kbd> for shortcuts.

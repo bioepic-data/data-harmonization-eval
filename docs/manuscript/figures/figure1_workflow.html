@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Figure 1 — Agent-pair workflow & evaluation design</title>
+<style>
+  :root { --ink:#23303a; --muted:#6b7785; }
+  html,body { margin:0; background:#fbfaf7; color:var(--ink);
+    font-family: ui-sans-serif, system-ui, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+  h1 { font-size: 1.15rem; font-weight: 650; margin: 0 0 4px; }
+  p.cap { color: var(--muted); font-size: .92rem; line-height:1.5; margin: 0 0 24px; max-width: 70ch; }
+  .card { background:#fff; border:1px solid #ece7da; border-radius:14px; padding:18px;
+    box-shadow: 0 6px 24px rgba(40,50,60,.06); }
+  .mermaid { display:flex; justify-content:center; }
+  .toolbar { margin-top:14px; font-size:.85rem; color:var(--muted); }
+  a { color:#0e7c7b; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Figure 1. Agent-pair workflow and evaluation design.</h1>
+  <p class="cap">A curator (Skill 1) turns a dataset identifier into a structured bundle; a harmonizer
+    (Skill 2) turns that bundle into executable transform code and a documented change-mapping. The
+    agent's code and the expert's code are each executed on the same raw files and the resulting
+    tables are compared cell-by-cell (primary endpoint). Three evaluation modes localize error, and
+    the Mode 2 − Mode 3 gap quantifies how much curator error propagates downstream.</p>
+  <div class="card">
+    <pre class="mermaid">
+%%{init: {"theme":"base","themeVariables":{
+  "fontFamily":"ui-sans-serif, system-ui, Inter, Segoe UI, Roboto, sans-serif",
+  "fontSize":"14px","lineColor":"#8a8a8a","primaryBorderColor":"#c9bfa6",
+  "clusterBkg":"#ffffff","clusterBorder":"#e0d8c4"}}}%%
+flowchart TB
+    classDef agent fill:#0e7c7b,stroke:#0a5a59,color:#ffffff,stroke-width:1.5px;
+    classDef artifact fill:#f3efe6,stroke:#c9bfa6,color:#2b2b2b;
+    classDef gold fill:#c9962f,stroke:#9c7421,color:#ffffff;
+    classDef score fill:#3b5b8c,stroke:#28406a,color:#ffffff;
+    classDef io fill:#ffffff,stroke:#8a8a8a,color:#2b2b2b,stroke-dasharray:3 3;
+
+    ID["ESS-DIVE dataset identifier<br/>(DOI / package ID)"]:::io
+    EX["19 expert exemplars<br/>(in-context references)"]:::gold
+
+    subgraph PIPE["Agent pair under evaluation"]
+        direction TB
+        C["<b>Curator — Skill 1</b><br/>retrieve · classify files · resolve location<br/>infer time series · detect manipulation · pick exemplar"]:::agent
+        B["Curator bundle<br/>decision · payload/location files · coords · interval · qc_flag"]:::artifact
+        H["<b>Harmonizer — Skill 2</b><br/>map variables · convert units · generate code + change-mapping"]:::agent
+        OUT["Python transform code<br/>+ change-mapping JSON"]:::artifact
+        C --> B --> H --> OUT
+    end
+
+    RAW[("Raw package files")]:::io
+    GC["Expert transform code"]:::gold
+    AGT["Agent harmonized table"]:::artifact
+    GLD["Expert harmonized table<br/>(gold standard)"]:::gold
+    CMP{{"PRIMARY ENDPOINT<br/>output-data equivalence<br/>cell-by-cell on the natural key"}}:::score
+
+    ID --> C
+    EX -. exemplars .-> C
+    EX -. exemplars .-> H
+    OUT -- execute --> AGT
+    RAW --> AGT
+    RAW --> GLD
+    GC --> GLD
+    AGT --> CMP
+    GLD --> CMP
+
+    subgraph MODES["Evaluation modes (error attribution)"]
+        direction TB
+        M1["Mode 1 · Skill-1 isolated — bundle vs expert labels"]:::score
+        M2["Mode 2 · Skill-2 oracle — gold bundle into harmonizer"]:::score
+        M3["Mode 3 · end-to-end — full pipeline, errors propagate"]:::score
+        GAP["Error-propagation gap = Mode 2 − Mode 3"]:::score
+        M2 --- GAP
+        M3 --- GAP
+    end
+
+    B -. scored .-> M1
+    OUT -. scored .-> M3
+    </pre>
+  </div>
+  <div class="toolbar">Source: <code>figure1_workflow.mmd</code>. Renders to SVG in-browser via Mermaid
+    (loaded from CDN). To export: open in a browser, right-click the diagram → save, or paste the
+    <code>.mmd</code> source into <a href="https://mermaid.live">mermaid.live</a>.</div>
+</div>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, securityLevel: "loose" });
+</script>
+</body>
+</html>
