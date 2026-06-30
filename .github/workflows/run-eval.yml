@@ -1,0 +1,174 @@
+name: Run Harmonization Eval
+
+# Manually-triggered leave-one-cluster-out evaluation.
+#
+# Given the id of a held-out dataset (or a whole cluster), this workflow:
+#   1. builds a self-contained run environment under `.runs/<name>/` with the
+#      held-out cluster removed from both the exemplar mapping and the reference
+#      code (see src/folds/build_env.py);
+#   2. (optionally) stages the held-out dataset(s) raw inputs;
+#   3. runs the curator+harmonizer agent *starting in that run folder*; and
+#   4. uploads the entire run folder — including every output file the agent
+#      writes — as a build artifact.
+
+on:
+  workflow_dispatch:
+    inputs:
+      holdout:
+        description: >-
+          Held-out target. A dataset index (e.g. `5`), a dataset_identifier, a
+          comma-separated list (e.g. `1,2,3,6,16,27`), or a cluster id/name from
+          config/cv_folds.yaml (e.g. `cluster_1` or `sg_ph_micromet`).
+        required: true
+        type: string
+      name:
+        description: >-
+          Optional name for the run environment (default: the cluster id, or
+          `holdout-<ids>`). Becomes the `.runs/<name>/` folder and artifact name.
+        required: false
+        type: string
+        default: ""
+      stage_raw:
+        description: >-
+          Stage the held-out dataset(s) raw inputs (public Google Drive /
+          ESS-DIVE) before running the agent. Best-effort; the run continues even
+          if staging fails.
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      actions: read # Required for Claude to read CI results
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install python tools
+        run: uv sync
+
+      - name: Resolve hold-out target
+        id: resolve
+        env:
+          HOLDOUT_INPUT: ${{ inputs.holdout }}
+          NAME_INPUT: ${{ inputs.name }}
+        run: |
+          uv run python - <<'PY' >> "$GITHUB_OUTPUT"
+          import os, re, yaml
+
+          raw = os.environ.get("HOLDOUT_INPUT", "").strip()
+          name_in = os.environ.get("NAME_INPUT", "").strip()
+          if not raw:
+              raise SystemExit("ERROR: `holdout` input is required")
+
+          # A cluster id (e.g. cluster_1) or cluster name (e.g. sg_ph_micromet)
+          # expands to the cluster's dataset indices; anything else is passed
+          # through to build_env's --holdout as-is (indices or identifiers).
+          clusters = (yaml.safe_load(open("config/cv_folds.yaml")) or {}).get("clusters", {}) or {}
+          holdout, cluster_id = raw, None
+          for cid, c in clusters.items():
+              if raw in {cid, str(c.get("name", "")).strip()}:
+                  holdout = ",".join(str(i) for i in c.get("datasets", []))
+                  cluster_id = cid
+                  break
+
+          if name_in:
+              env_name = name_in
+          elif cluster_id:
+              env_name = cluster_id
+          else:
+              env_name = "holdout-" + re.sub(r"[^A-Za-z0-9._-]+", "-", raw).strip("-")
+
+          # Integer tokens are the indices we can stage raw data for.
+          stage_indices = ",".join(t for t in holdout.split(",") if t.strip().isdigit())
+
+          print(f"holdout={holdout}")
+          print(f"env_name={env_name}")
+          print(f"env_path=.runs/{env_name}")
+          print(f"stage_indices={stage_indices}")
+          PY
+          echo "Resolved holdout='${HOLDOUT_INPUT}' -> see step outputs above"
+
+      - name: Build leave-one-cluster-out run environment
+        run: |
+          uv run python -m src.folds.build_env \
+            --holdout "${{ steps.resolve.outputs.holdout }}" \
+            --name "${{ steps.resolve.outputs.env_name }}"
+
+      - name: Stage raw data for held-out dataset(s)
+        if: ${{ inputs.stage_raw && steps.resolve.outputs.stage_indices != '' }}
+        continue-on-error: true
+        run: |
+          uv run python -m src.folds.stage_raw_data \
+            --indices "${{ steps.resolve.outputs.stage_indices }}" \
+            --drive-method public
+
+      - name: Run harmonization agent in the run environment
+        uses: anthropics/claude-code-action@beta
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          mode: agent
+          # Pin an explicit current model (the action's built-in default retired).
+          model: "claude-opus-4-8"
+          allowed_tools: "Bash(*),Edit,MultiEdit,Write,Read,Glob,Grep,WebSearch,WebFetch,mcp__ols__search_all_ontologies,mcp__ols__get_terms_from_ontology"
+          additional_permissions: |
+            actions: read
+          mcp_config: |
+            {
+              "mcpServers": {
+                "ols": {
+                  "command": "uvx",
+                  "args": ["ols-mcp"]
+                },
+                "sequential-thinking": {
+                  "command": "npx",
+                  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+                }
+              }
+            }
+          direct_prompt: |
+            You are running a single grouped leave-one-cluster-out harmonization
+            evaluation. A self-contained run environment has already been built for
+            you at `${{ steps.resolve.outputs.env_path }}` (relative to the repo
+            root).
+
+            Start by making that folder your working directory and treat it as your
+            root — resolve every relative path from there:
+
+                cd ${{ steps.resolve.outputs.env_path }}
+
+            Then:
+            1. Read `AGENT_INSTRUCTIONS.md` and `MANIFEST.json` in this folder to
+               learn which dataset(s) are held out.
+            2. Harmonize each held-out dataset from its identifier ALONE, using ONLY:
+                 - the skills in `skills/`,
+                 - the held-out-free exemplar mapping at
+                   `data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json`,
+                 - the held-out-free reference code in
+                   `data/gold/expert_code/harmonize_sm/`,
+                 - the shared raw inputs under `~/ess-dive_wfsfa_soil_datasets/` and
+                   any cached metadata under `data/external/ess-dive_meta/`.
+            3. Write EVERY output into an `output/` subdirectory of this run folder:
+               the harmonized CSV(s), the generated transformation code, the
+               change-mapping JSON, and any notes about your decisions.
+
+            Do NOT look up the held-out dataset's existing harmonized output, expert
+            code, or mapping entry from anywhere else in the repository.
+
+      - name: Upload run outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-${{ steps.resolve.outputs.env_name }}
+          path: ${{ steps.resolve.outputs.env_path }}/
+          if-no-files-found: warn
