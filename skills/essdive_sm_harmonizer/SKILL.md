@@ -11,7 +11,7 @@ metadata:
   updated: "2026-06-30"
   context_dependencies:
     - data/gold/sm_data_harmonization_mapping.json  # for schema reference and examples
-    - data/gold/expert_code/harmonize_ess-dive_soilmoisture_data.py  # for code pattern reference
+    - data/gold/expert_code/harmonize_sm/  # modular expert harmonizer (common.py + dataset_NN.py) for code pattern reference
     - data/gold/harmonized_outputs/*.csv # harmonized datasets
   usage: >
     Invoke this skill when adding a new ESS-DIVE soil moisture dataset to the

@@ -1,1 +1,1 @@
-"""Leave-one-out fold preparation (e.g. ablating the expert monolith)."""
+"""Leave-one-cluster-out fold preparation over the modular expert harmonizer."""
