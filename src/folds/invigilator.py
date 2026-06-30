@@ -135,6 +135,18 @@ def _reason(p: Path, repo_root: Path, holdout_ids: list[str], raw: str) -> str:
     return f"{base} [references held-out {hit}]" if hit else base
 
 
+def _forbidden(p: Path, repo_root: Path) -> bool:
+    """True if a path is a known *answer* location (answer key, real gold/mapping).
+
+    Used to flag ``cd`` into such a directory even when the subsequent
+    single-component file read (e.g. ``cat expert.py``) isn't itself tokenized.
+    """
+    s = str(p)
+    if "eval_answer_keys" in s or re.search(r"expert_dataset_\d+|expert_mapping_entry", s):
+        return True
+    return under(p, repo_root / "data" / "gold") or under(p, repo_root / "data" / "processed")
+
+
 def audit(
     trace_path: Path,
     env_dir: Path,
@@ -183,10 +195,15 @@ def audit(
                 report.n_reads += 1
             if check(name, lexical_resolve(fp, str(repo_root)), fp) and name == "Read":
                 report.reads_in_bounds += 1
-        elif name in ("Grep", "Glob"):
+        elif name in ("Grep", "Glob", "LS"):
             p = inp.get("path")
             if p:
-                check(name, lexical_resolve(p, str(repo_root)), p)
+                check(name, lexical_resolve(str(p), str(repo_root)), str(p))
+            for key in ("glob", "pattern"):  # a path-bearing glob can leak too
+                val = inp.get(key)
+                if val:
+                    for tok in _PATH_TOKEN.findall(str(val)):
+                        check(name, lexical_resolve(tok, str(repo_root)), str(val))
         elif name == "Bash":
             cmd = inp.get("command", "")
             report.bash_commands.append(cmd)
@@ -194,11 +211,15 @@ def audit(
             for seg in re.split(r"&&|\|\||\||;|\n", cmd):
                 m = _CD.match(seg)
                 if m:
-                    cwd = str(lexical_resolve(m.group(1).strip(), cwd))
+                    target = lexical_resolve(m.group(1).strip(), cwd)
+                    if _forbidden(target, repo_root):  # cd-ing into an answer location
+                        report.clean = False
+                        report.violations.append(
+                            Violation("Bash(cd)", str(target),
+                                      _reason(target, repo_root, holdout_ids, seg), seg.strip()))
+                    cwd = str(target)
                     continue
                 for tok in _PATH_TOKEN.findall(seg):
-                    if tok in ("&&", "||"):
-                        continue
                     check("Bash", lexical_resolve(tok, cwd), seg.strip())
     return report
 
@@ -211,7 +232,7 @@ def main(
     trace: Path = typer.Option(..., "--trace", help="agent-<id>.jsonl trace file."),
     env: Path = typer.Option(..., "--env", help="Run env dir (.runs/<cfg>); reads its MANIFEST.json."),
     raw_data: Path = typer.Option(DEFAULT_RAW_DATA, "--raw-data", help="Shared raw-data root."),
-    repo_root: Path = typer.Option(Path.cwd(), "--repo-root", help="Repo root (start cwd for relative paths)."),
+    repo_root: Optional[Path] = typer.Option(None, "--repo-root", help="Repo root (start cwd for relative paths); defaults to the current dir."),
     allow: list[Path] = typer.Option([], "--allow", help="Extra allowed root(s)."),
     show_bash: bool = typer.Option(False, "--show-bash", help="Print every Bash command for human review."),
 ) -> None:
@@ -239,7 +260,7 @@ def main(
     if show_bash:
         typer.echo("\n--- Bash commands (human review; parsing is best-effort) ---")
         for c in r.bash_commands:
-            typer.echo(f"  $ {c.splitlines()[0] if c else ''}")
+            typer.echo("  $ " + (c or "").replace("\n", "\n      "))
     raise typer.Exit(code=0 if r.clean else 1)
 
 
