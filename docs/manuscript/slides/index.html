@@ -24,7 +24,8 @@
   .reveal strong{ color:var(--teal-d); }
   .reveal a{ color:var(--teal); }
   .reveal ul{ margin-left:1em; } .reveal li{ margin:.32em 0; }
-  .reveal .slide-number{ background:transparent; color:var(--muted); font-size:14px; }
+  .reveal .slide-number{ background:transparent; color:var(--muted); font-size:14px;
+    right:auto; left:50%; transform:translateX(-50%); bottom:8px; }
 
   /* accent + eyebrow */
   .eyebrow{ text-transform:uppercase; letter-spacing:.14em; font-size:.52em; font-weight:700;
@@ -60,6 +61,15 @@
   .schema{ font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.62em;
     background:#0e3b3a; color:#d8efec; border-radius:12px; padding:.7em .9em; line-height:1.55; }
   .schema .k{ color:#7fd9d2; } .schema .u{ color:var(--gold); }
+
+  .json{ font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace; background:#0e3b3a; color:#cfe6e2;
+    border-radius:12px; padding:.6em .8em; line-height:1.45; font-size:.5em; overflow:auto; margin:.2em 0; }
+  .json .k{ color:#7fd9d2; }   /* key */
+  .json .s{ color:#e9c06a; }   /* string value */
+  .json .v{ color:#bcded9; }   /* literal (null / number / bool) */
+  .json .c{ color:#6f9b96; font-style:italic; }  /* annotation */
+  .chip{ display:inline-block; font-size:.5em; font-weight:700; letter-spacing:.04em; color:#0a5a59;
+    background:#cdeeea; border:1px solid #7fd9d2; border-radius:999px; padding:.1em .6em; vertical-align:middle; }
 
   .stat{ font-size:2.0em; font-weight:740; color:var(--teal-d); line-height:1; }
   .stat .unit{ font-size:.42em; color:var(--muted); font-weight:600; }
@@ -178,6 +188,114 @@
       </div>
     </div>
     <p class="note" style="margin-top:.8em;">Implemented as <strong>Anthropic Agent Skills</strong> — versioned instruction+tool bundles; the 19 expert harmonizations act as retrievable in-context exemplars. <span class="tiny muted">[Agent Skills 2025]</span></p>
+  </section>
+
+  <!-- 4b · THE CHANGE-MAPPING JSON -->
+  <section>
+    <p class="eyebrow">The intermediate artifact</p>
+    <h2>The change-mapping JSON</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div>
+        <p class="small" style="margin-top:0;">Between "decide" and "executed table," the harmonizer emits a
+          machine-readable <strong>change-mapping</strong>: one entry per dataset, with a rule for every target
+          variable. It is the auditable record of <em>what maps to what, and how</em> — decoupled from the
+          Python that implements it.</p>
+        <p class="small muted">Top level (7 fields):</p>
+        <ul class="small" style="margin-top:.2em;">
+          <li><code>index</code>, <code>dataset_identifier</code>, <code>doi</code>, <code>archive_repository</code></li>
+          <li><code>data_payload_files</code>, <code>location_metadata_files</code>, <code>sensor_metadata_files</code></li>
+          <li><code>harmonization_mappings</code> — the per-variable rules</li>
+        </ul>
+      </div>
+      <div>
+        <p class="small muted" style="margin:0 0 .3em;">Each rule (one per target variable):</p>
+        <div class="json">
+{<br/>
+&nbsp;&nbsp;<span class="k">"depth"</span>: {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"pattern_1"</span>: {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"source_pattern"</span>: <span class="s">"Depth (cm)"</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"source_files"</span>: [<span class="s">"BM_…VWC….csv"</span>],<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"destination_variable"</span>: <span class="s">"depth_m"</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"transformation"</span>: <span class="s">"Rename 'Depth (cm)'…"</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"unit_conversion"</span>: <span class="s">"Divide by 1e2: cm → m."</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;}<br/>
+}
+        </div>
+        <p class="tiny muted" style="margin-top:.3em;">Excluded datasets collapse to <code>"harmonization_mappings": "EXCLUDED: &lt;reason&gt;"</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4c · REAL RULES -->
+  <section>
+    <p class="eyebrow">Real rules <span class="chip">leave-one-out fold · dataset 7 · "Bradley Meadow"</span></p>
+    <h2 style="margin-bottom:.1em;">What the agent actually wrote</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div>
+        <div class="json">
+<span class="c">// timezone-aware parse → UTC</span><br/>
+<span class="k">"datetime"</span>: { <span class="k">"source_pattern"</span>: <span class="s">"date.time"</span>,<br/>
+&nbsp;&nbsp;<span class="k">"transformation"</span>: <span class="s">"Parse '%m/%d/%y %H:%M' in</span><br/>
+&nbsp;&nbsp;<span class="s">America/Denver; convert to UTC ISO-8601."</span> }<br/><br/>
+<span class="c">// unit reasoning, not just a rename</span><br/>
+<span class="k">"volumetric_water_content"</span>: {<br/>
+&nbsp;&nbsp;<span class="k">"source_pattern"</span>: <span class="s">"Volumetric Water Content"</span>,<br/>
+&nbsp;&nbsp;<span class="k">"unit_conversion"</span>: <span class="s">"None; values are</span><br/>
+&nbsp;&nbsp;<span class="s">fractional m³/m³, not percent."</span> }
+        </div>
+      </div>
+      <div>
+        <div class="json">
+<span class="c">// not reported → explicit NA</span><br/>
+<span class="k">"water_potential"</span>: {<br/>
+&nbsp;&nbsp;<span class="k">"source_pattern"</span>: <span class="v">null</span>,<br/>
+&nbsp;&nbsp;<span class="k">"destination_variable"</span>: <span class="s">"water_potential_kPa"</span>,<br/>
+&nbsp;&nbsp;<span class="k">"transformation"</span>: <span class="s">"Not reported; populate NA."</span> }<br/><br/>
+<span class="c">// coordinate lookup + a caught gotcha</span><br/>
+<span class="k">"longitude"</span>: { <span class="k">"source_files"</span>: [<span class="s">"BM_EGM_Well_CO2.csv"</span>],<br/>
+&nbsp;&nbsp;<span class="k">"transformation"</span>: <span class="s">"…source value is negative</span><br/>
+&nbsp;&nbsp;<span class="s">longitude despite the header text."</span> }
+        </div>
+      </div>
+    </div>
+    <p class="tiny muted" style="margin-top:.4em;">Verbatim from an agent run that never saw dataset 7's gold. Source: open evaluation PRs (<code>evaluations/fold-05-holdout-7/</code>).</p>
+  </section>
+
+  <!-- 4d · SCORING THE MAPPING -->
+  <section>
+    <p class="eyebrow">Scoring the mapping <span class="chip">same fold · machine-readable metrics</span></p>
+    <h2>Why we score the output, not the prose</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div>
+        <p class="small" style="margin-top:0;">The change-mapping is compared to the expert's, field by field:</p>
+        <table class="mini">
+          <tr><th>Field</th><th>Exact match vs gold</th></tr>
+          <tr><td><code>destination_variable</code></td><td>8 / 8</td></tr>
+          <tr><td><code>unit_conversion</code></td><td>7 / 8</td></tr>
+          <tr><td><code>source_files</code></td><td>7 / 8</td></tr>
+          <tr><td><code>source_pattern</code></td><td>3 / 8</td></tr>
+          <tr><td><code>transformation</code> <span class="tiny muted">(free text)</span></td><td><strong style="color:#b4532b">0 / 8</strong></td></tr>
+          <tr><td>mapping categories covered</td><td>8 / 8</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="note small" style="margin-top:0;"><strong>The prose never matches — yet the data does.</strong>
+          The agent and expert describe transformations in different words (<code>transformation</code> 0/8),
+          but executing both programs on the same raw files gives:</p>
+        <div class="cols3" style="margin-top:.5em; gap:.5em;">
+          <div class="card teal" style="text-align:center;"><div class="stat" style="font-size:1.4em;">56,861<span class="unit">/56,861</span></div><p class="tiny muted" style="margin:.2em 0 0;">rows recovered (P=R=1.0)</p></div>
+          <div class="card teal" style="text-align:center;"><div class="stat" style="font-size:1.4em;">100%</div><p class="tiny muted" style="margin:.2em 0 0;">VWC &amp; potential cells match</p></div>
+          <div class="card gold" style="text-align:center;"><div class="stat" style="font-size:1.4em;">6</div><p class="tiny muted" style="margin:.2em 0 0;">interval_min cells differ (ordering)</p></div>
+        </div>
+        <p class="tiny muted" style="margin-top:.5em;">This is the whole argument for an <strong>output-equivalence</strong> endpoint: stylistic divergence in the
+          mapping/code is irrelevant when the harmonized table is identical. The mapping JSON gives auditable
+          <em>semantics</em>; the executed output gives the <em>verdict</em>.</p>
+      </div>
+    </div>
   </section>
 
   <!-- 5 · FIGURE 1 -->
