@@ -1,0 +1,77 @@
+{
+  "package_id": "ess-dive-38e901ec3d7bd24-20230504T211548257225",
+  "doi": "doi:10.15485/1660455",
+  "curator_decision": "INCLUDE",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    {
+      "filename": "BM_Merged_T_VWC_0616_1018.csv",
+      "columns": [
+        "date.time",
+        "Location",
+        "Depth (cm)",
+        "Temperature (C)",
+        "Volumetric Water Content"
+      ],
+      "row_count_estimate": 25000,
+      "file_size_mb": null,
+      "column_preview": "date.time,Location,Depth (cm),Temperature (C),Volumetric Water Content\n06/01/16 00:00,BM,25,8.2,0.312\n06/01/16 00:00,BM,50,6.4,0.389\n..."
+    }
+  ],
+  "location_metadata_files": [
+    {
+      "filename": "BM_EGM_Well_CO2.csv",
+      "columns": [
+        "Location",
+        "Latitude (\u00ba N)",
+        "Longitude (\u00ba E)"
+      ],
+      "row_count_estimate": 10,
+      "file_size_mb": null,
+      "column_preview": "Location,Latitude (\u00ba N),Longitude (\u00ba E)\nBM,...,...\n..."
+    }
+  ],
+  "sensor_metadata_files": [],
+  "readme_content": "Soil environmental conditions at Brush Meadow (BM) site, East River Watershed, Colorado. Campbell CS-655 soil water content reflectometers measuring temperature and VWC at depths 25-180 cm. Data loggers: CR200x. Measurement interval: 1-6 hours. Period: June 2016 to October 2018. Associated with: Winnick et al. (2020) JGR Biogeosciences doi:10.1029/2020JG005924. Gas wells (EGM-5, PP Systems) for soil CO2 measurement co-deployed with soil moisture sensors.",
+  "location_resolution": {
+    "source": "location_metadata_file",
+    "qc_flag_recommendation": null,
+    "site_coordinates": [
+      {
+        "site_id": "BM",
+        "latitude": null,
+        "longitude": null,
+        "easting": null,
+        "northing": null,
+        "epsg": null,
+        "elevation_m": null
+      }
+    ]
+  },
+  "time_series_inference": {
+    "is_timeseries": true,
+    "interval_min": 60.0,
+    "reasoning": "Campbell CS-655 soil moisture sensors with CR200x data logger. Filename date range 0616-1018 = June 2016 to October 2018 (~28 months). Publication (Winnick et al. 2020 JGR Biogeosciences doi:10.1029/2020JG005924) documents 1-6 hour logging intervals and diel VWC oscillation patterns. Multiple observations per site/depth with varying timestamps. Interval estimated as 60 min; actual value computed from datetime diffs."
+  },
+  "experimental_context": {
+    "manipulation_detected": false,
+    "manipulation_type": null,
+    "has_control_data": null,
+    "recommendation": "include_all"
+  },
+  "similar_dataset_reference": {
+    "index": 8,
+    "reason": "Closest structural match in exemplar pool: single-site SFA time series VWC dataset with separate location metadata file containing lat/lon. Both use long-format data with depth information and a site prefix naming convention. (Note: dataset 8 uses wide format with depth in column names; no perfect long-format exemplar with Depth (cm) column in pool.)"
+  },
+  "open_questions": [
+    "Timestamp format not confirmed from file: assuming '%m/%d/%y %H:%M' (e.g., '06/01/16 08:00'); confirm from actual file header.",
+    "Exact measurement interval not confirmed: publication says 1-6 hours; using 60 min as estimate; actual interval computed from data.",
+    "Timezone not confirmed: assuming America/Denver for East River, Colorado; typical for this SFA corpus.",
+    "VWC units: CS-655 default output is m3/m3; column name 'Volumetric Water Content' without % symbol suggests no conversion needed; confirm from README or file header.",
+    "Site_id assignment: 'Location' column in data file assumed to contain 'BM'; confirm exact string value.",
+    "File encoding: 'Latitude (o N)' column name contains degree symbol (U+00BA); latin-1 encoding may be required for BM_EGM_Well_CO2.csv."
+  ],
+  "skill_version": "0.1",
+  "run_id": "a3f8c1d2e9b7",
+  "timestamp": "2026-06-30T22:20:00"
+}

@@ -1,0 +1,110 @@
+{
+  "index": 7,
+  "dataset_identifier": "ess-dive-38e901ec3d7bd24-20230504T211548257225",
+  "doi": "doi:10.15485/1660455",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "BM_Merged_T_VWC_0616_1018.csv"
+  ],
+  "location_metadata_files": [
+    "BM_EGM_Well_CO2.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "date.time",
+        "source_files": [
+          "BM_Merged_T_VWC_0616_1018.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Convert to ISO 8601 UTC format. Parse using format '%m/%d/%y %H:%M', localize to America/Denver timezone, convert to UTC.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "Depth (cm)",
+        "source_files": [
+          "BM_Merged_T_VWC_0616_1018.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Rename variable. Explicit depth column in long-format data.",
+        "unit_conversion": "Divide by 1e2 to convert from cm to m."
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "Location",
+        "source_files": [
+          "BM_Merged_T_VWC_0616_1018.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Direct column rename. 'Location' column contains site identifier 'BM' (Brush Meadow).",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Latitude (\u00ba N)",
+        "source_files": [
+          "BM_EGM_Well_CO2.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Look up 'Latitude (\u00ba N)' for 'Location' = site_id in BM_EGM_Well_CO2.csv. Use first row (site BM). Column name contains degree symbol; read file with encoding='latin-1'.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Longitude (\u00ba E)",
+        "source_files": [
+          "BM_EGM_Well_CO2.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Look up 'Longitude (\u00ba E)' for 'Location' = site_id in BM_EGM_Well_CO2.csv. Use first row (site BM). Column name contains degree symbol; read file with encoding='latin-1'.",
+        "unit_conversion": null
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "replicate",
+        "transformation": "None; replicate information not provided in source. Populate with 1.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "Volumetric Water Content",
+        "source_files": [
+          "BM_Merged_T_VWC_0616_1018.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Rename variable. Campbell CS-655 sensor outputs VWC directly in m\u00b3/m\u00b3.",
+        "unit_conversion": "None; source units are m3/m3."
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "water_potential_kPa",
+        "transformation": "None; soil water potential not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "None; gravimetric water content not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    }
+  },
+  "notes": "Agent-generated mapping (wfsfa_sm_harmonizer v0.2, claude-sonnet-4-6, 2026-06-30). VWC time series from Campbell CS-655 sensors at Brush Meadow (BM) site, East River Watershed, Colorado (Winnick et al. 2020 JGR Biogeosciences doi:10.1029/2020JG005924). Data span June 2016 to October 2018 at multiple depths. Location coordinates from BM_EGM_Well_CO2.csv (gas well co-deployment location file). Read with encoding='latin-1' (degree symbol in column names). Temperature column (Temperature (C)) not harmonized - not in target schema.",
+  "qc_flags_applied": []
+}
