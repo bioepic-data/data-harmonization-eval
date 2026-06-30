@@ -14,13 +14,15 @@ There are two sources:
    header and no index column; the folder order does NOT correspond to the
    dataset index order, so each folder is matched to its dataset entry by
    comparing the folder's file listing against each mapping entry's
-   ``data_payload_files``.  Fetched with ``rclone copy`` using the remote
-   ``gdrive-bbop`` (must be configured in advance via ``rclone config``).
+   ``data_payload_files``.  By default, the tool first tries ``rclone`` using
+   the remote ``gdrive-bbop``.  If that remote is not configured, it falls back
+   to public Google Drive folder listings and direct file downloads for the
+   files declared in the mapping JSON.
 
-2. **ESS-DIVE** — REF idx 0 (``doi:10.15485/1660962``, East Taylor) is not on
-   Drive.  It is downloaded directly from the ESS-DIVE file API and its single
-   CSV placed under a ``data/`` sub-directory so that the harmonizer's path
-   (``data/East_Taylor_Watershed_…csv``) resolves correctly.
+2. **ESS-DIVE** — REF idx 0 (``doi:10.15485/1660962``, East Taylor) is
+   downloaded from the current ESS-DIVE package API and its single CSV placed
+   under a ``data/`` sub-directory so that the harmonizer's path
+   (``data/East_Taylor_Watershed_...csv``) resolves correctly.
 
 CLI usage::
 
@@ -31,12 +33,13 @@ CLI usage::
 from __future__ import annotations
 
 import json
-import os
 import re
 import subprocess
-import tempfile
+from dataclasses import dataclass
+from html.parser import HTMLParser
 from pathlib import Path
-from typing import Optional
+from typing import Literal, Optional
+from urllib.parse import quote, unquote, urlencode
 
 import requests
 import typer
@@ -46,9 +49,22 @@ DEFAULT_DRIVE_URLS = Path("data/raw_cache/ess-dive_wfsfa_soil_dataset_urls.csv")
 DEFAULT_DEST = Path.home() / "ess-dive_wfsfa_soil_datasets"
 
 RCLONE_REMOTE = "gdrive-bbop"
-ESSDIVE_FILES_API = "https://data.ess-dive.lbl.gov/catalog/api/packages"
+ESSDIVE_PACKAGES_API = "https://api.ess-dive.lbl.gov/packages"
+ESSDIVE_LEGACY_FILES_API = "https://data.ess-dive.lbl.gov/catalog/api/packages"
+GOOGLE_DRIVE_EMBEDDED_VIEW = "https://drive.google.com/embeddedfolderview"
+GOOGLE_DRIVE_DOWNLOAD = "https://drive.usercontent.google.com/download"
+GOOGLE_DRIVE_UC_DOWNLOAD = "https://drive.google.com/uc"
 
 REF_IDX = 0
+DriveMethod = Literal["auto", "rclone", "public"]
+
+
+@dataclass(frozen=True)
+class DriveFile:
+    """A file discovered from a public Google Drive folder listing."""
+
+    file_id: str
+    path: str
 
 
 def _load_mapping(mapping_path: Path) -> list[dict]:
@@ -73,6 +89,124 @@ def _folder_id_from_url(url: str) -> str:
     return m.group(1)
 
 
+class _DriveFolderHTMLParser(HTMLParser):
+    """Extract public Drive files and child folders from embeddedfolderview HTML."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._current_href: Optional[str] = None
+        self._current_text: list[str] = []
+        self.links: list[tuple[str, str]] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, Optional[str]]]) -> None:
+        if tag != "a":
+            return
+        attr_map = dict(attrs)
+        href = attr_map.get("href")
+        if href:
+            self._current_href = href
+            self._current_text = []
+
+    def handle_data(self, data: str) -> None:
+        if self._current_href is not None:
+            self._current_text.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag != "a" or self._current_href is None:
+            return
+        text = unquote("".join(self._current_text).strip())
+        if text:
+            self.links.append((self._current_href, text))
+        self._current_href = None
+        self._current_text = []
+
+
+def _sanitize_drive_filename(filename: str) -> str:
+    """Return a local-safe filename while preserving normal ESS-DIVE names."""
+    cleaned = filename.replace("\x00", "").replace("/", "_").replace("\\", "_").strip()
+    return cleaned if cleaned not in {"", ".", ".."} else "_"
+
+
+def _parse_drive_folder_links(html: str) -> tuple[list[DriveFile], list[tuple[str, str]]]:
+    """Parse file and child-folder links from Google Drive embedded folder HTML."""
+    parser = _DriveFolderHTMLParser()
+    parser.feed(html)
+    files: list[DriveFile] = []
+    folders: list[tuple[str, str]] = []
+
+    for href, text in parser.links:
+        file_match = re.match(
+            r"https://drive\.google\.com/file/d/([-\w]{25,})/view",
+            href,
+        )
+        if file_match:
+            files.append(DriveFile(file_id=file_match.group(1), path=_sanitize_drive_filename(text)))
+            continue
+
+        docs_match = re.match(r"https://docs\.google\.com/\w+/d/([-\w]{25,})/", href)
+        if docs_match:
+            files.append(DriveFile(file_id=docs_match.group(1), path=_sanitize_drive_filename(text)))
+            continue
+
+        folder_match = re.match(r"https://drive\.google\.com/drive/folders/([-\w]{25,})", href)
+        if folder_match:
+            folders.append((folder_match.group(1), _sanitize_drive_filename(text)))
+
+    return files, folders
+
+
+def _list_public_drive_folder_entries(
+    folder_id: str,
+    prefix: str = "",
+    session: Optional[requests.Session] = None,
+    dry_run: bool = False,
+) -> list[DriveFile]:
+    """Return recursive file entries for a public Google Drive folder.
+
+    This uses the same anonymous embedded folder listing that browsers can load
+    for "Anyone with the link" folders.  It avoids requiring a configured
+    rclone Google Drive remote.
+    """
+    if dry_run:
+        return []
+
+    sess = session or requests.Session()
+    resp = sess.get(
+        GOOGLE_DRIVE_EMBEDDED_VIEW,
+        params={"id": folder_id},
+        headers={
+            "User-Agent": (
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
+            )
+        },
+        timeout=60,
+    )
+    resp.raise_for_status()
+
+    files, folders = _parse_drive_folder_links(resp.text)
+    entries = [
+        DriveFile(file_id=f.file_id, path=str(Path(prefix) / f.path) if prefix else f.path)
+        for f in files
+    ]
+    for child_id, child_name in folders:
+        child_prefix = str(Path(prefix) / child_name) if prefix else child_name
+        entries.extend(
+            _list_public_drive_folder_entries(
+                child_id,
+                prefix=child_prefix,
+                session=sess,
+                dry_run=dry_run,
+            )
+        )
+    return entries
+
+
+def _list_public_drive_folder(folder_id: str, dry_run: bool = False) -> list[str]:
+    """Return recursive filenames from a public Google Drive folder."""
+    return [entry.path for entry in _list_public_drive_folder_entries(folder_id, dry_run=dry_run)]
+
+
 def _list_drive_folder(folder_id: str, remote: str = RCLONE_REMOTE, dry_run: bool = False) -> list[str]:
     """Return filenames in a Drive folder via ``rclone ls``."""
     if dry_run:
@@ -90,6 +224,27 @@ def _list_drive_folder(folder_id: str, remote: str = RCLONE_REMOTE, dry_run: boo
     return files
 
 
+def _candidate_payload_paths(path: str) -> set[str]:
+    """Return equivalent folder/mapping paths for matching package contents."""
+    path = str(Path(path))
+    candidates = {path, Path(path).name}
+    if path.startswith("data/"):
+        candidates.add(path.removeprefix("data/"))
+    else:
+        candidates.add(f"data/{path}")
+    return candidates
+
+
+def _wanted_entry_files(entry: dict) -> list[str]:
+    """Return raw input files that need to exist for one mapping entry."""
+    wanted: list[str] = []
+    for key in ("data_payload_files", "location_metadata_files", "sensor_metadata_files"):
+        value = entry.get(key)
+        if isinstance(value, list):
+            wanted.extend(str(item) for item in value if item)
+    return wanted
+
+
 def _match_folder_to_entry(
     folder_files: list[str],
     mapping: list[dict],
@@ -103,6 +258,8 @@ def _match_folder_to_entry(
     entries are excluded to prevent double-assignment.
     """
     folder_set = set(folder_files)
+    for filename in folder_files:
+        folder_set.update(_candidate_payload_paths(filename))
     best_entry: Optional[dict] = None
     best_count = 0
     for entry in mapping:
@@ -116,6 +273,55 @@ def _match_folder_to_entry(
             best_count = matches
             best_entry = entry
     return best_entry if best_count > 0 else None
+
+
+def _find_drive_file_entry(entries: list[DriveFile], wanted_path: str) -> Optional[DriveFile]:
+    """Find the Drive file entry that corresponds to a mapping path."""
+    by_path = {entry.path: entry for entry in entries}
+    for candidate in _candidate_payload_paths(wanted_path):
+        if candidate in by_path:
+            return by_path[candidate]
+
+    basename = Path(wanted_path).name
+    basename_matches = [entry for entry in entries if Path(entry.path).name == basename]
+    if len(basename_matches) == 1:
+        return basename_matches[0]
+    return None
+
+
+def _download_public_drive_file(file_id: str, out_path: Path, dry_run: bool = False) -> None:
+    """Download one public Google Drive file by ID."""
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    if dry_run:
+        typer.echo(f"  [dry-run] download Google Drive file {file_id} → {out_path}")
+        return
+
+    urls = [
+        f"{GOOGLE_DRIVE_DOWNLOAD}?{urlencode({'id': file_id, 'export': 'download', 'confirm': 't'})}",
+        f"{GOOGLE_DRIVE_UC_DOWNLOAD}?{urlencode({'export': 'download', 'id': file_id})}",
+    ]
+    last_error: Optional[Exception] = None
+    for url in urls:
+        tmp_path = out_path.with_name(f"{out_path.name}.part")
+        try:
+            with requests.get(url, stream=True, timeout=120) as resp:
+                resp.raise_for_status()
+                first_bytes = b""
+                with tmp_path.open("wb") as handle:
+                    for chunk in resp.iter_content(chunk_size=1024 * 1024):
+                        if not chunk:
+                            continue
+                        if not first_bytes:
+                            first_bytes = chunk[:200].lstrip().lower()
+                        handle.write(chunk)
+            if first_bytes.startswith(b"<!doctype html") or first_bytes.startswith(b"<html"):
+                raise RuntimeError("Google Drive returned HTML instead of file content")
+            tmp_path.replace(out_path)
+            return
+        except Exception as exc:  # pragma: no cover - exercised by integration use.
+            tmp_path.unlink(missing_ok=True)
+            last_error = exc
+    raise RuntimeError(f"failed to download Google Drive file {file_id}: {last_error}")
 
 
 def _copy_drive_folder(
@@ -134,6 +340,99 @@ def _copy_drive_folder(
     subprocess.run(cmd, check=True)
 
 
+def _copy_public_drive_declared_files(
+    folder_id: str,
+    entry: dict,
+    dest_dir: Path,
+    dry_run: bool = False,
+    verbose: bool = True,
+) -> None:
+    """Copy only the mapping-declared raw inputs from a public Drive folder."""
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    folder_entries = _list_public_drive_folder_entries(folder_id, dry_run=dry_run)
+    if dry_run:
+        for wanted_path in _wanted_entry_files(entry):
+            _download_public_drive_file("<matched-file-id>", dest_dir / wanted_path, dry_run=True)
+        return
+
+    missing: list[str] = []
+    for wanted_path in _wanted_entry_files(entry):
+        out_path = dest_dir / wanted_path
+        if out_path.exists() and out_path.stat().st_size > 0:
+            continue
+        drive_file = _find_drive_file_entry(folder_entries, wanted_path)
+        if drive_file is None:
+            missing.append(wanted_path)
+            continue
+        if verbose:
+            typer.echo(f"  downloading {wanted_path}")
+        _download_public_drive_file(drive_file.file_id, out_path, dry_run=dry_run)
+
+    if missing:
+        raise RuntimeError(
+            f"public Drive folder {folder_id} is missing declared file(s): {', '.join(missing)}"
+        )
+
+
+def _resolve_drive_method(
+    drive_method: DriveMethod,
+    drive_urls: list[str],
+    remote: str = RCLONE_REMOTE,
+    dry_run: bool = False,
+    verbose: bool = True,
+) -> DriveMethod:
+    """Choose a Drive access method, using public fallback when rclone is unavailable."""
+    if drive_method != "auto" or dry_run or not drive_urls:
+        return drive_method
+
+    first_folder_id = _folder_id_from_url(drive_urls[0])
+    try:
+        _list_drive_folder(first_folder_id, remote=remote)
+    except (FileNotFoundError, subprocess.CalledProcessError) as exc:
+        if verbose:
+            typer.echo(
+                f"WARNING: rclone remote {remote!r} is unavailable ({exc}); "
+                "falling back to public Google Drive downloads.",
+                err=True,
+            )
+        return "public"
+    return "rclone"
+
+
+def _list_drive_folder_by_method(
+    folder_id: str,
+    drive_method: DriveMethod,
+    remote: str = RCLONE_REMOTE,
+    dry_run: bool = False,
+) -> list[str]:
+    """List a Drive folder with the selected access method."""
+    if drive_method == "public":
+        return _list_public_drive_folder(folder_id, dry_run=dry_run)
+    return _list_drive_folder(folder_id, remote=remote, dry_run=dry_run)
+
+
+def _copy_drive_folder_by_method(
+    folder_id: str,
+    entry: dict,
+    dest_dir: Path,
+    drive_method: DriveMethod,
+    remote: str = RCLONE_REMOTE,
+    dry_run: bool = False,
+    verbose: bool = True,
+) -> None:
+    """Copy a Drive folder using rclone or the public declared-file fallback."""
+    if drive_method == "public":
+        _copy_public_drive_declared_files(
+            folder_id,
+            entry,
+            dest_dir,
+            dry_run=dry_run,
+            verbose=verbose,
+        )
+    else:
+        _copy_drive_folder(folder_id, dest_dir, remote=remote, dry_run=dry_run)
+
+
 def _essdive_package_id(dataset_identifier: str) -> str:
     """Convert a dataset_identifier to an ESS-DIVE package ID.
 
@@ -141,6 +440,17 @@ def _essdive_package_id(dataset_identifier: str) -> str:
     their catalog API.
     """
     return dataset_identifier
+
+
+def _download_url_to_path(url: str, out_path: Path, dry_run: bool = False) -> None:
+    """Stream a URL to a local path."""
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    if dry_run:
+        typer.echo(f"  [dry-run] GET {url} → {out_path}")
+        return
+    with requests.get(url, stream=True, timeout=120) as resp:
+        resp.raise_for_status()
+        out_path.write_bytes(resp.content)
 
 
 def _download_essdive_files(
@@ -157,40 +467,74 @@ def _download_essdive_files(
     placed under a ``data/`` sub-directory of ``dest_dir``.
     """
     dest_dir.mkdir(parents=True, exist_ok=True)
-    data_subdir = dest_dir / "data"
-    data_subdir.mkdir(parents=True, exist_ok=True)
-
-    pkg_id = _essdive_package_id(dataset_identifier)
-    files_url = f"{ESSDIVE_FILES_API}/{pkg_id}/files"
-
-    if dry_run:
-        typer.echo(f"  [dry-run] GET {files_url}")
-        typer.echo(f"  [dry-run] would download files to {data_subdir}")
-        return
-
-    resp = requests.get(files_url, timeout=60)
-    if resp.status_code == 404:
-        typer.echo(f"  ESS-DIVE API returned 404 for {pkg_id}; trying DOI fallback download…")
-        _download_essdive_doi_fallback(doi, dest_dir, location_metadata_files, dry_run=False)
-        return
-    resp.raise_for_status()
-    file_list = resp.json()
 
     wanted = set(location_metadata_files) if location_metadata_files else None
+    doi_id = doi.replace("doi:", "")
+    package_urls = []
+    if doi_id:
+        package_urls.append(f"{ESSDIVE_PACKAGES_API}/doi:{doi_id}")
+    package_urls.append(f"{ESSDIVE_PACKAGES_API}/{_essdive_package_id(dataset_identifier)}")
+    package_urls.append(f"{ESSDIVE_LEGACY_FILES_API}/{_essdive_package_id(dataset_identifier)}/files")
+
+    if dry_run:
+        for package_url in package_urls:
+            typer.echo(f"  [dry-run] GET {package_url}")
+        for rel_path in location_metadata_files or []:
+            typer.echo(f"  [dry-run] would download {Path(rel_path).name} → {dest_dir / rel_path}")
+        return
+
+    last_error: Optional[Exception] = None
+    for package_url in package_urls:
+        try:
+            resp = requests.get(package_url, timeout=60)
+            if resp.status_code == 404:
+                continue
+            resp.raise_for_status()
+            payload = resp.json()
+            file_list = payload.get("dataset", {}).get("distribution", payload)
+            if not isinstance(file_list, list):
+                continue
+            _download_matching_essdive_files(file_list, wanted, dest_dir, location_metadata_files)
+            return
+        except Exception as exc:  # pragma: no cover - depends on live API behavior.
+            last_error = exc
+
+    typer.echo("  ESS-DIVE package API lookup failed; trying DOI redirect fallback...")
+    try:
+        _download_essdive_doi_fallback(doi, dest_dir, location_metadata_files, dry_run=False)
+    except Exception as exc:
+        raise RuntimeError(f"failed to download ESS-DIVE files for {doi}: {last_error or exc}") from exc
+
+
+def _download_matching_essdive_files(
+    file_list: list[dict],
+    wanted: Optional[set[str]],
+    dest_dir: Path,
+    location_metadata_files: Optional[list[str]],
+) -> None:
+    """Download ESS-DIVE file records that match requested mapping paths."""
+    wanted_paths = location_metadata_files or []
+    downloaded = 0
     for file_info in file_list:
         name = file_info.get("name", "")
-        if wanted is not None:
-            basename = Path(name).name
-            if not any(Path(w).name == basename for w in wanted):
-                continue
-        download_url = file_info.get("url") or file_info.get("downloadUrl")
+        basename = Path(name).name
+        if wanted is not None and not any(Path(w).name == basename for w in wanted):
+            continue
+        download_url = (
+            file_info.get("contentUrl")
+            or file_info.get("url")
+            or file_info.get("downloadUrl")
+        )
         if not download_url:
             continue
-        out_path = data_subdir / Path(name).name
+        rel_path = next((w for w in wanted_paths if Path(w).name == basename), f"data/{basename}")
+        out_path = dest_dir / rel_path
         typer.echo(f"  downloading {name} → {out_path}")
-        with requests.get(download_url, stream=True, timeout=120) as r:
-            r.raise_for_status()
-            out_path.write_bytes(r.content)
+        _download_url_to_path(download_url, out_path)
+        downloaded += 1
+
+    if wanted_paths and downloaded < len(wanted_paths):
+        raise RuntimeError("ESS-DIVE response did not include all requested location metadata files")
 
 
 def _download_essdive_doi_fallback(
@@ -213,26 +557,19 @@ def _download_essdive_doi_fallback(
     resp.raise_for_status()
     pkg_url = resp.url
     pkg_id = pkg_url.rstrip("/").split("/")[-1]
-    files_url = f"{ESSDIVE_FILES_API}/{pkg_id}/files"
+    files_url = f"{ESSDIVE_PACKAGES_API}/{quote(pkg_id, safe=':')}"
     fresp = requests.get(files_url, timeout=60)
     fresp.raise_for_status()
-    file_list = fresp.json()
+    payload = fresp.json()
+    file_list = payload.get("dataset", {}).get("distribution", payload)
+    if not isinstance(file_list, list):
+        legacy_url = f"{ESSDIVE_LEGACY_FILES_API}/{pkg_id}/files"
+        legacy = requests.get(legacy_url, timeout=60)
+        legacy.raise_for_status()
+        file_list = legacy.json()
 
     wanted = set(location_metadata_files) if location_metadata_files else None
-    for file_info in file_list:
-        name = file_info.get("name", "")
-        if wanted is not None:
-            basename = Path(name).name
-            if not any(Path(w).name == basename for w in wanted):
-                continue
-        download_url = file_info.get("url") or file_info.get("downloadUrl")
-        if not download_url:
-            continue
-        out_path = data_subdir / Path(name).name
-        typer.echo(f"  downloading {name} → {out_path}")
-        with requests.get(download_url, stream=True, timeout=120) as r:
-            r.raise_for_status()
-            out_path.write_bytes(r.content)
+    _download_matching_essdive_files(file_list, wanted, dest_dir, location_metadata_files)
 
 
 def stage_dataset(
@@ -240,6 +577,7 @@ def stage_dataset(
     dest_root: Path,
     drive_urls: list[str],
     remote: str = RCLONE_REMOTE,
+    drive_method: DriveMethod = "auto",
     dry_run: bool = False,
     verbose: bool = True,
 ) -> Path:
@@ -275,15 +613,27 @@ def stage_dataset(
             typer.echo("  → no data_payload_files, skipping")
         return dest_dir
 
+    resolved_method = _resolve_drive_method(
+        drive_method,
+        drive_urls,
+        remote=remote,
+        dry_run=dry_run,
+        verbose=verbose,
+    )
     matched_folder_id: Optional[str] = None
     already_matched: set[int] = set()
 
     for url in drive_urls:
         folder_id = _folder_id_from_url(url)
         try:
-            folder_files = _list_drive_folder(folder_id, remote=remote, dry_run=dry_run)
-        except subprocess.CalledProcessError as exc:
-            typer.echo(f"  WARNING: rclone ls failed for {url}: {exc}", err=True)
+            folder_files = _list_drive_folder_by_method(
+                folder_id,
+                drive_method=resolved_method,
+                remote=remote,
+                dry_run=dry_run,
+            )
+        except (FileNotFoundError, subprocess.CalledProcessError, requests.RequestException) as exc:
+            typer.echo(f"  WARNING: Drive listing failed for {url}: {exc}", err=True)
             continue
         if dry_run:
             if verbose:
@@ -300,8 +650,16 @@ def stage_dataset(
         return dest_dir
 
     if verbose:
-        typer.echo(f"  → rclone copy from folder {matched_folder_id}")
-    _copy_drive_folder(matched_folder_id, dest_dir, remote=remote, dry_run=dry_run)
+        typer.echo(f"  → {resolved_method} copy from folder {matched_folder_id}")
+    _copy_drive_folder_by_method(
+        matched_folder_id,
+        entry,
+        dest_dir,
+        drive_method=resolved_method,
+        remote=remote,
+        dry_run=dry_run,
+        verbose=verbose,
+    )
     return dest_dir
 
 
@@ -309,6 +667,7 @@ def match_all_drive_folders(
     drive_urls: list[str],
     mapping: list[dict],
     remote: str = RCLONE_REMOTE,
+    drive_method: DriveMethod = "auto",
     dry_run: bool = False,
     verbose: bool = True,
 ) -> dict[int, str]:
@@ -317,6 +676,13 @@ def match_all_drive_folders(
     Lists every folder once and greedily assigns each to the best-matching
     entry.  Returns ``{dataset_index: folder_id}``.
     """
+    resolved_method = _resolve_drive_method(
+        drive_method,
+        drive_urls,
+        remote=remote,
+        dry_run=dry_run,
+        verbose=verbose,
+    )
     folder_contents: dict[str, list[str]] = {}
     for url in drive_urls:
         folder_id = _folder_id_from_url(url)
@@ -324,9 +690,13 @@ def match_all_drive_folders(
             folder_contents[folder_id] = []
             continue
         try:
-            files = _list_drive_folder(folder_id, remote=remote)
-        except subprocess.CalledProcessError as exc:
-            typer.echo(f"WARNING: rclone ls failed for {url}: {exc}", err=True)
+            files = _list_drive_folder_by_method(
+                folder_id,
+                drive_method=resolved_method,
+                remote=remote,
+            )
+        except (FileNotFoundError, subprocess.CalledProcessError, requests.RequestException) as exc:
+            typer.echo(f"WARNING: Drive listing failed for {url}: {exc}", err=True)
             folder_contents[folder_id] = []
         else:
             folder_contents[folder_id] = files
@@ -351,6 +721,7 @@ def stage_all(
     dest_root: Path,
     indices: Optional[set[int]] = None,
     remote: str = RCLONE_REMOTE,
+    drive_method: DriveMethod = "auto",
     dry_run: bool = False,
     verbose: bool = True,
 ) -> list[Path]:
@@ -373,13 +744,38 @@ def stage_all(
     staged: list[Path] = []
 
     for entry in ref_entries:
-        path = stage_dataset(entry, dest_root, drive_urls=[], remote=remote, dry_run=dry_run, verbose=verbose)
+        path = stage_dataset(
+            entry,
+            dest_root,
+            drive_urls=[],
+            remote=remote,
+            drive_method=drive_method,
+            dry_run=dry_run,
+            verbose=verbose,
+        )
         staged.append(path)
 
     if drive_entries:
+        resolved_method = _resolve_drive_method(
+            drive_method,
+            drive_urls,
+            remote=remote,
+            dry_run=dry_run,
+            verbose=verbose,
+        )
         if verbose:
-            typer.echo(f"\nBuilding Drive folder→dataset mapping for {len(drive_urls)} folders…")
-        folder_map = match_all_drive_folders(drive_urls, drive_entries, remote=remote, dry_run=dry_run, verbose=verbose)
+            typer.echo(
+                f"\nBuilding Drive folder→dataset mapping for {len(drive_urls)} folders "
+                f"using {resolved_method}..."
+            )
+        folder_map = match_all_drive_folders(
+            drive_urls,
+            drive_entries,
+            remote=remote,
+            drive_method=resolved_method,
+            dry_run=dry_run,
+            verbose=verbose,
+        )
 
         for entry in drive_entries:
             idx = entry["index"]
@@ -392,8 +788,16 @@ def stage_all(
                 typer.echo(f"  WARNING: no Drive folder matched idx {idx}", err=True)
                 continue
             if verbose:
-                typer.echo(f"  → rclone copy from folder {folder_id}")
-            _copy_drive_folder(folder_id, dest_dir, remote=remote, dry_run=dry_run)
+                typer.echo(f"  → {resolved_method} copy from folder {folder_id}")
+            _copy_drive_folder_by_method(
+                folder_id,
+                entry,
+                dest_dir,
+                drive_method=resolved_method,
+                remote=remote,
+                dry_run=dry_run,
+                verbose=verbose,
+            )
             staged.append(dest_dir)
 
     return staged
@@ -408,18 +812,27 @@ def main(
     mapping: Path = typer.Option(DEFAULT_MAPPING, "--mapping", help="Gold mapping JSON."),
     drive_urls: Path = typer.Option(DEFAULT_DRIVE_URLS, "--drive-urls", help="File with one Drive folder URL per line."),
     remote: str = typer.Option(RCLONE_REMOTE, "--remote", help="rclone remote name for Google Drive."),
+    drive_method: DriveMethod = typer.Option(
+        "auto",
+        "--drive-method",
+        help="Google Drive access method: auto, rclone, or public.",
+    ),
     indices: Optional[str] = typer.Option(None, "--indices", help="Comma-separated dataset indices to stage (default: all)."),
     dry_run: bool = typer.Option(False, "--dry-run", help="Print actions without executing rclone or downloading."),
     quiet: bool = typer.Option(False, "--quiet", help="Suppress per-dataset progress messages."),
 ) -> None:
     """Stage raw soil-moisture datasets to DEST/<dataset_identifier>/.
 
-    Matches Google Drive folders to datasets by file-set content, then copies
-    via rclone. REF idx 0 is fetched directly from ESS-DIVE.
+    Matches Google Drive folders to datasets by file-set content. By default,
+    the tool uses rclone when the configured remote is available and otherwise
+    falls back to anonymous public Drive folder listings plus direct downloads
+    of the mapping-declared files. REF idx 0 is fetched directly from ESS-DIVE.
 
     Prerequisites:
-    - rclone must be installed and the remote configured: ``rclone config``
-    - The remote name defaults to ``gdrive-bbop``; override with ``--remote``
+    - For rclone mode, rclone must be installed and the remote configured:
+      ``rclone config``.
+    - Public mode requires the Drive folders to be readable by "Anyone with
+      the link".
     """
     mapping_data = _load_mapping(mapping)
     url_list = _load_drive_urls(drive_urls)
@@ -434,6 +847,7 @@ def main(
         dest_root=dest,
         indices=idx_filter,
         remote=remote,
+        drive_method=drive_method,
         dry_run=dry_run,
         verbose=not quiet,
     )
