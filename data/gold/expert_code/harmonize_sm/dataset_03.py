@@ -37,29 +37,44 @@ def harmonize(ctx):
     mdf3 = read_ds_csv(idx, m3)
 
     x = df3.copy()
+
+    # datetime: pattern_1 - Convert 'TIMESTAMP' to ISO 8601 UTC format
     x["datetime_UTC"] = parse_local_to_utc(x["TIMESTAMP"], "%Y-%m-%d %H:%M", "America/Denver")
     x["interval_min"] = interval_min(x["datetime_UTC"])
 
+    # soil_water_potential: pattern_1 & pattern_2
+    # Coerce from 'wide' format with column variables containing depth and replicate information to 'long' format
+    # Source patterns: 'SDi.jcm_MP' and 'SD1.25cm_sagebrush_rhizo_MP_5_Avg'
     mp_cols = [c for c in x.columns if "_MP" in c]
     for c in mp_cols:
         x[c] = pd.to_numeric(x[c], errors="coerce")
 
     long = x.melt(id_vars=["datetime_UTC", "interval_min"], value_vars=mp_cols, var_name="name", value_name="water_potential_kPa")
+
+    # depth: pattern_1 - Parse float j from '*.jcm_*' and divide by 1e2 to convert from cm to m
     long["depth_m"] = pd.to_numeric(
         long["name"].str.replace(r"[._]", " ", regex=True).str.split().str[1].str.replace("cm", "", regex=False),
         errors="coerce",
     ) / 100
+
+    # site_id: pattern_1 - Parse site_id from 'Location_ID' in locations.csv
     long["site_id"] = "ER-LLN1"
     long["is_timeseries"] = True
     long["water_potential_kPa"] = long["water_potential_kPa"].where(~np.isnan(long["water_potential_kPa"]), np.nan)
+
+    # volumetric_water_content: pattern_1 - Not reported in source; populate with NA
     long["volumetric_water_content_m3_m3"] = np.nan
     long["gravimetric_water_content_gH2O_gs"] = np.nan
+
+    # replicate: pattern_1 - Group by 'datetime_UTC' and 'depth_m' and increment number of observations per grouping
     long["replicate"] = long.groupby(["datetime_UTC", "depth_m"]).cumcount() + 1
 
     df3_harmonized = ensure_harmonized_cols(long)
     __harmonized = df3_harmonized
     __dataset_id = dsid(idx)
 
+    # latitude: pattern_1 & longitude: pattern_1
+    # Look up 'Latitude' and 'Longitude' for 'site_id' in locations.csv
     loc3 = mdf3.rename(columns={"Location_ID": "site_id", "Latitude": "latitude", "Longitude": "longitude"})[
         ["site_id", "latitude", "longitude"]
     ].copy()

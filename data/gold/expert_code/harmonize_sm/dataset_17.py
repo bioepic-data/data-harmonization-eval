@@ -42,19 +42,30 @@ def harmonize(ctx):
     for i, d in enumerate(ls17):
         siten = f17[i]
         x = d.iloc[1:].copy()
+
+        # datetime: pattern_1 - Convert 'DateTime' to ISO 8601 UTC format
         x["datetime_UTC"] = parse_local_to_utc(x["DateTime"], "%Y-%m-%d %H:%M:%S", "America/Denver")
         x["interval_min"] = interval_min(x["datetime_UTC"])
 
+        # site_id: pattern_1 - Parse site_id from source filename
         site_guess = re.split(r"/|\.", siten)
         x["site_id"] = site_guess[2] if len(site_guess) > 2 else np.nan
 
+        # volumetric_water_content: pattern_1
+        # Coerce from 'wide' format to 'long' format
         mc_cols = [c for c in x.columns if re.search(r"MC", c)]
         long = x.melt(id_vars=["datetime_UTC", "interval_min", "site_id"], value_vars=mc_cols, var_name="name", value_name="value")
+
+        # depth: pattern_1 - Parse depth from variable name (source units are m)
         m = long["name"].str.extract(r"(.*)_(.*)")
         long["depth_m"] = pd.to_numeric(m[1].str.replace("m", "", regex=False), errors="coerce")
         long["volumetric_water_content_m3_m3"] = pd.to_numeric(long["value"], errors="coerce")
+
+        # replicate: pattern_1 - Replicate information not provided in source; populate with 1
         long["replicate"] = 1
         long["is_timeseries"] = True
+
+        # soil_water_potential: pattern_1 - Not reported in source; populate with NA
         long["water_potential_kPa"] = np.nan
         long["gravimetric_water_content_gH2O_gs"] = np.nan
 
@@ -64,6 +75,9 @@ def harmonize(ctx):
     __harmonized = df17_harmonized
     __dataset_id = dsid(idx)
 
+    # latitude: pattern_1 & longitude: pattern_1
+    # Look up 'Northing' and 'Easting' for 'site_id' in location metadata
+    # Reproject from EPSG:32613 (WGS84 UTM Zone 13N, meters) to EPSG:4326 (WGS84, decimal degrees)
     loc17_tmp = utm32613_to_latlon(mdf17, "Easting", "Northing")
     loc17 = pd.DataFrame(
         {
