@@ -1,0 +1,109 @@
+{
+  "index": 7,
+  "dataset_identifier": "ess-dive-38e901ec3d7bd24-20230504T211548257225",
+  "doi": "doi:10.15485/1660455",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "BM_Merged_T_VWC_0616_1018.csv"
+  ],
+  "location_metadata_files": [
+    "BM_EGM_Well_CO2.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "date.time",
+        "source_files": [
+          "BM_Merged_T_VWC_0616_1018.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse datetime from 'date.time' using format '%m/%d/%y %H:%M' in America/Denver timezone; convert to UTC ISO-8601 string.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "BM file prefix and BM_EGM_Well_CO2.csv Location",
+        "source_files": [
+          "BM_Merged_T_VWC_0616_1018.csv",
+          "BM_EGM_Well_CO2.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Assign constant site_id 'BM' for Bradley Meadow observations.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "Depth (cm)",
+        "source_files": [
+          "BM_Merged_T_VWC_0616_1018.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Rename 'Depth (cm)' to depth_m.",
+        "unit_conversion": "Divide by 1e2 to convert from cm to m."
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "replicate",
+        "transformation": "No replicate column is present in the merged sensor file; populate with 1 for the single sensor/depth stream at each depth.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "Volumetric Water Content",
+        "source_files": [
+          "BM_Merged_T_VWC_0616_1018.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Rename 'Volumetric Water Content' to volumetric_water_content_m3_m3.",
+        "unit_conversion": "None; values are fractional m3/m3, not percent."
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "Not reported in source; populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Not reported in source; populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Latitude (deg N)",
+        "source_files": [
+          "BM_EGM_Well_CO2.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Use coordinate associated with Location 'BM' for Bradley Meadow.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Longitude (deg E)",
+        "source_files": [
+          "BM_EGM_Well_CO2.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Use coordinate associated with Location 'BM' for Bradley Meadow; source value is negative longitude despite header text.",
+        "unit_conversion": null
+      }
+    }
+  }
+}
