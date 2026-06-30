@@ -1,0 +1,138 @@
+{
+  "index": 8,
+  "dataset_identifier": "ess-dive-61a0ecd70856892-20230808T205724993",
+  "doi": "doi:10.15485/1958210",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "SLT_OBJ2_SoilSensors_2018_data.csv",
+    "SLT_OBJ2_SoilSensors_2019_data.csv",
+    "SLT_OBJ2_SoilSensors_2020_data.csv",
+    "SLT_OBJ2_SoilSensors_2021_data.csv"
+  ],
+  "location_metadata_files": [
+    "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+  ],
+  "sensor_metadata_files": [
+    "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+  ],
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "DateTime.MST",
+        "source_files": [
+          "SLT_OBJ2_SoilSensors_2018_data.csv",
+          "SLT_OBJ2_SoilSensors_2019_data.csv",
+          "SLT_OBJ2_SoilSensors_2020_data.csv",
+          "SLT_OBJ2_SoilSensors_2021_data.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse fixed Mountain Standard Time timestamps and convert to UTC ISO-8601 strings.",
+        "unit_conversion": "UTC = MST + 7 hours."
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "SiteName",
+        "source_files": [
+          "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+          "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+          "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+          "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Use the installation metadata SiteName value shared by all target sensors: Slate River OBJ-2.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "SoilMoisture_<depth>cm.m3.m3 and SoilMatricPot_<depth>cm.kPa",
+        "source_files": [
+          "SLT_OBJ2_SoilSensors_2018_data.csv",
+          "SLT_OBJ2_SoilSensors_2019_data.csv",
+          "SLT_OBJ2_SoilSensors_2020_data.csv",
+          "SLT_OBJ2_SoilSensors_2021_data.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Parse numeric depth from target column names.",
+        "unit_conversion": "Divide by 100 to convert from cm to m."
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": [
+          "SLT_OBJ2_SoilSensors_2018_data.csv",
+          "SLT_OBJ2_SoilSensors_2019_data.csv",
+          "SLT_OBJ2_SoilSensors_2020_data.csv",
+          "SLT_OBJ2_SoilSensors_2021_data.csv"
+        ],
+        "destination_variable": "replicate",
+        "transformation": "No replicate identifier is present; assign replicate = 1 for the single sensor at each site-depth-target variable.",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Latitude",
+        "source_files": [
+          "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+          "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+          "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+          "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Use coordinates reported in installation metadata for Slate River OBJ-2.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Longitude",
+        "source_files": [
+          "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+          "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+          "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+          "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Use coordinates reported in installation metadata for Slate River OBJ-2.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "SoilMoisture_<depth>cm.m3.m3",
+        "source_files": [
+          "SLT_OBJ2_SoilSensors_2018_data.csv",
+          "SLT_OBJ2_SoilSensors_2019_data.csv",
+          "SLT_OBJ2_SoilSensors_2020_data.csv",
+          "SLT_OBJ2_SoilSensors_2021_data.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Melt wide soil moisture columns to long rows keyed by datetime, site, depth, and replicate; replace -9999 with missing.",
+        "unit_conversion": "None; source units are m3/m3."
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": "SoilMatricPot_<depth>cm.kPa",
+        "source_files": [
+          "SLT_OBJ2_SoilSensors_2018_data.csv",
+          "SLT_OBJ2_SoilSensors_2019_data.csv",
+          "SLT_OBJ2_SoilSensors_2020_data.csv",
+          "SLT_OBJ2_SoilSensors_2021_data.csv"
+        ],
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Melt wide matric potential columns to long rows keyed by datetime, site, depth, and replicate; replace -9999 with missing.",
+        "unit_conversion": "None; source units are kPa."
+      }
+    }
+  }
+}
