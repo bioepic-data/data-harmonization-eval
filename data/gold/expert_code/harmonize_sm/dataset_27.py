@@ -39,11 +39,16 @@ def harmonize(ctx):
     ls27_h = []
     for i, d in enumerate(ls27):
         x = d.copy()
+
+        # datetime: pattern_1 - Convert 'Time' to ISO 8601 UTC format
         dt = pd.to_datetime(x["Time"], format="%m/%d/%Y %H:%M", errors="coerce")
         dt = dt.dt.tz_localize("Etc/GMT+7", ambiguous="NaT", nonexistent="shift_forward")
         x["datetime_UTC"] = dt.dt.tz_convert("UTC")
         x["interval_min"] = interval_min(x["datetime_UTC"])
 
+        # volumetric_water_content & soil_water_potential: pattern_1
+        # Coerce from 'wide' format to 'long' format
+        # Source patterns: 'S[1-4]_wc_(m3/m3)' for VWC and 'S5_wp_(kPa)' for water potential
         cols = [c for c in x.columns if re.search(r"^S[1-4]_wc_\(m3/m3\)$|^S5_wp_\(kPa\)$", c)]
         long = x.melt(id_vars=["datetime_UTC", "interval_min"], value_vars=cols, var_name="name", value_name="value")
 
@@ -56,6 +61,8 @@ def harmonize(ctx):
             default=np.nan,
         )
 
+        # depth: pattern_1 - Parse sensor number (S1-S5) from column name and map to specific depths (in m)
+        # Depths vary by site and sensor; site-specific mapping from metadata
         fname = f27[i]
         long["depth_m"] = np.select(
             [
@@ -70,9 +77,12 @@ def harmonize(ctx):
             default=np.nan,
         )
 
+        # site_id: pattern_1 - Parse 'ER-PHS[1-4]' from source filename
         site_match = re.search(r"ER-PHS[1-4]", fname)
         site_id_val = site_match.group(0) if site_match else np.nan
         long["site_id"] = site_id_val
+
+        # replicate: pattern_1 - Replicate information not provided in source; populate with 1
         long["replicate"] = 1
         long["is_timeseries"] = True
 
@@ -97,6 +107,8 @@ def harmonize(ctx):
     __harmonized = df27_harmonized
     __dataset_id = dsid(idx)
 
+    # latitude: pattern_1 & longitude: pattern_1
+    # Look up 'Latitude' and 'Longitude' for 'Location_ID' in reference location metadata
     loc27 = mdf27.rename(columns={"Location_ID": "site_id", "Latitude": "latitude", "Longitude": "longitude"})[
         ["site_id", "latitude", "longitude"]
     ].copy()

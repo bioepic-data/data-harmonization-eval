@@ -38,19 +38,31 @@ def harmonize(ctx):
     mdf9 = read_ds_csv(idx, m9)
 
     x = ddf9.copy()
+
+    # datetime: pattern_1 - Convert 'Collection.Date' to ISO 8601 UTC format
     x["datetime_UTC"] = parse_local_to_utc(x["Collection Date"], "%Y-%m-%d", "America/Denver")
+
+    # site_id: pattern_1 - Rename column 'SampleSiteCode' to 'site_id'
     x["site_id"] = x["SampleSiteCode"]
     x["interval_min"] = np.nan
+
+    # depth: pattern_1 - Populate with sampling depth reported in package metadata (20 cm -> 0.2 m)
     x["depth_m"] = 0.2
     x["is_timeseries"] = False
+
+    # soil_water_potential: pattern_1 - Not reported in source; populate with NA
     x["water_potential_kPa"] = np.nan
 
+    # volumetric_water_content: pattern_1
+    # Coerce from 'wide' format with column variables containing replicate information to 'long' format
     long = x.melt(
         id_vars=["datetime_UTC", "site_id", "interval_min", "depth_m", "is_timeseries", "water_potential_kPa"],
         value_vars=["VWC_1", "VWC_2"],
         var_name="tmp",
         value_name="VWC",
     )
+
+    # replicate: pattern_1 - Parse integer i from 'VWC_i'
     long["replicate"] = long["tmp"].str.extract(r"_(\d+)")[0]
     long["VWC"] = pd.to_numeric(long["VWC"], errors="coerce")
     long.loc[long["VWC"] == -9999.0, "VWC"] = np.nan
@@ -62,6 +74,9 @@ def harmonize(ctx):
     __harmonized = df9_harmonized
     __dataset_id = dsid(idx)
 
+    # latitude: pattern_1 & longitude: pattern_1
+    # Look up 'Northing' and 'Easting' for 'site_id' in NEON_plot_TDR.csv
+    # Reproject from EPSG:32613 (WGS84 UTM Zone 13N, meters) to EPSG:4326 (WGS84, decimal degrees)
     loc9_tmp = utm32613_to_latlon(mdf9, "Easting", "Northing")
     loc9 = pd.DataFrame(
         {

@@ -35,14 +35,26 @@ def harmonize(ctx):
     mdf5 = read_ds_csv(REF_IDX, m5)
 
     x = ddf5.copy()
+
+    # datetime: pattern_1 - Convert 'Date.Time' to ISO 8601 UTC format
     dt_local = pd.to_datetime(x["Date Time"], errors="coerce").dt.tz_localize("America/Denver", ambiguous="NaT", nonexistent="shift_forward")
     x["datetime_UTC"] = dt_local.dt.tz_convert("UTC")
+
+    # site_id: pattern_1 - Rename column 'SFA_Location' to 'site_id'
     x["site_id"] = x["SFA_Location"]
+
+    # depth: pattern_1 - Depth information not provided in source; populate with NA
     x["depth_m"] = np.nan
+
+    # replicate: pattern_1 - Replicate information not provided in source; populate with 1
     x["replicate"] = 1
     x["is_timeseries"] = True
     x["interval_min"] = 60
+
+    # volumetric_water_content: pattern_1 - Rename 'Measurement' variable (source units are m3/m3)
     x["volumetric_water_content_m3_m3"] = pd.to_numeric(x["Measurement"], errors="coerce")
+
+    # soil_water_potential: pattern_1 - Not reported in source; populate with NA
     x["water_potential_kPa"] = np.nan
     x["gravimetric_water_content_gH2O_gs"] = np.nan
 
@@ -50,6 +62,9 @@ def harmonize(ctx):
     __harmonized = df5_harmonized
     __dataset_id = dsid(idx)
 
+    # latitude: pattern_1 & longitude: pattern_1
+    # Geospatial information not provided in data files
+    # Look up from reference dataset location metadata (REF_IDX)
     loc5 = pd.DataFrame({"site_id": df5_harmonized["site_id"].dropna().unique()})
 
     loc5a = loc5.merge(

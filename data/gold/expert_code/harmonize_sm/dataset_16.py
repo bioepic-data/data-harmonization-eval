@@ -43,18 +43,27 @@ def harmonize(ctx):
     for i, d in enumerate(ls16):
         siten = f16[i]
         x = d.copy()
+
+        # datetime: pattern_1 - Convert 'TIMESTAMP_END' to ISO 8601 UTC format
         x["datetime_UTC"] = parse_local_to_utc(x["TIMESTAMP_END"], "%Y-%m-%d %H:%M:%S", "Etc/GMT+7")
         x["interval_min"] = interval_min(x["datetime_UTC"])
+
+        # site_id: pattern_1 - Parse site_id from source filename
         parts = siten.split("_")
         x["SITE_ID"] = parts[6] if len(parts) >= 7 else np.nan
 
+        # volumetric_water_content: pattern_1 & soil_water_potential: pattern_1
+        # Coerce from 'wide' format to 'long' format
         sw_cols = [c for c in x.columns if re.search(r"SWC|SWP", c)]
         long = x.melt(id_vars=["datetime_UTC", "interval_min", "SITE_ID"], value_vars=sw_cols, var_name="VARIABLE", value_name="value")
 
+        # depth: pattern_1 - Look up 'HEIGHT' from sensor metadata and convert to depth (multiply by -1)
         meta = sdf16.loc[sdf16["VARIABLE"].astype(str).str.contains("SWC|SWP", regex=True, na=False), ["SITE_ID", "VARIABLE", "HEIGHT"]]
         long = long.merge(meta, on=["SITE_ID", "VARIABLE"], how="left")
         long["VARIABLE"] = long["VARIABLE"].astype(str).str.split("_").str[0]
         long["depth_m"] = pd.to_numeric(long["HEIGHT"], errors="coerce") * -1
+
+        # replicate: pattern_1 - Replicate information not provided in source; populate with 1
         long["replicate"] = 1
         long["is_timeseries"] = True
         long["gravimetric_water_content_gH2O_gs"] = np.nan
@@ -70,6 +79,7 @@ def harmonize(ctx):
             .reset_index()
         )
 
+        # Clean sentinel values and rename variables
         wide["SWC"] = pd.to_numeric(wide.get("SWC"), errors="coerce")
         wide["SWP"] = pd.to_numeric(wide.get("SWP"), errors="coerce")
         wide["volumetric_water_content_m3_m3"] = np.where(wide["SWC"].isin([9999.0, -9999.0]), np.nan, wide["SWC"])
@@ -82,6 +92,8 @@ def harmonize(ctx):
     __harmonized = df16_harmonized
     __dataset_id = dsid(idx)
 
+    # latitude: pattern_1 & longitude: pattern_1
+    # Look up 'LOCATION_LAT' and 'LOCATION_LONG' for 'SITE_ID' in location metadata
     loc16 = mdf16.rename(columns={"SITE_ID": "site_id", "LOCATION_LAT": "latitude", "LOCATION_LONG": "longitude"})[
         ["site_id", "latitude", "longitude"]
     ].copy()
