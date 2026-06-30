@@ -1,0 +1,86 @@
+{
+  "package_id": "ess-dive-38e901ec3d7bd24-20230504T211548257225",
+  "doi": "doi:10.15485/1660455",
+  "title": "Soil Environmental Conditions in the East River Watershed, CO",
+  "curator_decision": "INCLUDE",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    {
+      "filename": "BM_Merged_T_VWC_0616_1018.csv",
+      "classification": "primary_soil_moisture_timeseries",
+      "columns": [
+        "date.time",
+        "record",
+        "Volumetric Water Content",
+        "Electrical Conductivity (dS/m)",
+        "T (degrees celcius)",
+        "Depth (cm)"
+      ],
+      "row_count_estimate": 56861,
+      "file_size_mb": 2.419095,
+      "column_preview": "date.time,record,Volumetric Water Content,Electrical Conductivity (dS/m),T (degrees celcius),Depth (cm)\n6/20/16 14:00,0,0.1194,0.0201,19.2250,10\n6/20/16 15:00,1,0.1200,0.0208,21.0667,10",
+      "notes": "Depth-resolved Campbell CS655 datalogger output; VWC values are already fractional m3/m3 based on 0.0557-0.5043 observed range."
+    }
+  ],
+  "non_harmonized_files": [
+    {
+      "filename": "BM_EGM_Surface_Flux.csv",
+      "classification": "surface_flux_context_with_incidental_soil_moisture",
+      "reason_not_harmonized": "Primary purpose is CO2 surface flux; only 36 non-null Soil.Moisture values and no depth metadata. Used as context for Bradley Meadow naming only."
+    }
+  ],
+  "location_metadata_files": [
+    {
+      "filename": "BM_EGM_Well_CO2.csv",
+      "columns": [
+        "Location",
+        "Latitude (deg N)",
+        "Longitude (deg E)",
+        "Date",
+        "Time",
+        "Depth",
+        "CO2.Max",
+        "Notes"
+      ],
+      "content_preview": "Location,Latitude (deg N),Longitude (deg E),Date,Time,Depth,CO2.Max,Notes",
+      "site_coordinates": [
+        {
+          "site_id": "BM",
+          "latitude": 38.98715,
+          "longitude": -107.003863
+        }
+      ]
+    }
+  ],
+  "sensor_metadata_files": null,
+  "location_resolution": {
+    "source": "location_metadata_file",
+    "qc_flag_recommendation": null,
+    "site_coordinates": [
+      {
+        "site_id": "BM",
+        "latitude": 38.98715,
+        "longitude": -107.003863
+      }
+    ]
+  },
+  "time_series_inference": {
+    "is_timeseries": true,
+    "interval_min": 60.0,
+    "reasoning": "Each of seven depths has 8123 observations from 2016-06-20 14:00 to 2018-10-19 09:00 with median 60-minute spacing."
+  },
+  "experimental_context": {
+    "manipulation_detected": false,
+    "manipulation_type": null,
+    "has_control_data": null,
+    "recommendation": "include_all_primary_payload"
+  },
+  "similar_dataset_reference": {
+    "index": 23,
+    "reason": "Fold-local exemplar with time series VWC in m3/m3 and explicit depth metadata converted from cm to m."
+  },
+  "open_questions": [
+    "No README/methods file was present in the allowed raw package directory; timezone inferred as America/Denver from East River, CO conventions in fold-local examples.",
+    "Surface flux file contains incidental Soil.Moisture values but lacks depth metadata and is not treated as the primary soil moisture payload."
+  ]
+}

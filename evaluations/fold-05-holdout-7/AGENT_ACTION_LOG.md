@@ -1,0 +1,35 @@
+# Agent Action Log
+
+- 2026-06-30T15:38:27-07:00 | action=command+write | subject=`initialize AGENT_ACTION_LOG.md and agent_outputs` | reason=initialize mandatory benchmark trace and output directory
+- 2026-06-30T15:38:27-07:00 | action=write | subject=`/scratch/jmc/data-harmonization-eval/.runs/fold-05-holdout-7/agent_outputs` | reason=create required output directory
+- 2026-06-30T15:38:36-07:00 | action=command+read | subject=`sed -n 1,220p fold AGENT_INSTRUCTIONS/MANIFEST/local SKILL.md files` | reason=load fold-local task instructions and skills
+- 2026-06-30T15:38:44-07:00 | action=command+read | subject=`wc -l local SKILL.md files and sed remaining local skill sections` | reason=ensure both fold-local skill files are read completely
+- 2026-06-30T15:38:52-07:00 | action=command+read | subject=`sed -n 521,620p essdive_sm_curator/SKILL.md` | reason=read final missing portion of fold-local curator skill
+- 2026-06-30T15:39:00-07:00 | action=command+directory_listing | subject=`find fold sandbox maxdepth 4` | reason=locate fold-local exemplars, metadata cache, and output paths without leaving sandbox
+- 2026-06-30T15:39:11-07:00 | action=command+directory_listing | subject=`find fold expert_code and allowed raw package directories` | reason=identify allowed exemplar code files and held-out raw files
+- 2026-06-30T15:39:20-07:00 | action=command+directory_listing | subject=`find held-out raw package maxdepth 4` | reason=classify available raw files for held-out dataset
+- 2026-06-30T15:39:34-07:00 | action=command+directory_listing | subject=`find held-out raw nested package directory` | reason=verify whether nested package directory contains additional files
+- 2026-06-30T15:39:55-07:00 | action=command+read | subject=`python inspect held-out CSV headers row counts previews` | reason=identify measurement payload columns, metadata columns, and file usability
+- 2026-06-30T15:40:12-07:00 | action=command+read | subject=`python summarize fold-local mapping JSON and read common.py` | reason=use allowed exemplar schema and helper conventions
+- 2026-06-30T15:40:20-07:00 | action=command+search | subject=`rg depth_m|volumetric_water_content over fold expert_code` | reason=find fold-local exemplar code patterns for direct depth and VWC mappings
+- 2026-06-30T15:40:31-07:00 | action=command+read | subject=`read fold-local dataset_23.py dataset_26.py and mapping entries 23/26` | reason=inspect similar allowed exemplar transformations for direct VWC and depth columns
+- 2026-06-30T15:40:59-07:00 | action=command+read | subject=`python profile held-out CSV contents for timestamps depths values and coordinate hints` | reason=derive curation facts and harmonization transformations from allowed raw files
+- 2026-06-30T15:41:11-07:00 | action=command+search | subject=`rg DOI/package identifier in fold sandbox and held-out raw package only` | reason=look for package DOI without reading forbidden external gold/processed or other folds
+- 2026-06-30T15:41:48-07:00 | action=command+read | subject=`python inspect non-null Soil.Moisture rows in BM_EGM_Surface_Flux.csv` | reason=decide whether ancillary flux file contains harmonizable direct soil moisture observations
+- 2026-06-30T15:42:18-07:00 | action=command+write | subject=`curl ESS-DIVE package API for held-out package metadata to agent_outputs/package_metadata_probe.json` | reason=retrieve DOI through curator-skill metadata workflow without reading forbidden local gold/processed outputs
+- 2026-06-30T15:42:41-07:00 | action=command+write | subject=`curl ESS-DIVE package API with escalated network for held-out package metadata` | reason=retrieve DOI through curator-skill metadata workflow after sandbox DNS failure
+- 2026-06-30T15:42:59-07:00 | action=command+read | subject=`python parse agent_outputs/package_metadata_probe.json` | reason=extract DOI, title, description, and distribution metadata from own downloaded package metadata
+- 2026-06-30T15:42:59-07:00 | action=command+write | subject=`rm -f agent_outputs/package_metadata_probe.json` | reason=remove temporary metadata probe so final outputs match requested artifact set
+- 2026-06-30T15:44:28-07:00 | action=command+write | subject=`python generate curator_bundle.json mapping.json mapping_notes.md harmonize_heldout.py` | reason=create required held-out benchmark artifacts under agent_outputs
+- 2026-06-30T15:44:28.579869-07:00 | action=write | subject=`/scratch/jmc/data-harmonization-eval/.runs/fold-05-holdout-7/agent_outputs/curator_bundle.json` | reason=write required artifact curator_bundle.json
+- 2026-06-30T15:44:28.580215-07:00 | action=write | subject=`/scratch/jmc/data-harmonization-eval/.runs/fold-05-holdout-7/agent_outputs/mapping.json` | reason=write required artifact mapping.json
+- 2026-06-30T15:44:28.580396-07:00 | action=write | subject=`/scratch/jmc/data-harmonization-eval/.runs/fold-05-holdout-7/agent_outputs/mapping_notes.md` | reason=write required artifact mapping_notes.md
+- 2026-06-30T15:44:28.580556-07:00 | action=write | subject=`/scratch/jmc/data-harmonization-eval/.runs/fold-05-holdout-7/agent_outputs/harmonize_heldout.py` | reason=write required artifact harmonize_heldout.py
+- 2026-06-30T15:44:28.580771-07:00 | action=command+write | subject=`chmod 755 /scratch/jmc/data-harmonization-eval/.runs/fold-05-holdout-7/agent_outputs/harmonize_heldout.py` | reason=make required harmonization script executable
+- 2026-06-30T15:44:35-07:00 | action=command | subject=`agent_outputs/harmonize_heldout.py` | reason=run required harmonization script to generate heldout_harmonized.csv
+- 2026-06-30T15:44:36.244216-07:00 | action=read | subject=`/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-38e901ec3d7bd24-20230504T211548257225/BM_Merged_T_VWC_0616_1018.csv` | reason=read held-out primary VWC payload for harmonization
+- 2026-06-30T15:44:36.867023-07:00 | action=write | subject=`/scratch/jmc/data-harmonization-eval/.runs/fold-05-holdout-7/agent_outputs/heldout_harmonized.csv` | reason=write required heldout_harmonized.csv output
+- 2026-06-30T15:44:49-07:00 | action=command+read+directory_listing | subject=`ls agent_outputs and validate generated CSV/JSON outputs` | reason=verify required artifacts, row count, schema, and mapping fields
+- 2026-06-30T15:45:11-07:00 | action=command+read+write | subject=`scan AGENT_ACTION_LOG.md for forbidden path patterns` | reason=required final anti-leakage verification
+- 2026-06-30T15:45:21-07:00 | action=command+write | subject=`rm -f agent_outputs/forbidden_path_scan.txt` | reason=remove temporary scan report and leave only requested deliverables in agent_outputs
+- 2026-06-30T15:45:21-07:00 | action=command+directory_listing | subject=`ls agent_outputs final deliverables` | reason=confirm final output directory contains requested files only

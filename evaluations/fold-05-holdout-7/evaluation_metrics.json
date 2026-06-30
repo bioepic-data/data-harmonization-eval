@@ -1,0 +1,82 @@
+{
+  "fold": "fold-05-holdout-7",
+  "dataset_index": 7,
+  "dataset_identifier": "ess-dive-38e901ec3d7bd24-20230504T211548257225",
+  "trace_forbidden_path_scan_matches": 0,
+  "external_metadata_access": {
+    "used_ess_dive_package_api": true,
+    "purpose": "retrieve DOI/title metadata",
+    "classified_as_gold_leakage": false
+  },
+  "agent_output": {
+    "rows": 56861,
+    "columns": 9,
+    "site_counts": {
+      "BM": 56861
+    },
+    "depth_counts": {
+      "0.1": 8123,
+      "0.2": 8123,
+      "0.3": 8123,
+      "0.5": 8123,
+      "0.75": 8123,
+      "1.0": 8123,
+      "1.3": 8123
+    }
+  },
+  "gold_output": {
+    "rows": 56861,
+    "columns": 9,
+    "site_counts": {
+      "BM": 56861
+    },
+    "depth_counts": {
+      "0.1": 8123,
+      "0.2": 8123,
+      "0.3": 8123,
+      "0.5": 8123,
+      "0.75": 8123,
+      "1.0": 8123,
+      "1.3": 8123
+    }
+  },
+  "output_equivalence": {
+    "schema_equal": true,
+    "key_intersection": 56861,
+    "agent_extra_keys": 0,
+    "agent_missing_gold_keys": 0,
+    "shared_row_value_matches": {
+      "volumetric_water_content_m3_m3": "56861/56861",
+      "water_potential_kPa": "56861/56861",
+      "gravimetric_water_content_gH2O_gs": "56861/56861",
+      "is_timeseries": "56861/56861",
+      "interval_min": "56855/56861"
+    },
+    "row_precision": 1.0,
+    "gold_recall": 1.0,
+    "exact_equal_sorted_all_columns": false,
+    "exact_equal_sorted_except_interval_min": true
+  },
+  "json_mapping_equivalence": {
+    "top_level_exact_matches": "7/7",
+    "gold_mapping_categories_present": "8/8",
+    "extra_agent_categories": [
+      "gravimetric_water_content"
+    ],
+    "missing_gold_categories": [],
+    "field_level_exact_matches": "25/40",
+    "field_exact_matches_by_name": {
+      "destination_variable": "8/8",
+      "source_pattern": "3/8",
+      "source_files": "7/8",
+      "transformation": "0/8",
+      "unit_conversion": "7/8"
+    }
+  },
+  "python_equivalence": {
+    "core_transformation_matched": true,
+    "missed_gold_interval_order": true,
+    "missed_gold_context_api": true,
+    "missed_location_side_output": true
+  }
+}
