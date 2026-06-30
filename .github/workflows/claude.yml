@@ -69,7 +69,7 @@ jobs:
           # Pin an explicit current model. The action's built-in default
           # (claude-sonnet-4-20250514) retired 2026-06-15 and now 404s.
           # Bump to "claude-opus-4-8" for harder tasks.
-          model: "claude-sonnet-4-6"
+          model: "claude-opus-4-8"
 
           # Optional: Customize the trigger phrase (default: @claude)
           # trigger_phrase: "/claude"
