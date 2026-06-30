@@ -1,0 +1,5 @@
+# INVALID: site_id is required but absent.
+datetime_UTC: '2021-06-15T12:00:00+00:00'
+depth_m: 0.10
+is_timeseries: true
+volumetric_water_content_m3_m3: 0.32

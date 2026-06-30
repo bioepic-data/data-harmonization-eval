@@ -1,0 +1,5 @@
+# INVALID: water potential must be non-positive (<= 0 kPa).
+datetime_UTC: '2021-06-15T12:00:00+00:00'
+site_id: SITE_C
+is_timeseries: false
+water_potential_kPa: 50.0

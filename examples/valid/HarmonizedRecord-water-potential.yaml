@@ -1,0 +1,7 @@
+# A grab sample reporting (negative) soil water potential.
+datetime_UTC: '2020-09-21T18:30:00+00:00'
+site_id: SITE_C
+depth_m: 0.30
+replicate: 2.0
+is_timeseries: false
+water_potential_kPa: -1500.0

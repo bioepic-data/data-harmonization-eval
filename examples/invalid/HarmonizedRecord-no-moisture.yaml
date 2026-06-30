@@ -1,0 +1,5 @@
+# INVALID: no moisture variable present (violates the at-least-one rule).
+datetime_UTC: '2021-06-15T12:00:00+00:00'
+site_id: SITE_A
+depth_m: 0.10
+is_timeseries: false
