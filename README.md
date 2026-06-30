@@ -32,7 +32,7 @@ The study has two phases, and within each phase the skills are evaluated three w
 
 ### Phases
 
-**Phase A — Retrospective cross-validation (true ground truth).**
+**Phase A — Retrospective cross-validation \[ground truth\]**
 We perform grouped leave-one-out cross-validation over the 19 expert-harmonized
 datasets. For each held-out dataset, the agent sees only the *other* datasets as
 exemplars and must harmonize the held-out one from its identifier alone. Outputs
@@ -40,7 +40,7 @@ are scored against the expert's version. Because datasets may cluster by source,
 lab, or instrument, we hold out whole clusters where appropriate ("grouped" CV)
 to give an honest generalization estimate.
 
-**Phase B — Prospective evaluation (novel data).**
+**Phase B — Prospective evaluation \[novel data\]**
 Using all 19 as exemplars, the agent harmonizes genuinely new ESS-DIVE datasets.
 In parallel and blind, the domain expert harmonizes the same datasets; their
 output becomes the reference. This estimates real-world deployment performance.
@@ -56,19 +56,18 @@ two agree well, we can lean on cheap automated scoring in Phase B.
 2. **Skill 2 with oracle input** — harmonizer fed the *correct* curator bundle, so
    transformation quality is measured independently of curator errors.
 3. **End-to-end** — full pipeline; errors propagate. The gap between (2) and (3)
-   quantifies how much curator error degrades the system.
+   quantifies how much curator error degrades the output.
 
 ## Metrics
 
 **Skill 1 (curator):** decision accuracy / precision / recall / F1; file-set
 precision/recall/F1 (payload, location, sensor); time-series binary accuracy;
 interval numeric error; manipulation-detection accuracy; qc_flag accuracy;
-exemplar-selection quality; and *calibrated deferral* (was FLAG the right call).
+exemplar-selection quality.
 
 **Skill 2 (harmonizer):**
 - **Primary endpoint — output-data equivalence:** run agent and expert code on the
-  same raw data, compare resulting tables cell-by-cell. Robust to stylistic code
-  differences.
+  same raw data, compare resulting tables cell-by-cell.
 - Schema conformance and ontology/controlled-vocabulary validity.
 - Semantic mapping accuracy (precision/recall over a controlled transformation-type
   vocabulary).
@@ -83,8 +82,8 @@ input, (iii) inter-skill spec inconsistency, or (iv) genuinely ambiguous case.
 ## Statistics
 
 Data are nested: stochastic runs within datasets within source-clusters. We use
-mixed-effects models (dataset and cluster as random effects) and **cluster-level
-bootstrap confidence intervals**, reporting effect sizes with CIs rather than
+mixed-effects models (dataset and cluster as random effects) and cluster-level
+bootstrap confidence intervals, reporting effect sizes with CIs rather than
 relying on p-values given the small N (19). The error-propagation gap is reported
 as a paired difference with a bootstrap CI. We report distribution across
 stochastic repeats (variance, and pass@k where appropriate), not just means.
@@ -96,8 +95,6 @@ stochastic repeats (variance, and pass@k where appropriate), not just means.
 - **Similarity covariate:** each evaluation dataset's similarity to its nearest
   exemplar is computed and modeled, converting a leakage risk into a finding
   ("the agent generalizes up to similarity X, then degrades").
-- **Human ceiling:** a second expert harmonizes a subset; agent performance is
-  interpreted relative to expert-vs-expert agreement, not perfection.
 - **Reproducibility:** model version, skill version, and seeds are pinned per run.
 
 ## Repository Structure
@@ -223,33 +220,6 @@ python experiments/metric_validation.py
 3. **Metric validation** (correlation): automated vs expert rubric
 4. **Error-propagation taxonomy** (table): failure attribution
 5. **Similarity-performance relationship** (plot + regression)
-6. **Human ceiling** (IRR statistics): expert vs expert agreement
-
-## Key Design Decisions
-
-### Why Grouped CV?
-
-Datasets from the same source/lab/instrument likely share structure. Ungrouped
-LOO would let the agent see near-duplicates of the held-out dataset, inflating
-performance estimates. Grouped CV holds out whole clusters for honest
-generalization measurement.
-
-### Why Cluster-Level Bootstrap?
-
-With only 19 datasets nested in ~5 clusters, naive bootstrap (resampling runs)
-inflates effective N. Cluster-level bootstrap resamples whole clusters, giving
-honest CIs despite small sample size.
-
-### Why Oracle Mode?
-
-Measuring Skill 2 with oracle input isolates harmonizer quality from curator
-errors. The gap between oracle and end-to-end quantifies error propagation.
-
-### Why Phase A Validates Metrics?
-
-Expert rubric scoring is expensive. If automated metrics correlate well with
-expert judgment in Phase A, we can confidently use automated metrics for the
-larger Phase B evaluation.
 
 ## Citation
 
@@ -258,7 +228,3 @@ larger Phase B evaluation.
 ## License
 
 MIT
-
-## Contact
-
-For questions: [your contact]
