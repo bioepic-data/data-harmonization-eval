@@ -26,6 +26,9 @@ Working drafts for the paper describing this study:
 | `figures/` | Figure 1 schematic (Mermaid source + HTML render) | Drafted |
 | `slides/index.html` | HTML slide deck (reveal.js) | Drafted |
 
+A landing page (`index.html`) links the deck, figure, and sections; it is the
+homepage of the published site (see **Hosting** below).
+
 Read in numeric order for a continuous draft. The intended journal/venue is TBD
 (candidates: *Scientific Data*, *Environmental Modelling & Software*, *PVLDB /
 SIGMOD data-systems venues*, or an agentic-AI venue — decide once results frame the
@@ -50,6 +53,14 @@ strongest contribution).
    the discussion's quantitative claims, and `06_conclusion.md`.
 6. Reconcile the reporting checklist at the end of `03_methods.md` (model version,
    seeds, counts).
+
+## Hosting
+
+`.github/workflows/pages.yml` publishes this directory to GitHub Pages (it
+auto-enables Pages and serves `index.html` as the homepage). reveal.js and
+Mermaid are vendored under `vendor/`, so the deck and figure render with **no
+external network** — both as a hosted site and when opened from disk. To preview
+locally without hosting, open `index.html` (or `slides/index.html`) in a browser.
 
 ## Citation policy
 

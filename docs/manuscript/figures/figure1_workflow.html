@@ -81,12 +81,13 @@ flowchart TB
     OUT -. scored .-> M3
     </pre>
   </div>
-  <div class="toolbar">Source: <code>figure1_workflow.mmd</code>. Renders to SVG in-browser via Mermaid
-    (loaded from CDN). To export: open in a browser, right-click the diagram → save, or paste the
-    <code>.mmd</code> source into <a href="https://mermaid.live">mermaid.live</a>.</div>
+  <div class="toolbar">Source: <code>figure1_workflow.mmd</code>. Renders to SVG in-browser via a
+    vendored Mermaid (no network needed). Static <code>.svg</code> / <code>.png</code> renders sit
+    alongside this file. To re-export, paste the <code>.mmd</code> source into
+    <a href="https://mermaid.live">mermaid.live</a>.</div>
 </div>
-<script type="module">
-  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+<script src="../vendor/mermaid/mermaid.min.js"></script>
+<script>
   mermaid.initialize({ startOnLoad: true, securityLevel: "loose" });
 </script>
 </body>

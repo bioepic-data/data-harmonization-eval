@@ -4,8 +4,9 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Evaluating an LLM Agent Pair for Environmental Data Harmonization</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/white.css"/>
+<link rel="stylesheet" href="../vendor/reveal/reset.css"/>
+<link rel="stylesheet" href="../vendor/reveal/reveal.css"/>
+<link rel="stylesheet" href="../vendor/reveal/theme/white.css"/>
 <style>
   :root{
     --teal:#0e7c7b; --teal-d:#0a5a59; --gold:#c9962f; --gold-d:#9c7421;
@@ -400,9 +401,9 @@ flowchart LR
   <span>Watershed Function SFA · pre-results scaffold</span>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
-<script type="module">
-  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+<script src="../vendor/reveal/reveal.js"></script>
+<script src="../vendor/mermaid/mermaid.min.js"></script>
+<script>
   mermaid.initialize({ startOnLoad:false, securityLevel:"loose",
     themeVariables:{ fontFamily:"ui-sans-serif, system-ui, Inter, sans-serif" } });
   window.addEventListener("load", async () => {
@@ -413,7 +414,6 @@ flowchart LR
       transition:"slide", transitionSpeed:"fast", center:false,
       width:1280, height:720, margin:0.06,
     });
-    // re-fit mermaid after reveal layout
     Reveal.on("ready", () => Reveal.layout());
   });
 </script>
