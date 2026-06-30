@@ -14,12 +14,12 @@ clusters:
 
   cluster_2:
     name: 'neon_point'
-    description: 
+    description: 'Point-in-time observations associated with specific field campaigns.'
     datasets: [15, 26]
 
   cluster_3:
     name: 'independent'
-    description: 
+    description: 'Independent datasets to treat as individuals'
     datasets: [4, 5, 7, 8, 9, 10, 17, 18, 23, 24, 25]
 
   cluster_4: 
