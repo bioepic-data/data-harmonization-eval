@@ -1,0 +1,68 @@
+{
+  "dataset_identifier": "ess-dive-460e696d8210ed3-20260309T155937802",
+  "doi": "doi:10.15485/3013006",
+  "doi_source": "Fold-local mapping entry for prior package version ess-dive-64109adb5fba6b5-20260114T183043578 uses this DOI and is marked as a prior version of the held-out package.",
+  "raw_package_dir": "/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-460e696d8210ed3-20260309T155937802",
+  "files": [
+    {
+      "name": "NEON_plot_TDR.csv",
+      "category": "data_payload_and_location_metadata",
+      "columns": [
+        "SampleSiteCode",
+        "Easting",
+        "Northing",
+        "VegetationType",
+        "Site",
+        "Collection Date",
+        "VWC_1",
+        "VWC_2",
+        "avg_VWC",
+        "Temp_1",
+        "Temp_2",
+        "avg_Temp"
+      ],
+      "interpretation": "Direct dated TDR volumetric water content observations with embedded UTM coordinates. VWC_1 and VWC_2 are replicate measurements; avg_VWC is a derived average and is not used as an independent measurement."
+    },
+    {
+      "name": "ess-dive-64109adb5fba6b5-20260114T183043578/NEON_2018_EMI_survey",
+      "category": "empty_or_non_payload_directory",
+      "interpretation": "Directory was present but contained no files in the allowed raw package listing."
+    }
+  ],
+  "decision": {
+    "include": true,
+    "rules": [
+      "Contains direct volumetric water content observations.",
+      "Machine-readable dated CSV payload is available.",
+      "Site identifiers and UTM coordinates are embedded in the payload."
+    ]
+  },
+  "location_resolution": {
+    "source": "NEON_plot_TDR.csv",
+    "site_id_column": "SampleSiteCode",
+    "coordinate_columns": [
+      "Easting",
+      "Northing"
+    ],
+    "source_crs": "EPSG:32613",
+    "target_crs": "EPSG:4326",
+    "qc_flag": null
+  },
+  "harmonization_plan": {
+    "datetime_UTC": "Parse Collection Date as America/Denver local date and convert local midnight to UTC.",
+    "site_id": "SampleSiteCode",
+    "depth_m": null,
+    "depth_note": "No depth column or fold-local held-out metadata was available; preserve as missing rather than infer a depth.",
+    "replicate": "Parse replicate 1 and 2 from VWC_1 and VWC_2.",
+    "is_timeseries": false,
+    "interval_min": null,
+    "volumetric_water_content_m3_m3": "Melt VWC_1 and VWC_2, drop -9999 sentinels, divide by 100.",
+    "gravimetric_water_content_gH2O_gs": null,
+    "water_potential_kPa": null
+  },
+  "quality_filters": [
+    "Drop rows whose Collection Date cannot be parsed.",
+    "Drop VWC replicate values equal to -9999 or otherwise nonnumeric.",
+    "Do not use avg_VWC because it is derived from replicate measurements."
+  ]
+}

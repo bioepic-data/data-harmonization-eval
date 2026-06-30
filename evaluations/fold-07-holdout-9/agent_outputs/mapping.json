@@ -1,0 +1,108 @@
+{
+  "index": 9,
+  "dataset_identifier": "ess-dive-460e696d8210ed3-20260309T155937802",
+  "doi": "doi:10.15485/3013006",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "NEON_plot_TDR.csv"
+  ],
+  "location_metadata_files": [
+    "NEON_plot_TDR.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "Collection Date",
+        "source_files": [
+          "NEON_plot_TDR.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse date using format %Y-%m-%d in America/Denver local time and convert to UTC. Drop rows with unparseable date strings.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "depth_m",
+        "transformation": "Depth is not reported in the allowed held-out source file; populate with missing values.",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Northing",
+        "source_files": [
+          "NEON_plot_TDR.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Use payload Northing with Easting for site coordinates.",
+        "unit_conversion": "Reproject from EPSG:32613 (WGS84 UTM Zone 13N, meters) to EPSG:4326 (WGS84, decimal degrees)."
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Easting",
+        "source_files": [
+          "NEON_plot_TDR.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Use payload Easting with Northing for site coordinates.",
+        "unit_conversion": "Reproject from EPSG:32613 (WGS84 UTM Zone 13N, meters) to EPSG:4326 (WGS84, decimal degrees)."
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": "VWC_1, VWC_2",
+        "source_files": [
+          "NEON_plot_TDR.csv"
+        ],
+        "destination_variable": "replicate",
+        "transformation": "Melt VWC_1 and VWC_2 and parse the trailing integer as replicate.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "SampleSiteCode",
+        "source_files": [
+          "NEON_plot_TDR.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Rename SampleSiteCode to site_id.",
+        "unit_conversion": null
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Soil water potential is not reported in the source; populate with missing values.",
+        "unit_conversion": null
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "Gravimetric water content is not reported in the source; populate with missing values.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "VWC_1, VWC_2",
+        "source_files": [
+          "NEON_plot_TDR.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Coerce replicate columns from wide to long format and remove -9999 sentinel values. avg_VWC is a derived average and is not used.",
+        "unit_conversion": "Divide by 100 to convert from percent to m3/m3."
+      }
+    }
+  }
+}
