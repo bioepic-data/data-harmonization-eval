@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Evaluating an LLM Agent Pair for Environmental Data Harmonization</title>
+<link rel="stylesheet" href="../vendor/reveal/reset.css"/>
+<link rel="stylesheet" href="../vendor/reveal/reveal.css"/>
+<link rel="stylesheet" href="../vendor/reveal/theme/white.css"/>
+<style>
+  :root{
+    --teal:#0e7c7b; --teal-d:#0a5a59; --gold:#c9962f; --gold-d:#9c7421;
+    --blue:#3b5b8c; --blue-d:#28406a; --ink:#23303a; --muted:#6b7785;
+    --cream:#fbfaf7; --panel:#f3efe6; --line:#e6dfce;
+  }
+  .reveal{ font-family: ui-sans-serif, system-ui, "Inter","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); font-size:30px; }
+  .reveal .slides{ text-align:left; }
+  .reveal h1,.reveal h2,.reveal h3{ font-weight:680; letter-spacing:-.01em; color:var(--ink);
+    text-transform:none; text-shadow:none; line-height:1.12; }
+  .reveal h1{ font-size:1.9em; } .reveal h2{ font-size:1.42em; } .reveal h3{ font-size:1.05em; }
+  .reveal p,.reveal li{ line-height:1.4; }
+  .reveal section{ top:0 !important; }
+  .reveal strong{ color:var(--teal-d); }
+  .reveal a{ color:var(--teal); }
+  .reveal ul{ margin-left:1em; } .reveal li{ margin:.32em 0; }
+  .reveal .slide-number{ background:transparent; color:var(--muted); font-size:14px; }
+
+  /* accent + eyebrow */
+  .eyebrow{ text-transform:uppercase; letter-spacing:.14em; font-size:.52em; font-weight:700;
+    color:var(--teal); margin:0 0 .35em; }
+  .rule{ height:4px; width:74px; border-radius:3px; background:linear-gradient(90deg,var(--teal),var(--gold));
+    margin:.2em 0 .7em; }
+  .muted{ color:var(--muted); } .small{ font-size:.72em; } .tiny{ font-size:.56em; }
+
+  /* title slide */
+  #title{ background:radial-gradient(120% 120% at 0% 0%, #11514f 0%, #0e3b3a 42%, #0a2b2a 100%);
+    color:#f4f1e9; padding:0; }
+  #title h1{ color:#ffffff; font-size:2.0em; }
+  #title .eyebrow{ color:#7fd9d2; }
+  #title .rule{ background:linear-gradient(90deg,#5fc2bb,var(--gold)); }
+  #title p, #title li, #title .muted{ color:#cfe3e0; }
+  #title .badge{ display:inline-block; border:1px solid #5fc2bb55; background:#0e7c7b33;
+    color:#cdeeea; border-radius:999px; padding:.18em .8em; font-size:.5em; letter-spacing:.04em; }
+  #title .authors{ font-size:.6em; }
+
+  /* layout helpers */
+  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:1.1em; align-items:start; }
+  .cols3{ display:grid; grid-template-columns:repeat(3,1fr); gap:.8em; }
+  .card{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:.7em .8em;
+    box-shadow:0 4px 16px rgba(40,50,60,.05); }
+  .card.teal{ border-top:4px solid var(--teal); }
+  .card.gold{ border-top:4px solid var(--gold); }
+  .card.blue{ border-top:4px solid var(--blue); }
+  .card h3{ margin:.1em 0 .3em; }
+  .pill{ display:inline-block; border-radius:999px; padding:.12em .6em; font-size:.62em; font-weight:700;
+    color:#fff; }
+  .pill.teal{ background:var(--teal); } .pill.gold{ background:var(--gold); } .pill.blue{ background:var(--blue); }
+
+  .schema{ font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.62em;
+    background:#0e3b3a; color:#d8efec; border-radius:12px; padding:.7em .9em; line-height:1.55; }
+  .schema .k{ color:#7fd9d2; } .schema .u{ color:var(--gold); }
+
+  .stat{ font-size:2.0em; font-weight:740; color:var(--teal-d); line-height:1; }
+  .stat .unit{ font-size:.42em; color:var(--muted); font-weight:600; }
+
+  .metricbar{ display:flex; align-items:center; gap:.6em; margin:.3em 0; }
+  .metricbar .lab{ width:46%; font-size:.66em; }
+  .metricbar .track{ flex:1; height:12px; background:var(--panel); border-radius:7px; overflow:hidden; }
+  .metricbar .fill{ height:100%; background:linear-gradient(90deg,var(--teal),#3fae9d); border-radius:7px; }
+  .metricbar .val{ width:3.2em; text-align:right; font-size:.64em; color:var(--muted); }
+
+  table.mini{ border-collapse:collapse; font-size:.6em; width:100%; }
+  table.mini th, table.mini td{ border-bottom:1px solid var(--line); padding:.32em .5em; text-align:left; }
+  table.mini th{ color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.05em; font-size:.86em; }
+  table.mini td.ph{ color:#b9b09a; font-family:ui-monospace,monospace; }
+
+  .footer{ position:fixed; bottom:10px; left:24px; right:24px; display:flex; justify-content:space-between;
+    font-size:13px; color:var(--muted); pointer-events:none; z-index:5; }
+  .reveal .mermaid{ display:flex; justify-content:center; }
+  .reveal .mermaid svg{ max-height:540px; }
+  .divider{ background:linear-gradient(120% 120% at 100% 0%, #2b4a78 0%, #28406a 55%, #1c2c49 100%); color:#eaf0f8; }
+  .divider h2{ color:#fff; } .divider .eyebrow{ color:#9fc0ef; } .divider p{ color:#cdd9ec; }
+  .note{ border-left:3px solid var(--gold); background:#fdf8ec; padding:.4em .7em; border-radius:0 8px 8px 0; font-size:.74em; }
+  .kbd{ font-family:ui-monospace,monospace; background:var(--panel); border:1px solid var(--line);
+    border-radius:6px; padding:.05em .4em; font-size:.8em; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+  <!-- 1 · TITLE -->
+  <section id="title" data-background-color="#0a2b2a">
+    <div style="padding:1.1em 1.2em;">
+      <p class="eyebrow">Evaluation framework · pre-results</p>
+      <h1>Evaluating an LLM Agent Pair for<br/>Environmental Data Harmonization</h1>
+      <div class="rule"></div>
+      <p style="font-size:.82em; max-width:24ch; line-height:1.45;">
+        A <strong style="color:#7fd9d2;">curator</strong> + <strong style="color:#e9c06a;">harmonizer</strong>
+        agent pair, benchmarked against an expert on DOE&nbsp;ESS-DIVE soil-moisture data.</p>
+      <p class="authors muted" style="margin-top:1.4em;">Watershed Function SFA · Berkeley Lab &nbsp;·&nbsp; <span class="muted">authors TBD</span></p>
+      <p style="margin-top:1.1em;"><span class="badge">SCAFFOLD — results pending</span></p>
+      <p class="tiny muted" style="margin-top:2.2em;">Press <span style="color:#7fd9d2">→</span> / Space to advance · <span style="color:#7fd9d2">Esc</span> for overview</p>
+    </div>
+  </section>
+
+  <!-- 2 · THE BOTTLENECK -->
+  <section>
+    <p class="eyebrow">Motivation</p>
+    <h2>Harmonization is the bottleneck in data reuse</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div>
+        <ul>
+          <li>The same quantity arrives in incompatible forms — and reconciling it is expert, manual work.</li>
+          <li>The field's canonical effort (ISMN) still ingests provider data <strong>"manually, mostly by&nbsp;email."</strong> <span class="tiny muted">[Dorigo 2021]</span></li>
+          <li>Practitioners report <strong>50–80%</strong> of time on data preparation. <span class="tiny muted">[Lohr 2014; CrowdFlower 2016 — provenance weak]</span></li>
+          <li>The heterogeneous <strong>"long tail"</strong> of small datasets is the costliest to integrate and the likeliest to be lost. <span class="tiny muted">[Heidorn 2008]</span></li>
+        </ul>
+      </div>
+      <div class="card gold">
+        <h3>Why it matters here</h3>
+        <p class="small">ESS-DIVE hosts diverse Watershed Function SFA datasets but has <strong>no dedicated soil-moisture reporting format</strong> — every dataset is harmonized by hand into a project schema.</p>
+        <p class="small muted" style="margin-top:.4em;">If an agent pair can draft that work reliably, it unlocks scalable, FAIR-aligned reuse.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · THE TASK -->
+  <section>
+    <p class="eyebrow">The task</p>
+    <h2>One quantity, many encodings</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div>
+        <p class="small" style="margin-top:0;">Soil moisture must be reconciled across:</p>
+        <ul class="small">
+          <li><strong>Units</strong> — VWC % vs m³ m⁻³; GWC g g⁻¹; potential kPa / MPa / bar</li>
+          <li><strong>Coordinates</strong> — UTM vs lat/lon, differing datums</li>
+          <li><strong>Depth</strong> conventions; <strong>time zones</strong> → UTC</li>
+          <li><strong>Wide ↔ long</strong> ("tidy") table layouts <span class="tiny muted">[Wickham 2014]</span></li>
+          <li><strong>Observational vs manipulated</strong> (warming/irrigation) — can flip a result's sign <span class="tiny muted">[Yue 2017]</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="small muted" style="margin:0 0 .3em;">Target schema — 9 columns, fixed units:</p>
+        <div class="schema">
+<span class="k">datetime_UTC</span>           <span class="u">ISO-8601 UTC</span><br/>
+<span class="k">site_id</span>                string<br/>
+<span class="k">depth_m</span>                <span class="u">m</span><br/>
+<span class="k">replicate</span>              int / NaN<br/>
+<span class="k">is_timeseries</span>          bool<br/>
+<span class="k">interval_min</span>           float / NaN<br/>
+<span class="k">volumetric_water…</span>      <span class="u">m³ m⁻³</span><br/>
+<span class="k">gravimetric_water…</span>     <span class="u">g g⁻¹</span><br/>
+<span class="k">water_potential_kPa</span>    <span class="u">kPa (neg.)</span>
+        </div>
+        <p class="tiny muted" style="margin-top:.35em;">qc_flag vocab: d1 (depth approx.) · g1 (coords from registry) · g2 (coords unresolved)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · THE AGENT PAIR -->
+  <section>
+    <p class="eyebrow">The system under test</p>
+    <h2>A curator → harmonizer agent pair</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div class="card teal">
+        <h3><span class="pill teal">Skill 1</span>&nbsp; Curator</h3>
+        <p class="small">From a DOI/package ID: retrieves &amp; classifies files, resolves location, infers time-series vs discrete, detects manipulations, picks the nearest exemplar.</p>
+        <p class="small muted">→ a structured <strong>bundle</strong> with an INCLUDE / EXCLUDE / FLAG decision.</p>
+      </div>
+      <div class="card gold">
+        <h3><span class="pill gold">Skill 2</span>&nbsp; Harmonizer</h3>
+        <p class="small">From the bundle: maps variables, converts units, and emits <strong>executable Python</strong> plus a documented <strong>change-mapping</strong> JSON.</p>
+        <p class="small muted">→ auditable code &amp; provenance, not an opaque table.</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:.8em;">Implemented as <strong>Anthropic Agent Skills</strong> — versioned instruction+tool bundles; the 19 expert harmonizations act as retrievable in-context exemplars. <span class="tiny muted">[Agent Skills 2025]</span></p>
+  </section>
+
+  <!-- 5 · FIGURE 1 -->
+  <section>
+    <p class="eyebrow">Figure 1</p>
+    <h2 style="margin-bottom:.1em;">Workflow &amp; evaluation design</h2>
+    <div class="rule"></div>
+    <pre class="mermaid">
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"ui-sans-serif, system-ui, Inter, sans-serif","fontSize":"15px","lineColor":"#8a8a8a","clusterBkg":"#ffffff","clusterBorder":"#e0d8c4"}}}%%
+flowchart LR
+    classDef agent fill:#0e7c7b,stroke:#0a5a59,color:#fff,stroke-width:1.5px;
+    classDef artifact fill:#f3efe6,stroke:#c9bfa6,color:#2b2b2b;
+    classDef gold fill:#c9962f,stroke:#9c7421,color:#fff;
+    classDef score fill:#3b5b8c,stroke:#28406a,color:#fff;
+    classDef io fill:#fff,stroke:#8a8a8a,color:#2b2b2b,stroke-dasharray:3 3;
+    ID["dataset identifier"]:::io
+    EX["19 expert exemplars"]:::gold
+    subgraph PIPE["agent pair"]
+      direction LR
+      C["<b>Curator</b><br/>Skill 1"]:::agent --> B["bundle"]:::artifact --> H["<b>Harmonizer</b><br/>Skill 2"]:::agent --> OUT["code +<br/>change-mapping"]:::artifact
+    end
+    RAW[("raw files")]:::io
+    AGT["agent table"]:::artifact
+    GLD["expert table<br/>(gold)"]:::gold
+    CMP{{"output equivalence<br/>cell-by-cell"}}:::score
+    ID --> C
+    EX -. exemplars .-> C
+    EX -. exemplars .-> H
+    OUT -- execute --> AGT
+    RAW --> AGT
+    RAW --> GLD
+    AGT --> CMP
+    GLD --> CMP
+    </pre>
+    <p class="tiny muted" style="text-align:center;">Modes: Skill-1 isolated · Skill-2 oracle (gold bundle) · end-to-end. Gap = oracle − end-to-end.</p>
+  </section>
+
+  <!-- 6 · DIVIDER: DESIGN -->
+  <section class="divider" data-background-color="#1c2c49">
+    <p class="eyebrow">Evaluation design</p>
+    <h2>Two phases · three modes · one primary endpoint</h2>
+    <div class="rule"></div>
+    <p>Honest generalization, decomposable error, output-grounded scoring.</p>
+  </section>
+
+  <!-- 7 · PHASES -->
+  <section>
+    <p class="eyebrow">Phases</p>
+    <h2>Retrospective, then prospective</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div class="card teal">
+        <h3>Phase A · cross-validation</h3>
+        <p class="small">Grouped <strong>leave-one-out</strong> over 19 expert datasets. Whole source/instrument <strong>clusters</strong> held out together, so a near-duplicate sibling can't leak into the exemplar pool.</p>
+        <p class="small muted">Also validates automated metrics against expert judgment.</p>
+      </div>
+      <div class="card gold">
+        <h3>Phase B · prospective blind</h3>
+        <p class="small">All 19 as exemplars; agent harmonizes <strong>new</strong> ESS-DIVE datasets. Expert harmonizes the same data <strong>blind</strong> → reference.</p>
+        <p class="small muted">Estimates real deployment performance.</p>
+      </div>
+    </div>
+    <p class="tiny muted" style="margin-top:.7em;">A <strong>similarity covariate</strong> (distance to nearest exemplar) turns leakage risk into a measured generalization curve.</p>
+  </section>
+
+  <!-- 8 · MODES -->
+  <section>
+    <p class="eyebrow">Modes</p>
+    <h2>Where does the error come from?</h2>
+    <div class="rule"></div>
+    <div class="cols3">
+      <div class="card teal"><h3>1 · Skill-1 isolated</h3><p class="small">Curator bundle scored field-by-field vs expert labels.</p></div>
+      <div class="card gold"><h3>2 · Skill-2 oracle</h3><p class="small">Harmonizer fed the <strong>gold</strong> bundle — transform quality, independent of curator error.</p></div>
+      <div class="card blue"><h3>3 · End-to-end</h3><p class="small">Full pipeline; errors propagate.</p></div>
+    </div>
+    <div class="cols" style="margin-top:.7em; align-items:center;">
+      <p class="note small" style="margin:0;"><strong>Error-propagation gap = Mode 2 − Mode 3</strong> isolates how much curator error degrades the final output.</p>
+      <div class="small">
+        <p style="margin:0 0 .2em;">Failures attributed as:</p>
+        <ul class="tiny" style="margin:0;">
+          <li>Skill-1 error propagated</li>
+          <li>Skill-2 error (given correct input)</li>
+          <li>interface inconsistency</li>
+          <li>genuinely ambiguous (expert unsure too)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · METRICS -->
+  <section>
+    <p class="eyebrow">Metrics</p>
+    <h2>Output-data equivalence is the primary endpoint</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div>
+        <p class="small" style="margin-top:0;">Execute <em>both</em> the agent's and expert's code on the same raw data; compare tables cell-by-cell on the natural key. <strong>Two correct programs score the same</strong> regardless of style — and we avoid unreliable LLM-as-judge scoring. <span class="tiny muted">[Judge reliability 2026]</span></p>
+        <p class="small muted">Harmonizer composite weighting:</p>
+        <div class="metricbar"><span class="lab">output equivalence</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">0.50</span></div>
+        <div class="metricbar"><span class="lab">schema conformance</span><span class="track"><span class="fill" style="width:30%"></span></span><span class="val">0.15</span></div>
+        <div class="metricbar"><span class="lab">semantic mapping F1</span><span class="track"><span class="fill" style="width:24%"></span></span><span class="val">0.12</span></div>
+        <div class="metricbar"><span class="lab">code executability</span><span class="track"><span class="fill" style="width:20%"></span></span><span class="val">0.10</span></div>
+        <div class="metricbar"><span class="lab">documentation</span><span class="track"><span class="fill" style="width:16%"></span></span><span class="val">0.08</span></div>
+        <div class="metricbar"><span class="lab">ontology validity</span><span class="track"><span class="fill" style="width:10%"></span></span><span class="val">0.05</span></div>
+      </div>
+      <div class="card blue">
+        <h3>Curator metrics</h3>
+        <p class="small">Decision P/R/F1 · file-set F1 · time-series accuracy &amp; interval error · location-source &amp; qc_flag accuracy · manipulation detection · exemplar match · deferral calibration.</p>
+        <h3 style="margin-top:.5em;">Statistics</h3>
+        <p class="small">Nested data → <strong>cluster bootstrap CIs</strong> &amp; mixed-effects models; effect sizes over <em>p</em>-values (N≈19); variance &amp; pass@k across stochastic repeats.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · BASELINES -->
+  <section>
+    <p class="eyebrow">Controls</p>
+    <h2>What the agent pair is measured against</h2>
+    <div class="rule"></div>
+    <div class="cols3">
+      <div class="card"><h3>Single-call LLM</h3><p class="small muted">No skill structure or tool loop — isolates the value of agentic decomposition.</p></div>
+      <div class="card"><h3>No-exemplars</h3><p class="small muted">Agent with the 19 references removed — isolates the value of the exemplars.</p></div>
+      <div class="card"><h3>Naïve heuristic</h3><p class="small muted">String-matching floor.</p></div>
+    </div>
+    <p class="small note" style="margin-top:.8em;">Reproducibility pinned per run: model + version, both skill versions, sampling params, seeds.</p>
+  </section>
+
+  <!-- 11 · RELATED WORK -->
+  <section>
+    <p class="eyebrow">Positioning</p>
+    <h2>How this differs from prior work</h2>
+    <div class="rule"></div>
+    <table class="mini">
+      <tr><th>Work</th><th>What it does</th><th>We add</th></tr>
+      <tr><td><strong>Harmonia</strong> <span class="tiny muted">Santos 2025</span></td><td>LLM-agent harmonization to a schema; interactive; clinical</td><td>autonomous pair · environmental · CV + blind eval</td></tr>
+      <tr><td><strong>CleanAgent</strong> <span class="tiny muted">Qi 2024</span></td><td>single-agent data standardization</td><td>two-stage curate→harmonize, scored separately</td></tr>
+      <tr><td><strong>MAST</strong> <span class="tiny muted">Cemri 2025</span></td><td>taxonomy of multi-agent failures</td><td>operationalized cross-agent error attribution</td></tr>
+      <tr><td><strong>KramaBench</strong> <span class="tiny muted">2025</span></td><td>data pipelines benchmark (best ~55% E2E)</td><td>real expert ground truth + output equivalence</td></tr>
+      <tr><td><strong>"FMs wrangle data?"</strong> <span class="tiny muted">Narayan 2022</span></td><td>FM beats task-specific cleaners</td><td>composed, end-to-end, executed against expert</td></tr>
+    </table>
+    <p class="tiny muted" style="margin-top:.5em;">Lineage: Wrangler/Trifacta · HoloClean · FlashFill · schema-matching surveys (Rahm 2001). Domain anchors: ISMN, ESS-DIVE reporting formats, Maelstrom, OMOP.</p>
+  </section>
+
+  <!-- 12 · WHAT WE'LL REPORT -->
+  <section>
+    <p class="eyebrow">Deliverables</p>
+    <h2>What the results section will report</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div>
+        <table class="mini">
+          <tr><th>Result</th><th>Value</th></tr>
+          <tr><td>End-to-end output equivalence</td><td class="ph">[[ • ]]</td></tr>
+          <tr><td>Skill-2 (oracle) equivalence</td><td class="ph">[[ • ]]</td></tr>
+          <tr><td>Error-propagation gap</td><td class="ph">[[ • ]]</td></tr>
+          <tr><td>Curator decision F1</td><td class="ph">[[ • ]]</td></tr>
+          <tr><td>vs single-call / no-exemplar</td><td class="ph">[[ • ]]</td></tr>
+          <tr><td>Similarity threshold</td><td class="ph">[[ • ]]</td></tr>
+        </table>
+      </div>
+      <div class="small">
+        <p style="margin-top:0;">Plus:</p>
+        <ul class="small">
+          <li>error-attribution taxonomy (stacked / Sankey)</li>
+          <li>similarity → performance regression</li>
+          <li>automated-vs-expert metric agreement</li>
+          <li>Phase B agent-vs-expert on novel data</li>
+        </ul>
+        <p class="tiny muted">Every number traces to <span class="kbd">experiments/</span> → <span class="kbd">results/</span>; placeholders are filled by the analysis pipeline, never by hand.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 · LIMITATIONS -->
+  <section>
+    <p class="eyebrow">Caveats</p>
+    <h2>Limitations we hold ourselves to</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <ul class="small">
+        <li><strong>N ≈ 19</strong> gold datasets — uncertain estimates; effect sizes, not <em>p</em>-values.</li>
+        <li><strong>Single domain</strong> — WFSFA soil moisture on one repository.</li>
+        <li><strong>One expert</strong> as gold — some cases genuinely ambiguous.</li>
+      </ul>
+      <ul class="small">
+        <li><strong>Model/skill drift</strong> — pinned versions; results are snapshots.</li>
+        <li><strong>Stochasticity</strong> — report variance &amp; pass@k.</li>
+        <li><strong>Automated metrics</strong> — credible only as far as Phase A validation shows.</li>
+      </ul>
+    </div>
+    <p class="note small" style="margin-top:.6em;">Intended operating point: <strong>agent drafts, expert reviews</strong>, with automatic deferral above the similarity threshold and on low-confidence curator decisions.</p>
+  </section>
+
+  <!-- 14 · TAKEAWAYS -->
+  <section class="divider" data-background-color="#0a2b2a" data-background-gradient="radial-gradient(120% 120% at 0% 0%, #11514f 0%, #0a2b2a 100%)">
+    <p class="eyebrow" style="color:#7fd9d2;">Takeaways</p>
+    <h2 style="color:#fff;">A rigorous yardstick for agentic harmonization</h2>
+    <div class="rule"></div>
+    <ul style="color:#dcebe8;">
+      <li><strong style="color:#7fd9d2;">Output-equivalence</strong> scoring — measures what the code does, not how it reads.</li>
+      <li><strong style="color:#7fd9d2;">Decomposed</strong> across two agents — error is attributable, not opaque.</li>
+      <li><strong style="color:#7fd9d2;">Honest generalization</strong> — grouped CV + similarity covariate + blind prospective test.</li>
+    </ul>
+    <p class="small" style="color:#9fc7c2; margin-top:1em;">First such evaluation in the environmental-data-harmonization setting. Results to follow.</p>
+  </section>
+
+  <!-- 15 · CLOSING -->
+  <section>
+    <p class="eyebrow">Thank you</p>
+    <h2>Evaluating an LLM Agent Pair for<br/>Environmental Data Harmonization</h2>
+    <div class="rule"></div>
+    <p class="small">Manuscript drafts: <span class="kbd">docs/manuscript/</span> · Figure source: <span class="kbd">figures/figure1_workflow.mmd</span></p>
+    <p class="small muted">Framework: <span class="kbd">config/</span> · <span class="kbd">src/</span> · <span class="kbd">skills/</span> · gold standard: <span class="kbd">data/gold/</span></p>
+    <p class="tiny muted" style="margin-top:1.2em;">Key references — Dorigo 2021 (ISMN) · Crystal-Ornelas 2022 (ESS-DIVE formats) · Santos 2025 (Harmonia) · Cemri 2025 (MAST) · Narayan 2022 (FMs wrangle data) · Wickham 2014 (tidy data) · Wilkinson 2016 (FAIR). Full list in <span class="kbd">references.md</span>.</p>
+  </section>
+
+</div></div>
+
+<div class="footer">
+  <span>LLM Agent Pair · Environmental Data Harmonization</span>
+  <span>Watershed Function SFA · pre-results scaffold</span>
+</div>
+
+<script src="../vendor/reveal/reveal.js"></script>
+<script src="../vendor/mermaid/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad:false, securityLevel:"loose",
+    themeVariables:{ fontFamily:"ui-sans-serif, system-ui, Inter, sans-serif" } });
+  window.addEventListener("load", async () => {
+    const nodes = document.querySelectorAll(".mermaid");
+    await mermaid.run({ nodes });
+    Reveal.initialize({
+      hash:true, slideNumber:"c/t", controls:true, progress:true,
+      transition:"slide", transitionSpeed:"fast", center:false,
+      width:1280, height:720, margin:0.06,
+    });
+    Reveal.on("ready", () => Reveal.layout());
+  });
+</script>
+</body>
+</html>
