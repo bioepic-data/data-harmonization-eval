@@ -16,7 +16,6 @@ default_range: string
 prefixes:
   harmon: https://w3id.org/bioepic/data-harmonization-eval/target-schema/
   linkml: https://w3id.org/linkml/
-  qudt: http://qudt.org/vocab/unit/
 
 imports:
   - linkml:types
@@ -46,6 +45,13 @@ classes:
       - description: >-
           At least one moisture variable (volumetric water content, gravimetric
           water content, or water potential) must be present in a record.
+        # The precondition is always satisfied (datetime_UTC is required), so the
+        # postcondition is enforced unconditionally. It is stated explicitly so
+        # the generated JSON Schema emits a well-formed if/then conditional.
+        preconditions:
+          slot_conditions:
+            datetime_UTC:
+              value_presence: PRESENT
         postconditions:
           any_of:
             - slot_conditions:

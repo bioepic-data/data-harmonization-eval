@@ -1,0 +1,5 @@
+# INVALID: is_timeseries must be a boolean, not a string.
+datetime_UTC: '2021-06-15T12:00:00+00:00'
+site_id: SITE_A
+is_timeseries: maybe
+volumetric_water_content_m3_m3: 0.32

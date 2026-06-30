@@ -1,0 +1,9 @@
+# Configuration for `linkml-lint` (see `make lint`).
+extends: recommended
+rules:
+  # The harmonized column names (datetime_UTC, gravimetric_water_content_gH2O_gs,
+  # water_potential_kPa, ...) are a fixed external contract: they must match the
+  # canonical column list in target_schema.py exactly, so they cannot be renamed
+  # to snake_case. Disable the naming rule rather than fight that contract.
+  standard_naming:
+    level: disabled

@@ -40,6 +40,12 @@ notebooks = [
     "ipywidgets>=8.0.0",
 ]
 
+# LinkML schema tooling: validation, linting, and code generation for
+# src/schemas/target_schema.yaml (see the Makefile and .github/workflows/linkml.yml).
+linkml = [
+    "linkml>=1.7",
+]
+
 [tool.setuptools]
 packages = ["src"]
 

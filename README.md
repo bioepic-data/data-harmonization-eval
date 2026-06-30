@@ -119,7 +119,8 @@ wfsfa-harmonization-eval/
 │   ├── schemas/                 # Pydantic data models
 │   │   ├── skill1_bundle.py     # Curator output schema
 │   │   ├── skill2_mapping.py    # Harmonizer output schema
-│   │   └── target_schema.py     # Target harmonized schema
+│   │   ├── target_schema.py     # Target harmonized schema
+│   │   └── target_schema.yaml   # LinkML version of the target schema
 │   │
 │   ├── harness/                 # Skill runners
 │   │   ├── run_skill1.py        # Curator runner
@@ -151,6 +152,14 @@ wfsfa-harmonization-eval/
 │   ├── phase_b_prospective.py   # Phase B: novel data
 │   └── metric_validation.py     # Validate automated vs expert scores
 │
+├── examples/                    # LinkML schema example instances
+│   ├── valid/                   # Instances that MUST validate
+│   └── invalid/                 # Counter-examples that MUST fail
+│
+├── project/                     # Generated LinkML artifacts (do not edit)
+│   ├── pydantic/                # gen-pydantic output
+│   └── jsonschema/              # gen-json-schema output
+│
 ├── results/                     # Outputs
 │   ├── raw_runs/                # Per-run outputs
 │   ├── scored/                  # Scored metrics (tidy CSV)
@@ -165,6 +174,33 @@ wfsfa-harmonization-eval/
 └── tests/                       # Unit tests
     └── test_metrics.py          # Known-answer test cases
 ```
+
+## LinkML Target Schema
+
+The canonical 9-column harmonized schema is also defined declaratively in
+[`src/schemas/target_schema.yaml`](src/schemas/target_schema.yaml), a
+[LinkML](https://linkml.io) schema equivalent to `target_schema.py`. It is the
+single source of truth for two committed, generated artifacts:
+
+- `project/pydantic/target_schema.py` — Pydantic v2 models (`gen-pydantic`)
+- `project/jsonschema/target_schema.schema.json` — JSON Schema (`gen-json-schema`)
+
+Example instances live under `examples/`: everything in `examples/valid/` must
+validate against the schema, and every counter-example in `examples/invalid/`
+must fail (one per constraint — missing required field, out-of-range value,
+wrong type, and the "at least one moisture variable" rule).
+
+```bash
+pip install -e ".[linkml]"   # install the LinkML toolchain
+
+make gen      # regenerate the pydantic + JSON Schema artifacts
+make test     # lint the schema + validate all examples + run pytest checks
+```
+
+CI (`.github/workflows/linkml.yml`) runs the same checks and fails if the
+committed artifacts under `project/` drift from the schema. The pytest wrapper
+(`tests/test_target_schema_examples.py`) runs as part of the normal test suite
+when `linkml` is installed and is skipped otherwise.
 
 ## Installation
 

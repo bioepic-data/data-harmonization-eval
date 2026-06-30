@@ -1,0 +1,63 @@
+name: LinkML schema
+
+# Validate the LinkML target schema, its example instances, and the committed
+# generated artifacts (pydantic + JSON Schema).
+
+on:
+  push:
+    paths:
+      - "src/schemas/target_schema.yaml"
+      - "examples/**"
+      - "project/**"
+      - "tests/test_target_schema_examples.py"
+      - ".github/workflows/linkml.yml"
+      - "Makefile"
+  pull_request:
+    paths:
+      - "src/schemas/target_schema.yaml"
+      - "examples/**"
+      - "project/**"
+      - "tests/test_target_schema_examples.py"
+      - ".github/workflows/linkml.yml"
+      - "Makefile"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install LinkML
+        run: |
+          python -m pip install --upgrade pip
+          pip install "linkml>=1.7" pytest pyyaml
+
+      - name: Lint schema
+        run: linkml-lint --config .linkmllint.yaml src/schemas/target_schema.yaml
+
+      - name: Validate examples against schema
+        run: |
+          mkdir -p examples/output
+          linkml-run-examples \
+            --schema src/schemas/target_schema.yaml \
+            --input-directory examples/valid \
+            --counter-example-input-directory examples/invalid \
+            --output-directory examples/output
+
+      - name: Run pytest example checks
+        run: pytest tests/test_target_schema_examples.py -q -o addopts=""
+
+      - name: Check generated artifacts are up to date
+        run: |
+          gen-pydantic src/schemas/target_schema.yaml > project/pydantic/target_schema.py
+          gen-json-schema --inline src/schemas/target_schema.yaml > project/jsonschema/target_schema.schema.json
+          if ! git diff --exit-code -- project/; then
+            echo "::error::Generated artifacts under project/ are out of date." \
+                 "Run 'make gen' and commit the result."
+            exit 1
+          fi
