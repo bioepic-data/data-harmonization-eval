@@ -34,7 +34,7 @@
 
 | # | Title | Notes |
 |---|---|---|
-| 1 | Workflow + evaluation design schematic | **Drafted** — `figures/figure1_workflow.mmd` (Mermaid source) + `figures/figure1_workflow.html` (in-browser SVG render). Curator → bundle → Harmonizer → code+mapping → executed output vs. expert; three modes; gap. This is the main **Figure 1**. |
+| 1 | Workflow + evaluation design schematic | **Drafted** — `figures/figure1_workflow.{mmd,svg,png}` (source + static vector/raster, rendered offline via Chromium) and `figure1_workflow.html` (live in-browser render). Curator → bundle → Harmonizer → code+mapping → executed output vs. expert; three modes; gap. This is the main **Figure 1**. Regenerate the static assets after editing the `.mmd`. |
 
 ## Presentation
 
