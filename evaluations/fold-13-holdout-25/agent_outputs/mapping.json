@@ -1,0 +1,107 @@
+{
+  "index": 25,
+  "dataset_identifier": "ess-dive-e67ab1151ebc525-20230929T190307767",
+  "doi": "doi:10.6084/M9.FIGSHARE.7834406.V2",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "Carbone_aspen.csv",
+    "Carbone_conifer.csv"
+  ],
+  "location_metadata_files": null,
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "Year, Month, Day, Hour",
+        "source_files": [
+          "Carbone_aspen.csv",
+          "Carbone_conifer.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Build hourly local timestamp from Year/Month/Day/Hour, assume fixed Mountain Standard Time (UTC-7), and convert to ISO 8601 UTC. Drop rows with invalid calendar dates.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "Carbone_aspen.csv, Carbone_conifer.csv",
+        "source_files": [
+          "Carbone_aspen.csv",
+          "Carbone_conifer.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Use source filename stem as site_id: Carbone_aspen or Carbone_conifer.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "VWC-50cm, VWC-15cm, VWC-5cm",
+        "source_files": [
+          "Carbone_aspen.csv",
+          "Carbone_conifer.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Parse depth from VWC column suffix.",
+        "unit_conversion": "Divide cm by 100 to convert to m."
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "replicate",
+        "transformation": "No replicate identifier is provided; populate with 1 for each site-depth sensor series.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "VWC-50cm, VWC-15cm, VWC-5cm",
+        "source_files": [
+          "Carbone_aspen.csv",
+          "Carbone_conifer.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Melt wide VWC depth columns to long rows. Drop missing values and values outside the physical 0-1 range.",
+        "unit_conversion": "Source values are already m3/m3; no conversion."
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "Not reported; populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Not reported; populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "spatialCoverage.geo.latitude",
+        "source_files": null,
+        "destination_variable": "latitude",
+        "transformation": "Use package-level ESS-DIVE spatialCoverage coordinate for both adjacent forest-stand site_ids.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "spatialCoverage.geo.longitude",
+        "source_files": null,
+        "destination_variable": "longitude",
+        "transformation": "Use package-level ESS-DIVE spatialCoverage coordinate for both adjacent forest-stand site_ids.",
+        "unit_conversion": null
+      }
+    }
+  }
+}
