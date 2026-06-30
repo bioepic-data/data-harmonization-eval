@@ -1,0 +1,62 @@
+{
+  "fold": "fold-04-holdout-5",
+  "dataset_indices": [
+    5
+  ],
+  "trace_forbidden_path_scan_matches": 0,
+  "agent_output": {
+    "rows": 515825,
+    "columns": 9,
+    "schema_equal": true
+  },
+  "gold_output": {
+    "rows": 1089621,
+    "columns": 9
+  },
+  "output_equivalence": {
+    "unique_agent_keys": 515795,
+    "unique_gold_keys": 976805,
+    "key_intersection": 515795,
+    "agent_extra_keys": 0,
+    "agent_missing_gold_keys": 461010,
+    "common_rows": 516005,
+    "shared_row_value_matches": {
+      "interval_min": "59007/516005",
+      "volumetric_water_content_m3_m3": "515933/516005",
+      "gravimetric_water_content_gH2O_gs": "516005/516005",
+      "water_potential_kPa": "516005/516005",
+      "is_timeseries": "516005/516005"
+    },
+    "row_precision": 1.0,
+    "gold_recall": 0.5280429563730734
+  },
+  "json_mapping_equivalence": {
+    "top_level_exact_matches": "5/7",
+    "top_level_matches": {
+      "index": true,
+      "dataset_identifier": true,
+      "doi": true,
+      "archive_repository": true,
+      "data_payload_files": true,
+      "location_metadata_files": false,
+      "sensor_metadata_files": false
+    },
+    "gold_mapping_categories_present": "8/8",
+    "extra_agent_categories": [
+      "gravimetric_water_content"
+    ],
+    "missing_gold_categories": [],
+    "field_level_exact_matches": "24/40",
+    "field_exact_matches_by_name": {
+      "destination_variable": "8/8",
+      "source_pattern": "4/8",
+      "source_files": "4/8",
+      "transformation": "0/8",
+      "unit_conversion": "8/8"
+    }
+  },
+  "notes": [
+    "Agent filtered to control treatment rows only; gold includes substantially more rows.",
+    "NaN depth values were normalized to a sentinel for key comparison."
+  ]
+}
