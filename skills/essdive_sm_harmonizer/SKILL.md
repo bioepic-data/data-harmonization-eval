@@ -6,12 +6,13 @@ description: >
     harmonization framework. Produces Python harmonization code and a JSON mapping
     entry conforming to established schema.
 metadata:
-  version: "0.2"
+  version: "0.3"
   created: "2026-05-12"
-  updated: "2026-06-04"
+  updated: "2026-06-30"
   context_dependencies:
-    - data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json  # for schema reference and examples
-    - notebooks/harmonize_ess-dive_soilmoisture_data.py  # for code pattern reference
+    - data/gold/sm_data_harmonization_mapping.json  # for schema reference and examples
+    - data/gold/expert_code/harmonize_ess-dive_soilmoisture_data.py  # for code pattern reference
+    - data/gold/harmonized_outputs/*.csv # harmonized datasets
   usage: >
     Invoke this skill when adding a new ESS-DIVE soil moisture dataset to the
     harmonization pipeline. The skill will guide you through evaluation,
@@ -473,13 +474,13 @@ For a hypothetical dataset `ess-dive-abc123-20260604T000000` with VWC time serie
 # Dataset 42
 # =============================================================
 idx = 42
-f28 = as_list(map_json[idx]["data_payload_files"])[0]
-m28 = as_list(map_json[idx]["location_metadata_files"])[0]
+f42 = as_list(map_json[idx]["data_payload_files"])[0]
+m42 = as_list(map_json[idx]["location_metadata_files"])[0]
 
-ddf28 = read_ds_csv(idx, f28)
-mdf28 = read_ds_csv(idx, m28)
+ddf42 = read_ds_csv(idx, f42)
+mdf42 = read_ds_csv(idx, m42)
 
-x = ddf28.copy()
+x = ddf42.copy()
 x["datetime_UTC"] = parse_local_to_utc(x["timestamp"], "%Y-%m-%d %H:%M:%S", "America/Denver")
 x["interval_min"] = interval_min(x["datetime_UTC"])
 x["site_id"] = x["site"]
@@ -490,22 +491,22 @@ x["volumetric_water_content_m3_m3"] = pd.to_numeric(x["vwc_pct"], errors="coerce
 x["water_potential_kPa"] = np.nan
 x["gravimetric_water_content_gH2O_gs"] = np.nan
 
-df28_harmonized = ensure_harmonized_cols(x)
-harmonized_data.append(df28_harmonized)
+df42_harmonized = ensure_harmonized_cols(x)
+harmonized_data.append(df42_harmonized)
 harmonized_ids.append(dsid(idx))
 
-loc28 = mdf28.rename(columns={"site_name": "site_id", "lat": "latitude", "lon": "longitude"})[
+loc42 = mdf42.rename(columns={"site_name": "site_id", "lat": "latitude", "lon": "longitude"})[
     ["site_id", "latitude", "longitude"]
 ].copy()
-loc28["source_dataset_id"] = dsid(idx)
-loc28 = add_loc_qc(loc28)
-loc_data.append(loc28)
+loc42["source_dataset_id"] = dsid(idx)
+loc42 = add_loc_qc(loc42)
+loc_data.append(loc42)
 ```
 
 **JSON Entry:**
 ```json
 {
-  "index": 28,
+  "index": 42,
   "dataset_identifier": "ess-dive-abc123-20260604T000000",
   "doi": "doi:10.15485/XXXXXX",
   "archive_repository": "ESS-DIVE",
