@@ -8,28 +8,28 @@ cv_strategy: "grouped_loo"  # grouped leave-one-out
 # Datasets from same cluster should not appear in each other's exemplar pools
 clusters:
   cluster_1:
-    name: "East River SMN sensors"
-    description: "East River watershed soil moisture network"
+    name: 
+    description: 
     datasets: [1, 2, 3]  # indices from mapping JSON
 
-  cluster_2:
-    name: "East River SMS sensors"
-    description: "East River watershed additional sensors"
-    datasets: [4, 5]
+  cluster_2: 
+    name: 'global_exclude'
+    description: 'Datasets to exclude globally from consideration as harmonization targets or exemplars.'
+    datasets: [0, 11, 12, 13, 14, 19, 20, 21, 22]
 
   cluster_3:
-    name: "NGEE Arctic Barrow"
-    description: "Next-Generation Ecosystem Experiments Arctic site"
+    name: 'Snodgrass micromet'
+    description: 
     datasets: [6, 7, 8]
 
   cluster_4:
-    name: "NGEE Arctic discrete sampling"
-    description: "Discrete sampling campaigns"
+    name: 
+    description: 
     datasets: [9, 10]
 
   cluster_5:
-    name: "Independent datasets"
-    description: "Datasets with unique sources, no clustering needed"
+    name: 
+    description: 
     datasets: [11, 12, 13, 14, 15, 16, 17, 18, 19]
 
 # Explicit fold definitions
