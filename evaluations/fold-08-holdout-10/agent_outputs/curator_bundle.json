@@ -1,0 +1,67 @@
+{
+  "package_id": "ess-dive-01092fc392bc46d-20240819T143818677",
+  "doi": "doi:10.15485/2322567",
+  "curator_decision": "INCLUDE",
+  "exclusion_reason": null,
+  "package_title": "Hydrological control of chemical weathering and rock-carbon fluxes: East River, Colorado",
+  "data_payload_files": [
+    {
+      "filename": "Soil_water_content_Fig4e.csv",
+      "columns": [
+        "Date",
+        "PLM1 _vol_water_content",
+        "PLM2 _vol_water_content",
+        "PLM3 _vol_water_content"
+      ],
+      "row_count_estimate": 104,
+      "data_row_count_after_units_row": 103,
+      "file_size_mb": 0.0031,
+      "column_preview": "Date,PLM1 _vol_water_content,PLM2 _vol_water_content,PLM3 _vol_water_content\\nYYYY-MM-DD,m3/m3,m3/m3,m3/m3\\n2017-05-06,0.387,0.39,0.39",
+      "classification_reason": "CSV contains date-stamped direct volumetric water content observations in m3/m3 for PLM1, PLM2, and PLM3."
+    }
+  ],
+  "location_metadata_files": [],
+  "sensor_metadata_files": [],
+  "readme_content": null,
+  "location_resolution": {
+    "source": "varadharajan_lookup",
+    "qc_flag_recommendation": "g1",
+    "site_coordinates": [
+      {
+        "site_id": "ER-PLM1",
+        "latitude": 38.919771,
+        "longitude": -106.949273
+      },
+      {
+        "site_id": "ER-PLM2",
+        "latitude": 38.920157,
+        "longitude": -106.948714
+      },
+      {
+        "site_id": "ER-PLM3",
+        "latitude": 38.920784,
+        "longitude": -106.948367
+      }
+    ],
+    "note": "Coordinates are not present in the held-out payload; PLM IDs were resolved against the fold-local reference location dataset cited by mapping index 0."
+  },
+  "time_series_inference": {
+    "is_timeseries": true,
+    "interval_min": 20160.0,
+    "reasoning": "Each PLM site has repeated observations from 2017-05-06 to 2021-05-02; sampling is irregular but the median interval is 14 days."
+  },
+  "experimental_context": {
+    "manipulation_detected": false,
+    "manipulation_type": null,
+    "has_control_data": null,
+    "recommendation": "include_all"
+  },
+  "similar_dataset_reference": {
+    "index": 25,
+    "reason": "Similar code pattern: wide-format volumetric water content time series reshaped to long format."
+  },
+  "open_questions": [
+    "The CSV does not encode measurement depth; depth_m is populated as missing.",
+    "The package-level metadata gives watershed bounds, while site-specific PLM coordinates require the Varadharajan location registry lookup and should carry g1 location provenance if location output is generated."
+  ]
+}
