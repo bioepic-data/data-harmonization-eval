@@ -1,0 +1,146 @@
+{
+  "package_id": "ess-dive-9fd65df885a8e87-20250715T064942543",
+  "doi": "doi:10.15485/1646477",
+  "curator_decision": "INCLUDE",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    {
+      "filename": "ER_SMN1.csv",
+      "columns": [
+        "DateTime",
+        "m3_m3_Water_Content_1_at_5cm",
+        "m3_m3_Water_Content_2_at_5cm",
+        "m3_m3_Water_Content_1_at_10cm",
+        "m3_m3_Water_Content_2_at_10cm",
+        "m3_m3_Water_Content_1_at_20cm",
+        "m3_m3_Water_Content_2_at_20cm",
+        "m3_m3_Water_Content_1_at_30cm"
+      ],
+      "row_count_estimate": 43848,
+      "file_size_mb": 2.1,
+      "column_preview": "DateTime,m3_m3_Water_Content_1_at_5cm,m3_m3_Water_Content_2_at_5cm,m3_m3_Water_Content_1_at_10cm,m3_m3_Water_Content_2_at_10cm,m3_m3_Water_Content_1_at_20cm,m3_m3_Water_Content_2_at_20cm,m3_m3_Water_Content_1_at_30cm\n2/27/2013 9:00:00 AM,0.3042,0.2841,0.3123,0.2967,0.3401,0.3289,0.2844"
+    },
+    {
+      "filename": "ER_SMN3.csv",
+      "columns": [
+        "DateTime",
+        "m3_m3_Water_Content_1_at_5cm",
+        "m3_m3_Water_Content_2_at_5cm",
+        "m3_m3_Water_Content_1_at_10cm",
+        "m3_m3_Water_Content_2_at_10cm",
+        "m3_m3_Water_Content_1_at_20cm",
+        "m3_m3_Water_Content_2_at_20cm",
+        "m3_m3_Water_Content_1_at_30cm",
+        "m3_m3_Water_Content_2_at_30cm"
+      ],
+      "row_count_estimate": 43848,
+      "file_size_mb": 2.4,
+      "column_preview": "DateTime,m3_m3_Water_Content_1_at_5cm,m3_m3_Water_Content_2_at_5cm,...\n2/27/2013 9:00:00 AM,0.2956,0.2812,..."
+    },
+    {
+      "filename": "ER_SMN4.csv",
+      "columns": [
+        "DateTime",
+        "m3_m3_Water_Content_1_at_5cm",
+        "m3_m3_Water_Content_2_at_5cm",
+        "m3_m3_Water_Content_1_at_10cm",
+        "m3_m3_Water_Content_1_at_20cm",
+        "m3_m3_Water_Content_1_at_30cm"
+      ],
+      "row_count_estimate": 43848,
+      "file_size_mb": 1.8,
+      "column_preview": "DateTime,m3_m3_Water_Content_1_at_5cm,...\n3/1/2013 0:00:00 AM,0.2745,..."
+    },
+    {
+      "filename": "ER_SMN5.csv",
+      "columns": [
+        "DateTime",
+        "m3_m3_Water_Content_1_at_5cm",
+        "m3_m3_Water_Content_2_at_5cm",
+        "m3_m3_Water_Content_1_at_10cm",
+        "m3_m3_Water_Content_2_at_10cm",
+        "m3_m3_Water_Content_1_at_20cm",
+        "m3_m3_Water_Content_1_at_30cm"
+      ],
+      "row_count_estimate": 43848,
+      "file_size_mb": 2.0,
+      "column_preview": "DateTime,m3_m3_Water_Content_1_at_5cm,...\n3/1/2013 0:00:00 AM,0.3103,..."
+    }
+  ],
+  "location_metadata_files": [
+    {
+      "filename": "SM_loc.csv",
+      "columns": [
+        "Name",
+        "Lat ",
+        "Lon"
+      ],
+      "row_count_estimate": 4,
+      "file_size_mb": 0.001,
+      "column_preview": "Name,Lat ,Lon\nER_SMN1,38.9166,-106.9869\nER_SMN3,38.9173,-106.9872\nER_SMN4,38.9171,-106.9874\nER_SMN5,38.9168,-106.9871"
+    }
+  ],
+  "sensor_metadata_files": [],
+  "readme_content": "Soil moisture time series data from micrometeorology stations at Snodgrass Mountain in the East River Watershed (Gunnison County, Colorado). Data were collected by the Watershed Function SFA (Lawrence Berkeley National Laboratory). Files ER_SMN1, ER_SMN3, ER_SMN4, ER_SMN5 contain hourly volumetric water content (VWC, m3/m3) measured by soil moisture sensors at multiple depths (5, 10, 20, 30 cm) at 4 station locations. Station locations are in SM_loc.csv (WGS84 decimal degrees). Data cover the period 2013-2018.",
+  "location_resolution": {
+    "source": "location_metadata_file",
+    "qc_flag_recommendation": null,
+    "site_coordinates": [
+      {
+        "site_id": "ER_SMN1",
+        "latitude": 38.9166,
+        "longitude": -106.9869,
+        "easting": null,
+        "northing": null,
+        "epsg": 4326,
+        "elevation_m": null
+      },
+      {
+        "site_id": "ER_SMN3",
+        "latitude": 38.9173,
+        "longitude": -106.9872,
+        "easting": null,
+        "northing": null,
+        "epsg": 4326,
+        "elevation_m": null
+      },
+      {
+        "site_id": "ER_SMN4",
+        "latitude": 38.9171,
+        "longitude": -106.9874,
+        "easting": null,
+        "northing": null,
+        "epsg": 4326,
+        "elevation_m": null
+      },
+      {
+        "site_id": "ER_SMN5",
+        "latitude": 38.9168,
+        "longitude": -106.9871,
+        "easting": null,
+        "northing": null,
+        "epsg": 4326,
+        "elevation_m": null
+      }
+    ]
+  },
+  "time_series_inference": {
+    "is_timeseries": true,
+    "interval_min": 60.0,
+    "reasoning": "Multiple timestamps per site/depth combination with hourly spacing. Files contain ~43848 rows each (approx. 5 years of hourly measurements). Timestamp column 'DateTime' has time precision ('%m/%d/%Y %I:%M:%S %p'). Dataset description refers to micrometeorology station deployments, consistent with continuous automated logger output."
+  },
+  "experimental_context": {
+    "manipulation_detected": false,
+    "manipulation_type": null,
+    "has_control_data": null,
+    "recommendation": "include_all"
+  },
+  "similar_dataset_reference": {
+    "index": 26,
+    "reason": "Dataset 26 has a similar wide-format VWC time series structure with depth embedded in column names (pattern '*_at_jcm'), multiple data files per site, and a separate location metadata file. Both are from the East River Watershed Snodgrass Mountain monitoring network."
+  },
+  "open_questions": [],
+  "skill_version": "0.1",
+  "run_id": "skill1_idx2_run0",
+  "timestamp": "2026-06-30T23:25:00Z"
+}

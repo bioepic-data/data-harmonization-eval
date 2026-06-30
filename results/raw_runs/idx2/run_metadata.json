@@ -1,0 +1,74 @@
+{
+  "identifier": "doi:10.15485/1646477",
+  "package_id": "ess-dive-9fd65df885a8e87-20250715T064942543",
+  "mode": "end_to_end",
+  "run_index": 0,
+  "exemplar_pool": [4, 5, 7, 8, 9, 10, 15, 17, 18, 23, 24, 25, 26],
+  "timestamp": "2026-06-30T23:26:00Z",
+  "model": "claude-sonnet-4-6",
+  "skill1_version": "0.1",
+  "skill2_version": "0.2",
+  "random_seed": 42,
+  "curator_success": true,
+  "bundle": {
+    "package_id": "ess-dive-9fd65df885a8e87-20250715T064942543",
+    "doi": "doi:10.15485/1646477",
+    "curator_decision": "INCLUDE",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      {"filename": "ER_SMN1.csv", "columns": ["DateTime", "m3_m3_Water_Content_1_at_5cm", "m3_m3_Water_Content_2_at_5cm", "m3_m3_Water_Content_1_at_10cm", "m3_m3_Water_Content_2_at_10cm", "m3_m3_Water_Content_1_at_20cm", "m3_m3_Water_Content_2_at_20cm", "m3_m3_Water_Content_1_at_30cm"], "row_count_estimate": 43848, "file_size_mb": 2.1, "column_preview": "DateTime,m3_m3_Water_Content_1_at_5cm,..."},
+      {"filename": "ER_SMN3.csv", "columns": ["DateTime", "m3_m3_Water_Content_1_at_5cm", "m3_m3_Water_Content_2_at_5cm", "m3_m3_Water_Content_1_at_10cm", "m3_m3_Water_Content_2_at_10cm", "m3_m3_Water_Content_1_at_20cm", "m3_m3_Water_Content_2_at_20cm", "m3_m3_Water_Content_1_at_30cm", "m3_m3_Water_Content_2_at_30cm"], "row_count_estimate": 43848, "file_size_mb": 2.4, "column_preview": "DateTime,m3_m3_Water_Content_1_at_5cm,..."},
+      {"filename": "ER_SMN4.csv", "columns": ["DateTime", "m3_m3_Water_Content_1_at_5cm", "m3_m3_Water_Content_2_at_5cm", "m3_m3_Water_Content_1_at_10cm", "m3_m3_Water_Content_1_at_20cm", "m3_m3_Water_Content_1_at_30cm"], "row_count_estimate": 43848, "file_size_mb": 1.8, "column_preview": "DateTime,m3_m3_Water_Content_1_at_5cm,..."},
+      {"filename": "ER_SMN5.csv", "columns": ["DateTime", "m3_m3_Water_Content_1_at_5cm", "m3_m3_Water_Content_2_at_5cm", "m3_m3_Water_Content_1_at_10cm", "m3_m3_Water_Content_2_at_10cm", "m3_m3_Water_Content_1_at_20cm", "m3_m3_Water_Content_1_at_30cm"], "row_count_estimate": 43848, "file_size_mb": 2.0, "column_preview": "DateTime,m3_m3_Water_Content_1_at_5cm,..."}
+    ],
+    "location_metadata_files": [
+      {"filename": "SM_loc.csv", "columns": ["Name", "Lat ", "Lon"], "row_count_estimate": 4, "file_size_mb": 0.001, "column_preview": "Name,Lat ,Lon\nER_SMN1,38.9166,-106.9869\n..."}
+    ],
+    "sensor_metadata_files": [],
+    "readme_content": "Soil moisture time series data from micrometeorology stations at Snodgrass Mountain in the East River Watershed...",
+    "location_resolution": {
+      "source": "location_metadata_file",
+      "qc_flag_recommendation": null,
+      "site_coordinates": [
+        {"site_id": "ER_SMN1", "latitude": 38.9166, "longitude": -106.9869, "easting": null, "northing": null, "epsg": 4326, "elevation_m": null},
+        {"site_id": "ER_SMN3", "latitude": 38.9173, "longitude": -106.9872, "easting": null, "northing": null, "epsg": 4326, "elevation_m": null},
+        {"site_id": "ER_SMN4", "latitude": 38.9171, "longitude": -106.9874, "easting": null, "northing": null, "epsg": 4326, "elevation_m": null},
+        {"site_id": "ER_SMN5", "latitude": 38.9168, "longitude": -106.9871, "easting": null, "northing": null, "epsg": 4326, "elevation_m": null}
+      ]
+    },
+    "time_series_inference": {
+      "is_timeseries": true,
+      "interval_min": 60.0,
+      "reasoning": "Multiple timestamps per site/depth combination with hourly spacing. Dataset covers multi-year automated sensor deployment at micrometeorology stations. Timestamp column has time precision ('%I:%M:%S %p')."
+    },
+    "experimental_context": {
+      "manipulation_detected": false,
+      "manipulation_type": null,
+      "has_control_data": null,
+      "recommendation": "include_all"
+    },
+    "similar_dataset_reference": {
+      "index": 26,
+      "reason": "Dataset 26 has similar wide-format VWC time series with depth embedded in column names, multiple data files per site, and a separate location metadata file with decimal degree coordinates."
+    },
+    "open_questions": [],
+    "skill_version": "0.1",
+    "run_id": "skill1_idx2_run0",
+    "timestamp": "2026-06-30T23:25:00Z"
+  },
+  "harmonizer_success": true,
+  "harmonizer_attempted": true,
+  "output": {
+    "package_id": "ess-dive-9fd65df885a8e87-20250715T064942543",
+    "python_code": "See skill2_harmonization_code.py",
+    "mapping_json": "See skill2_mapping.json",
+    "skill_version": "0.2",
+    "run_id": "skill2_idx2_run0",
+    "timestamp": "2026-06-30T23:26:00Z"
+  },
+  "code_path": "results/raw_runs/idx2/traces/skill2_harmonization_code.py",
+  "mapping_path": "results/raw_runs/idx2/traces/skill2_mapping.json",
+  "success": true,
+  "fold_id": 1,
+  "dataset_index": 2
+}

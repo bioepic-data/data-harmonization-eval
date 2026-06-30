@@ -1,0 +1,114 @@
+{
+  "index": 2,
+  "dataset_identifier": "ess-dive-9fd65df885a8e87-20250715T064942543",
+  "doi": "doi:10.15485/1646477",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "ER_SMN1.csv",
+    "ER_SMN3.csv",
+    "ER_SMN4.csv",
+    "ER_SMN5.csv"
+  ],
+  "location_metadata_files": [
+    "SM_loc.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "DateTime",
+        "source_files": [
+          "ER_SMN1.csv",
+          "ER_SMN3.csv",
+          "ER_SMN4.csv",
+          "ER_SMN5.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Convert to ISO 8601 UTC format. Source format: '%m/%d/%Y %I:%M:%S %p' (12-hour AM/PM). Timezone: America/Denver (Mountain Time, UTC-7 MDT / UTC-6 MST).",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "m3_m3_Water_Content_i_at_jcm",
+        "source_files": [
+          "ER_SMN1.csv",
+          "ER_SMN3.csv",
+          "ER_SMN4.csv",
+          "ER_SMN5.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Parse float j from the column name suffix '*_at_jcm' by splitting on '_' and stripping 'cm' from the last element.",
+        "unit_conversion": "Divide by 1e2 to convert from cm to m."
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Lat ",
+        "source_files": [
+          "SM_loc.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Look up 'Lat ' (note trailing space in column name) for 'site_id' (from 'Name' column) in SM_loc.csv. site_id is the data filename stem (e.g., 'ER_SMN1' from 'ER_SMN1.csv').",
+        "unit_conversion": "None; source units are WGS84 decimal degrees."
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Lon",
+        "source_files": [
+          "SM_loc.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Look up 'Lon' for 'site_id' (from 'Name' column) in SM_loc.csv.",
+        "unit_conversion": "None; source units are WGS84 decimal degrees."
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": "m3_m3_Water_Content_i_at_jcm",
+        "source_files": [
+          "ER_SMN1.csv",
+          "ER_SMN3.csv",
+          "ER_SMN4.csv",
+          "ER_SMN5.csv"
+        ],
+        "destination_variable": "replicate",
+        "transformation": "Parse integer i from the 5th underscore-delimited token of the column name 'm3_m3_Water_Content_i_at_jcm' (0-indexed position 4 after split on '_'). Where i=1 → replicate 1, i=2 → replicate 2.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "site_id",
+        "transformation": "Parse site_id from source filename stem (e.g., 'ER_SMN1' from 'ER_SMN1.csv') using re.sub(r'\\.csv$', '', filename).",
+        "unit_conversion": null
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Not reported in source; populate with np.nan.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "m3_m3_Water_Content_i_at_jcm",
+        "source_files": [
+          "ER_SMN1.csv",
+          "ER_SMN3.csv",
+          "ER_SMN4.csv",
+          "ER_SMN5.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Coerce from wide format with column variables containing depth (j) and replicate (i) information to long format with separate columns for depth_m, replicate, and volumetric_water_content_m3_m3.",
+        "unit_conversion": "None; source units are m3/m3 (confirmed by 'm3_m3_' prefix in column names)."
+      }
+    }
+  }
+}
