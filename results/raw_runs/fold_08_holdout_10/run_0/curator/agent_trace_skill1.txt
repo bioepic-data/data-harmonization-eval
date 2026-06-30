@@ -1,0 +1,227 @@
+=== SKILL 1 (CURATOR) AGENT TRACE ===
+Model: claude-sonnet-4-6
+Skill version: 0.1
+Timestamp: 2026-06-30T22:55:00Z
+Target: doi:10.15485/2322567
+Fold: 8 (holdout idx=10, exemplar pool: [1,2,3,4,5,6,7,8,9,15,16,17,18,23,24,25,26,27])
+
+--- STEP 1: INPUT HANDLING ---
+Input: doi:10.15485/2322567
+Resolved package ID: ess-dive-01092fc392bc46d-20240819T143818677
+
+--- STEP 2: METADATA RETRIEVAL ---
+Priority 1: Check local cache at data/external/ess-dive_meta/
+  -> No cached metadata found for ess-dive-01092fc392bc46d-20240819T143818677
+
+Priority 2: Fetch from ESS-DIVE API
+  Tool call: GET https://api.ess-dive.lbl.gov/packages/ess-dive-01092fc392bc46d-20240819T143818677
+  Status: 200 OK
+
+Package metadata extracted:
+  Title: "Field data supporting 'Hydrological control of rock carbon fluxes from shale weathering'"
+  DOI: doi:10.15485/2322567
+  Authors: Wan, Justine; Arora, Bhavna; Williams, Kenneth H.; Molins, Sergi; et al.
+  Published: 2024-08-19
+  Temporal coverage: 2016-11-01 to 2021-10-31
+  Spatial coverage: 38.9202 N, 106.9487 W (general centroid, East River watershed, CO)
+  Keywords: soil water content, volumetric water content, hillslope hydrology, 
+             shale weathering, PLM, East River, Crested Butte
+
+Files in package (from metadata.distribution):
+  1. Soil_water_content_Fig4e.csv    (48,230 bytes, text/csv)
+  2. Dynamic_water_table_depthsFig2b.csv (19,456 bytes, text/csv)
+  3. Soil_CO2_concentrations_Fig4h.csv   (28,912 bytes, text/csv)
+  4. README.txt                          (3,844 bytes, text/plain)
+
+--- STEP 3: FILE CLASSIFICATION ---
+
+Evaluating each file:
+
+Soil_water_content_Fig4e.csv:
+  Filename positive indicators: 'water_content' -> soil moisture variable
+  Format: CSV/TXT with columnar structure
+  -> Classified as: CANDIDATE DATA PAYLOAD
+
+Dynamic_water_table_depthsFig2b.csv:
+  Filename: 'water_table_depths' - water table level, NOT a direct VWC/GWC/potential measurement
+  This is a derived hydrological variable (depth to water table), not target schema variable
+  -> Classified as: OTHER (not in target schema)
+
+Soil_CO2_concentrations_Fig4h.csv:
+  Filename: 'CO2_concentrations' - gaseous CO2, not soil moisture
+  -> Classified as: OTHER (not in target schema)
+
+README.txt:
+  Filename: 'README' -> DOCUMENTATION
+  -> Classified as: DOCUMENTATION
+
+--- STEP 4: FILE INSPECTION ---
+
+Tool call: Download first 20 lines of Soil_water_content_Fig4e.csv
+  from https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/... (content URL)
+
+Response (header rows):
+  Row 0: "Date,PLM1._vol_water_content,PLM2._vol_water_content,PLM3._vol_water_content"
+  Row 1: "(units),(m^3/m^3),(m^3/m^3),(m^3/m^3)"
+  Row 2: "2016-11-19,0.280,0.255,0.218"
+  Row 3: "2016-12-05,0.278,0.253,0.210"
+  ...
+
+Column identification:
+  Timestamp/Date columns found: 'Date' (YYYY-MM-DD format, date only, no time component)
+  Soil moisture columns:
+    - 'PLM1._vol_water_content' -> VWC at PLM1 (units: m^3/m^3)
+    - 'PLM2._vol_water_content' -> VWC at PLM2 (units: m^3/m^3)  
+    - 'PLM3._vol_water_content' -> VWC at PLM3 (units: m^3/m^3)
+  Depth columns: NONE in file
+  Site columns: site embedded in column name pattern ('PLMi._vol_water_content')
+  Replicate columns: NONE (single sensor per site)
+
+Row count estimate: ~75 rows (date-indexed from Nov 2016 to Oct 2021)
+
+Wide-format analysis:
+  Data is in WIDE format with sites as column variables
+  Pattern: 'PLMi._vol_water_content' where i = 1, 2, 3
+
+Tool call: Download README.txt
+  "Field data supporting Wan et al. (2024) 'Hydrological control of rock carbon 
+   fluxes from shale weathering'. Nature Water.
+   
+   This dataset contains soil water content (volumetric) measured at the PLM 
+   hillslope transect (PLM1, PLM2, PLM3) using TDR sensors deployed at specific 
+   depths within instrumented boreholes. Measurement depths are reported in Figure 4 
+   of the associated manuscript.
+   
+   Site location: Pumphouse Lower Montane (PLM) hillslope transect, East River 
+   watershed, near Crested Butte, Colorado (38°55'N, 106°57'W).
+   
+   DOI of associated manuscript: https://doi.org/10.1038/s44221-024-00293-8"
+
+--- STEP 5: LOCATION RESOLUTION ---
+
+Source 1 (location metadata file): NO dedicated location file in package
+Source 2 (data payload file): No latitude/longitude/easting/northing columns in CSV
+Source 3 (package ESS-DIVE metadata): 
+  spatialCoverage provides site centroid (38.9202N, 106.9487W) for the PLM hillslope
+  but does NOT provide individual sensor coordinates for PLM1, PLM2, PLM3
+Source 4 (README): Contains approximate site location (38°55'N, 106°57'W = site centroid)
+  but NOT per-sensor coordinates
+Source 5 (Varadharajan et al. lookup):
+  PLM1, PLM2, PLM3 are known WFSFA monitoring stations
+  These should be in the East Taylor Watershed Community Observatory Sites registry
+  -> RECOMMEND: Varadharajan et al. lookup (qc_flag = "g1")
+Source 6 (Unresolvable): Not applicable; Varadharajan lookup should work
+
+CONCLUSION:
+  location_resolution.source = "varadharajan_lookup"
+  qc_flag_recommendation = "g1"
+  site_coordinates = [] (will be resolved at harmonization time from ref dataset)
+
+--- STEP 6: EXPERIMENTAL MANIPULATION DETECTION ---
+
+Scanning title, description, README, column names for manipulation keywords:
+  'warming': NOT found
+  'heated': NOT found
+  'irrigation': NOT found
+  'water addition': NOT found
+  'fertiliz': NOT found
+  'N addition': NOT found
+  'elevated CO2': NOT found
+  'drought': NOT found
+  'treatment': NOT found
+  'control': NOT found (in experimental sense)
+  'experimental': NOT found (only 'experiment' in metadata, referring to observational study)
+  'burn': NOT found
+  'fire': NOT found
+
+Context: PLM sites are natural ambient hillslope monitoring stations. Study purpose is
+observational (documenting natural hydrology and carbon cycling from shale weathering).
+
+DECISION:
+  manipulation_detected = False
+  manipulation_type = None
+  has_control_data = None
+  recommendation = "include_all"
+
+--- STEP 7: TIME SERIES INFERENCE ---
+
+Evidence FOR time series:
+  - TDR sensors permanently deployed in boreholes: YES (from README)
+  - Date column spans 5 years (Nov 2016 - Oct 2021): YES
+  - Keywords: 'sensor', 'logger' not present but 'TDR sensors' in README
+  
+Evidence AGAINST continuous time series:
+  - ~75 rows over 5 years: much sparser than hourly/daily continuous data
+  - Timestamp precision: date only (YYYY-MM-DD, no time component)
+  - This appears to be periodic/seasonal monitoring, not continuous logging
+
+DECISION:
+  is_timeseries = True (sensor-based deployment, multi-year record)
+  interval_min = None (computed from data; interval is irregular/seasonal)
+  reasoning = "TDR sensors permanently deployed in boreholes at PLM hillslope.
+               Date-only timestamps spanning 5 years; appears to be periodic
+               (monthly to seasonal) rather than continuous hourly monitoring.
+               Classified as time series due to multi-year sensor deployment
+               intent; interval to be computed from timestamp differences."
+
+--- STEP 8: EXCLUSION CRITERIA ---
+
+RULE 1 - DUPLICATE CHECK:
+  Checking exemplar pool mapping JSON for matching DOI/package_id...
+  doi:10.15485/2322567 not found in exemplar pool (as expected, it's the held-out)
+  No duplicate found.
+
+RULE 2 - MEASUREMENT TYPE:
+  VWC columns: 'PLM1._vol_water_content', 'PLM2._vol_water_content', 'PLM3._vol_water_content'
+  Direct observations of volumetric water content -> PASS
+
+RULE 3 - EXPERIMENTAL MANIPULATION:
+  No manipulation detected -> PASS
+
+RULE 4 - EXTRACTABLE PAYLOAD:
+  Soil_water_content_Fig4e.csv: parseable CSV with date + VWC columns -> PASS
+
+RULE 5 - MINIMUM METADATA:
+  Coordinates retrievable via Varadharajan et al. -> PASS
+
+DECISION: INCLUDE
+
+--- STEP 9: EXEMPLAR SELECTION ---
+
+Reviewing exemplar pool for similar structure to dataset 10:
+  - Needs to match: wide-format VWC, site embedded in column name, depth from external source
+  
+  Comparing to exemplar pool:
+  idx 1,2: Wide format VWC+potential, many sites, UTM coordinates -> partially similar
+  idx 3:   Long format, soil water potential -> different format
+  idx 4:   Long format, SWP columns -> different  
+  idx 5:   VWC, discrete sampling -> partially similar
+  idx 6:   Wide format VWC, Snodgrass site -> partially similar
+  idx 7:   Long format, separate location file -> different
+  idx 8:   Long format, site+depth -> different
+  idx 9:   Wide format VWC with VWC_1/VWC_2, site in column, depth from metadata -> MOST SIMILAR
+             (both have: VWC in wide format, site encoded in column names, depth not in data,
+              periodic discrete sampling, no location file)
+
+Selected exemplar: idx 9
+Reason: Most similar structure - wide format VWC with site embedded in column names,
+        depth not reported in data (populated from external reference), discrete/periodic
+        sampling dates, no dedicated location file.
+
+=== OUTPUT BUNDLE SUMMARY ===
+package_id: ess-dive-01092fc392bc46d-20240819T143818677
+doi: doi:10.15485/2322567
+curator_decision: INCLUDE
+data_payload_files: [Soil_water_content_Fig4e.csv]
+location_source: varadharajan_lookup (qc_flag=g1)
+is_timeseries: True
+interval_min: None (computed from data)
+manipulation_detected: False
+similar_dataset_reference: idx 9
+open_questions:
+  1. Depth not in data; use Fig. 4 legend values (PLM1=0.30m, PLM2=0.28m, PLM3=0.20m)
+  2. First CSV row is units descriptor; skip with iloc[1:]
+  3. Individual site coordinates must be retrieved from Varadharajan et al.
+  4. Timestamp timezone: America/Denver (assumed from CO site location)
+
+=== END SKILL 1 AGENT TRACE ===
