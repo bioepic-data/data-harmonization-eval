@@ -6,24 +6,23 @@ keep the held-out cluster's reference answer out of the agent's reach, we
 materialize a per-config sandbox under ``.runs/<name>/`` containing only:
 
 * the **skills** (curator + harmonizer), copied verbatim;
-* the **ablated mapping JSON** — the gold mapping with the held-out cluster's
+* the **filtered mapping JSON** — the gold mapping with the held-out cluster's
   entries removed, written to the path the skills read for exemplars
   (``data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json``);
-* the **ablated monolith** — the expert harmonization script with the held-out
-  blocks spliced out (see :mod:`src.folds.ablate_monolith`), written to the path
-  the harmonizer reads as a code-pattern reference
-  (``notebooks/harmonize_ess-dive_soilmoisture_data.py``).
+* the **held-out-free expert code** — ``common.py`` plus the kept
+  ``dataset_NN.py`` modules of the modular expert harmonizer (see
+  :mod:`src.folds.expert_harmonizer`), copied to the path the harmonizer reads
+  as a code-pattern reference (``data/gold/expert_code/harmonize_sm/``). The
+  held-out cluster's modules are simply not copied.
 
-Isolation is by *absence*: the two answer-bearing artifacts in the env have the
-held-out cluster removed, and they sit at the exact relative paths the skills
-resolve, so the skill picks up the ablated copy rather than the original. Shared
-*inputs* are deliberately NOT treated as leakage and stay where they are:
+Isolation is by *absence*: the held-out cluster is missing from both the
+exemplar mapping and the reference modules, which sit at the exact relative
+paths the skills resolve. Shared *inputs* are deliberately NOT treated as
+leakage and stay where they are:
 
 * raw per-dataset CSVs at ``~/ess-dive_wfsfa_soil_datasets/<dsid>/`` — read by
   generated code via an absolute home path, so they need no env copy;
-* cached ESS-DIVE metadata — optionally symlinked in via ``metadata_dir`` (the
-  curator reads it to evaluate a dataset; seeing a dataset's own metadata is the
-  task input, not the answer).
+* cached ESS-DIVE metadata — optionally symlinked in via ``metadata_dir``.
 
 The agent can in principle escape the sandbox (``../`` or absolute paths); the
 backstop is instruction (``AGENT_INSTRUCTIONS.md``) plus a post-hoc trace audit
@@ -38,11 +37,12 @@ from typing import Optional
 
 import typer
 
-from src.folds.ablate_monolith import (
-    DEFAULT_INPUT as DEFAULT_MONOLITH,
+from src.folds.expert_harmonizer import (
     DEFAULT_MAPPING,
-    ablate,
+    PACKAGE_DIR as DEFAULT_PACKAGE,
     block_indices,
+    kept_indices,
+    kept_module_paths,
     resolve_holdout,
 )
 
@@ -50,7 +50,7 @@ DEFAULT_SKILLS = Path("skills")
 DEFAULT_ENV_ROOT = Path(".runs")
 
 # Where each artifact lands inside the env, matching the skills' read paths.
-MONOLITH_REL = Path("notebooks/harmonize_ess-dive_soilmoisture_data.py")
+HARMONIZER_REL = Path("data/gold/expert_code/harmonize_sm")
 MAPPING_REL = Path("data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json")
 METADATA_REL = Path("data/external/ess-dive_meta")
 
@@ -80,7 +80,7 @@ def build_env(
     holdout: set[int],
     name: Optional[str] = None,
     env_root: Path = DEFAULT_ENV_ROOT,
-    monolith_path: Path = DEFAULT_MONOLITH,
+    package_dir: Path = DEFAULT_PACKAGE,
     mapping_path: Path = DEFAULT_MAPPING,
     skills_dir: Path = DEFAULT_SKILLS,
     metadata_dir: Optional[Path] = None,
@@ -89,12 +89,13 @@ def build_env(
 
     Returns the env directory. Overwrites an existing env of the same name.
     """
+    holdout = set(holdout)
     mapping = json.loads(Path(mapping_path).read_text())
-    source = Path(monolith_path).read_text()
 
-    # ablate() raises if a hold-out index has no block (rejects REF_IDX 0 and
-    # the excluded datasets) — fail loudly before writing anything.
-    ablated_py = ablate(source, holdout)
+    # kept_module_paths() raises if a hold-out index has no module (rejects
+    # REF_IDX 0 and the excluded datasets) — fail loudly before writing anything.
+    kept_paths = kept_module_paths(holdout, package_dir)
+    kept = kept_indices(holdout, package_dir)
     filtered = filter_mapping(mapping, holdout)
 
     env = Path(env_root) / (name or default_name(holdout))
@@ -102,8 +103,11 @@ def build_env(
         shutil.rmtree(env)
     env.mkdir(parents=True)
 
-    (env / MONOLITH_REL).parent.mkdir(parents=True, exist_ok=True)
-    (env / MONOLITH_REL).write_text(ablated_py)
+    # held-out-free expert code: copy common.py + the kept dataset modules
+    pkg_dest = env / HARMONIZER_REL
+    pkg_dest.mkdir(parents=True, exist_ok=True)
+    for path in kept_paths:
+        shutil.copy(path, pkg_dest / path.name)
 
     (env / MAPPING_REL).parent.mkdir(parents=True, exist_ok=True)
     (env / MAPPING_REL).write_text(json.dumps(filtered, indent=2))
@@ -120,10 +124,10 @@ def build_env(
         "name": env.name,
         "holdout_indices": sorted(holdout),
         "holdout_identifiers": held_ids,
-        "exemplar_indices": block_indices(ablated_py),
+        "exemplar_indices": kept,
         "n_exemplars": len(filtered),
         "sources": {
-            "monolith": str(monolith_path),
+            "package": str(package_dir),
             "mapping": str(mapping_path),
             "skills": str(skills_dir),
         },
@@ -140,7 +144,7 @@ def _instructions(held_ids: list) -> str:
         "Harmonize the held-out dataset(s) below using ONLY:\n"
         "- the skills in `skills/`,\n"
         "- the exemplars in `data/processed/.../sm_data_harmonization_mapping.json` "
-        "and the code patterns in `notebooks/harmonize_ess-dive_soilmoisture_data.py` "
+        "and the code patterns in `data/gold/expert_code/harmonize_sm/` "
         "(both have the held-out cluster removed),\n"
         "- the shared raw inputs under `~/ess-dive_wfsfa_soil_datasets/` and the "
         "cached metadata under `data/external/ess-dive_meta/`.\n\n"
@@ -158,7 +162,7 @@ def main(
     holdout: str = typer.Option(..., "--holdout", help="Comma-separated indices or dataset_identifiers to hold out."),
     name: Optional[str] = typer.Option(None, "--name", help="Env dir name (default: holdout-<ids>)."),
     env_root: Path = typer.Option(DEFAULT_ENV_ROOT, "--env-root", help="Parent dir for run environments."),
-    monolith: Path = typer.Option(DEFAULT_MONOLITH, "--monolith", help="Expert monolith to ablate."),
+    package: Path = typer.Option(DEFAULT_PACKAGE, "--package", help="Modular expert harmonizer dir to draw modules from."),
     mapping: Path = typer.Option(DEFAULT_MAPPING, "--mapping", help="Gold mapping JSON."),
     skills: Path = typer.Option(DEFAULT_SKILLS, "--skills", help="Skills dir to copy."),
     metadata_dir: Optional[Path] = typer.Option(None, "--metadata-dir", help="Cached ESS-DIVE metadata to symlink in."),
@@ -166,11 +170,11 @@ def main(
     """Assemble `.runs/<name>/` for one hold-out config."""
     holdout_idx = resolve_holdout(holdout.split(","), mapping)
     env = build_env(
-        holdout_idx, name=name, env_root=env_root, monolith_path=monolith,
+        holdout_idx, name=name, env_root=env_root, package_dir=package,
         mapping_path=mapping, skills_dir=skills, metadata_dir=metadata_dir,
     )
     typer.echo(f"built {env} (held out {sorted(holdout_idx)}; "
-               f"{len(block_indices((env / MONOLITH_REL).read_text()))} exemplar blocks remain)")
+               f"{len(block_indices(env / HARMONIZER_REL))} exemplar modules remain)")
 
 
 if __name__ == "__main__":
