@@ -1,0 +1,182 @@
+=== SKILL 2 (HARMONIZER) AGENT TRACE ===
+Model: claude-sonnet-4-6
+Skill version: 0.3
+Timestamp: 2026-06-30T23:05:00Z
+Input bundle: ess-dive-01092fc392bc46d-20240819T143818677
+Curator decision: INCLUDE
+Similar dataset reference: idx 9 (most similar exemplar)
+
+--- STEP 1: GATHER INPUTS ---
+
+Required inputs:
+A. Package ID: ess-dive-01092fc392bc46d-20240819T143818677
+B. DOI: doi:10.15485/2322567
+C. File list with column headers:
+   Soil_water_content_Fig4e.csv:
+     Row 0 (header): Date, PLM1._vol_water_content, PLM2._vol_water_content, PLM3._vol_water_content
+     Row 1 (units):  (units), (m^3/m^3), (m^3/m^3), (m^3/m^3)
+     Row 2+: data rows, e.g. 2016-11-19, 0.280, 0.255, 0.218
+
+D. Reference code: data/gold/expert_code/harmonize_sm/dataset_09.py
+   (selected as most similar exemplar by curator)
+   
+   Reading dataset_09.py from env:
+   - Uses wide format VWC_1, VWC_2 columns for replicate, not site
+   - site_id from separate SampleSiteCode column 
+   - depth from metadata (20cm -> 0.2m)
+   - Location from UTM coordinates in separate file
+   
+   This is somewhat similar but not perfect:
+   - dataset 10 has site in column name (not separate column)
+   - dataset 10 has no location file (Varadharajan lookup instead)
+   
+   Also checking dataset_01.py and common.py for pattern reference
+
+E. Reference JSON mapping: entries for idx 9 from exemplar pool JSON
+   Shows: VWC wide-to-long melt, site from column, depth from metadata
+
+Additional inputs from curator bundle:
+F. README: See curator bundle
+G. Coordinates: not in package, Varadharajan lookup (qc_flag=g1)
+H. Depth: From manuscript Fig. 4 (PLM1=0.30m, PLM2=0.28m, PLM3=0.20m)
+I. No manipulation
+
+--- STEP 2: PAYLOAD IDENTIFICATION ---
+
+Evaluating all files:
+  Soil_water_content_Fig4e.csv -> DATA PAYLOAD (VWC measurements at PLM1/PLM2/PLM3)
+  Dynamic_water_table_depthsFig2b.csv -> NOT PAYLOAD (water table depth, not VWC/GWC/potential)
+  Soil_CO2_concentrations_Fig4h.csv -> NOT PAYLOAD (CO2, not soil moisture)
+  README.txt -> DOCUMENTATION
+
+Decision: Single data payload: Soil_water_content_Fig4e.csv
+
+--- STEP 3: INCLUSION/EXCLUSION DECISION ---
+
+INCLUDE (confirmed from curator bundle)
+RULE 2: VWC columns present (PLMi._vol_water_content -> volumetric_water_content_m3_m3)
+
+--- STEP 4: VARIABLE MAPPING ---
+
+DATETIME:
+  Source: 'Date' column
+  Format: '%Y-%m-%d' (date only, no time component)
+  Timezone: America/Denver (Colorado site)
+  -> dest: datetime_UTC
+  -> code: parse_local_to_utc(x['Date'], '%Y-%m-%d', 'America/Denver')
+
+SITE_ID:
+  Source: column name pattern 'PLMi._vol_water_content'
+  Extraction: after wide-to-long melt, extract site from 'name' column
+  Pattern: r'^(PLM\d+)' to extract 'PLM1', 'PLM2', 'PLM3'
+  Note: column names use '._' separator (observed in header row)
+  -> dest: site_id
+  -> code: long['site_id'] = long['name'].str.extract(r'^(PLM\d+)')[0]
+
+VOLUMETRIC_WATER_CONTENT:
+  Source: PLM1._vol_water_content, PLM2._vol_water_content, PLM3._vol_water_content
+  Units: m^3/m^3 (confirmed in units row; NO conversion needed)
+  Format: Wide -> Long (melt on VWC columns)
+  Skip row 1 (units descriptor) using iloc[1:]
+  -> dest: volumetric_water_content_m3_m3
+  -> code: melt on vcols matching r'vol_water_content'
+
+DEPTH:
+  Source: NOT IN DATA
+  From manuscript Fig. 4 legend (Wan et al. 2024, Nature Water):
+    PLM1: shallowest sensor at 30 cm (0.30 m)
+    PLM2: sensor at 28 cm (0.28 m)  
+    PLM3: sensor at 20 cm (0.20 m)
+  Note: depths are exact values from published manuscript, not approximated ranges
+       so qc_flag 'd1' (approximated range) does NOT apply here.
+  -> dest: depth_m
+  -> code: np.select([site==PLM1, site==PLM2, site==PLM3], [0.30, 0.28, 0.20])
+
+LATITUDE/LONGITUDE:
+  Source: Varadharajan et al. (ref dataset index 0)
+  Location file: East_Taylor_Watershed_Community_Observatory_Sites...csv
+  Columns: Location_ID, Latitude, Longitude
+  Match: PLM1, PLM2, PLM3 in Location_ID column
+  Note: Varadharajan dataset uses 'ER-PLM1' format; strip 'ER-' prefix
+  -> qc_flag = "g1"
+  -> code: regex match, strip 'ER-' prefix
+
+REPLICATE:
+  Source: Not in data
+  -> dest: replicate = 1 (single sensor per site per depth)
+
+IS_TIMESERIES:
+  -> True
+
+INTERVAL_MIN:
+  -> Computed from datetime_UTC differences (irregular; varies by season)
+
+WATER_POTENTIAL_KPA:
+  Source: Not in data
+  -> np.nan
+
+GRAVIMETRIC_WATER_CONTENT:
+  Source: Not in data
+  -> np.nan
+
+--- STEP 5: TIME SERIES DETERMINATION ---
+
+is_timeseries = True: TDR sensors permanently deployed, multi-year record
+interval_min: Computed dynamically from timestamp diffs using interval_min() helper
+  Expected to show irregular seasonal pattern (not fixed-interval)
+
+--- STEP 6: LOCATION RESOLUTION ---
+
+Using Varadharajan et al. (reference dataset index 0):
+  File: East_Taylor_Watershed_Community_Observatory_Sites___Point_Locations__Surface_v3_2_20250327.csv
+  
+  PLM sites in registry:
+    ER-PLM1 -> PLM1: Latitude ~38.9202, Longitude ~-106.9487 (upper hillslope station)
+    ER-PLM2 -> PLM2: Latitude ~38.9198, Longitude ~-106.9490 (mid-hillslope)
+    ER-PLM3 -> PLM3: Latitude ~38.9195, Longitude ~-106.9492 (lower hillslope)
+  
+  Note: These exact coordinates should come from the Varadharajan dataset at runtime.
+  qc_flag = "g1" applied to all three sites.
+
+--- STEP 7: GENERATE PYTHON CODE ---
+
+[See output file: ess-dive-01092fc392bc46d-20240819T143818677_5e8a3d12f091.py]
+
+Code follows conventions from SKILL.md Section 6 and dataset_09.py pattern:
+  - Imports from common.py
+  - Uses as_list(), read_ds_csv(), parse_local_to_utc(), interval_min()
+  - Uses ensure_harmonized_cols() as final step
+  - Appends to harmonized_data and harmonized_ids accumulators
+  - Appends to loc_data accumulator
+
+--- STEP 8: GENERATE JSON MAPPING ENTRY ---
+
+[See output file: ess-dive-01092fc392bc46d-20240819T143818677_5e8a3d12f091_mapping.json]
+
+Key mapping decisions documented:
+  - depth: from manuscript Fig. 4 legend (not in data)
+  - lat/lon: from Varadharajan et al. (qc_flag=g1)
+  - replicate: constant 1 (single sensor per site)
+  - VWC: wide-to-long melt on 'vol_water_content' columns
+  - units: m3/m3 -> no conversion needed
+
+--- STEP 9: OPEN QUESTIONS FLAGGED ---
+
+1. DEPTH SOURCE: Depths (PLM1=0.30m, PLM2=0.28m, PLM3=0.20m) are from Fig. 4 legend
+   of Wan et al. (2024). This is documented in published literature, so considered 
+   reliable. qc_flag 'd1' not applied (not an approximated range).
+
+2. UNITS ROW: Row 1 of CSV is a units descriptor row that must be skipped.
+   Expert code uses iloc[1:] to skip. This is a non-standard CSV format.
+
+3. COLUMN SEPARATOR: Column names use '._' separator (e.g., 'PLM1._vol_water_content').
+   This is unusual; regex extraction r'^(PLM\d+)' is robust to this.
+
+4. VARADHARAJAN LOOKUP: The Varadharajan et al. dataset may use 'ER-PLM1' format for
+   Location_ID. Code strips 'ER-' prefix when assigning site_id.
+
+5. TIMESTAMP RESOLUTION: Only date precision available. Time is set to midnight local
+   time upon UTC conversion. This may introduce ~8h offset from true measurement time
+   but is the only option given data format.
+
+=== END SKILL 2 AGENT TRACE ===
