@@ -41,7 +41,7 @@ jobs:
   eval:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       id-token: write
       actions: read # Required for Claude to read CI results
 
@@ -63,7 +63,7 @@ jobs:
           HOLDOUT_INPUT: ${{ inputs.holdout }}
           NAME_INPUT: ${{ inputs.name }}
         run: |
-          uv run python - <<'PY' >> "$GITHUB_OUTPUT"
+          uv run python - <<'PY'
           import os, re, yaml
 
           raw = os.environ.get("HOLDOUT_INPUT", "").strip()
@@ -82,38 +82,43 @@ jobs:
                   cluster_id = cid
                   break
 
-          if name_in:
-              env_name = name_in
-          elif cluster_id:
-              env_name = cluster_id
-          else:
-              env_name = "holdout-" + re.sub(r"[^A-Za-z0-9._-]+", "-", raw).strip("-")
+          # env_name becomes a directory/artifact name and is interpolated into
+          # later steps, so sanitize it to a safe charset in EVERY branch
+          # (incl. the free-text `name` input) to avoid any injection.
+          env_name = name_in or cluster_id or f"holdout-{raw}"
+          env_name = re.sub(r"[^A-Za-z0-9._-]+", "-", env_name).strip("-") or "run"
 
           # Integer tokens are the indices we can stage raw data for.
           stage_indices = ",".join(t for t in holdout.split(",") if t.strip().isdigit())
 
-          print(f"holdout={holdout}")
-          print(f"env_name={env_name}")
-          print(f"env_path=.runs/{env_name}")
-          print(f"stage_indices={stage_indices}")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"holdout={holdout}\n")
+              out.write(f"env_name={env_name}\n")
+              out.write(f"env_path=.runs/{env_name}\n")
+              out.write(f"stage_indices={stage_indices}\n")
+          print(f"Resolved holdout={holdout!r} env_name={env_name!r}")
           PY
-          echo "Resolved holdout='${HOLDOUT_INPUT}' -> see step outputs above"
 
       - name: Build leave-one-cluster-out run environment
+        env:
+          HOLDOUT: ${{ steps.resolve.outputs.holdout }}
+          ENV_NAME: ${{ steps.resolve.outputs.env_name }}
         run: |
-          uv run python -m src.folds.build_env \
-            --holdout "${{ steps.resolve.outputs.holdout }}" \
-            --name "${{ steps.resolve.outputs.env_name }}"
+          uv run python -m src.folds.build_env --holdout "$HOLDOUT" --name "$ENV_NAME"
 
       - name: Stage raw data for held-out dataset(s)
         if: ${{ inputs.stage_raw && steps.resolve.outputs.stage_indices != '' }}
         continue-on-error: true
+        env:
+          STAGE_INDICES: ${{ steps.resolve.outputs.stage_indices }}
         run: |
-          uv run python -m src.folds.stage_raw_data \
-            --indices "${{ steps.resolve.outputs.stage_indices }}" \
-            --drive-method public
+          # Writes raw inputs to ~/ess-dive_wfsfa_soil_datasets/<id>/ by design;
+          # the agent reads them from that home path (not from the run folder).
+          uv run python -m src.folds.stage_raw_data --indices "$STAGE_INDICES" --drive-method public
 
       - name: Run harmonization agent in the run environment
+        # Cap runaway evals so a hung/looping agent can't burn the full 6h limit.
+        timeout-minutes: 60
         uses: anthropics/claude-code-action@beta
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -136,6 +141,9 @@ jobs:
                 }
               }
             }
+          # This prompt intentionally restates (more prescriptively) the
+          # instructions that build_env.py writes to AGENT_INSTRUCTIONS.md in the
+          # run folder. Keep the two in sync if either changes.
           direct_prompt: |
             You are running a single grouped leave-one-cluster-out harmonization
             evaluation. A self-contained run environment has already been built for
