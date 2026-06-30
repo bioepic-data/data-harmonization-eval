@@ -1,0 +1,58 @@
+{
+  "fold": "fold-06-holdout-8",
+  "dataset_indices": [
+    8
+  ],
+  "trace_forbidden_path_scan_matches": 0,
+  "agent_output": {
+    "rows": 195524,
+    "target_columns_present": 9,
+    "schema_equal": true,
+    "extra_columns": []
+  },
+  "gold_output": {
+    "rows": 195446,
+    "columns": 9
+  },
+  "output_equivalence": {
+    "key_includes_dataset_index": false,
+    "unique_agent_keys": 195524,
+    "unique_gold_keys": 195438,
+    "key_intersection": 194255,
+    "agent_extra_keys": 1269,
+    "agent_missing_gold_keys": 1183,
+    "common_rows": 194263,
+    "shared_row_value_matches": {
+      "interval_min": "194247/194263",
+      "volumetric_water_content_m3_m3": "191225/194263",
+      "gravimetric_water_content_gH2O_gs": "194263/194263",
+      "water_potential_kPa": "178229/194263",
+      "is_timeseries": "194263/194263"
+    },
+    "row_precision": 0.9935097481639082,
+    "gold_recall": 0.9939469294610055
+  },
+  "json_mapping_equivalence": {
+    "top_level_exact_matches": "6/7",
+    "top_level_matches": {
+      "index": true,
+      "dataset_identifier": true,
+      "doi": true,
+      "archive_repository": true,
+      "data_payload_files": true,
+      "location_metadata_files": true,
+      "sensor_metadata_files": false
+    },
+    "gold_mapping_categories_present": "8/8",
+    "extra_agent_categories": [],
+    "missing_gold_categories": [],
+    "field_level_exact_matches": "24/40",
+    "field_exact_matches_by_name": {
+      "destination_variable": "8/8",
+      "source_pattern": "4/8",
+      "source_files": "6/8",
+      "transformation": "0/8",
+      "unit_conversion": "6/8"
+    }
+  }
+}
