@@ -213,6 +213,35 @@ python experiments/phase_b_prospective.py --score \
 python experiments/metric_validation.py
 ```
 
+### Running a single eval from GitHub Actions
+
+A manually-triggered workflow runs one grouped leave-one-cluster-out evaluation
+end-to-end: it builds the held-out-free run environment, runs the
+curator+harmonizer agent inside it, and uploads all outputs as an artifact.
+
+1. Open the workflow:
+   **[Actions → Run Harmonization Eval](https://github.com/bioepic-data/data-harmonization-eval/actions/workflows/run-eval.yml)**
+2. Click **Run workflow** (top right) and fill in the inputs:
+   - **holdout** *(required)* — the held-out target. Accepts a dataset index
+     (e.g. `5`), a `dataset_identifier`, a comma-separated list
+     (e.g. `1,2,3,6,16,27`), or a cluster id/name from `config/cv_folds.yaml`
+     (e.g. `cluster_1` or `sg_ph_micromet`, which expand to their dataset
+     indices).
+   - **name** *(optional)* — name for the run environment / artifact
+     (default: the cluster id, or `holdout-<ids>`).
+   - **stage_raw** *(optional, default `true`)* — stage the held-out
+     dataset(s) raw inputs before running the agent. Best-effort; the run
+     continues even if staging fails.
+3. Click the green **Run workflow** button to start it.
+
+When the run finishes, download the results from the run's **Artifacts**
+section: an artifact named `eval-<name>` containing the entire `.runs/<name>/`
+folder, including everything the agent wrote under `output/`.
+
+> The agent harmonizes the held-out dataset from its identifier alone, using
+> only the exemplars and reference code that remain after the held-out cluster
+> is removed — see `.github/workflows/run-eval.yml` and `src/folds/build_env.py`.
+
 ## Deliverables
 
 1. **Tidy scored results** (CSV): one row per run with all metrics
