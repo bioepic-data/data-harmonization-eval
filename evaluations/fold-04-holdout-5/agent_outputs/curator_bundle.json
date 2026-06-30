@@ -1,0 +1,272 @@
+{
+  "package_id": "ess-dive-8ac2940c708a515-20230504T210140482233",
+  "doi": "doi:10.15485/1842907",
+  "curator_decision": "INCLUDE",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    {
+      "filename": "SM_SWC.csv",
+      "columns": [
+        "Date Time",
+        "SFA_Location",
+        "Sensor.SN",
+        "Measurement"
+      ],
+      "row_count_estimate": 1089621,
+      "file_size_mb": 49.06,
+      "column_preview": "Date Time,SFA_Location,Sensor.SN,Measurement\n2017-05-26 13:00:00,ER-LMB1R,2012371,0.0896\n2017-05-26 13:00:00,ER-LMB1L,2012373,0.2109\n2017-05-26 14:00:00,ER-LMB1R,2012371,0.0896\n2017-05-26 14:00:00,ER-LMB1L,2012373,0.2124\n2017-05-26 15:00:00,ER-LMB1R,2012371,0.0933",
+      "classification_reason": "Direct soil water content time series with Date Time, SFA_Location, Sensor.SN, and Measurement."
+    }
+  ],
+  "non_payload_files": [
+    {
+      "filename": "SM_AirT.csv",
+      "reason": "Air temperature, not soil moisture."
+    },
+    {
+      "filename": "SM_ST.csv",
+      "reason": "Soil temperature, not soil moisture."
+    },
+    {
+      "filename": "SM_rH.csv",
+      "reason": "Relative humidity, not soil moisture."
+    }
+  ],
+  "location_metadata_files": [
+    {
+      "filename": "Microclimate_Sensors.csv",
+      "columns": [
+        "Logger",
+        "Sensor Type",
+        "Sensor.SN",
+        "SFA_Location",
+        "Site",
+        "Treatment",
+        "Subplot",
+        "Start",
+        "Stop",
+        "Unnamed: 9"
+      ],
+      "row_count_estimate": 130,
+      "content_preview": "Logger,Sensor Type,Sensor.SN,SFA_Location,Site,Treatment,Subplot,Start,Stop,Unnamed: 9\n9735547,Air.T,9721330.0,ER-LMB1,LM,ctl,both,5/26/2017,10/23/2020,\n9735547,rH,9721330.1,ER-LMB1,LM,ctl,both,5/26/2017,10/23/2020,\n9735547,ST,9719166.0,ER-LMB1,LM,ctl,,5/26/2017,10/23/2020,\n9735547,PAR.down,9700885.0,ER-LMB1L,LM,ctl,meadow,5/26/2017,10/23/2020,\n9735547,PAR.up,9700884.0,ER-LMB1L,LM,ctl,meadow,5/26/2017,10/23/2020,"
+    },
+    {
+      "filename": "East_Taylor_Watershed_Community_Observatory_Sites___Point_Locations__Surface_v3_2_20250327.csv",
+      "columns": [
+        "Contact_Name",
+        "Contact_Email",
+        "Contact_Affiliation",
+        "Metadata_Provider_Name",
+        "Location_ID",
+        "Location_Name",
+        "Location_Alias",
+        "Location_Activity",
+        "Location_Category",
+        "Measurement_Categories",
+        "Years_Data_Collected",
+        "Research_Theme",
+        "Description",
+        "Geographic_Region",
+        "Parent_Location_ID",
+        "Latitude",
+        "Longitude",
+        "Lat_Long_Measurement_Method",
+        "Topographical_Elevation",
+        "Topo_Elev_Measurement_Method",
+        "Depth_Profile_Elevations",
+        "Instrumentation",
+        "Variables_Measured",
+        "Related_Reference",
+        "Location_Metadata_Version"
+      ],
+      "row_count_estimate": 1272,
+      "content_preview": "Contact_Name,Contact_Email,Contact_Affiliation,Metadata_Provider_Name,Location_ID,Location_Name,Location_Alias,Location_Activity,Location_Category,Measurement_Categories,Years_Data_Collected,Research_Theme,Description,Geographic_Region,Parent_Location_ID,Latitude,Longitude,Lat_Long_Measurement_Method,Topographical_Elevation,Topo_Elev_Measurement_Method,Depth_Profile_Elevations,Instrumentation,Variables_Measured,Related_Reference,Location_Metadata_Version\nTetsu Tokunaga,tktokunaga@lbl.gov,LBNL,Tetsu Tokunaga,ER-PLM0,Hillslope auger soil samples,,Groundwater Monitoring Well,SFA Intensive,Hydrogeology; Climate,2016,Subsurface water and carbon inventories and fluxes,\"Information needed to quantify water and gas phase flow and transport in the subsurface is being obtained through measurements of profile physical and biogeochemical characteristics, wetting-drying trends, composition of aqueous and gas phases\",PH,PH,38.9195,-106.949646,,2803.56,LIDAR,soils samples down to -0.90m below surface,\"Borehole with Gas Samplers, Water Samplers,Soil Moisture sensors (Matric Potential, TDR), thermistors, piezometer. Click <a href=\"\"https://drive.google.com/open?id=0B5RSGI83Og11bl9FbTVYT0R4UUE\"\">here</a> for drilling log. Click <a href=\"\"https://drive.google.com/open?id=0B5RSGI83Og11T3NuVFZZck1NNDQ\"\">here</a> for instrumentation depths.\",Soil/sediment Temperature; matric potentials; water levels; hydraulic potentials; water content changes; pore water chemical composition; pore gas composition; surface soil CO2 fluxes,,1.0\nTetsu Tokunaga,tktokunaga@lbl.gov,LBNL,Tetsu Tokunaga,ER-PLM1,Hillslope Borehole (M1),,Groundwater Monitoring Well,SFA Intensive,Hydrogeology; Biogeochemistry,Continuing from Dec 2016-Present (as of Dec 2020),Subsurface water and carbon inventories and fluxes,\"Information needed to quantify water and gas phase flow and transport in the subsurface is being obtained through measurements of profile physical and biogeochemical characteristics, wetting-drying trends, composition of aqueous and gas phases\",PH,PH,38.919771,-106.949273,,2787.16,LIDAR,\"-0.30m(PW,PG,T,VWC,matric,EC), -0.58m(PW,PG,T,VWC,matric,EC), -1.05m(PW,PG,T,VWC,matric,EC), -2.05m(PW,PG,T,VWC,matric,EC), -3.60m(PW,PG,T,VWC,matric,EC), -4.72m(PW,T,VWC,matric,EC), -5.40m(PW), -6.89m(PW,piezometer)\",\"Borehole with Gas Samplers, Water Samplers,Soil Moisture sensors (Matric Potential, TDR), thermistors, piezometer. Click <a href=\"\"https://drive.google.com/open?id=0B5RSGI83Og11bl9FbTVYT0R4UUE\"\">here</a> for drilling log. Click <a href=\"\"https://drive.google.com/open?id=0B5RSGI83Og11T3NuVFZZck1NNDQ\"\">here</a> for instrumentation depths.\",Soil/sediment Temperature; matric potentials; water levels; hydraulic potentials; water content changes; pore water chemical composition; pore gas composition; surface soil CO2 fluxes,,1.0\nTetsu Tokunaga,tktokunaga@lbl.gov,LBNL,Tetsu Tokunaga,ER-PLM2,Hillslope Borehole (M2),,Groundwater Monitoring Well,SFA Intensive,Hydrogeology; Biogeochemistry,Continuing from Dec 2016-Present (as of Dec 2020),Subsurface water and carbon inventories and fluxes,\"Information needed to quantify water and gas phase flow and transport in the subsurface is being obtained through measurements of profile physical and biogeochemical characteristics, wetting-drying trends, composition of aqueous and gas phases\",PH,PH,38.920157,-106.948714,,2777.25,LIDAR,\"-0.28m(PW,PG,T,VWC,matric,EC), -0.40m(PW,PG,T,VWC,matric,EC), -0.55m(PW,PG,T,VWC,matric,EC), -1.00m(PW,PG,T,VWC,matric,EC), -1.70m(PW,PG,T,VWC,matric,EC), -2.65m(PW,T,matric), -3.80m(PW,T,VWC,matric,EC), -4.62m(PW,T,matric), -8.20m(PW)\",\"Borehole with Gas Samplers, Water Samplers,Soil Moisture sensors (Matric Potential, TDR), thermistors. Click <a href=\"\"https://drive.google.com/open?id=0B5RSGI83Og11SHprMkd0a2ZWUUU\"\">here</a> for drilling log. Click <a href=\"\"https://drive.google.com/open?id=0B5RSGI83Og11T3NuVFZZck1NNDQ\"\">here</a> for instrumentation depths.\",Soil/sediment Temperature; matric potentials; hydraulic potentials; water content changes; pore water chemical composition; pore gas composition; surface soil CO2 fluxes,,1.0\nTetsu Tokunaga,tktokunaga@lbl.gov,LBNL,Tetsu Tokunaga,ER-PLM3,Hillslope Borehole (M3),,Groundwater Monitoring Well,SFA Intensive,Hydrogeology; Biogeochemistry,Continuing from Dec 2016-Present (as of Dec 2020),Subsurface water and carbon inventories and fluxes,\"Information needed to quantify water and gas phase flow and transport in the subsurface is being obtained through measurements of profile physical and biogeochemical characteristics, wetting-drying trends, composition of aqueous and gas phases\",PH,PH,38.920784,-106.948367,,2759.69,LIDAR,\"-0.20m(PW,PG,T,VWC,matric,EC), -0.41m(PW,PG,T,VWC,matric,EC), -62m(PW,PG,T,VWC,matric,EC), -1.00m(PW,PG,T,VWC,matric,EC), -2.06m(PW,PG,T,VWC,matric,EC), -3.70m(PW,PG,T,matric), -4.85m(PW), -6.50m(PW), -7.80m(PW)\",\"Borehole with Gas Samplers, Water Samplers,Soil Moisture sensors (Matric Potential, TDR), thermistors. Click <a href=\"\"https://drive.google.com/file/d/0B5RSGI83Og11Y3RkM0JQNXJDUmc/view?usp=sharing\"\">here</a> for drilling log. Click <a href=\"\"https://drive.google.com/open?id=0B5RSGI83Og11T3NuVFZZck1NNDQ\"\">here</a> for instrumentation depths.\",Soil/sediment Temperature; matric potentials; hydraulic potentials; water content changes; pore water chemical composition; pore gas composition; surface soil CO2 fluxes,,1.0\nTetsu Tokunaga,tktokunaga@lbl.gov,LBNL,Tetsu Tokunaga,ER-PLM4,Hillslope monitoring site (M4),,Groundwater Monitoring Well,SFA Intensive,Hydrogeology; Biogeochemistry,Continuing from Dec 2016-Present (as of Dec 2020),Subsurface water and carbon inventories and fluxes,\"Information needed to quantify water and gas phase flow and transport in the subsurface is being obtained through measurements of profile physical and biogeochemical characteristics, wetting-drying trends, composition of aqueous and gas phases\",PH,PH,38.921006,-106.947953,,2757.43,LIDAR,\"-0.20m(PW,PG,T,VWC,matric,EC), -0.40m(PW,PG,T,VWC,matric,EC), -0.67m(PW,PG,T,VWC,matric,EC), -1.02m(PW), -1.28m(PW)\",\"Shallow Gas Samplers, Water Samplers,Soil Moisture sensors (Matric Potential, TDR), thermistors individually installed (no borehole). Click <a href=\"\"hhttps://drive.google.com/file/d/0B5RSGI83Og11TkZlUFM5a1ctQ00/view?usp=sharing\"\">here</a> for drilling log. Click <a href=\"\"https://drive.google.com/open?id=0B5RSGI83Og11T3NuVFZZck1NNDQ\"\">here</a> for instrumentation depths.\",Soil/sediment Temperature; matric potentials; hydraulic potentials; water content changes; pore water chemical composition; pore gas composition; surface soil CO2 fluxes,,1.0"
+    }
+  ],
+  "sensor_metadata_files": [
+    {
+      "filename": "Microclimate_Sensors.csv",
+      "columns": [
+        "Logger",
+        "Sensor Type",
+        "Sensor.SN",
+        "SFA_Location",
+        "Site",
+        "Treatment",
+        "Subplot",
+        "Start",
+        "Stop",
+        "Unnamed: 9"
+      ],
+      "swc_sensor_rows": 38
+    }
+  ],
+  "readme_content": null,
+  "location_resolution": {
+    "source": "varadharajan_lookup",
+    "qc_flag_recommendation": "g1 for exact Location_ID matches; g2 where no exact Location_ID is available",
+    "site_coordinates": [
+      {
+        "site_id": "ER-LMB1L",
+        "latitude": 38.920264,
+        "longitude": -106.948368,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "ER-LMB1R",
+        "latitude": 38.920272,
+        "longitude": -106.948385,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "WG-LSA1L",
+        "latitude": 38.95598,
+        "longitude": -107.02897,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "WG-LSB1",
+        "latitude": null,
+        "longitude": null,
+        "qc_flag": "g2",
+        "source": "unresolved exact Location_ID in Varadharajan registry raw package"
+      },
+      {
+        "site_id": "WG-LSB1R",
+        "latitude": 38.955732,
+        "longitude": -107.0289,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "WG-LSC1L",
+        "latitude": 38.955129,
+        "longitude": -107.028516,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "WG-UMA2L",
+        "latitude": 38.932854,
+        "longitude": -107.009091,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "WG-UMA2R",
+        "latitude": 38.932865,
+        "longitude": -107.009123,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "WG-UMB2L",
+        "latitude": 38.932668,
+        "longitude": -107.008543,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "WG-UMB2R",
+        "latitude": 38.932673,
+        "longitude": -107.008562,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "WG-UMC2L",
+        "latitude": 38.932596,
+        "longitude": -107.008133,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "WG-UMC2R",
+        "latitude": 38.93261,
+        "longitude": -107.008153,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "WG-USA2R",
+        "latitude": null,
+        "longitude": null,
+        "qc_flag": "g2",
+        "source": "unresolved exact Location_ID in Varadharajan registry raw package"
+      },
+      {
+        "site_id": "WG-USB2R",
+        "latitude": null,
+        "longitude": null,
+        "qc_flag": "g2",
+        "source": "unresolved exact Location_ID in Varadharajan registry raw package"
+      },
+      {
+        "site_id": "WG-USC1L",
+        "latitude": null,
+        "longitude": null,
+        "qc_flag": "g2",
+        "source": "unresolved exact Location_ID in Varadharajan registry raw package"
+      },
+      {
+        "site_id": "WG-USC1R",
+        "latitude": null,
+        "longitude": null,
+        "qc_flag": "g2",
+        "source": "unresolved exact Location_ID in Varadharajan registry raw package"
+      },
+      {
+        "site_id": "XX-ALA1R",
+        "latitude": 38.996955,
+        "longitude": -107.067405,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "XX-ALB1R",
+        "latitude": 38.996908,
+        "longitude": -107.067207,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      },
+      {
+        "site_id": "XX-ALC1R",
+        "latitude": 38.996758,
+        "longitude": -107.067052,
+        "qc_flag": "g1",
+        "source": "Varadharajan location registry raw package"
+      }
+    ]
+  },
+  "time_series_inference": {
+    "is_timeseries": true,
+    "interval_min": "computed per site_id and replicate from timestamp differences; common intervals are 10 or 60 minutes",
+    "reasoning": "Multiple timestamped observations per sensor from 2017-05-26 to 2020-10-23."
+  },
+  "experimental_context": {
+    "manipulation_detected": true,
+    "manipulation_type": "experimental early snowmelt manipulation",
+    "has_control_data": true,
+    "recommendation": "include_control_only",
+    "implementation": "Join SM_SWC.csv to Microclimate_Sensors.csv and retain Treatment == 'ctl'."
+  },
+  "similar_dataset_reference": {
+    "index": 23,
+    "reason": "Fold-local exemplar uses SWC sensor data, joins sensor metadata, filters experimental warming/manipulation records to controls, and computes interval_min per sensor time series."
+  },
+  "open_questions": [
+    "Sensor installation depth is not reported in the available held-out raw files, so depth_m is left missing.",
+    "Five retained control site IDs do not have exact Location_ID matches in the raw location registry and should be treated as g2 for location purposes."
+  ],
+  "summary_counts": {
+    "raw_swc_rows": 1089621,
+    "control_swc_rows_before_datetime_filter": 515825,
+    "raw_swc_locations": 33,
+    "control_swc_locations": 19,
+    "raw_swc_sensors": 37,
+    "control_swc_sensors": 19
+  }
+}
