@@ -1,0 +1,54 @@
+{
+  "fold": "fold-01-holdout-1-2-3-6-16-27",
+  "dataset_indices": [
+    1,
+    2,
+    3,
+    6,
+    16,
+    27
+  ],
+  "trace_forbidden_path_scan_matches": 0,
+  "agent_output": {
+    "rows": 3584771,
+    "target_columns_present": 9,
+    "schema_equal": true,
+    "extra_columns": [
+      "dataset_index",
+      "dataset_identifier"
+    ]
+  },
+  "gold_output": {
+    "rows": 2214708,
+    "columns": 9
+  },
+  "output_equivalence": {
+    "key_includes_dataset_index": true,
+    "unique_agent_keys": 3584771,
+    "unique_gold_keys": 2102354,
+    "key_intersection": 1306547,
+    "agent_extra_keys": 2278224,
+    "agent_missing_gold_keys": 795807,
+    "common_rows": 1307069,
+    "shared_row_value_matches": {
+      "interval_min": "1306902/1307069",
+      "volumetric_water_content_m3_m3": "1238017/1307069",
+      "gravimetric_water_content_gH2O_gs": "1307069/1307069",
+      "water_potential_kPa": "1306739/1307069",
+      "is_timeseries": "1307069/1307069"
+    },
+    "row_precision": 0.3644715380703537,
+    "gold_recall": 0.6214686013868264
+  },
+  "json_mapping_equivalence": {
+    "note": "cluster mapping literal comparison not computed",
+    "heldout_indices": [
+      1,
+      2,
+      3,
+      6,
+      16,
+      27
+    ]
+  }
+}

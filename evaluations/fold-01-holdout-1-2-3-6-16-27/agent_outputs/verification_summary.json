@@ -1,0 +1,64 @@
+{
+  "files": [
+    "curator_bundle.json",
+    "harmonize_heldout.py",
+    "heldout_dataset_01_harmonized.csv",
+    "heldout_dataset_02_harmonized.csv",
+    "heldout_dataset_03_harmonized.csv",
+    "heldout_dataset_06_harmonized.csv",
+    "heldout_dataset_16_harmonized.csv",
+    "heldout_dataset_27_harmonized.csv",
+    "heldout_harmonized.csv",
+    "heldout_row_counts.csv",
+    "mapping.json",
+    "mapping_notes.md"
+  ],
+  "row_count": 3584771,
+  "schema": [
+    "dataset_index",
+    "dataset_identifier",
+    "datetime_UTC",
+    "site_id",
+    "depth_m",
+    "replicate",
+    "is_timeseries",
+    "interval_min",
+    "volumetric_water_content_m3_m3",
+    "gravimetric_water_content_gH2O_gs",
+    "water_potential_kPa"
+  ],
+  "per_dataset_counts": [
+    {
+      "dataset_index": 1,
+      "dataset_identifier": "ess-dive-beca0be9bb38ece-20250516T122010234",
+      "rows": 1373556
+    },
+    {
+      "dataset_index": 2,
+      "dataset_identifier": "ess-dive-9fd65df885a8e87-20250715T064942543",
+      "rows": 154176
+    },
+    {
+      "dataset_index": 3,
+      "dataset_identifier": "ess-dive-4c1829de1b8a2ec-20260220T045039633",
+      "rows": 139740
+    },
+    {
+      "dataset_index": 6,
+      "dataset_identifier": "ess-dive-18e91eb74405882-20241017T173226640",
+      "rows": 617934
+    },
+    {
+      "dataset_index": 16,
+      "dataset_identifier": "ess-dive-b3d271f19a94e8d-20260114T204512119",
+      "rows": 1250669
+    },
+    {
+      "dataset_index": 27,
+      "dataset_identifier": "ess-dive-c37aaf9ed6d4c0d-20230504T205923265966",
+      "rows": 48696
+    }
+  ],
+  "forbidden_path_patterns_present": false,
+  "violations": []
+}
