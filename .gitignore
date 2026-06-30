@@ -79,3 +79,6 @@ results/tables/*
 # OS
 .DS_Store
 Thumbs.db
+
+# leave-one-out run environments (ephemeral)
+.runs/
