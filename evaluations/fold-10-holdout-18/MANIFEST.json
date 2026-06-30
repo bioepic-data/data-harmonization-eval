@@ -1,0 +1,35 @@
+{
+  "name": "fold-10-holdout-18",
+  "holdout_indices": [
+    18
+  ],
+  "holdout_identifiers": [
+    "ess-dive-b924878d23c9dd7-20250214T163427929"
+  ],
+  "exemplar_indices": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    15,
+    16,
+    17,
+    23,
+    24,
+    25,
+    26,
+    27
+  ],
+  "n_exemplars": 27,
+  "sources": {
+    "package": "data/gold/expert_code/harmonize_sm",
+    "mapping": "data/gold/sm_data_harmonization_mapping.json",
+    "skills": "skills"
+  }
+}
