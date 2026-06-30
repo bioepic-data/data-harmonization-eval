@@ -1,0 +1,121 @@
+{
+  "dataset_identifier": "ess-dive-a99be52b7a6114c-20230504T210134503379",
+  "doi": "doi:10.15485/1842908",
+  "title": "Surface soil temperature and water content from warming experiment located at the Rocky Mountain Biological Laboratory, Colorado, 2015 to 2019",
+  "decision": "INCLUDE",
+  "decision_reason": "WM_SWC.csv contains direct hourly soil water content observations from in-ground sensors; rows documented as out-of-ground and lacking depth/site metadata are excluded.",
+  "experimental_context": {
+    "manipulation_detected": true,
+    "manipulation_type": "warming experiment",
+    "evidence": "Package title/description identify a warming experiment; plot_metadata.csv marks plots as control or heated."
+  },
+  "files": {
+    "data_payload_files": [
+      "WM_SWC.csv"
+    ],
+    "location_metadata_files": [
+      "plot_metadata.csv",
+      "sensor_metadata.csv"
+    ],
+    "sensor_metadata_files": [
+      "sensor_metadata.csv"
+    ],
+    "documentation_files": []
+  },
+  "raw_file_summaries": {
+    "WM_SWC.csv": {
+      "rows": 1722752,
+      "columns": [
+        "Date Time",
+        "Plot.Location",
+        "Point.Location",
+        "Veg",
+        "Sensor.SN",
+        "Sensor.Type",
+        "Measurement"
+      ],
+      "sensor_type_counts": {
+        "SWC": 1722752
+      },
+      "timestamp_min": "2015-06-25 00:00:00",
+      "timestamp_max": "2019-07-17 15:00:00",
+      "measurement_min": 0.0003,
+      "measurement_max": 0.5654
+    },
+    "plot_metadata.csv": {
+      "rows": 10,
+      "columns": [
+        "Plot.Location",
+        "Treatment"
+      ],
+      "treatments": [
+        "control",
+        "heated"
+      ]
+    },
+    "sensor_metadata.csv": {
+      "rows": 105,
+      "columns": [
+        "Logger",
+        "Sensor Type",
+        "Sensor.SN",
+        "Point.Location",
+        "Plot.Location",
+        "Zone",
+        "Depth.cm",
+        "Veg",
+        "Notes",
+        "start",
+        "stop"
+      ],
+      "swc_sensor_rows": 71,
+      "swc_depth_cm_values": [
+        6.0,
+        14.0
+      ]
+    }
+  },
+  "harmonization_plan": {
+    "included_rows": 1722716,
+    "excluded_rows": 36,
+    "excluded_row_reason": "Sensor 9731453 has note \"couldn't find a good spot; left plugged into mantis but out of the ground\" and lacks Point.Location, Veg, and Depth.cm metadata.",
+    "datetime": "Parse Date Time as fixed Mountain Standard Time (Etc/GMT+7) and convert to UTC ISO-8601 string.",
+    "site_id": "Construct from resolved Plot.Location, Point.Location, and Veg.",
+    "depth_m": "Look up Depth.cm by Sensor.SN in sensor_metadata.csv and divide by 100.",
+    "replicate": "Dense integer rank of Sensor.SN within each site_id and depth_m.",
+    "volumetric_water_content_m3_m3": "Use Measurement directly; source values are already fractional m3/m3 soil water content.",
+    "is_timeseries": true,
+    "interval_min": "Calculate elapsed minutes between consecutive timestamps within each site_id/depth_m/replicate series."
+  },
+  "location_resolution": {
+    "specific_coordinates_available": false,
+    "package_spatial_coverage": [
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry. The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C. et al. (2020) doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.05
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.88,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "qc_flag_recommendation": "g2",
+    "reason": "Raw files provide plot/point identifiers but no plot-level latitude/longitude; package metadata provides only a broad East River bounding box."
+  },
+  "temporal_coverage": {
+    "startDate": "2015-06-25",
+    "endDate": "2019-07-17",
+    "@type": "DateTime"
+  },
+  "source_metadata_view_url": "https://data.ess-dive.lbl.gov/view/doi:10.15485/1842908"
+}

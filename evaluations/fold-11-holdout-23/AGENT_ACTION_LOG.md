@@ -1,0 +1,72 @@
+2026-06-30T16:04:39-07:00 | action=write | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/AGENT_ACTION_LOG.md | reason=initialize mandatory trace log
+2026-06-30T16:04:39-07:00 | action=directory create | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs | reason=initialize output directory
+2026-06-30T16:04:39-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/AGENT_INSTRUCTIONS.md | reason=read benchmark instructions
+2026-06-30T16:04:39-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/MANIFEST.json | reason=read sandbox manifest
+2026-06-30T16:04:39-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/skills/essdive_sm_curator/SKILL.md | reason=read fold-local curator skill
+2026-06-30T16:04:39-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/skills/essdive_sm_harmonizer/SKILL.md | reason=read fold-local harmonizer skill
+2026-06-30T16:04:47-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/skills/essdive_sm_harmonizer/SKILL.md lines 261-520 | reason=complete fold-local harmonizer skill read
+2026-06-30T16:04:56-07:00 | action=directory listing | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23 | reason=inspect sandbox top-level files
+2026-06-30T16:04:56-07:00 | action=directory listing | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/data | reason=inspect fold-local data files only
+2026-06-30T16:04:56-07:00 | action=directory listing | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379 | reason=inspect allowed held-out raw package files
+2026-06-30T16:05:20-07:00 | action=command | subject=python inspect fold-local exemplars and held-out raw files | reason=summarize allowed mapping/code/raw inputs
+2026-06-30T16:05:21.293887-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json | reason=inspect fold-local mapping schema and exemplar entries
+2026-06-30T16:05:21.294834-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/data/gold/expert_code/harmonize_sm/common.py | reason=inspect allowed common harmonizer helpers
+2026-06-30T16:05:21.294976-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/data/gold/expert_code/harmonize_sm/dataset_24.py | reason=inspect allowed exemplar code dataset_24
+2026-06-30T16:05:21.295094-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/data/gold/expert_code/harmonize_sm/dataset_25.py | reason=inspect allowed exemplar code dataset_25
+2026-06-30T16:05:21.295189-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/data/gold/expert_code/harmonize_sm/dataset_26.py | reason=inspect allowed exemplar code dataset_26
+2026-06-30T16:05:21.295276-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/data/gold/expert_code/harmonize_sm/dataset_27.py | reason=inspect allowed exemplar code dataset_27
+2026-06-30T16:05:21.295389-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/data/gold/expert_code/harmonize_sm/dataset_18.py | reason=inspect allowed exemplar code dataset_18
+2026-06-30T16:05:21.295489-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/data/gold/expert_code/harmonize_sm/dataset_16.py | reason=inspect allowed exemplar code dataset_16
+2026-06-30T16:05:21.295576-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/data/gold/expert_code/harmonize_sm/dataset_15.py | reason=inspect allowed exemplar code dataset_15
+2026-06-30T16:05:21.295668-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/WM_SWC.csv | reason=inspect held-out raw CSV header and sample rows
+2026-06-30T16:05:21.472686-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/WM_SWC.csv | reason=inspect held-out raw CSV shape and dtypes
+2026-06-30T16:05:23.952391-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/plot_metadata.csv | reason=inspect held-out raw CSV header and sample rows
+2026-06-30T16:05:23.957491-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/plot_metadata.csv | reason=inspect held-out raw CSV shape and dtypes
+2026-06-30T16:05:23.986915-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/sensor_metadata.csv | reason=inspect held-out raw CSV header and sample rows
+2026-06-30T16:05:23.993878-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/sensor_metadata.csv | reason=inspect held-out raw CSV shape and dtypes
+2026-06-30T16:05:52-07:00 | action=command | subject=curl ESS-DIVE package metadata for ess-dive-a99be52b7a6114c-20230504T210134503379 | reason=retrieve DOI and package-level metadata when fold cache is absent
+2026-06-30T16:05:52-07:00 | action=write | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/_essdive_meta_probe.json | reason=temporary metadata probe inside agent_outputs
+2026-06-30T16:07:59-07:00 | action=command | subject=curl ESS-DIVE package metadata for ess-dive-a99be52b7a6114c-20230504T210134503379 with network | reason=retrieve DOI and package-level metadata when fold cache is absent
+2026-06-30T16:07:59-07:00 | action=write | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/_essdive_meta_probe.json | reason=temporary metadata probe inside agent_outputs
+2026-06-30T16:08:01-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/_essdive_meta_probe.json | reason=inspect retrieved ESS-DIVE metadata probe
+2026-06-30T16:08:15-07:00 | action=command | subject=python parse ESS-DIVE metadata probe | reason=extract DOI, spatial coverage, temporal coverage, distribution filenames
+2026-06-30T16:08:15.212319-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/_essdive_meta_probe.json | reason=parse retrieved metadata fields
+2026-06-30T16:08:40-07:00 | action=command | subject=python profile held-out sensor joins and cadence | reason=verify merge keys, depth mapping, replicate strategy, interval
+2026-06-30T16:08:41.315174-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/sensor_metadata.csv | reason=profile sensor metadata keys
+2026-06-30T16:08:41.319556-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/WM_SWC.csv | reason=profile payload keys and timestamp cadence
+2026-06-30T16:09:38-07:00 | action=command | subject=python inspect post-merge output candidates | reason=verify missing metadata, exact duplicates, replicate grouping
+2026-06-30T16:09:38.502999-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/WM_SWC.csv | reason=inspect payload for harmonization candidate rows
+2026-06-30T16:09:39.852104-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/sensor_metadata.csv | reason=inspect sensor metadata for harmonization candidate rows
+2026-06-30T16:10:01-07:00 | action=command | subject=python inspect missing-depth payload rows | reason=document handling for rows without point/depth metadata
+2026-06-30T16:10:02.383473-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/WM_SWC.csv | reason=read missing-depth payload rows
+2026-06-30T16:10:03.729952-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/sensor_metadata.csv | reason=read missing-depth sensor metadata rows
+2026-06-30T16:11:18-07:00 | action=command | subject=write harmonize_heldout.py | reason=create held-out harmonization script
+2026-06-30T16:11:18-07:00 | action=write | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/harmonize_heldout.py | reason=create standalone harmonizer output
+2026-06-30T16:12:21-07:00 | action=command | subject=python write curator_bundle mapping and notes | reason=create required JSON and markdown outputs
+2026-06-30T16:12:22.118709-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/_essdive_meta_probe.json | reason=read public metadata probe for DOI/title and package context
+2026-06-30T16:12:22.118940-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/WM_SWC.csv | reason=compute payload summary for curator bundle
+2026-06-30T16:12:23.780294-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/plot_metadata.csv | reason=compute plot metadata summary for curator bundle
+2026-06-30T16:12:23.783355-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/sensor_metadata.csv | reason=compute sensor metadata summary for curator bundle
+2026-06-30T16:12:24.813846-07:00 | action=write | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/curator_bundle.json | reason=write curator bundle JSON
+2026-06-30T16:12:24.814199-07:00 | action=write | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/mapping.json | reason=write mapping JSON entry
+2026-06-30T16:12:24.814444-07:00 | action=write | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/mapping_notes.md | reason=write mapping notes markdown
+2026-06-30T16:12:32-07:00 | action=command | subject=python /scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/harmonize_heldout.py | reason=run held-out harmonization script
+2026-06-30T16:12:32.615715-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/WM_SWC.csv | reason=read held-out SWC payload for harmonization
+2026-06-30T16:12:33.945648-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/sensor_metadata.csv | reason=read held-out sensor metadata for depth/site joins
+2026-06-30T16:12:53-07:00 | action=command | subject=perl edit harmonize_heldout.py sensor serial casting | reason=fix SWC-only Sensor.SN normalization
+2026-06-30T16:12:53-07:00 | action=write | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/harmonize_heldout.py | reason=update harmonizer to cast Sensor.SN after SWC filtering
+2026-06-30T16:12:53-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/harmonize_heldout.py | reason=verify modified harmonizer section
+2026-06-30T16:13:01-07:00 | action=command | subject=python /scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/harmonize_heldout.py rerun | reason=generate held-out harmonized CSV after cast fix
+2026-06-30T16:13:01.671650-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/WM_SWC.csv | reason=read held-out SWC payload for harmonization
+2026-06-30T16:13:03.334949-07:00 | action=file read | subject=/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-a99be52b7a6114c-20230504T210134503379/sensor_metadata.csv | reason=read held-out sensor metadata for depth/site joins
+2026-06-30T16:13:21.848342-07:00 | action=write | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/heldout_harmonized.csv | reason=write held-out harmonized CSV
+2026-06-30T16:13:45-07:00 | action=command | subject=rm -f temporary metadata probe | reason=remove non-deliverable temporary file from agent_outputs
+2026-06-30T16:13:45-07:00 | action=delete | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/_essdive_meta_probe.json | reason=remove non-deliverable temporary file
+2026-06-30T16:14:09-07:00 | action=command | subject=python validate outputs and scan action log | reason=final schema/count validation and anti-leakage scan
+2026-06-30T16:14:09.672234-07:00 | action=directory listing | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs | reason=verify only required deliverables are present
+2026-06-30T16:14:09.672441-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/curator_bundle.json | reason=validate curator_bundle.json parses as JSON
+2026-06-30T16:14:09.672699-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/mapping.json | reason=validate mapping.json parses as JSON
+2026-06-30T16:14:09.672901-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/mapping_notes.md | reason=validate mapping notes exists and preview
+2026-06-30T16:14:09.673045-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/harmonize_heldout.py | reason=validate harmonizer script exists and contains schema
+2026-06-30T16:14:09.673229-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/agent_outputs/heldout_harmonized.csv | reason=validate harmonized CSV schema and row count
+2026-06-30T16:14:11.809979-07:00 | action=file read | subject=/scratch/jmc/data-harmonization-eval/.runs/fold-11-holdout-23/AGENT_ACTION_LOG.md | reason=scan mandatory action log for forbidden path patterns

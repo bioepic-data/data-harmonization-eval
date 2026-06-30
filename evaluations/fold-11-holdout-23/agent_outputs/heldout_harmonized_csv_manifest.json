@@ -1,0 +1,10 @@
+{
+  "artifact": "heldout_harmonized.csv",
+  "tracked_as": "heldout_harmonized.csv.gz",
+  "reason": "Raw CSV is 116186889 bytes, above GitHub's 100 MB per-file limit.",
+  "raw_size_bytes": 116186889,
+  "raw_sha256": "ca637ee9e64fa07e8170fd04f029db48fd27a1669e8cae406f4e3905033e0764",
+  "gzip_size_bytes": 7224816,
+  "gzip_sha256": "c9ada32726ed6c48d1a3691b7f8d9f2c80da6da0611f40719d21e9554ecb959d",
+  "local_raw_path": ".runs/fold-11-holdout-23/agent_outputs/heldout_harmonized.csv"
+}
