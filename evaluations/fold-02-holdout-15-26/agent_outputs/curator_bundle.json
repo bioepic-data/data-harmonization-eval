@@ -1,0 +1,206 @@
+{
+  "datasets": [
+    {
+      "package_id": "ess-dive-987726ef1235abc-20230504T210342929747",
+      "doi": "doi:10.15485/1648526",
+      "title": "Time-domain reflectometer survey across the East River Watershed, Colorado",
+      "curator_decision": "INCLUDE",
+      "exclusion_reason": null,
+      "data_payload_files": [
+        {
+          "filename": "TDR_survey_ER_20190701.csv",
+          "columns": [
+            "GPS_id",
+            "Sample_id",
+            "id",
+            "Site",
+            "Easting_m",
+            "Northing_m",
+            "Elevation_m",
+            "TDR_T(C)_1",
+            "TDR_T(C)_2",
+            "TDR_T(C)_3",
+            "TDR_SM(VWC%)_1",
+            "TDR_SM(VWC%)_2",
+            "TDR_SM(VWC%)_3",
+            "TDR_EC(mS/m)_1",
+            "TDR_EC(mS/m)_2",
+            "TDR_EC(mS/m)_3"
+          ],
+          "row_count_estimate": 101,
+          "file_size_bytes": 9944,
+          "soil_moisture_columns": [
+            "TDR_SM(VWC%)_1",
+            "TDR_SM(VWC%)_2",
+            "TDR_SM(VWC%)_3"
+          ]
+        }
+      ],
+      "location_metadata_files": [
+        {
+          "filename": "TDR_survey_ER_20190701.csv",
+          "columns": [
+            "GPS_id",
+            "Site",
+            "Easting_m",
+            "Northing_m",
+            "Elevation_m"
+          ]
+        }
+      ],
+      "sensor_metadata_files": null,
+      "readme_content": null,
+      "location_resolution": {
+        "source": "data_payload",
+        "qc_flag_recommendation": null,
+        "site_coordinates_preview": [
+          {
+            "site_id": "ss01",
+            "latitude": 38.919149485550214,
+            "longitude": -106.94877138958229
+          },
+          {
+            "site_id": "ss02",
+            "latitude": 38.91933691149292,
+            "longitude": -106.94862400823963
+          },
+          {
+            "site_id": "ss03",
+            "latitude": 38.91978827229731,
+            "longitude": -106.94838307097369
+          },
+          {
+            "site_id": "ss04",
+            "latitude": 38.91991967874135,
+            "longitude": -106.9481283728234
+          },
+          {
+            "site_id": "ss05",
+            "latitude": 38.920330599929436,
+            "longitude": -106.94777947145542
+          },
+          {
+            "site_id": "ss06",
+            "latitude": 38.92057817593979,
+            "longitude": -106.9477034701639
+          },
+          {
+            "site_id": "ss07",
+            "latitude": 38.91921055774817,
+            "longitude": -106.94981682010442
+          },
+          {
+            "site_id": "ss08",
+            "latitude": 38.91935265011536,
+            "longitude": -106.949706333905
+          },
+          {
+            "site_id": "ss09",
+            "latitude": 38.91951143173095,
+            "longitude": -106.949515893945
+          },
+          {
+            "site_id": "ss10",
+            "latitude": 38.919869384250404,
+            "longitude": -106.94931107187196
+          }
+        ],
+        "site_coordinate_count": 101
+      },
+      "time_series_inference": {
+        "is_timeseries": false,
+        "interval_min": null,
+        "reasoning": "One spatial survey with repeated TDR readings per point; no row-level time sequence."
+      },
+      "experimental_context": {
+        "manipulation_detected": false,
+        "manipulation_type": null,
+        "has_control_data": null,
+        "recommendation": "include_all"
+      },
+      "similar_dataset_reference": {
+        "index": 9,
+        "reason": "Discrete VWC survey with UTM coordinates and replicate VWC columns."
+      },
+      "open_questions": [
+        "Row-level dates are absent; the harmonizer assigns package temporalCoverage startDate 2019-07-02 as the nominal survey date."
+      ],
+      "harmonized_rows": 286
+    },
+    {
+      "package_id": "ess-dive-f782da867133296-20230504T211008637996",
+      "doi": "doi:10.15485/1671826",
+      "title": "Soil bulk density and texture data collected during field survey associated with NEON AOP survey, East River, CO 2018",
+      "curator_decision": "INCLUDE",
+      "exclusion_reason": null,
+      "data_payload_files": [
+        {
+          "filename": "ER18_soil_physical.csv",
+          "columns": [
+            "Unnamed: 0",
+            "SampleSiteCode",
+            "SampleID",
+            "Soil Wet Weight (g)",
+            "Soil Dry Weight (g)",
+            "Lab #",
+            "SiteID",
+            "Whole sample wt, g",
+            ">2mm portion wt, g",
+            "SAND",
+            "SILT",
+            "CLAY",
+            "IGSN",
+            "Top sample depth_cm",
+            "Bottom sample depth_cm",
+            "Collection date",
+            "BD_tot g/cm3",
+            "<2mm portion wt, g",
+            "BD_2mm g/cm3",
+            "BD_wet g/cm3",
+            "water content %vol",
+            "mineral density g/cm3",
+            "sand density g/cm3",
+            "silt density g/cm3",
+            "clay density g/cm3"
+          ],
+          "row_count_estimate": 586,
+          "file_size_bytes": 81011,
+          "soil_moisture_columns": [
+            "water content %vol",
+            "Soil Wet Weight (g)",
+            "Soil Dry Weight (g)"
+          ]
+        }
+      ],
+      "location_metadata_files": null,
+      "sensor_metadata_files": null,
+      "readme_content": null,
+      "location_resolution": {
+        "source": "package_metadata_bbox_only",
+        "qc_flag_recommendation": "g2",
+        "site_coordinates": [],
+        "site_coordinate_count": 0
+      },
+      "time_series_inference": {
+        "is_timeseries": false,
+        "interval_min": null,
+        "reasoning": "Discrete soil-core collection dates; no repeated sensor time series per site/depth."
+      },
+      "experimental_context": {
+        "manipulation_detected": false,
+        "manipulation_type": null,
+        "has_control_data": null,
+        "recommendation": "include_all"
+      },
+      "similar_dataset_reference": {
+        "index": 18,
+        "reason": "Discrete lab soil-water-content sampling with dated samples and depth ranges."
+      },
+      "open_questions": [
+        "Exact per-site coordinates are not in the payload; package metadata provides only a bounding box.",
+        "Depth is represented as the midpoint of reported ranges, corresponding to qc_flag d1 in mapping notes."
+      ],
+      "harmonized_rows": 425
+    }
+  ]
+}
