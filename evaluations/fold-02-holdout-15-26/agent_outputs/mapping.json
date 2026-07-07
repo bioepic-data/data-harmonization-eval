@@ -1,0 +1,184 @@
+[
+  {
+    "index": 15,
+    "dataset_identifier": "ess-dive-987726ef1235abc-20230504T210342929747",
+    "doi": "doi:10.15485/1648526",
+    "archive_repository": "ESS-DIVE",
+    "data_payload_files": [
+      "TDR_survey_ER_20190701.csv"
+    ],
+    "location_metadata_files": [
+      "TDR_survey_ER_20190701.csv"
+    ],
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "package temporalCoverage startDate; filename date TDR_survey_ER_20190701.csv",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Assign nominal survey date from package temporal coverage start (2019-07-02) and convert local America/Denver date to UTC.",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "GPS_id",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Use GPS_id as the point-level site identifier because each row has separate coordinates.",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": "package description reports TDR at 25 cm",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "depth_m",
+          "transformation": "Assign constant sampling depth 0.25 m.",
+          "unit_conversion": "Divide reported 25 cm depth by 100 to convert to m."
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": "TDR_SM(VWC%)_1, TDR_SM(VWC%)_2, TDR_SM(VWC%)_3",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "replicate",
+          "transformation": "Parse trailing integer from repeated TDR VWC columns after wide-to-long reshape.",
+          "unit_conversion": null
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "TDR_SM(VWC%)_i",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Reshape replicate VWC percent columns to long rows and drop missing readings.",
+          "unit_conversion": "Divide by 100 to convert percent VWC to m3/m3."
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": "Northing_m",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "latitude",
+          "transformation": "Reproject EPSG:32613 northing/easting to WGS84 latitude for location metadata.",
+          "unit_conversion": "EPSG:32613 to EPSG:4326."
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": "Easting_m",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "longitude",
+          "transformation": "Reproject EPSG:32613 easting/northing to WGS84 longitude for location metadata.",
+          "unit_conversion": "EPSG:32613 to EPSG:4326."
+        }
+      }
+    }
+  },
+  {
+    "index": 26,
+    "dataset_identifier": "ess-dive-f782da867133296-20230504T211008637996",
+    "doi": "doi:10.15485/1671826",
+    "archive_repository": "ESS-DIVE",
+    "data_payload_files": [
+      "ER18_soil_physical.csv"
+    ],
+    "location_metadata_files": null,
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "Collection date",
+          "source_files": [
+            "ER18_soil_physical.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse collection date as local America/Denver date and convert to UTC.",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "SampleSiteCode",
+          "source_files": [
+            "ER18_soil_physical.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Direct column mapping.",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": "Top sample depth_cm, Bottom sample depth_cm",
+          "source_files": [
+            "ER18_soil_physical.csv"
+          ],
+          "destination_variable": "depth_m",
+          "transformation": "Use midpoint of reported depth range.",
+          "unit_conversion": "Average top and bottom depths in cm, then divide by 100 to convert to m."
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "water content %vol",
+          "source_files": [
+            "ER18_soil_physical.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Direct calculated volumetric water-content column from source data; rows without any moisture measure are excluded.",
+          "unit_conversion": "Divide by 100 to convert percent volumetric water content to m3/m3."
+        }
+      },
+      "gravimetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "Soil Wet Weight (g), Soil Dry Weight (g)",
+          "source_files": [
+            "ER18_soil_physical.csv"
+          ],
+          "destination_variable": "gravimetric_water_content_gH2O_gs",
+          "transformation": "Compute (wet weight - dry weight) / dry weight for rows with both weights.",
+          "unit_conversion": "g water per g dry soil from gram weights."
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": [
+            "ER18_soil_physical.csv"
+          ],
+          "destination_variable": "latitude",
+          "transformation": "No per-site coordinates in payload; package metadata only provides a bounding box, so exact row coordinates are unresolved.",
+          "unit_conversion": null
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": [
+            "ER18_soil_physical.csv"
+          ],
+          "destination_variable": "longitude",
+          "transformation": "No per-site coordinates in payload; package metadata only provides a bounding box, so exact row coordinates are unresolved.",
+          "unit_conversion": null
+        }
+      }
+    }
+  }
+]
