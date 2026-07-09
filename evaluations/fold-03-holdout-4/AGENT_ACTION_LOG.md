@@ -1,0 +1,40 @@
+# Agent Action Log
+
+- 2026-06-30T15:10:01-07:00 | command | mkdir -p /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/agent_outputs and create AGENT_ACTION_LOG.md | reason: initialize required log and output directory before inspection
+- 2026-06-30T15:10:01-07:00 | exit_status=0 | outcome: log initialized and output directory ensured
+- 2026-06-30T15:10:13-07:00 | list | find /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4 -maxdepth 3 -mindepth 1 -print | reason: discover fold-local files and sandbox-local skill paths
+- 2026-06-30T15:10:13-07:00 | exit_status=0 | outcome: listed fold-local paths at maxdepth 3
+- 2026-06-30T15:10:25-07:00 | read | cat /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/AGENT_INSTRUCTIONS.md /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/MANIFEST.json /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/skills/essdive_sm_curator/SKILL.md /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/skills/essdive_sm_harmonizer/SKILL.md | reason: read fold-local task manifest, agent instructions, and required sandbox-local skill instructions
+- 2026-06-30T15:10:25-07:00 | exit_status=0 | outcome: read requested fold-local instruction files
+- 2026-06-30T15:10:37-07:00 | list | find /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/data/processed /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/data/gold/expert_code/harmonize_sm /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/skills/essdive_sm_harmonizer -maxdepth 4 -type f -print | reason: identify allowed fold-local exemplar mapping, expert code, and harmonizer reference files
+- 2026-06-30T15:10:37-07:00 | exit_status=0 | outcome: listed allowed fold-local exemplar files
+- 2026-06-30T15:10:52-07:00 | read/list | python - <<'PY' summarize fold-local processed mapping and list raw held-out package files | reason: inspect allowed mapping schema/examples and raw held-out package contents
+- 2026-06-30T15:10:53-07:00 | exit_status=0 | outcome: summarized mapping entries and listed raw held-out files
+- 2026-06-30T15:11:09-07:00 | read | python - <<'PY' read README, data dictionaries, CSV headers/previews, and fold-local harmonizer insights | reason: inspect raw held-out tabular files and local harmonizer reference guidance
+- 2026-06-30T15:11:09-07:00 | exit_status=0 | outcome: inspected raw README/dictionaries/previews and harmonizer insights
+- 2026-06-30T15:11:29-07:00 | read/list | python - <<'PY' read mapping entry 0 and list/read shared raw East Taylor reference location package previews | reason: resolve held-out site codes against allowed shared raw East Taylor location reference
+- 2026-06-30T15:11:30-07:00 | exit_status=0 | outcome: inspected allowed shared raw East Taylor reference package
+- 2026-06-30T15:11:54-07:00 | read | python - <<'PY' summarize held-out rows/site codes, reference location matches, and read selected allowed exemplar code | reason: derive site/location mapping and inspect allowed expert code patterns for harmonization script
+- 2026-06-30T15:11:54-07:00 | exit_status=0 | outcome: summarized site matches and selected exemplar code
+- 2026-06-30T15:12:08-07:00 | read/search | rg -n "ph1|ph2|sg5|tb|site|df_meta|df_data" /h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-6c7085e9c544cc6-20250424T164534831/Johnsen_Bi_2025_DAE_Manuscript_Data_Package | reason: inspect raw package code/notebooks for site-code interpretation and data provenance
+- 2026-06-30T15:12:08-07:00 | exit_status=0 | outcome: searched raw package files for site-code and dataframe references
+- 2026-06-30T15:12:24-07:00 | read | python - <<'PY' extract raw notebook code cells and methods snippets mentioning site codes/data loading | reason: inspect held-out raw code in a controlled way for site code provenance
+- 2026-06-30T15:12:24-07:00 | exit_status=0 | outcome: extracted controlled raw code snippets for site/data interpretation
+- 2026-06-30T15:12:50-07:00 | read | python - <<'PY' compute held-out date interval summaries and exact site/location candidates | reason: infer time-series interval and document location resolution quality
+- 2026-06-30T15:12:50-07:00 | exit_status=0 | outcome: computed interval summary and location candidate matches
+- 2026-06-30T15:14:58-07:00 | command/write | python - <<'PY' create curator_bundle.json, harmonize_heldout.py, mapping.json, and mapping_notes.md under agent_outputs | reason: produce required curator and harmonizer artifacts in allowed output directory
+- 2026-06-30T15:14:58-07:00 | write | /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/agent_outputs/curator_bundle.json | reason: phase 1 curator bundle created
+- 2026-06-30T15:14:58-07:00 | write | /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/agent_outputs/harmonize_heldout.py | reason: phase 2 harmonization script created
+- 2026-06-30T15:14:58-07:00 | write | /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/agent_outputs/mapping.json | reason: phase 2 mapping entry created
+- 2026-06-30T15:14:58-07:00 | write | /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/agent_outputs/mapping_notes.md | reason: phase 2 mapping notes created
+- 2026-06-30T15:14:58-07:00 | exit_status=0 | outcome: generated required JSON/script/notes artifacts except runtime CSV
+- 2026-06-30T15:15:09-07:00 | command | python /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/agent_outputs/harmonize_heldout.py | reason: run generated harmonization script to create heldout_harmonized.csv if safe
+- 2026-06-30T22:15:09.796062+00:00 | read | /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/agent_outputs/curator_bundle.json | reason: load curator bundle generated in phase 1
+- 2026-06-30T22:15:09.796940+00:00 | read | /h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-6c7085e9c544cc6-20250424T164534831/Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_data.csv | reason: read held-out raw measurement payload df_data.csv
+- 2026-06-30T22:15:09.804592+00:00 | read | /h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-6c7085e9c544cc6-20250424T164534831/Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_meta.csv | reason: read held-out raw row-aligned metadata df_meta.csv
+- 2026-06-30T22:15:09.823147+00:00 | write | /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/agent_outputs/heldout_harmonized.csv | reason: write harmonized held-out target-schema CSV
+- 2026-06-30T22:15:09.829678+00:00 | exit_status=0 | /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/agent_outputs/heldout_harmonized.csv | reason: wrote 1001 harmonized rows
+- 2026-06-30T15:15:09-07:00 | write | /scratch/jmc/data-harmonization-eval/.runs/fold-03-holdout-4/agent_outputs/heldout_harmonized.csv | reason: harmonization script produced runtime CSV
+- 2026-06-30T15:15:09-07:00 | exit_status=0 | outcome: harmonization script completed successfully
+- 2026-06-30T15:15:27-07:00 | read/list | python - <<'PY' verify agent_outputs contents, harmonized CSV schema, and action log forbidden-path scan | reason: final verification of created files, output schema, and log safety
+- 2026-06-30T15:15:27-07:00 | exit_status=0 | outcome: verified outputs and scanned action log for forbidden patterns

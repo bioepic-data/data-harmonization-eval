@@ -1,0 +1,111 @@
+{
+  "index": 4,
+  "dataset_identifier": "ess-dive-6c7085e9c544cc6-20250424T164534831",
+  "doi": null,
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_data.csv"
+  ],
+  "location_metadata_files": [
+    "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_meta.csv",
+    "data/East_Taylor_Watershed_Community_Observatory_Sites___Point_Locations__Surface_v3_2_20250327.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "datetime",
+        "source_files": [
+          "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_meta.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse date in America/Denver timezone and convert to ISO-8601 UTC timestamp.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "site",
+        "source_files": [
+          "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_meta.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Use reported site abbreviation as site_id.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "swc definition: 24-hour average depth-averaged soil water content",
+        "source_files": [
+          "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_data_dd.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "No numeric depth or depth interval is reported; populate with null.",
+        "unit_conversion": null
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "replicate",
+        "transformation": "No replicate field is provided; populate with 1.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "swc",
+        "source_files": [
+          "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_data.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Direct column mapping.",
+        "unit_conversion": "None; source units are m3/m3."
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": "swp",
+        "source_files": [
+          "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_data.csv"
+        ],
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Direct column mapping.",
+        "unit_conversion": "None; source units are kPa."
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "Not reported; populate with null.",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Location_ID/Latitude in reference package; partial matches ph1->ER-PHS1, ph2->ER-PHS2, sg5->SG-EHS5; tb unresolved",
+        "source_files": [
+          "data/East_Taylor_Watershed_Community_Observatory_Sites___Point_Locations__Surface_v3_2_20250327.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Coordinates are not part of held-out harmonized CSV target schema; mapping notes document partial lookup and qc flags.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Location_ID/Longitude in reference package; partial matches ph1->ER-PHS1, ph2->ER-PHS2, sg5->SG-EHS5; tb unresolved",
+        "source_files": [
+          "data/East_Taylor_Watershed_Community_Observatory_Sites___Point_Locations__Surface_v3_2_20250327.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Coordinates are not part of held-out harmonized CSV target schema; mapping notes document partial lookup and qc flags.",
+        "unit_conversion": null
+      }
+    }
+  }
+}
