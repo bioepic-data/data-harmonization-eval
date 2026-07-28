@@ -1,0 +1,5 @@
+# Minimal record: only the required fields plus one moisture variable.
+datetime_UTC: '2019-03-01T00:00:00+00:00'
+site_id: SITE_B
+is_timeseries: false
+gravimetric_water_content_gH2O_gs: 0.18

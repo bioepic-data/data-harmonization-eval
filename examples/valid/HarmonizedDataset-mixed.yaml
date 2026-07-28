@@ -1,0 +1,20 @@
+# A small dataset combining records that report different moisture variables.
+records:
+  - datetime_UTC: '2021-06-15T12:00:00+00:00'
+    site_id: SITE_A
+    depth_m: 0.10
+    replicate: 1.0
+    is_timeseries: true
+    interval_min: 60.0
+    volumetric_water_content_m3_m3: 0.32
+  - datetime_UTC: '2021-06-15T13:00:00+00:00'
+    site_id: SITE_A
+    depth_m: 0.10
+    replicate: 1.0
+    is_timeseries: true
+    interval_min: 60.0
+    volumetric_water_content_m3_m3: 0.31
+  - datetime_UTC: '2019-03-01T00:00:00+00:00'
+    site_id: SITE_B
+    is_timeseries: false
+    gravimetric_water_content_gH2O_gs: 0.18
