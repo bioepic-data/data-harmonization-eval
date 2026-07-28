@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Evaluating an LLM Agent Pair for Environmental Data Harmonization</title>
+<style>
+  :root{ --teal:#0e7c7b; --teal-d:#0a5a59; --gold:#c9962f; --ink:#23303a; --muted:#6b7785;
+    --cream:#fbfaf7; --line:#e6dfce; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; background:var(--cream); color:var(--ink);
+    font-family: ui-sans-serif, system-ui, "Inter","Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.5; }
+  .hero{ background:radial-gradient(120% 120% at 0% 0%, #11514f 0%, #0e3b3a 45%, #0a2b2a 100%);
+    color:#eaf4f2; padding:48px 24px 40px; }
+  .wrap{ max-width:980px; margin:0 auto; padding:0 24px; }
+  .eyebrow{ text-transform:uppercase; letter-spacing:.14em; font-size:.72rem; font-weight:700; color:#7fd9d2; margin:0 0 8px; }
+  .hero h1{ font-size:2rem; margin:.1em 0 .2em; line-height:1.12; }
+  .hero p{ color:#cfe3e0; max-width:62ch; }
+  .badge{ display:inline-block; border:1px solid #5fc2bb55; background:#0e7c7b33; color:#cdeeea;
+    border-radius:999px; padding:.2em .85em; font-size:.72rem; letter-spacing:.04em; margin-top:8px; }
+  .rule{ height:4px; width:78px; border-radius:3px; background:linear-gradient(90deg,#5fc2bb,var(--gold)); margin:14px 0; }
+  section{ padding:34px 0; }
+  h2{ font-size:1.25rem; margin:0 0 14px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; }
+  .card{ display:block; background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px 18px 16px;
+    text-decoration:none; color:inherit; box-shadow:0 4px 16px rgba(40,50,60,.05);
+    transition:transform .12s ease, box-shadow .12s ease; }
+  .card:hover{ transform:translateY(-2px); box-shadow:0 10px 26px rgba(40,50,60,.10); }
+  .card .tag{ display:inline-block; font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+    color:#fff; background:var(--teal); border-radius:999px; padding:.12em .6em; margin-bottom:8px; }
+  .card .tag.gold{ background:var(--gold); } .card .tag.ink{ background:#55606b; }
+  .card h3{ margin:.1em 0 .25em; font-size:1.02rem; }
+  .card p{ margin:0; font-size:.86rem; color:var(--muted); }
+  ul.docs{ list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:8px 22px; }
+  ul.docs li{ padding:6px 0; border-bottom:1px solid var(--line); }
+  ul.docs a{ color:var(--teal-d); text-decoration:none; font-weight:600; font-size:.92rem; }
+  ul.docs a:hover{ text-decoration:underline; }
+  ul.docs span{ color:var(--muted); font-size:.8rem; }
+  .note{ border-left:3px solid var(--gold); background:#fdf8ec; padding:.6em .9em; border-radius:0 10px 10px 0;
+    font-size:.86rem; color:#5a4a25; }
+  footer{ color:var(--muted); font-size:.8rem; padding:26px 0 50px; border-top:1px solid var(--line); }
+  code{ font-family:ui-monospace,Menlo,Consolas,monospace; background:#f1ece0; border:1px solid var(--line);
+    border-radius:5px; padding:.05em .35em; font-size:.85em; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Watershed Function SFA · Berkeley Lab</p>
+    <h1>Evaluating an LLM Agent Pair for<br/>Environmental Data Harmonization</h1>
+    <div class="rule"></div>
+    <p>A <strong style="color:#7fd9d2">curator</strong> + <strong style="color:#e9c06a">harmonizer</strong>
+       agent pair that turns heterogeneous DOE&nbsp;ESS-DIVE soil-moisture datasets into an analysis-ready
+       schema, benchmarked against a domain expert with leave-one-out cross-validation and blind prospective
+       evaluation.</p>
+    <span class="badge">Pre-results scaffold — manuscript &amp; framework</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <section>
+    <h2>Explore</h2>
+    <div class="grid">
+      <a class="card" href="slides/index.html">
+        <span class="tag">Deck</span>
+        <h3>Slide deck →</h3>
+        <p>15-slide overview: motivation, the agent pair, design, metrics, positioning, and results placeholders. Figure&nbsp;1 rendered live.</p>
+      </a>
+      <a class="card" href="figures/figure1_workflow.html">
+        <span class="tag gold">Figure 1</span>
+        <h3>Workflow schematic →</h3>
+        <p>The agent-pair pipeline, three evaluation modes, and the cell-by-cell output-equivalence endpoint. Also as <code>.svg</code>/<code>.png</code>.</p>
+      </a>
+      <a class="card" href="README.md">
+        <span class="tag ink">Index</span>
+        <h3>Manuscript README →</h3>
+        <p>Section-by-section status and how the drafts map onto the codebase.</p>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Manuscript sections</h2>
+    <ul class="docs">
+      <li><a href="00_abstract.md">Abstract</a> <span>· scaffold</span></li>
+      <li><a href="01_introduction.md">Introduction</a> <span>· drafted</span></li>
+      <li><a href="02_background.md">Background &amp; related work</a> <span>· drafted</span></li>
+      <li><a href="03_methods.md">Methods</a> <span>· drafted</span></li>
+      <li><a href="04_results.md">Results</a> <span>· scaffold</span></li>
+      <li><a href="05_discussion.md">Discussion</a> <span>· scaffold</span></li>
+      <li><a href="06_conclusion.md">Conclusion</a> <span>· scaffold</span></li>
+      <li><a href="figures_and_tables.md">Figures &amp; tables manifest</a></li>
+      <li><a href="references.md">References</a> <span>· ~90 sources</span></li>
+      <li><a href="research_notes.md">Research notes</a> <span>· provenance</span></li>
+    </ul>
+    <p class="note" style="margin-top:18px;">Markdown files open as source on a plain static host. For rendered prose, read them on the
+      repository page; the deck and figure are full HTML and render anywhere.</p>
+  </section>
+
+  <footer class="wrap" style="padding-left:0;padding-right:0;">
+    Static site served from <code>docs/manuscript/</code>. reveal.js and Mermaid are vendored under
+    <code>vendor/</code> — the deck and figure need no network. Built with Claude Code.
+  </footer>
+</div>
+</body>
+</html>

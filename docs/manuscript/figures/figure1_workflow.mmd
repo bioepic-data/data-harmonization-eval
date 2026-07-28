@@ -1,0 +1,49 @@
+%% Figure 1. Agent-pair workflow and evaluation design.
+%% Render in browser via figure1_workflow.html, or paste into https://mermaid.live
+flowchart TB
+    classDef agent fill:#0e7c7b,stroke:#0a5a59,color:#ffffff,stroke-width:1.5px;
+    classDef artifact fill:#f3efe6,stroke:#c9bfa6,color:#2b2b2b;
+    classDef gold fill:#c9962f,stroke:#9c7421,color:#ffffff;
+    classDef score fill:#3b5b8c,stroke:#28406a,color:#ffffff;
+    classDef io fill:#ffffff,stroke:#8a8a8a,color:#2b2b2b,stroke-dasharray:3 3;
+
+    ID["ESS-DIVE dataset identifier<br/>(DOI / package ID)"]:::io
+    EX["19 expert exemplars<br/>(in-context references)"]:::gold
+
+    subgraph PIPE["Agent pair under evaluation"]
+        direction TB
+        C["<b>Curator — Skill 1</b><br/>retrieve · classify files · resolve location<br/>infer time series · detect manipulation · pick exemplar"]:::agent
+        B["Curator bundle<br/>decision · payload/location files · coords · interval · qc_flag"]:::artifact
+        H["<b>Harmonizer — Skill 2</b><br/>map variables · convert units · generate code + change-mapping"]:::agent
+        OUT["Python transform code<br/>+ change-mapping JSON"]:::artifact
+        C --> B --> H --> OUT
+    end
+
+    RAW[("Raw package files")]:::io
+    GC["Expert transform code"]:::gold
+    AGT["Agent harmonized table"]:::artifact
+    GLD["Expert harmonized table<br/>(gold standard)"]:::gold
+    CMP{{"PRIMARY ENDPOINT<br/>output-data equivalence<br/>cell-by-cell on the natural key"}}:::score
+
+    ID --> C
+    EX -. exemplars .-> C
+    EX -. exemplars .-> H
+    OUT -- execute --> AGT
+    RAW --> AGT
+    RAW --> GLD
+    GC --> GLD
+    AGT --> CMP
+    GLD --> CMP
+
+    subgraph MODES["Evaluation modes (error attribution)"]
+        direction TB
+        M1["Mode 1 · Skill-1 isolated — bundle vs expert labels"]:::score
+        M2["Mode 2 · Skill-2 oracle — gold bundle into harmonizer"]:::score
+        M3["Mode 3 · end-to-end — full pipeline, errors propagate"]:::score
+        GAP["Error-propagation gap = Mode 2 − Mode 3"]:::score
+        M2 --- GAP
+        M3 --- GAP
+    end
+
+    B -. scored .-> M1
+    OUT -. scored .-> M3

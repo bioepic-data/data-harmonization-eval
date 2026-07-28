@@ -1,0 +1,49 @@
+name: Deploy manuscript site to GitHub Pages
+
+# Serves docs/manuscript/ (landing page, slide deck, Figure 1) as a static site.
+# The deck and figure vendor reveal.js + Mermaid under docs/manuscript/vendor/,
+# so the published site needs no external CDN.
+
+on:
+  push:
+    branches:
+      - main
+      - claude/agentic-curation-research-docs-6dgt7l
+    paths:
+      - 'docs/manuscript/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; newer pushes supersede in-progress ones.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages (auto-enable if needed)
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload manuscript directory as the site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/manuscript
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
