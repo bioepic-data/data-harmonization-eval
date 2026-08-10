@@ -11,7 +11,6 @@ import pandas as pd
 import json
 from datetime import datetime
 
-from src.harness.run_pipeline import run_end_to_end
 from src.metrics.skill2_output_equiv import score_output_equivalence
 from src.analysis.irr import compute_irr
 
