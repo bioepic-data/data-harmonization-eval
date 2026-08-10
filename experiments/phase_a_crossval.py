@@ -11,10 +11,6 @@ import pandas as pd
 import json
 from datetime import datetime
 
-from src.harness.run_pipeline import run_end_to_end
-from src.harness.run_skill1 import run_skill1_isolated
-from src.harness.run_skill2 import run_skill2_oracle
-from src.harness.oracle import load_all_oracle_bundles
 from src.metrics.skill1_metrics import score_skill1
 from src.metrics.skill2_output_equiv import score_output_equivalence
 from src.metrics.composite import compute_composite_scores
@@ -185,16 +181,3 @@ def main():
 
     summary_path = results_path.parent / "phase_a_summary.json"
     summary_path.write_text(json.dumps(summary, indent=2))
-
-
-def create_oracle_bundle_from_labels(expert_labels: dict):
-    """Create oracle curator bundle from expert labels.
-
-    PLACEHOLDER: Convert expert labels to CuratorBundle.
-    """
-    from src.harness.oracle import create_oracle_bundle
-    raise NotImplementedError("Oracle bundle creation not implemented")
-
-
-if __name__ == "__main__":
-    main()
