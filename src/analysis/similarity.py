@@ -18,7 +18,7 @@ def compute_similarity_covariate(
     Returns:
         Dict with similarity scores
     """
-    from src.harness.exemplar_selection import compute_dataset_similarity
+    # from src.harness.exemplar_selection import compute_dataset_similarity
 
     target_features = dataset_features[dataset_index]
 
