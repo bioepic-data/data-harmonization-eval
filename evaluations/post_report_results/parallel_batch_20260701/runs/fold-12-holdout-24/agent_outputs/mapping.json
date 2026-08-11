@@ -1,0 +1,108 @@
+{
+  "index": 24,
+  "dataset_identifier": "ess-dive-daa156d2129c471-20250716T160748658",
+  "doi": "doi:10.15485/2462766",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+  ],
+  "location_metadata_files": [
+    "Locations.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "Timestamp",
+        "source_files": [
+          "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse daily local dates and convert from America/Denver local time to ISO 8601 UTC format.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "P[12]_MP_j",
+        "source_files": [
+          "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Parse numeric depth j from MP column names P1_MP_j and P2_MP_j.",
+        "unit_conversion": "Divide by 100 to convert from cm to m."
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Latitude",
+        "source_files": [
+          "Locations.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Look up Latitude in Locations.csv for site_id parsed from MP column prefix P1 or P2.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Longitude",
+        "source_files": [
+          "Locations.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Look up Longitude in Locations.csv for site_id parsed from MP column prefix P1 or P2.",
+        "unit_conversion": null
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "replicate",
+        "transformation": "No replicate column is provided; assign replicate 1 for each site-depth time series.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "P[12]_MP_j",
+        "source_files": [
+          "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Parse site_id from MP column prefix P1 or P2 and match to Locations.csv ID.",
+        "unit_conversion": null
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": "P[12]_MP_j",
+        "source_files": [
+          "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+        ],
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Coerce from wide format to long format with separate site_id, depth_m, and water_potential_kPa columns.",
+        "unit_conversion": "None; source MP values are interpreted as kPa."
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "None; volumetric water content is not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "None; gravimetric water content is not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    }
+  }
+}

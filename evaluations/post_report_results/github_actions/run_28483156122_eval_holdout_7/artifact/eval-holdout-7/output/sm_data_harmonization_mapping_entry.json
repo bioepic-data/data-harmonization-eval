@@ -1,0 +1,90 @@
+{
+  "index": 7,
+  "dataset_identifier": "ess-dive-38e901ec3d7bd24-20230504T211548257225",
+  "doi": null,
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "BM_Merged_T_VWC_0616_1018.csv"
+  ],
+  "location_metadata_files": [
+    "BM_EGM_Well_CO2.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "date.time",
+        "source_files": [
+          "BM_Merged_T_VWC_0616_1018.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse '%m/%d/%y %H:%M' as local time (America/Denver) and convert to ISO 8601 UTC format.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "Depth (cm)",
+        "source_files": [
+          "BM_Merged_T_VWC_0616_1018.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Direct column mapping from explicit depth column.",
+        "unit_conversion": "Divide by 1e2 to convert from cm to m."
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "Location",
+        "source_files": [
+          "BM_EGM_Well_CO2.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Single station package; assign constant site_id 'BM' as named in the package's location/CO2 file.",
+        "unit_conversion": null
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "replicate",
+        "transformation": "Replicate information not provided in source; populate with 1 (single sensor per depth).",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "Volumetric Water Content",
+        "source_files": [
+          "BM_Merged_T_VWC_0616_1018.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Direct column mapping; values are already volumetric water content.",
+        "unit_conversion": "None; source units are m3/m3 (values ~0.12)."
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Latitude",
+        "source_files": [
+          "BM_EGM_Well_CO2.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Look up 'Latitude' for 'Location'='BM' in BM_EGM_Well_CO2.csv (the package's soil-CO2 file, which carries decimal-degree site coordinates).",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Longitude",
+        "source_files": [
+          "BM_EGM_Well_CO2.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Look up 'Longitude' for 'Location'='BM' in BM_EGM_Well_CO2.csv.",
+        "unit_conversion": null
+      }
+    }
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "1": {
+    "package_id": "ess-dive-beca0be9bb38ece-20250516T122010234",
+    "doi": "doi:10.15485/2566877",
+    "curator_decision": "INCLUDE",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "ER_SMN10.csv",
+      "ER_SMN1B.csv",
+      "ER_SMN30.csv",
+      "ER_SMN3B.csv",
+      "ER_SMN4B.csv",
+      "ER_SMN5B.csv",
+      "ER_SMS1.csv",
+      "ER_SMS2.csv",
+      "ER_SMS3.csv"
+    ],
+    "location_metadata_files": [
+      "Sensor_Location.csv"
+    ],
+    "sensor_metadata_files": [
+      "Sensor_Location_dd.csv",
+      "ER_dd_.csv"
+    ],
+    "location_resolution": {
+      "source": "Sensor_Location.csv UTM13N coordinates",
+      "qc_flag_recommendation": null,
+      "site_coordinates": "available in raw location file"
+    },
+    "time_series_inference": {
+      "is_timeseries": true,
+      "interval_min": "computed per site/depth/replicate from timestamps",
+      "reasoning": "multiple timestamped logger/sensor observations per site and depth"
+    },
+    "experimental_context": {
+      "manipulation_detected": false,
+      "manipulation_type": null,
+      "has_control_data": null,
+      "recommendation": "include_all"
+    },
+    "similar_dataset_reference": {
+      "index": 15,
+      "reason": "fold-local exemplar with wide-to-long depth/variable handling"
+    },
+    "open_questions": [
+      "DOI taken from fold-local skill working example; raw files did not contain DOI string."
+    ]
+  },
+  "2": {
+    "package_id": "ess-dive-9fd65df885a8e87-20250715T064942543",
+    "doi": "unknown_from_allowed_inputs",
+    "curator_decision": "INCLUDE",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "ER_SMN1.csv",
+      "ER_SMN3.csv",
+      "ER_SMN4.csv",
+      "ER_SMN5.csv"
+    ],
+    "location_metadata_files": [
+      "SM_loc.csv"
+    ],
+    "sensor_metadata_files": [],
+    "location_resolution": {
+      "source": "SM_loc.csv lat/lon columns",
+      "qc_flag_recommendation": null,
+      "site_coordinates": "available in raw location file"
+    },
+    "time_series_inference": {
+      "is_timeseries": true,
+      "interval_min": "computed per site/depth/replicate from timestamps",
+      "reasoning": "multiple timestamped logger/sensor observations per site and depth"
+    },
+    "experimental_context": {
+      "manipulation_detected": false,
+      "manipulation_type": null,
+      "has_control_data": null,
+      "recommendation": "include_all"
+    },
+    "similar_dataset_reference": {
+      "index": 15,
+      "reason": "fold-local exemplar with wide-to-long depth/variable handling"
+    },
+    "open_questions": [
+      "DOI not present in allowed raw files."
+    ]
+  },
+  "3": {
+    "package_id": "ess-dive-4c1829de1b8a2ec-20260220T045039633",
+    "doi": "unknown_from_allowed_inputs",
+    "curator_decision": "INCLUDE",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "Soil_water_potential.csv"
+    ],
+    "location_metadata_files": [
+      "locations.csv",
+      "samples.csv"
+    ],
+    "sensor_metadata_files": [
+      "dd.csv"
+    ],
+    "location_resolution": {
+      "source": "locations.csv for package location; payload site columns SD1/SD11 not directly resolved to coordinates",
+      "qc_flag_recommendation": "g2 for payload sites if location table cannot be linked",
+      "site_coordinates": "package location available, sensor-specific join uncertain"
+    },
+    "time_series_inference": {
+      "is_timeseries": true,
+      "interval_min": "computed per site/depth/replicate from timestamps",
+      "reasoning": "multiple timestamped logger/sensor observations per site and depth"
+    },
+    "experimental_context": {
+      "manipulation_detected": false,
+      "manipulation_type": null,
+      "has_control_data": null,
+      "recommendation": "include_all"
+    },
+    "similar_dataset_reference": {
+      "index": 24,
+      "reason": "fold-local exemplar with wide-to-long depth/variable handling"
+    },
+    "open_questions": [
+      "Payload site IDs SD1 and SD11 are not directly linked to Location_ID in locations.csv.",
+      "DOI not present in allowed package-level raw metadata; 10.58052 strings in samples are IGSNs, not used as package DOI."
+    ]
+  },
+  "6": {
+    "package_id": "ess-dive-18e91eb74405882-20241017T173226640",
+    "doi": "unknown_from_allowed_inputs",
+    "curator_decision": "INCLUDE",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "Snodgrass_ESS.csv"
+    ],
+    "location_metadata_files": [
+      "Snodgrass_ESS.csv embedded latitude/longitude/site columns",
+      "Raw_soil_carbon_dioxide_moisture_temperature.xml"
+    ],
+    "sensor_metadata_files": [
+      "Raw_soil_carbon_dioxide_moisture_temperature.xml"
+    ],
+    "location_resolution": {
+      "source": "payload latitude/longitude columns",
+      "qc_flag_recommendation": null,
+      "site_coordinates": "embedded in payload"
+    },
+    "time_series_inference": {
+      "is_timeseries": true,
+      "interval_min": "computed per site/depth/replicate from timestamps",
+      "reasoning": "multiple timestamped logger/sensor observations per site and depth"
+    },
+    "experimental_context": {
+      "manipulation_detected": false,
+      "manipulation_type": null,
+      "has_control_data": null,
+      "recommendation": "include_all"
+    },
+    "similar_dataset_reference": {
+      "index": 15,
+      "reason": "fold-local exemplar with wide-to-long depth/variable handling"
+    },
+    "open_questions": [
+      "XML contains a funder identifier DOI-like string, not package DOI; package DOI unknown from allowed files."
+    ]
+  },
+  "16": {
+    "package_id": "ess-dive-b3d271f19a94e8d-20260114T204512119",
+    "doi": "unknown_from_allowed_inputs",
+    "curator_decision": "INCLUDE",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS1_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS2_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS3_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS4_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_SG-EHS5_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_SG-EHS6_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_SG-EHS7_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_SG-EHS8_v1-1.csv"
+    ],
+    "location_metadata_files": [
+      "WFSFA_EHG_SensorTowers_Wu_et_al/metadata_site_v1-1.csv"
+    ],
+    "sensor_metadata_files": [
+      "WFSFA_EHG_SensorTowers_Wu_et_al/metadata_instrument_v1-1.csv"
+    ],
+    "location_resolution": {
+      "source": "metadata_site_v1-1.csv",
+      "qc_flag_recommendation": null,
+      "site_coordinates": "available in raw site metadata"
+    },
+    "time_series_inference": {
+      "is_timeseries": true,
+      "interval_min": "computed per site/depth/replicate from timestamps",
+      "reasoning": "multiple timestamped logger/sensor observations per site and depth"
+    },
+    "experimental_context": {
+      "manipulation_detected": false,
+      "manipulation_type": null,
+      "has_control_data": null,
+      "recommendation": "include_all"
+    },
+    "similar_dataset_reference": {
+      "index": 23,
+      "reason": "fold-local exemplar with wide-to-long depth/variable handling"
+    },
+    "open_questions": [
+      "DOI not present in allowed raw files."
+    ]
+  },
+  "27": {
+    "package_id": "ess-dive-c37aaf9ed6d4c0d-20230504T205923265966",
+    "doi": "unknown_from_allowed_inputs",
+    "curator_decision": "INCLUDE",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+      "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+      "ER-PHS3_Field dataset_2019_Oct12.csv",
+      "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+    ],
+    "location_metadata_files": null,
+    "sensor_metadata_files": null,
+    "location_resolution": {
+      "source": "site ID in filename; coordinates not in package payload",
+      "qc_flag_recommendation": "g1 if linked to WFSFA tower registry/related held-out metadata, else g2",
+      "site_coordinates": "not in package files"
+    },
+    "time_series_inference": {
+      "is_timeseries": true,
+      "interval_min": "computed per site/depth/replicate from timestamps",
+      "reasoning": "multiple timestamped logger/sensor observations per site and depth"
+    },
+    "experimental_context": {
+      "manipulation_detected": false,
+      "manipulation_type": null,
+      "has_control_data": null,
+      "recommendation": "include_all"
+    },
+    "similar_dataset_reference": {
+      "index": 15,
+      "reason": "fold-local exemplar with wide-to-long depth/variable handling"
+    },
+    "open_questions": [
+      "Depths for S1-S5 inferred from related held-out ER-PHS sensor-tower metadata, not from this package itself.",
+      "DOI not present in allowed raw files."
+    ]
+  }
+}

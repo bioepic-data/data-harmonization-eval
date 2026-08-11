@@ -1,0 +1,119 @@
+{
+  "index": 17,
+  "dataset_identifier": "ess-dive-be919d7d5d42c94-20240130T205332180",
+  "doi": "doi:10.15485/2283406",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "FieldData/Soil_Moisture_Data/TMC1.csv",
+    "FieldData/Soil_Moisture_Data/TMC2.csv",
+    "FieldData/Soil_Moisture_Data/TMC4.csv",
+    "FieldData/Soil_Moisture_Data/TMC5.csv",
+    "FieldData/Soil_Moisture_Data/TMC6.csv"
+  ],
+  "location_metadata_files": [
+    "Locations.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "DateTime",
+        "source_files": [
+          "FieldData/Soil_Moisture_Data/TMC1.csv",
+          "FieldData/Soil_Moisture_Data/TMC2.csv",
+          "FieldData/Soil_Moisture_Data/TMC4.csv",
+          "FieldData/Soil_Moisture_Data/TMC5.csv",
+          "FieldData/Soil_Moisture_Data/TMC6.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse local timestamps using '%Y-%m-%d %H:%M:%S' in America/Denver and convert to UTC.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "MC_jm",
+        "source_files": [
+          "FieldData/Soil_Moisture_Data/TMC1.csv",
+          "FieldData/Soil_Moisture_Data/TMC2.csv",
+          "FieldData/Soil_Moisture_Data/TMC4.csv",
+          "FieldData/Soil_Moisture_Data/TMC5.csv",
+          "FieldData/Soil_Moisture_Data/TMC6.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Parse numeric depth j from MC_jm source column names.",
+        "unit_conversion": "None; source depth suffix is already meters."
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Northing",
+        "source_files": [
+          "Locations.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Look up Northing by site_id in Locations.csv; source CRS is NAD83 / UTM Zone 13N.",
+        "unit_conversion": "Coordinate reprojection to latitude can be performed from EPSG:26913 to EPSG:4326 when generating location outputs."
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Easting",
+        "source_files": [
+          "Locations.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Look up Easting by site_id in Locations.csv; source CRS is NAD83 / UTM Zone 13N.",
+        "unit_conversion": "Coordinate reprojection to longitude can be performed from EPSG:26913 to EPSG:4326 when generating location outputs."
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "replicate",
+        "transformation": "Single sensor profile per site/depth in each TMC file; populate with 1.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "source filename",
+        "source_files": [
+          "FieldData/Soil_Moisture_Data/TMC1.csv",
+          "FieldData/Soil_Moisture_Data/TMC2.csv",
+          "FieldData/Soil_Moisture_Data/TMC4.csv",
+          "FieldData/Soil_Moisture_Data/TMC5.csv",
+          "FieldData/Soil_Moisture_Data/TMC6.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Parse site_id from source filename stem, e.g. TMC1 from TMC1.csv.",
+        "unit_conversion": null
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "water_potential_kPa",
+        "transformation": "None; soil water potential is not reported in the selected source files. Populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "MC_*m",
+        "source_files": [
+          "FieldData/Soil_Moisture_Data/TMC1.csv",
+          "FieldData/Soil_Moisture_Data/TMC2.csv",
+          "FieldData/Soil_Moisture_Data/TMC4.csv",
+          "FieldData/Soil_Moisture_Data/TMC5.csv",
+          "FieldData/Soil_Moisture_Data/TMC6.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Select MC columns and coerce from wide format to long format with separate depth and volumetric water content columns.",
+        "unit_conversion": "None; source unit row reports V/V, equivalent to m3/m3."
+      }
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "dataset_identifier": "ess-dive-61a0ecd70856892-20230808T205724993",
+  "doi": "doi:10.15485/1958210",
+  "decision": "INCLUDE",
+  "archive_repository": "ESS-DIVE",
+  "title": "Soil water content, matric potential, carbon dioxide and oxygen concentrations, Oct 2018-Dec 2021, Slate River Floodplain, Crested Butte, Colorado",
+  "raw_package_dir": "/h/jmc/ess-dive_wfsfa_soil_datasets/ess-dive-61a0ecd70856892-20230808T205724993",
+  "data_payload_files": [
+    "SLT_OBJ2_SoilSensors_2018_data.csv",
+    "SLT_OBJ2_SoilSensors_2019_data.csv",
+    "SLT_OBJ2_SoilSensors_2020_data.csv",
+    "SLT_OBJ2_SoilSensors_2021_data.csv"
+  ],
+  "location_metadata_files": [
+    "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+  ],
+  "sensor_metadata_files": [
+    "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+    "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+  ],
+  "documentation_files_not_available_locally": [
+    "FLMD.csv",
+    "dd.csv"
+  ],
+  "file_classification": {
+    "measurement_payload": [
+      "SLT_OBJ2_SoilSensors_2018_data.csv",
+      "SLT_OBJ2_SoilSensors_2019_data.csv",
+      "SLT_OBJ2_SoilSensors_2020_data.csv",
+      "SLT_OBJ2_SoilSensors_2021_data.csv"
+    ],
+    "location_metadata": [
+      "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+    ],
+    "sensor_metadata": [
+      "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+    ]
+  },
+  "site_resolution": {
+    "site_id": "Slate River OBJ-2",
+    "latitude": 38.90943,
+    "longitude": -107.028242,
+    "source": "InstallationMethods files and ESS-DIVE package spatialCoverage",
+    "qc_flag": null
+  },
+  "target_measurements": {
+    "volumetric_water_content_m3_m3": {
+      "source_columns": [
+        "SoilMoisture_40cm.m3.m3",
+        "SoilMoisture_60cm.m3.m3",
+        "SoilMoisture_82.5cm.m3.m3"
+      ],
+      "depths_m": [
+        0.4,
+        0.6,
+        0.825
+      ],
+      "unit_conversion": null
+    },
+    "water_potential_kPa": {
+      "source_columns": [
+        "SoilMatricPot_40cm.kPa",
+        "SoilMatricPot_60cm.kPa",
+        "SoilMatricPot_79cm.kPa",
+        "SoilMatricPot_100cm.kPa"
+      ],
+      "depths_m": [
+        0.4,
+        0.6,
+        0.79,
+        1.0
+      ],
+      "unit_conversion": null
+    }
+  },
+  "time_handling": {
+    "source_column": "DateTime.MST",
+    "source_timezone": "Etc/GMT+7 fixed Mountain Standard Time",
+    "destination": "datetime_UTC ISO-8601 Z string",
+    "is_timeseries": true,
+    "interval_min": "computed per source file from timestamp differences; modal interval is 30 minutes"
+  },
+  "quality_handling": {
+    "missing_sentinel": -9999,
+    "drop_rule": "Rows are retained when at least one target measurement is present after sentinel replacement.",
+    "experimental_manipulation": "No warming, irrigation, or manipulation experiment indicated by package metadata or file content inspected."
+  },
+  "open_questions": []
+}

@@ -1,0 +1,125 @@
+{
+  "package_id": "ess-dive-daa156d2129c471-20250716T160748658",
+  "doi": "doi:10.15485/2462766",
+  "curator_decision": "INCLUDE",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    {
+      "filename": "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv",
+      "columns": [
+        "Timestamp",
+        "P1_MP_15",
+        "P1_MP_30",
+        "P1_MP_60",
+        "P2_MP_15",
+        "P2_MP_30",
+        "P2_MP_60",
+        "d2H_*",
+        "d18O_*",
+        "meteorology fields",
+        "sap flow fields",
+        "root water uptake depth fields"
+      ],
+      "row_count_estimate": 956,
+      "file_size_mb": 0.621,
+      "delimiter": "semicolon",
+      "column_preview": "Timestamp;P1_MP_15;P1_MP_30;P1_MP_60;P2_MP_15;P2_MP_30;P2_MP_60;...",
+      "measurement_columns_selected": [
+        "P1_MP_15",
+        "P1_MP_30",
+        "P1_MP_60",
+        "P2_MP_15",
+        "P2_MP_30",
+        "P2_MP_60"
+      ],
+      "measurement_summary": {
+        "P1_MP_15": {
+          "non_null": 534,
+          "min": -2022.0,
+          "max": -0.2
+        },
+        "P1_MP_30": {
+          "non_null": 534,
+          "min": -1376.0,
+          "max": -0.1
+        },
+        "P1_MP_60": {
+          "non_null": 534,
+          "min": -1013.5,
+          "max": 0.0
+        },
+        "P2_MP_15": {
+          "non_null": 534,
+          "min": -3638.0,
+          "max": -0.1
+        },
+        "P2_MP_30": {
+          "non_null": 534,
+          "min": -1618.5,
+          "max": 0.0
+        },
+        "P2_MP_60": {
+          "non_null": 534,
+          "min": -1371.0,
+          "max": 0.0
+        }
+      }
+    }
+  ],
+  "location_metadata_files": [
+    {
+      "filename": "Locations.csv",
+      "columns": [
+        "ID",
+        "Latitude",
+        "Longitude",
+        "Altitude",
+        "esrignss_f",
+        "DataCollec",
+        "GlobalID",
+        "Creator",
+        "Editor",
+        "Research_P",
+        "Notes"
+      ],
+      "row_count": 8,
+      "content_preview": "ID;Latitude;Longitude;Altitude;...\nP1;38.96071917;-106.9910977;2895.414399;...\nP2;38.96067806;-106.9910133;2897.958633;..."
+    }
+  ],
+  "sensor_metadata_files": null,
+  "readme_content": null,
+  "location_resolution": {
+    "source": "location_metadata_file",
+    "qc_flag_recommendation": null,
+    "site_coordinates": [
+      {
+        "site_id": "P1",
+        "latitude": 38.96071917,
+        "longitude": -106.9910977
+      },
+      {
+        "site_id": "P2",
+        "latitude": 38.96067806,
+        "longitude": -106.9910133
+      }
+    ]
+  },
+  "time_series_inference": {
+    "is_timeseries": true,
+    "interval_min": 1440.0,
+    "reasoning": "Daily date sequence from 2022-01-01 through 2024-08-13 with repeated observations by soil profile and depth; median interval is 1440 minutes, with 1380/1500 minute UTC differences at daylight-saving transitions after local-midnight conversion."
+  },
+  "experimental_context": {
+    "manipulation_detected": false,
+    "manipulation_type": null,
+    "has_control_data": null,
+    "recommendation": "include_all"
+  },
+  "similar_dataset_reference": {
+    "index": 3,
+    "reason": "Wide-format soil matric potential columns with depth encoded in column names and separate latitude/longitude location metadata."
+  },
+  "open_questions": [
+    "No source data dictionary file was present in the local raw package; MP units are inferred as kPa from column naming, value ranges, and fold-local MP exemplars."
+  ]
+}

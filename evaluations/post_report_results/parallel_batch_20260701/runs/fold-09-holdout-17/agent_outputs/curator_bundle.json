@@ -1,0 +1,298 @@
+{
+  "package_id": "ess-dive-be919d7d5d42c94-20240130T205332180",
+  "doi": "doi:10.15485/2283406",
+  "curator_decision": "INCLUDE",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    {
+      "filename": "FieldData/Soil_Moisture_Data/TMC1.csv",
+      "columns": [
+        "DateTime",
+        "MC_0.1m",
+        "T_0.1m",
+        "EC_0.1m",
+        "MC_0.3m",
+        "T_0.3m",
+        "EC_0.3m",
+        "MC_0.6m",
+        "T_0.6m",
+        "EC_0.6m",
+        "MC_0.8m",
+        "T_0.8m",
+        "EC_0.8m"
+      ],
+      "row_count_estimate": 11304,
+      "file_size_mb": 1.044,
+      "column_preview": "DateTime,MC_0.1m,T_0.1m,EC_0.1m,MC_0.3m,T_0.3m,EC_0.3m,MC_0.6m,T_0.6m,EC_0.6m,MC_0.8m,T_0.8m,EC_0.8m\nYYYY-MM-DD hh:mm:ss,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm\n2021-06-10 00:00:00,0.1597,9.21,0.1081,0.152,7.6,0.0855,0.2502,6,0.3209,0.3238,5.1,0.4546\n2021-06-10 01:00:00,0.1597,8.92,0.1065,0.1521,7.6,0.0855,0.2502,6,0.3208,0.3238,5.1,0.4549\n2021-06-10 02:00:00,0.1597,8.65,0.1055,0.1521,7.6,0.0854,0.2502,6,0.3208,0.3238,5.1,0.4544\n",
+      "measurement_columns_used": [
+        "MC_0.1m",
+        "MC_0.3m",
+        "MC_0.6m",
+        "MC_0.8m"
+      ],
+      "unit_row": {
+        "DateTime": "YYYY-MM-DD hh:mm:ss",
+        "MC_0.1m": "V/V",
+        "T_0.1m": "degrees_Celsius",
+        "EC_0.1m": "mS/cm",
+        "MC_0.3m": "V/V",
+        "T_0.3m": "degrees_Celsius",
+        "EC_0.3m": "mS/cm",
+        "MC_0.6m": "V/V",
+        "T_0.6m": "degrees_Celsius",
+        "EC_0.6m": "mS/cm",
+        "MC_0.8m": "V/V",
+        "T_0.8m": "degrees_Celsius",
+        "EC_0.8m": "mS/cm"
+      },
+      "inferred_interval_min": 60.0
+    },
+    {
+      "filename": "FieldData/Soil_Moisture_Data/TMC2.csv",
+      "columns": [
+        "DateTime",
+        "MC_0.1m",
+        "T_0.1m",
+        "EC_0.1m",
+        "MC_0.3m",
+        "T_0.3m",
+        "EC_0.3m",
+        "MC_0.6m",
+        "T_0.6m",
+        "EC_0.6m",
+        "MC_0.8m",
+        "T_0.8m",
+        "EC_0.8m"
+      ],
+      "row_count_estimate": 11304,
+      "file_size_mb": 1.053,
+      "column_preview": "DateTime,MC_0.1m,T_0.1m,EC_0.1m,MC_0.3m,T_0.3m,EC_0.3m,MC_0.6m,T_0.6m,EC_0.6m,MC_0.8m,T_0.8m,EC_0.8m\nYYYY-MM-DD hh:mm:ss,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm\n2021-06-10 00:00:00,0.2481,12.07,0.3894,0.2785,10.1,0.6649,0.2078,7.65,0.4694,0.2575,6.9,0.463\n2021-06-10 01:00:00,0.2482,11.63,0.389,0.2781,10.11,0.662,0.2079,7.7,0.4698,0.2575,6.9,0.4633\n2021-06-10 02:00:00,0.2483,11.22,0.386,0.2781,10.1,0.6636,0.2078,7.7,0.4693,0.2575,6.9,0.463\n",
+      "measurement_columns_used": [
+        "MC_0.1m",
+        "MC_0.3m",
+        "MC_0.6m",
+        "MC_0.8m"
+      ],
+      "unit_row": {
+        "DateTime": "YYYY-MM-DD hh:mm:ss",
+        "MC_0.1m": "V/V",
+        "T_0.1m": "degrees_Celsius",
+        "EC_0.1m": "mS/cm",
+        "MC_0.3m": "V/V",
+        "T_0.3m": "degrees_Celsius",
+        "EC_0.3m": "mS/cm",
+        "MC_0.6m": "V/V",
+        "T_0.6m": "degrees_Celsius",
+        "EC_0.6m": "mS/cm",
+        "MC_0.8m": "V/V",
+        "T_0.8m": "degrees_Celsius",
+        "EC_0.8m": "mS/cm"
+      },
+      "inferred_interval_min": 60.0
+    },
+    {
+      "filename": "FieldData/Soil_Moisture_Data/TMC4.csv",
+      "columns": [
+        "DateTime",
+        "MC_0.1m",
+        "T_0.1m",
+        "EC_0.1m",
+        "MC_0.3m",
+        "T_0.3m",
+        "EC_0.3m",
+        "MC_0.6m",
+        "T_0.6m",
+        "EC_0.6m",
+        "MC_0.8m",
+        "T_0.8m",
+        "EC_0.8m"
+      ],
+      "row_count_estimate": 11304,
+      "file_size_mb": 1.02,
+      "column_preview": "DateTime,MC_0.1m,T_0.1m,EC_0.1m,MC_0.3m,T_0.3m,EC_0.3m,MC_0.6m,T_0.6m,EC_0.6m,MC_0.8m,T_0.8m,EC_0.8m\nYYYY-MM-DD hh:mm:ss,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm\n2021-06-10 00:00:00,0.0979,16.87,0.1014,0.1268,16.13,0.1848,0.2416,11.17,0.3617,0.2566,12.09,0.184\n2021-06-10 01:00:00,0.0976,16.15,0.1067,0.1268,15.98,0.1813,0.2415,11.2,0.3615,0.2565,12.1,0.1837\n2021-06-10 02:00:00,0.0971,15.47,0.1069,0.1267,15.84,0.1807,0.2415,11.2,0.3618,0.2565,12.18,0.1828\n",
+      "measurement_columns_used": [
+        "MC_0.1m",
+        "MC_0.3m",
+        "MC_0.6m",
+        "MC_0.8m"
+      ],
+      "unit_row": {
+        "DateTime": "YYYY-MM-DD hh:mm:ss",
+        "MC_0.1m": "V/V",
+        "T_0.1m": "degrees_Celsius",
+        "EC_0.1m": "mS/cm",
+        "MC_0.3m": "V/V",
+        "T_0.3m": "degrees_Celsius",
+        "EC_0.3m": "mS/cm",
+        "MC_0.6m": "V/V",
+        "T_0.6m": "degrees_Celsius",
+        "EC_0.6m": "mS/cm",
+        "MC_0.8m": "V/V",
+        "T_0.8m": "degrees_Celsius",
+        "EC_0.8m": "mS/cm"
+      },
+      "inferred_interval_min": 60.0
+    },
+    {
+      "filename": "FieldData/Soil_Moisture_Data/TMC5.csv",
+      "columns": [
+        "DateTime",
+        "MC_0.1m",
+        "T_0.1m",
+        "EC_0.1m",
+        "MC_0.3m",
+        "T_0.3m",
+        "EC_0.3m",
+        "MC_0.6m",
+        "T_0.6m",
+        "EC_0.6m",
+        "MC_0.8m",
+        "T_0.8m",
+        "EC_0.8m"
+      ],
+      "row_count_estimate": 11304,
+      "file_size_mb": 1.043,
+      "column_preview": "DateTime,MC_0.1m,T_0.1m,EC_0.1m,MC_0.3m,T_0.3m,EC_0.3m,MC_0.6m,T_0.6m,EC_0.6m,MC_0.8m,T_0.8m,EC_0.8m\nYYYY-MM-DD hh:mm:ss,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm\n2021-06-10 00:00:00,0.1093,7.9,0.146,0.1036,5.5,0.0975,0.1562,4.3,0.2337,0.205,3.7,0.2822\n2021-06-10 01:00:00,0.1093,7.9,0.147,0.1036,5.56,0.0973,0.1562,4.3,0.2343,0.2049,3.75,0.2815\n2021-06-10 02:00:00,0.1093,7.9,0.1442,0.1037,5.6,0.0973,0.1563,4.3,0.2345,0.2049,3.8,0.2812\n",
+      "measurement_columns_used": [
+        "MC_0.1m",
+        "MC_0.3m",
+        "MC_0.6m",
+        "MC_0.8m"
+      ],
+      "unit_row": {
+        "DateTime": "YYYY-MM-DD hh:mm:ss",
+        "MC_0.1m": "V/V",
+        "T_0.1m": "degrees_Celsius",
+        "EC_0.1m": "mS/cm",
+        "MC_0.3m": "V/V",
+        "T_0.3m": "degrees_Celsius",
+        "EC_0.3m": "mS/cm",
+        "MC_0.6m": "V/V",
+        "T_0.6m": "degrees_Celsius",
+        "EC_0.6m": "mS/cm",
+        "MC_0.8m": "V/V",
+        "T_0.8m": "degrees_Celsius",
+        "EC_0.8m": "mS/cm"
+      },
+      "inferred_interval_min": 60.0
+    },
+    {
+      "filename": "FieldData/Soil_Moisture_Data/TMC6.csv",
+      "columns": [
+        "DateTime",
+        "MC_0.1m",
+        "T_0.1m",
+        "EC_0.1m",
+        "MC_0.3m",
+        "T_0.3m",
+        "EC_0.3m",
+        "MC_0.6m",
+        "T_0.6m",
+        "EC_0.6m",
+        "MC_0.8m",
+        "T_0.8m",
+        "EC_0.8m"
+      ],
+      "row_count_estimate": 11304,
+      "file_size_mb": 1.071,
+      "column_preview": "DateTime,MC_0.1m,T_0.1m,EC_0.1m,MC_0.3m,T_0.3m,EC_0.3m,MC_0.6m,T_0.6m,EC_0.6m,MC_0.8m,T_0.8m,EC_0.8m\nYYYY-MM-DD hh:mm:ss,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm,V/V,degrees_Celsius,mS/cm\n2021-06-10 00:00:00,0.1042,17.68,0.0842,0.1898,15.47,0.1947,0.1427,11.4,0.0723,0.1678,10.2,0.0933\n2021-06-10 01:00:00,0.1039,17.11,0.0848,0.1898,15.4,0.1947,0.1427,11.47,0.0723,0.1677,10.2,0.0936\n2021-06-10 02:00:00,0.1038,16.58,0.0854,0.1898,15.33,0.1943,0.1427,11.5,0.0723,0.1677,10.22,0.0933\n",
+      "measurement_columns_used": [
+        "MC_0.1m",
+        "MC_0.3m",
+        "MC_0.6m",
+        "MC_0.8m"
+      ],
+      "unit_row": {
+        "DateTime": "YYYY-MM-DD hh:mm:ss",
+        "MC_0.1m": "V/V",
+        "T_0.1m": "degrees_Celsius",
+        "EC_0.1m": "mS/cm",
+        "MC_0.3m": "V/V",
+        "T_0.3m": "degrees_Celsius",
+        "EC_0.3m": "mS/cm",
+        "MC_0.6m": "V/V",
+        "T_0.6m": "degrees_Celsius",
+        "EC_0.6m": "mS/cm",
+        "MC_0.8m": "V/V",
+        "T_0.8m": "degrees_Celsius",
+        "EC_0.8m": "mS/cm"
+      },
+      "inferred_interval_min": 60.0
+    }
+  ],
+  "location_metadata_files": [
+    {
+      "filename": "Locations.csv",
+      "columns": [
+        "ID",
+        "Easting",
+        "Northing",
+        "Elevation",
+        "Type"
+      ],
+      "content_preview": "ID,Easting,Northing,Elevation,Type\nERT-End,328427.83,4310403.84,3135.84,ERT\nERT-Start,328217.57,4310460.84,3213.99,ERT\nSNI1B,328380.83,4310423.99,3127.05,Borehole\nTMC1,328417.41,4310404.42,3122.07,Soil Moisture and Temperature\nTMC2,328380.81,4310413.98,3125.23,Soil Moisture and Temperature\nTMC3,328340.09,4310425.93,3134.07,Soil Moisture and Temperature\nTMC4,328309.52,4310433.88,3164.22,Soil Moisture and Temperature\nTMC5,328262.74,4310446.49,3172.22,Soil Moisture and Temperature\nTMC6,328227.22,4310456.88,3190.97,Soil Moisture and Temperature\nWeatherStation,328379.47,4310450.29,3129.29,Weather Station\n"
+    }
+  ],
+  "sensor_metadata_files": null,
+  "readme_content": null,
+  "location_resolution": {
+    "source": "location_metadata_file",
+    "qc_flag_recommendation": null,
+    "site_coordinates": [
+      {
+        "site_id": "TMC1",
+        "easting": 328417.41,
+        "northing": 4310404.42,
+        "elevation_m": 3122.07,
+        "epsg": 26913
+      },
+      {
+        "site_id": "TMC2",
+        "easting": 328380.81,
+        "northing": 4310413.98,
+        "elevation_m": 3125.23,
+        "epsg": 26913
+      },
+      {
+        "site_id": "TMC4",
+        "easting": 328309.52,
+        "northing": 4310433.88,
+        "elevation_m": 3164.22,
+        "epsg": 26913
+      },
+      {
+        "site_id": "TMC5",
+        "easting": 328262.74,
+        "northing": 4310446.49,
+        "elevation_m": 3172.22,
+        "epsg": 26913
+      },
+      {
+        "site_id": "TMC6",
+        "easting": 328227.22,
+        "northing": 4310456.88,
+        "elevation_m": 3190.97,
+        "epsg": 26913
+      }
+    ]
+  },
+  "time_series_inference": {
+    "is_timeseries": true,
+    "interval_min": 60.0,
+    "reasoning": "Each TMC file has repeated hourly DateTime values from 2021-06-10 through 2022-09-23; metadata says 15-minute measurements were averaged to 1-hour data."
+  },
+  "experimental_context": {
+    "manipulation_detected": false,
+    "manipulation_type": null,
+    "has_control_data": null,
+    "recommendation": "include_all"
+  },
+  "similar_dataset_reference": {
+    "index": 1,
+    "reason": "Structurally similar wide-format soil moisture time series with one file per site and UTM location metadata."
+  },
+  "open_questions": [
+    "Source metadata states NAD83 / UTM Zone 13N; UTM coordinates are retained in the bundle because pyproj is unavailable in this environment.",
+    "No README file was present in the local raw package; DOI and descriptive metadata came from the ESS-DIVE package API."
+  ]
+}
