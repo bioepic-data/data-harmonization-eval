@@ -1,0 +1,87 @@
+{
+  "dataset_identifier": "ess-dive-b924878d23c9dd7-20250214T163427929",
+  "doi": "UNKNOWN_FROM_ALLOWED_INPUTS",
+  "index": 18,
+  "decision": "INCLUDE",
+  "decision_reason": "Contains a machine-readable table of direct gravimetric soil water content observations with dates, depths, site hierarchy, replicates, and mostly embedded coordinates.",
+  "files": [
+    {
+      "filename": "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv",
+      "category": "data_payload",
+      "encoding": "latin1",
+      "rows": 420,
+      "columns": [
+        "Lab_ID_LBNL",
+        "IGSN",
+        "Latitude",
+        "Longitude",
+        "Location",
+        "Field_Site",
+        "Elevation",
+        "Block",
+        "Plot",
+        "Replicate",
+        "Topographic_Position",
+        "Depth_Increment",
+        "Date_Collected",
+        "Soil Water Content (g H2O per gram  soil)",
+        "Soil pH "
+      ],
+      "soil_moisture_columns": [
+        "Soil Water Content (g H2O per gram  soil)"
+      ],
+      "date_columns": [
+        "Date_Collected"
+      ],
+      "depth_columns": [
+        "Depth_Increment"
+      ],
+      "site_columns": [
+        "Location",
+        "Field_Site",
+        "Block",
+        "Plot",
+        "Replicate",
+        "Topographic_Position"
+      ],
+      "coordinate_columns": [
+        "Latitude",
+        "Longitude"
+      ]
+    }
+  ],
+  "raw_shape": {
+    "rows": 420,
+    "columns": 15
+  },
+  "harmonized_shape": {
+    "rows": 416,
+    "columns": 9
+  },
+  "excluded_rows": {
+    "missing_gravimetric_water_content": 4
+  },
+  "location_resolution": {
+    "source": "payload Latitude/Longitude where present",
+    "rows_missing_payload_coordinates": 57,
+    "qc_recommendation_for_missing_coordinates": "g2 if producing companion location rows from payload only",
+    "unique_site_coordinate_records_observed": 133
+  },
+  "depth_resolution": {
+    "0-5 cm": 0.025,
+    "5-15 cm": 0.1,
+    "15-May": 0.1,
+    "15 cm +": 0.15,
+    "qc_recommendation": "d1 for midpoint/lower-bound depth approximations if qc_flag is tracked outside the required nine-column CSV"
+  },
+  "time_series": {
+    "is_timeseries": false,
+    "interval_min": null,
+    "reason": "Discrete field sampling dates, not a continuous sensor/logger time series."
+  },
+  "open_questions": [
+    "DOI was not available in the fold-local instructions, fold-local metadata cache, or held-out raw CSV; set to UNKNOWN_FROM_ALLOWED_INPUTS.",
+    "Depth token '15-May' is interpreted as an Excel-mangled '5-15 cm' label based on date/depth patterning.",
+    "Rows with '15 cm +' use 0.15 m as the reported lower-bound representative depth."
+  ]
+}

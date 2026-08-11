@@ -1,0 +1,114 @@
+{
+  "index": 5,
+  "dataset_identifier": "ess-dive-8ac2940c708a515-20230504T210140482233",
+  "doi": "doi:10.15485/1842907",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "SM_SWC.csv"
+  ],
+  "location_metadata_files": [
+    "Microclimate_Sensors.csv",
+    "East_Taylor_Watershed_Community_Observatory_Sites___Point_Locations__Surface_v3_2_20250327.csv"
+  ],
+  "sensor_metadata_files": [
+    "Microclimate_Sensors.csv"
+  ],
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "Date Time",
+        "source_files": [
+          "SM_SWC.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse datetime using '%Y-%m-%d %H:%M:%S' in America/Denver timezone; convert to UTC ISO-8601 string.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": [
+          "Microclimate_Sensors.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Depth is not reported in the available raw files; populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Location_ID, Latitude",
+        "source_files": [
+          "East_Taylor_Watershed_Community_Observatory_Sites___Point_Locations__Surface_v3_2_20250327.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Look up latitude for SFA_Location/site_id in the Varadharajan location registry raw package where an exact Location_ID exists; otherwise leave unresolved.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Location_ID, Longitude",
+        "source_files": [
+          "East_Taylor_Watershed_Community_Observatory_Sites___Point_Locations__Surface_v3_2_20250327.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Look up longitude for SFA_Location/site_id in the Varadharajan location registry raw package where an exact Location_ID exists; otherwise leave unresolved.",
+        "unit_conversion": null
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": "SFA_Location, Sensor.SN",
+        "source_files": [
+          "SM_SWC.csv",
+          "Microclimate_Sensors.csv"
+        ],
+        "destination_variable": "replicate",
+        "transformation": "Assign integer replicate identifiers from unique Sensor.SN values within each site_id.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "SFA_Location",
+        "source_files": [
+          "SM_SWC.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Rename 'SFA_Location' to site_id.",
+        "unit_conversion": null
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Soil water potential is not reported; populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "Gravimetric water content is not reported; populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "Measurement",
+        "source_files": [
+          "SM_SWC.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Join to Microclimate_Sensors.csv by SFA_Location and Sensor.SN, retain Treatment == 'ctl' to remove experimental snowmelt manipulation plots, and rename Measurement to volumetric water content.",
+        "unit_conversion": "None; source units are m3/m3."
+      }
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "package_id": "ess-dive-e67ab1151ebc525-20230929T190307767",
+  "doi": "doi:10.6084/M9.FIGSHARE.7834406.V2",
+  "curator_decision": "INCLUDE",
+  "exclusion_reason": null,
+  "title": "Raw soil carbon dioxide, moisture, and temperature data from a mixed conifer and aspen forest stands in the East River Watershed of Colorado June 2011-December 2021.",
+  "data_payload_files": [
+    {
+      "filename": "Carbone_aspen.csv",
+      "columns": [
+        "Year",
+        "Month",
+        "Day",
+        "Hour",
+        "CO2-50cm",
+        "CO2-15cm",
+        "CO2-5cm",
+        "CO2-0cm",
+        "CO2-above",
+        "T-50cm",
+        "T-15cm",
+        "T-5cm",
+        "T-0cm",
+        "T-above",
+        "VWC-50cm",
+        "VWC-15cm",
+        "VWC-5cm",
+        "DecagonT-50cm",
+        "DecagonT-15cm",
+        "DecagonT-5cm",
+        "EC-50cm",
+        "EC-15cm",
+        "EC-5cm",
+        "BatteryVoltage"
+      ],
+      "row_count_estimate": 79025,
+      "file_notes": "Headerless CSV; columns inferred from the conifer header and package metadata headers file description. Contains hourly records for the deciduous/aspen forest stand.",
+      "column_preview": "2011,8,20,0,8351.7,2117,1231.6,1085,663.61,10.67,11.82,11.72,11.48,10.37,0.106,0.093,0.072,10.9,12.1,12.5,0,0.01,0,12.8"
+    },
+    {
+      "filename": "Carbone_conifer.csv",
+      "columns": [
+        "Year",
+        "Month",
+        "Day",
+        "Hour",
+        "CO2-50cm",
+        "CO2-15cm",
+        "CO2-5cm",
+        "CO2-0cm",
+        "CO2-above",
+        "T-50cm",
+        "T-15cm",
+        "T-5cm",
+        "T-0cm",
+        "T-above",
+        "VWC-50cm",
+        "VWC-15cm",
+        "VWC-5cm",
+        "DecagonT-50cm",
+        "DecagonT-15cm",
+        "DecagonT-5cm",
+        "EC-50cm",
+        "EC-15cm",
+        "EC-5cm",
+        "BatteryVoltage"
+      ],
+      "row_count_estimate": 79024,
+      "file_notes": "Headered CSV; contains hourly records for the mixed conifer forest stand.",
+      "column_preview": "Year,Month,Day,Hour,CO2-50cm,CO2-15cm,CO2-5cm,CO2-0cm,CO2-above,T-50cm,T-15cm,T-5cm,T-0cm,T-above,VWC-50cm,VWC-15cm,VWC-5cm,DecagonT-50cm,DecagonT-15cm,DecagonT-5cm,EC-50cm,EC-15cm,EC-5cm,BatteryVoltage"
+    }
+  ],
+  "location_metadata_files": null,
+  "sensor_metadata_files": null,
+  "readme_content": null,
+  "location_resolution": {
+    "source": "package_metadata",
+    "qc_flag_recommendation": null,
+    "site_coordinates": [
+      {
+        "site_id": "Carbone_aspen",
+        "latitude": 38.9592,
+        "longitude": -106.9898
+      },
+      {
+        "site_id": "Carbone_conifer",
+        "latitude": 38.9592,
+        "longitude": -106.9898
+      }
+    ],
+    "notes": "ESS-DIVE spatialCoverage reports the two soil pits are within 15 meters of each other at 38.9592 N, -106.9898 W, elevation 2880 m."
+  },
+  "time_series_inference": {
+    "is_timeseries": true,
+    "interval_min": 60.0,
+    "reasoning": "Package metadata states soil temperature, moisture, and CO2 were recorded each hour; sorted timestamp differences are predominantly 60 minutes."
+  },
+  "experimental_context": {
+    "manipulation_detected": false,
+    "manipulation_type": null,
+    "has_control_data": null,
+    "recommendation": "include_all",
+    "notes": "Dataset compares adjacent natural mixed-conifer and deciduous/aspen stands; no warming, irrigation, drought, fertilization, or other manipulation was reported."
+  },
+  "similar_dataset_reference": {
+    "index": 27,
+    "reason": "Wide hourly sensor time series with VWC depth encoded in column names and site_id encoded by file/source."
+  },
+  "open_questions": [
+    "Source files do not include timezone. Harmonization assumes fixed Mountain Standard Time (UTC-7) for logger timestamps.",
+    "Carbone_aspen.csv is headerless in the raw package copy; columns are inferred from Carbone_conifer.csv and the API metadata description of a shared headers file.",
+    "Non-leap-year February 29 rows in Carbone_conifer.csv are dropped because they cannot be converted to valid timestamps."
+  ]
+}

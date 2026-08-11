@@ -1,0 +1,108 @@
+{
+  "index": 18,
+  "dataset_identifier": "ess-dive-b924878d23c9dd7-20250214T163427929",
+  "doi": "UNKNOWN_FROM_ALLOWED_INPUTS",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv"
+  ],
+  "location_metadata_files": null,
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "Date_Collected",
+        "source_files": [
+          "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse date from 'Date_Collected' using format '%m/%d/%Y' in America/Denver timezone; convert to UTC ISO-8601 string.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "Depth_Increment",
+        "source_files": [
+          "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Map depth increments to representative meters below surface: '0-5 cm' -> 0.025 m, '5-15 cm' -> 0.10 m, Excel-mangled '15-May' -> 0.10 m, and '15 cm +' -> 0.15 m. Range/lower-bound depths are approximations.",
+        "unit_conversion": "Convert cm depths to meters by dividing by 100 after midpoint/lower-bound selection."
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Latitude",
+        "source_files": [
+          "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Coordinates are embedded in the payload for most rows. Rows lacking coordinates remain traceable by site_id; no separate location output is required for heldout_harmonized.csv.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Longitude",
+        "source_files": [
+          "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Coordinates are embedded in the payload for most rows. Rows lacking coordinates remain traceable by site_id; no separate location output is required for heldout_harmonized.csv.",
+        "unit_conversion": null
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": "Replicate",
+        "source_files": [
+          "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv"
+        ],
+        "destination_variable": "replicate",
+        "transformation": "Rename numeric 'Replicate' to replicate.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "Location, Field_Site, Block, Plot, Replicate, Topographic_Position",
+        "source_files": [
+          "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Construct a stable site_id by concatenating location hierarchy, plot, replicate, and topographic position when present.",
+        "unit_conversion": null
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "Soil Water Content (g H2O per gram  soil)",
+        "source_files": [
+          "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv"
+        ],
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "Coerce source soil water content to numeric and drop rows where this measurement is missing.",
+        "unit_conversion": "None; source units are g H2O per g soil."
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "None; volumetric water content not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "water_potential_kPa",
+        "transformation": "None; soil water potential not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    }
+  }
+}
