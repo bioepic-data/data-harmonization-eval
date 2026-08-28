@@ -220,9 +220,8 @@ import pandas as pd
 **FILE PATHS:**
 
 ```python
-HOME = Path.home()
-BASE_DIR = HOME / "Downloads" / "ess-dive_wfsfa_soil_datasets"
-OUT_DIR = HOME / "Desktop" / "soilmoisture_harmonization_py"
+BASE_DIR = Path("inputs/raw")
+OUT_DIR = Path("output")
 MAP_JSON_PATH = OUT_DIR / "sm_data_harmonization_mapping.json"
 
 # For specific dataset

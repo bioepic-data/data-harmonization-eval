@@ -65,6 +65,7 @@ def test_build_env_layout_and_content(tmp_path, sources):
 
     # skills copied; manifest + instructions written
     assert (env / "skills" / "essdive_sm_curator" / "SKILL.md").exists()
+    assert (env / "inputs" / "raw").is_dir()
     manifest = json.loads((env / "MANIFEST.json").read_text())
     assert manifest["holdout_indices"] == [2]
     assert manifest["holdout_identifiers"] == ["ess-dive_b"]
@@ -72,7 +73,7 @@ def test_build_env_layout_and_content(tmp_path, sources):
     assert "ess-dive_b" in (env / "AGENT_INSTRUCTIONS.md").read_text()
 
 
-def test_build_env_metadata_symlink(tmp_path, sources):
+def test_build_env_metadata_is_copied(tmp_path, sources):
     pkg, mapping, skills = sources
     meta = tmp_path / "meta"
     meta.mkdir()
@@ -80,7 +81,7 @@ def test_build_env_metadata_symlink(tmp_path, sources):
     env = build_env({1}, env_root=tmp_path / ".runs", package_dir=pkg,
                     mapping_path=mapping, skills_dir=skills, metadata_dir=meta)
     link = env / "data" / "external" / "ess-dive_meta"
-    assert link.is_symlink() and (link / "x.json").exists()
+    assert not link.is_symlink() and (link / "x.json").exists()
 
 
 def test_build_env_rejects_holdout_without_module(tmp_path, sources):

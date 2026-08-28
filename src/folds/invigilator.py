@@ -1,6 +1,6 @@
 """Anti-cheat invigilator: audit an agent run's trace for out-of-bounds access.
 
-A leave-one-cluster-out run hands an agent a `.runs/<cfg>/` env whose two
+A leave-one-cluster-out run hands an agent an answer-free environment whose two
 answer-bearing artifacts have the held-out cluster removed. Isolation is by
 *absence + instruction*; this module is the *audit* backstop: it reads the
 agent's tool-call trace (`agent-<id>.jsonl`) and flags any file the agent read
@@ -8,27 +8,24 @@ or touched that lies outside the allowed roots.
 
 Policy is **root-based**: an access is in-bounds iff its path resolves under
 
-* the run env (`.runs/<cfg>/`), or
-* the shared raw-data dir (`~/ess-dive_wfsfa_soil_datasets/`),
+* the run environment,
 
 plus any explicitly allowed extras. This works because every *answer* (the real
 `data/gold/`, the full mapping with the held-out entry, any answer-key dir) lives
-*outside* the env, while every legitimate *input* (skills, ablated code, filtered
-mapping, the held-out dataset's metadata via the env symlink, raw CSVs) lives
-inside one of those roots. No per-identifier rules are needed.
+*outside* the env, while every legitimate *input* (skills, ablated code,
+filtered mapping, metadata, and raw CSVs) lives inside the environment. No
+per-identifier rules are needed.
 
 Two things make the audit correct rather than naive:
 
-* **cwd-aware Bash parsing.** Agents `cd` into the env and use relative paths
-  (`cd .runs/<cfg> && cat data/processed/…`); a substring match would false-
+* **cwd-aware Bash parsing.** Agents `cd` into the environment and use relative
+  paths (`cd /isolated/cfg && cat data/processed/…`); a substring match would false-
   positive. We track `cd` per command and resolve relative tokens against the
   effective working directory.
-* **Lexical containment, not realpath.** The env symlinks shared inputs in
-  (e.g. `data/external/ess-dive_meta`); resolving symlinks would point those
-  reads back outside the env and wrongly flag them. We normalize paths
-  lexically (`..` handled) but do NOT follow symlinks, so accessing an input
-  *via the env* is in-bounds while reaching the same input by its real outside
-  path is flagged.
+* **Lexical containment, not realpath.** We normalize paths lexically (`..`
+  handled) but do NOT follow symlinks. The environment builder copies inputs
+  rather than linking them, and this rule also prevents a benign symlink from
+  being mistaken for an out-of-bounds path in traces.
 
 Bash is not fully parseable, so unresolved commands are also surfaced verbatim
 for human review — the audit never silently claims a command was clean when it
@@ -44,8 +41,6 @@ from pathlib import Path
 from typing import Optional
 
 import typer
-
-DEFAULT_RAW_DATA = Path.home() / "ess-dive_wfsfa_soil_datasets"
 
 # System paths that show up as Bash tokens (mostly `2>/dev/null` redirects) but
 # are never data access — never treated as violations.
@@ -83,10 +78,10 @@ def lexical_resolve(path: str, cwd: str) -> Path:
     Does NOT follow symlinks — accessing an input via the env's symlink should
     count as inside the env.
 
-    >>> str(lexical_resolve("data/x", "/repo/.runs/cfg"))
-    '/repo/.runs/cfg/data/x'
-    >>> str(lexical_resolve("../secret", "/repo/.runs/cfg"))
-    '/repo/.runs/secret'
+    >>> str(lexical_resolve("data/x", "/isolated/cfg"))
+    '/isolated/cfg/data/x'
+    >>> str(lexical_resolve("../secret", "/isolated/cfg"))
+    '/isolated/secret'
     """
     p = os.path.expanduser(path)
     if not os.path.isabs(p):
@@ -150,7 +145,7 @@ def _forbidden(p: Path, repo_root: Path) -> bool:
 def audit(
     trace_path: Path,
     env_dir: Path,
-    raw_data_dir: Path = DEFAULT_RAW_DATA,
+    raw_data_dir: Optional[Path] = None,
     repo_root: Optional[Path] = None,
     extra_roots: Optional[list[Path]] = None,
     holdout_identifiers: Optional[list[str]] = None,
@@ -159,16 +154,15 @@ def audit(
     repo_root = Path(repo_root or Path.cwd()).resolve()
 
     def _abs(p) -> Path:
-        # absolutize against repo_root, lexically (do NOT follow symlinks, so the
-        # env's symlinked-in inputs stay "inside" the env).
+        # Absolutize against repo_root lexically; do not follow symlinks.
         s = os.path.expanduser(str(p))
         if not os.path.isabs(s):
             s = os.path.join(str(repo_root), s)
         return Path(os.path.normpath(s))
 
     env_dir = _abs(env_dir)
-    raw_data_dir = _abs(raw_data_dir)
-    allowed = [env_dir, raw_data_dir] + [_abs(p) for p in (extra_roots or [])]
+    allowed = [env_dir] + ([_abs(raw_data_dir)] if raw_data_dir is not None else []) \
+        + [_abs(p) for p in (extra_roots or [])]
     holdout_ids = holdout_identifiers or []
 
     report = AuditReport(clean=True, allowed_roots=[str(r) for r in allowed])
@@ -230,8 +224,8 @@ app = typer.Typer(add_completion=False, help="Audit an agent run trace for out-o
 @app.command()
 def main(
     trace: Path = typer.Option(..., "--trace", help="agent-<id>.jsonl trace file."),
-    env: Path = typer.Option(..., "--env", help="Run env dir (.runs/<cfg>); reads its MANIFEST.json."),
-    raw_data: Path = typer.Option(DEFAULT_RAW_DATA, "--raw-data", help="Shared raw-data root."),
+    env: Path = typer.Option(..., "--env", help="Answer-free run environment; reads its MANIFEST.json."),
+    raw_data: Optional[Path] = typer.Option(None, "--raw-data", help="Legacy external raw-data root to allow (avoid for isolated runs)."),
     repo_root: Optional[Path] = typer.Option(None, "--repo-root", help="Repo root (start cwd for relative paths); defaults to the current dir."),
     allow: list[Path] = typer.Option([], "--allow", help="Extra allowed root(s)."),
     show_bash: bool = typer.Option(False, "--show-bash", help="Print every Bash command for human review."),
