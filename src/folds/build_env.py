@@ -67,10 +67,10 @@ FOLD_CLAUDE_SETTINGS = {
     "permissions": {
         "deny": [
             "Bash(dangerouslyDisableSandbox:true)",
-            "Read(//**)",
+            # "Read(//**)",
             "Read(../**)",
             "Read(**/../**)",
-            "Edit(//**)",
+            #"Edit(//**)",
             "Edit(../**)",
             "Edit(**/../**)",
             "WebFetch",
