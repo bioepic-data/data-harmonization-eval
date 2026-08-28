@@ -6,7 +6,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
-from src.folds.invigilator import app, audit, lexical_resolve, under
+from src.folds.invigilator import app, audit, lexical_resolve, load_tool_uses, under
 
 
 def write_trace(path: Path, tool_uses: list[tuple[str, dict]]) -> Path:
@@ -18,6 +18,15 @@ def write_trace(path: Path, tool_uses: list[tuple[str, dict]]) -> Path:
     ]
     path.write_text("\n".join(lines) + "\n")
     return path
+
+
+def test_load_tool_uses_accepts_action_execution_json(tmp_path):
+    """The GitHub action emits one JSON document rather than JSONL."""
+    trace = tmp_path / "execution.json"
+    trace.write_text(json.dumps({
+        "messages": [{"type": "tool_use", "name": "Read", "input": {"file_path": "x"}}]
+    }))
+    assert load_tool_uses(trace) == [("Read", {"file_path": "x"})]
 
 
 def make_repo(tmp_path):

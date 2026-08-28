@@ -65,7 +65,13 @@ _DATE_FRAGMENT = re.compile(r"\d{1,4}/\d{1,2}/\d{1,4}$")
 
 
 def load_tool_uses(trace_path: Path) -> list[tuple[str, dict]]:
-    """Extract ``(tool_name, tool_input)`` pairs from a JSONL agent trace."""
+    """Extract ``(tool_name, tool_input)`` pairs from a JSON or JSONL trace.
+
+    Claude Code session transcripts are JSONL, while the GitHub action's
+    ``execution_file`` output is a single JSON document. Supporting both lets
+    the evaluator archive the action output verbatim rather than reserializing
+    a partial view of it before audit.
+    """
     out: list[tuple[str, dict]] = []
 
     def walk(o):
@@ -78,10 +84,15 @@ def load_tool_uses(trace_path: Path) -> list[tuple[str, dict]]:
             for v in o:
                 walk(v)
 
-    for line in Path(trace_path).read_text().splitlines():
-        line = line.strip()
-        if line:
-            walk(json.loads(line))
+    text = Path(trace_path).read_text().strip()
+    if not text:
+        raise ValueError(f"trace is empty: {trace_path}")
+    try:
+        records = [json.loads(text)]
+    except json.JSONDecodeError:
+        records = [json.loads(line) for line in text.splitlines() if line.strip()]
+    for record in records:
+        walk(record)
     return out
 
 
