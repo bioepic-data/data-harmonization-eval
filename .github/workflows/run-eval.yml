@@ -163,6 +163,7 @@ jobs:
           # AGENT_INSTRUCTIONS.md is the single source of truth for the fold
           # contract. This bootstrap only establishes its authority and the
           # isolation boundary before the agent reads it.
+          settings: .claude/settings.local.json
           direct_prompt: |
             You are running a single grouped leave-one-cluster-out harmonization
             evaluation. A self-contained run environment has already been built for

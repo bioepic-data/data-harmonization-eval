@@ -65,6 +65,7 @@ CLAUDE_SETTINGS_REL = Path(".claude/settings.local.json")
 FOLD_CLAUDE_SETTINGS = {
     "$schema": "https://json.schemastore.org/claude-code-settings.json",
     "permissions": {
+        "allow": ["Bash"],
         "deny": [
             "Bash(dangerouslyDisableSandbox:true)",
             # "Read(//**)",
