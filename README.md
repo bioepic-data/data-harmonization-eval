@@ -185,7 +185,7 @@ substituting the fold name. The agent writes its deliverables to:
 /tmp/data-harmonization-eval-runs/fold-02-holdout-15-26/output/
 ```
 
-If your agent provider records tool calls as JSONL, audit the run afterward:
+For a locally run agent, audit its tool-use JSONL afterward:
 
 ```bash
 uv run python -m src.folds.invigilator \
@@ -204,7 +204,12 @@ finishes, it creates a new orphan branch named
 `eval/<fold-name>-<run-id>-<attempt>` containing that isolated workspace, then
 uploads the same workspace as an `eval-<fold-id>` artifact. The branch is
 created only after the agent run and has no parent commit, so it does not carry
-the trusted checkout history or its held-out gold artifacts.
+the trusted checkout history or its held-out gold artifacts. The workflow also
+copies Claude Code's execution log to `audit/claude-execution.json`, runs the
+invigilator before staging, and records its report in
+`audit/invigilator_report.txt`. A missing trace or any out-of-bound access fails
+the workflow; the resulting audit artifacts are still retained in the eval
+branch and uploaded artifact for review.
 
 ### Results and scoring
 

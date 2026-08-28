@@ -123,6 +123,19 @@ jobs:
           uv run python -m src.folds.stage_raw_data --indices "$STAGE_INDICES" \
             --dest "$RUN_ENV/inputs/raw" --drive-method public
 
+      - name: Preserve the invigilator outside the agent workspace
+        # The following step deliberately deletes the checkout, including its Python
+        # environment. Preserve only the auditor and its already-synced runtime
+        # outside the agent's filesystem boundary for the post-run audit.
+        env:
+          AUDITOR_DIR: ${{ runner.temp }}/harmonization-invigilator
+        run: |
+          set -euo pipefail
+          test -x .venv/bin/python
+          mkdir -p "$AUDITOR_DIR"
+          cp src/folds/invigilator.py "$AUDITOR_DIR/invigilator.py"
+          mv .venv "$AUDITOR_DIR/venv"
+
       - name: Replace checkout with the isolated agent workspace
         # This is the isolation boundary.  Build/staging happen in the trusted
         # checkout; immediately before Claude starts, replace that checkout
@@ -134,6 +147,7 @@ jobs:
           rsync -a --delete "$RUN_ENV/" "$GITHUB_WORKSPACE/"
 
       - name: Run harmonization agent in the run environment
+        id: harmonize
         # Cap runaway evals so a hung/looping agent can't burn the full 6h limit.
         timeout-minutes: 60
         uses: anthropics/claude-code-action@beta
@@ -160,6 +174,29 @@ jobs:
             guidance in a skill. Remain inside this workspace: do not access parent
             directories, absolute paths outside it, network services, APIs, or other
             external data sources. Write every deliverable under `output/`.
+
+      - name: Capture and invigilate the agent trace
+        # The action's execution_file contains its complete tool-use log. Keep
+        # the original JSON in the isolated workspace and fail the run on any
+        # access outside that workspace. This step is intentionally before
+        # branch staging, so the audit result is included in the staged run.
+        if: always()
+        env:
+          AUDITOR_DIR: ${{ runner.temp }}/harmonization-invigilator
+          EXECUTION_FILE: ${{ steps.harmonize.outputs.execution_file }}
+        run: |
+          set -euo pipefail
+          mkdir -p audit
+          if [ -z "$EXECUTION_FILE" ] || [ ! -f "$EXECUTION_FILE" ]; then
+            echo "ERROR: Claude action did not provide an execution trace." \
+              | tee audit/invigilator_report.txt
+            exit 1
+          fi
+          cp "$EXECUTION_FILE" audit/claude-execution.json
+          "$AUDITOR_DIR/venv/bin/python" "$AUDITOR_DIR/invigilator.py" \
+            --trace audit/claude-execution.json --env "$GITHUB_WORKSPACE" \
+            --repo-root "$GITHUB_WORKSPACE" \
+            | tee audit/invigilator_report.txt
 
       - name: Stage completed isolated environment on an eval branch
         # This deliberately runs only after the agent. At this point the current
