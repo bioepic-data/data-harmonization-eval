@@ -1,15 +1,16 @@
-"""Build a self-contained run environment for one leave-one-cluster-out config.
+"""Build a self-contained run environment for one targeted grouped-LOO config.
 
-Grouped leave-one-cluster-out evaluates the curator+harmonizer agent on a
-held-out cluster of datasets while the *other* datasets serve as exemplars. To
-keep the held-out cluster's reference answer out of the agent's reach, we
+Targeted grouped leave-one-out evaluates one target dataset per fold. When the
+target belongs to a correlated source/instrument cluster, every cluster member
+is removed from the exemplar pool, but only the target is staged and assigned
+to the agent. To keep those reference answers out of the agent's reach, we
 materialize a per-config sandbox outside the repository containing only:
 
 * the **skills** (curator + harmonizer), copied verbatim;
-* the **filtered mapping JSON** — the gold mapping with the held-out cluster's
+* the **filtered mapping JSON** — the gold mapping with the reference holdout's
   entries removed, written to the path the skills read for exemplars
   (``data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json``);
-* the **held-out-free expert code** — ``common.py`` plus the kept
+* the **reference-holdout-free expert code** — ``common.py`` plus the kept
   ``dataset_NN.py`` modules of the modular expert harmonizer (see
   :mod:`src.folds.expert_harmonizer`), copied to the path the harmonizer reads
   as a code-pattern reference (``data/gold/expert_code/``). The
@@ -20,7 +21,7 @@ exemplar mapping and the reference modules, which sit at the exact relative
 paths the skills resolve. Shared *inputs* are deliberately NOT treated as
 leakage and stay where they are:
 
-* raw per-dataset CSVs at ``inputs/raw/<dsid>/`` — staged into the run
+* raw per-target CSVs at ``inputs/raw/<dsid>/`` — staged into the run
   environment by :mod:`src.folds.stage_raw_data`;
 * cached ESS-DIVE metadata — optionally copied in via ``metadata_dir``.
 
