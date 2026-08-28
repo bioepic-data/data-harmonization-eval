@@ -3,7 +3,7 @@
 Grouped leave-one-cluster-out evaluates the curator+harmonizer agent on a
 held-out cluster of datasets while the *other* datasets serve as exemplars. To
 keep the held-out cluster's reference answer out of the agent's reach, we
-materialize a per-config sandbox under ``.runs/<name>/`` containing only:
+materialize a per-config sandbox outside the repository containing only:
 
 * the **skills** (curator + harmonizer), copied verbatim;
 * the **filtered mapping JSON** — the gold mapping with the held-out cluster's
@@ -20,18 +20,19 @@ exemplar mapping and the reference modules, which sit at the exact relative
 paths the skills resolve. Shared *inputs* are deliberately NOT treated as
 leakage and stay where they are:
 
-* raw per-dataset CSVs at ``~/ess-dive_wfsfa_soil_datasets/<dsid>/`` — read by
-  generated code via an absolute home path, so they need no env copy;
-* cached ESS-DIVE metadata — optionally symlinked in via ``metadata_dir``.
+* raw per-dataset CSVs at ``inputs/raw/<dsid>/`` — staged into the run
+  environment by :mod:`src.folds.stage_raw_data`;
+* cached ESS-DIVE metadata — optionally copied in via ``metadata_dir``.
 
-The agent can in principle escape the sandbox (``../`` or absolute paths); the
-backstop is instruction (``AGENT_INSTRUCTIONS.md``) plus a post-hoc trace audit
-against the held-out ``dataset_identifier``s recorded in ``MANIFEST.json``.
+The environment is intended to be copied into a dedicated agent workspace (see
+``.github/workflows/run-eval.yml``), where no repository checkout or answer
+artifacts exist.  The post-hoc trace audit remains a defence-in-depth check.
 """
 from __future__ import annotations
 
 import json
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Optional
 
@@ -47,12 +48,13 @@ from src.folds.expert_harmonizer import (
 )
 
 DEFAULT_SKILLS = Path("skills")
-DEFAULT_ENV_ROOT = Path(".runs")
+DEFAULT_ENV_ROOT = Path(tempfile.gettempdir()) / "data-harmonization-eval-runs"
 
 # Where each artifact lands inside the env, matching the skills' read paths.
 HARMONIZER_REL = Path("data/gold/expert_code")
 MAPPING_REL = Path("data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json")
 METADATA_REL = Path("data/external/ess-dive_meta")
+RAW_DATA_REL = Path("inputs/raw")
 
 
 def filter_mapping(mapping: list[dict], holdout: set[int]) -> list[dict]:
@@ -85,7 +87,7 @@ def build_env(
     skills_dir: Path = DEFAULT_SKILLS,
     metadata_dir: Optional[Path] = None,
 ) -> Path:
-    """Materialize ``.runs/<name>/`` for one leave-one-cluster-out config.
+    """Materialize an answer-free environment for one leave-one-cluster-out config.
 
     Returns the env directory. Overwrites an existing env of the same name.
     """
@@ -102,6 +104,10 @@ def build_env(
     if env.exists():
         shutil.rmtree(env)
     env.mkdir(parents=True)
+    # Raw datasets are trusted inputs, but must be staged *inside* this
+    # directory before an agent is started.  Keeping the directory explicit
+    # avoids granting the agent access to a shared home-directory data root.
+    (env / RAW_DATA_REL).mkdir(parents=True)
 
     # held-out-free expert code: copy common.py + the kept dataset modules
     pkg_dest = env / HARMONIZER_REL
@@ -116,7 +122,9 @@ def build_env(
 
     if metadata_dir is not None:
         (env / METADATA_REL).parent.mkdir(parents=True, exist_ok=True)
-        (env / METADATA_REL).symlink_to(Path(metadata_dir).resolve(), target_is_directory=True)
+        # Copy rather than link: a symlink turns the environment into a portal
+        # back to the trusted preparation filesystem.
+        shutil.copytree(metadata_dir, env / METADATA_REL)
 
     idx_to_dsid = {e["index"]: e.get("dataset_identifier") for e in mapping}
     held_ids = [idx_to_dsid.get(i) for i in sorted(holdout)]
@@ -146,7 +154,7 @@ def _instructions(held_ids: list) -> str:
         "- the exemplars in `data/processed/.../sm_data_harmonization_mapping.json` "
         "and the code patterns in `data/gold/expert_code/` "
         "(both have the held-out cluster removed),\n"
-        "- the shared raw inputs under `~/ess-dive_wfsfa_soil_datasets/` and the "
+        "- raw inputs staged under `inputs/raw/` and the "
         "cached metadata under `data/external/ess-dive_meta/`.\n\n"
         "Do NOT look up the held-out dataset's existing harmonized output, expert "
         "code, or mapping entry from any other location. The held-out datasets are:\n\n"
@@ -161,13 +169,13 @@ app = typer.Typer(add_completion=False, help="Build a leave-one-cluster-out run 
 def main(
     holdout: str = typer.Option(..., "--holdout", help="Comma-separated indices or dataset_identifiers to hold out."),
     name: Optional[str] = typer.Option(None, "--name", help="Env dir name (default: holdout-<ids>)."),
-    env_root: Path = typer.Option(DEFAULT_ENV_ROOT, "--env-root", help="Parent dir for run environments."),
+    env_root: Path = typer.Option(DEFAULT_ENV_ROOT, "--env-root", help="Parent dir for run environments (must be outside the repository)."),
     package: Path = typer.Option(DEFAULT_PACKAGE, "--package", help="Modular expert harmonizer dir to draw modules from."),
     mapping: Path = typer.Option(DEFAULT_MAPPING, "--mapping", help="Gold mapping JSON."),
     skills: Path = typer.Option(DEFAULT_SKILLS, "--skills", help="Skills dir to copy."),
-    metadata_dir: Optional[Path] = typer.Option(None, "--metadata-dir", help="Cached ESS-DIVE metadata to symlink in."),
+    metadata_dir: Optional[Path] = typer.Option(None, "--metadata-dir", help="Cached ESS-DIVE metadata to copy in."),
 ) -> None:
-    """Assemble `.runs/<name>/` for one hold-out config."""
+    """Assemble an answer-free run environment for one hold-out config."""
     holdout_idx = resolve_holdout(holdout.split(","), mapping)
     env = build_env(
         holdout_idx, name=name, env_root=env_root, package_dir=package,
