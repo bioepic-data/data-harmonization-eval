@@ -1,0 +1,26 @@
+{
+  "identifier": "ess-dive-01092fc392bc46d-20240819T143818677",
+  "doi": "doi:10.15485/2322567",
+  "dataset_index": 10,
+  "fold_id": 8,
+  "holdout": [10],
+  "exemplar_pool": [1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 18, 23, 24, 25, 26, 27],
+  "mode": "end_to_end",
+  "run_index": 0,
+  "model_id": "claude-sonnet-4-6",
+  "skill1_version": "0.1",
+  "skill2_version": "0.3",
+  "timestamp": "2026-06-30T23:10:00Z",
+  "curator_success": true,
+  "curator_decision": "INCLUDE",
+  "bundle_path": "results/raw_runs/fold_08_holdout_10/run_0/curator/ess-dive-01092fc392bc46d-20240819T143818677_a3f7b2c91d4e.json",
+  "harmonizer_attempted": true,
+  "harmonizer_success": true,
+  "code_path": "results/raw_runs/fold_08_holdout_10/run_0/harmonizer/ess-dive-01092fc392bc46d-20240819T143818677_5e8a3d12f091.py",
+  "mapping_path": "results/raw_runs/fold_08_holdout_10/run_0/harmonizer/ess-dive-01092fc392bc46d-20240819T143818677_5e8a3d12f091_mapping.json",
+  "success": true,
+  "agent_traces": {
+    "skill1": "results/raw_runs/fold_08_holdout_10/run_0/curator/agent_trace_skill1.txt",
+    "skill2": "results/raw_runs/fold_08_holdout_10/run_0/harmonizer/agent_trace_skill2.txt"
+  }
+}

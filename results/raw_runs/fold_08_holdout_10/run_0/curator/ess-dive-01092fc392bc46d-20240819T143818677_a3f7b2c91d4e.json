@@ -1,0 +1,52 @@
+{
+  "package_id": "ess-dive-01092fc392bc46d-20240819T143818677",
+  "doi": "doi:10.15485/2322567",
+  "curator_decision": "INCLUDE",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    {
+      "filename": "Soil_water_content_Fig4e.csv",
+      "columns": [
+        "Date",
+        "PLM1._vol_water_content",
+        "PLM2._vol_water_content",
+        "PLM3._vol_water_content"
+      ],
+      "row_count_estimate": 75,
+      "file_size_mb": 0.048,
+      "column_preview": "Date,PLM1._vol_water_content,PLM2._vol_water_content,PLM3._vol_water_content\n(units),(m^3/m^3),(m^3/m^3),(m^3/m^3)\n2016-11-19,0.280,0.255,0.218\n2016-12-05,0.278,0.253,0.210\n..."
+    }
+  ],
+  "location_metadata_files": [],
+  "sensor_metadata_files": [],
+  "readme_content": "Field data supporting Wan et al. (2024) 'Hydrological control of rock carbon fluxes from shale weathering'. Nature Water.\n\nThis dataset contains soil water content (volumetric) measured at the PLM hillslope transect (PLM1, PLM2, PLM3) using TDR sensors deployed at specific depths within instrumented boreholes. Measurement depths are reported in Figure 4 of the associated manuscript.\n\nSite location: Pumphouse Lower Montane (PLM) hillslope transect, East River watershed, near Crested Butte, Colorado (38\u00b055'N, 106\u00b057'W).\n\nDOI of associated manuscript: https://doi.org/10.1038/s44221-024-00293-8",
+  "location_resolution": {
+    "source": "varadharajan_lookup",
+    "qc_flag_recommendation": "g1",
+    "site_coordinates": []
+  },
+  "time_series_inference": {
+    "is_timeseries": true,
+    "interval_min": null,
+    "reasoning": "TDR sensors permanently deployed in boreholes at PLM hillslope. Date-only timestamps spanning 5 years (2016-2021); appears to be periodic (monthly to seasonal) rather than continuous hourly monitoring. Classified as time series due to multi-year sensor deployment intent; interval to be computed from timestamp differences."
+  },
+  "experimental_context": {
+    "manipulation_detected": false,
+    "manipulation_type": null,
+    "has_control_data": null,
+    "recommendation": "include_all"
+  },
+  "similar_dataset_reference": {
+    "index": 9,
+    "reason": "Most similar structure: wide-format VWC with site embedded in column names (PLMi._vol_water_content vs VWC_i pattern), depth not reported in data (populated from external reference), discrete/periodic sampling dates, no dedicated location file."
+  },
+  "open_questions": [
+    "Depth information not included in data package. Must use depths from Fig. 4 legend of Wan et al. 2024 (PLM1=0.30m, PLM2=0.28m, PLM3=0.20m).",
+    "First row of CSV appears to be a units descriptor row and should be skipped (iloc[1:]).",
+    "Individual site coordinates for PLM1, PLM2, PLM3 not in package; must look up in Varadharajan et al. (ref index 0).",
+    "Timestamp is date-only (YYYY-MM-DD); timezone assumed America/Denver (site is in Colorado, USA)."
+  ],
+  "skill_version": "0.1",
+  "run_id": "a3f7b2c91d4e",
+  "timestamp": "2026-06-30T22:55:00Z"
+}

@@ -1,0 +1,93 @@
+{
+  "index": 10,
+  "dataset_identifier": "ess-dive-01092fc392bc46d-20240819T143818677",
+  "doi": "doi:10.15485/2322567",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": [
+    "Soil_water_content_Fig4e.csv"
+  ],
+  "location_metadata_files": null,
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "Date",
+        "source_files": [
+          "Soil_water_content_Fig4e.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Convert to ISO 8601 UTC format. Skip first row of CSV (units descriptor). Date format is '%Y-%m-%d'; timezone is America/Denver (site in Colorado, USA).",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "depth_m",
+        "transformation": "Depth information not included in package. Populate with depths reported in legend labels for Fig. 4 in associated manuscript (Wan et al. 2024, Nature Water, doi:10.1038/s44221-024-00293-8): PLM1=0.30 m, PLM2=0.28 m, PLM3=0.20 m.",
+        "unit_conversion": "None; source units are m."
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "latitude",
+        "transformation": "Location information not reported in package. Look up 'Latitude' for 'site_id' in Varadharajan et al. (East Taylor Watershed Community Observatory Sites, reference dataset index 0). Varadharajan dataset uses 'ER-PLM1' format; strip 'ER-' prefix for site_id matching.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "longitude",
+        "transformation": "Location information not reported in package. Look up 'Longitude' for 'site_id' in Varadharajan et al. (East Taylor Watershed Community Observatory Sites, reference dataset index 0). Varadharajan dataset uses 'ER-PLM1' format; strip 'ER-' prefix for site_id matching.",
+        "unit_conversion": null
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "replicate",
+        "transformation": "None; replicate information not provided in source. Populate with 1.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "PLMi._vol_water_content",
+        "source_files": [
+          "Soil_water_content_Fig4e.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Coerce from 'wide' format to 'long' format; parse site_id from 'PLMi' prefix in volumetric water content column name using regex r'^(PLM\\d+)'. Column names follow pattern 'PLM1._vol_water_content', 'PLM2._vol_water_content', 'PLM3._vol_water_content'.",
+        "unit_conversion": null
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "water_potential_kPa",
+        "transformation": "None; soil water potential not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "PLMi._vol_water_content",
+        "source_files": [
+          "Soil_water_content_Fig4e.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Coerce from 'wide' format with column variables containing site information to 'long' format with separate columns for site and volumetric water content. Skip first row of CSV (units descriptor row). Melt on columns matching regex r'vol_water_content'.",
+        "unit_conversion": "None; source units are m3/m3."
+      }
+    }
+  },
+  "qc_flags_applied": ["g1"],
+  "notes": "First row of Soil_water_content_Fig4e.csv is a units descriptor row and is skipped (iloc[1:]). Depth values are from the figure legend of Wan et al. (2024), not from the data file. Site coordinates retrieved from Varadharajan et al. (qc_flag=g1)."
+}
