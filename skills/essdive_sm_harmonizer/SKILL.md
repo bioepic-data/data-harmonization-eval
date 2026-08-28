@@ -10,9 +10,10 @@ metadata:
   created: "2026-05-12"
   updated: "2026-06-30"
   context_dependencies:
-    - data/gold/sm_data_harmonization_mapping.json  # for schema reference and examples
+    - inputs/raw/<dataset_identifier>/  # staged package files in a fold evaluation
+    - data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json  # held-out-free schema examples
     - data/gold/expert_code/  # modular expert harmonizer (common.py + dataset_NN.py) for code pattern reference
-    - data/gold/harmonized_outputs/*.csv # harmonized datasets
+    - data/external/ess-dive_meta/*.json  # cached package metadata, if supplied
   usage: >
     Invoke this skill when adding a new ESS-DIVE soil moisture dataset to the
     harmonization pipeline. The skill will guide you through evaluation,
@@ -67,6 +68,16 @@ You follow an established workflow and strict schema. You ask for required
 inputs systematically if not provided upfront. You reason carefully and
 transparently about each decision.
 
+## FOLD EVALUATION MODE
+
+When `AGENT_INSTRUCTIONS.md` is present, it is authoritative and overrides this
+skill's generic new-dataset workflow. Use only the inputs it permits inside the run
+workspace; do not use parent directories, absolute paths outside the workspace,
+network services, APIs, or external lookup sources. Write every deliverable under
+`output/`. The held-out dataset's canonical index is listed in `MANIFEST.json` and
+must be retained in its mapping entry; do not assign a new sequential index. If an
+input is missing, document the limitation rather than retrieving it externally.
+
 ## SECTION 1: TARGET SCHEMA
 
 Every harmonized CSV must produce these columns (and no others):
@@ -85,7 +96,7 @@ water_potential_kPa                   # float or np.nan
 
 **qc_flag vocabulary:**
 - `d1` = depth is approximated from a reported range
-- `g1` = coordinates retrieved from Varadharajan et al. (not in source)
+- `g1` = coordinates from an approved location registry supplied in the workspace
 - `g2` = coordinates not available from any source
 
 **Units:**
@@ -166,7 +177,8 @@ Reason format: `"No machine-readable measurement payload available"`
 **RULE 5 — MINIMUM METADATA CHECK**
 
 The dataset must have at least one of:
-- Site coordinates in the payload, ancillary file, or Varadharajan et al.
+- Site coordinates in the payload, ancillary file, cached metadata, or an approved
+  location registry supplied in the workspace
 - A site identifier traceable to a known location
 
 If coordinates are entirely unresolvable, include with `qc_flag = "g2"` and document the gap.
@@ -200,7 +212,7 @@ Resolve site coordinates using this fallback hierarchy:
 1. Coordinates in the data payload file itself
 2. Coordinates in a package ancillary file (e.g., site_metadata.csv, locations.csv, README table)
 3. Coordinates in the package-level ESS-DIVE metadata record
-4. Varadharajan et al. location registration dataset → set `qc_flag = "g1"`
+4. An approved location registry supplied in the workspace → set `qc_flag = "g1"`
 5. Not resolvable → set `lat/lon = np.nan`, `qc_flag = "g2"`
 
 ## SECTION 6: PYTHON CODE CONVENTIONS
@@ -460,7 +472,8 @@ Before finalizing code and JSON outputs, verify:
 5. **QC flags**: `qc_flag` assigned where coordinates/depth approximated
 6. **Replicate logic**: Replicates numbered correctly when multiple sensors at same site+depth+time
 7. **File references**: All filenames in JSON match actual package files
-8. **Index assignment**: New dataset gets next sequential index in mapping JSON
+8. **Index assignment**: In fold evaluation mode, retain the dataset's canonical
+   index from `MANIFEST.json`; outside that mode, obtain the index from the operator.
 
 ## SECTION 10: EXAMPLE WORKFLOW OUTPUT
 

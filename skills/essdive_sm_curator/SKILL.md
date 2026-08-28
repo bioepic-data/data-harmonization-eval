@@ -9,6 +9,7 @@ metadata:
   version: "0.1"
   created: "2026-06-29"
   context_dependencies:
+    - inputs/raw/<dataset_identifier>/  # staged package files in a fold evaluation
     - data/external/ess-dive_meta/*.json  # cached ESS-DIVE metadata
     - data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json  # for reference examples
   companion_skill: wfsfa_sm_harmonization
@@ -70,6 +71,17 @@ interpretation work needed before harmonization. You retrieve metadata, inspect
 files, extract location information, detect experimental manipulations, and prepare
 structured inputs for the harmonization skill.
 
+## FOLD EVALUATION MODE
+
+When `AGENT_INSTRUCTIONS.md` is present, it is authoritative and overrides this
+skill's generic data-retrieval workflow. In that mode, inspect only the staged
+package files in `inputs/raw/<dataset_identifier>/` and cached metadata in
+`data/external/ess-dive_meta/` when present. Do not use the ESS-DIVE API, DOI
+resolvers, network services, parent directories, absolute paths outside the run
+workspace, or any other external source. If information is absent, document that
+limitation rather than retrieving it. Use only the held-out-free references supplied
+in the run environment.
+
 ## SECTION 1: INPUT HANDLING
 
 Accept any of these input formats:
@@ -77,7 +89,9 @@ Accept any of these input formats:
 - Single package ID: `ess-dive-abc123-20250101T000000`
 - Multiple DOIs/IDs in any reasonable format (comma-separated, newline-separated, bulleted list)
 
-Normalize all inputs to package identifiers using the ESS-DIVE API.
+Outside fold evaluation mode, normalize inputs to package identifiers using the
+ESS-DIVE API. In fold evaluation mode, use the dataset identifiers in
+`MANIFEST.json` directly.
 
 ## SECTION 2: METADATA RETRIEVAL STRATEGY
 
@@ -91,6 +105,9 @@ find data/external/ess-dive_meta -name "*<package_id_fragment>*.json"
 If found, read the cached JSON file directly.
 
 **Priority 2: Fetch from ESS-DIVE API**
+
+This priority applies only outside fold evaluation mode. In a fold, do not fetch;
+record missing metadata as unavailable.
 
 If not cached, retrieve from ESS-DIVE API:
 - Base URL: `https://api.ess-dive.lbl.gov/packages/<package_id>`
@@ -237,11 +254,11 @@ Search README files for coordinate patterns:
 - DMS: `40° 12' 34" N`
 - UTM: `UTM Zone 13N: 456789 E, 4445678 N`
 
-**Source 5: Flag for Varadharajan lookup**
+**Source 5: Supplied location registry**
 
-If no coordinates found, note that coordinates may be in:
-- Varadharajan et al. Watershed Function SFA location registry
-- Set `qc_flag = "g1"` recommendation
+If an approved location registry is supplied inside the current workspace, it may
+be used and should receive a `qc_flag = "g1"` recommendation. Do not retrieve a
+registry externally during a fold evaluation.
 
 **Source 6: Unresolvable**
 
@@ -474,6 +491,8 @@ When given multiple DOIs:
 ## SECTION 13: ERROR HANDLING
 
 **Package not found:**
+- In fold evaluation mode, report that the staged package data is unavailable; do
+  not try external endpoints or DOI resolvers.
 - Try alternate API endpoints
 - Try DOI resolver
 - Report as "Package not accessible" with attempted URLs
