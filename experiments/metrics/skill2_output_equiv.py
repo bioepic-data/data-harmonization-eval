@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-from src.execution.output_loader import compare_csv_outputs
+from .output_loader import compare_csv_outputs
 
 
 def compare_harmonized(
