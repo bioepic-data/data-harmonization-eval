@@ -1,11 +1,15 @@
 # Evaluating an LLM Agent Workflow for Environmental Data Harmonization
 
 ## Overview
-This repository stores a formal evaluation framework for an LLM agent workflow 
-(curator + harmonizer) that automates environmental data harmonization. Evaluation 
-case is the corpus of soil moisture data published on the US DOE ESS-DIVE repository. 
-Combines retrospective leave-one-out cross-validation against expert ground truth with 
-prospective blind evaluation on novel datasets.
+This repository evaluates an AI curator-and-harmonizer workflow on soil-moisture
+data published through DOE ESS-DIVE. Its active evaluation method is
+**leave-one-cluster-out ablation**: each agent run receives a self-contained
+environment with the held-out datasets removed from its exemplar mapping and
+expert-code references.
+
+The repository builds and audits those isolated environments. It does not
+currently contain an automated, in-repository scoring or aggregation pipeline;
+gold-based comparison is performed outside the agent environment.
 
 ## Motivation
 
@@ -23,156 +27,99 @@ on data it has not seen.
 
 Nineteen WFSFA soil moisture datasets have been harmonized by a domain expert,
 each with (a) the harmonized output, (b) documented Python transformation code,
-and (c) a free-text + structured change-mapping JSON. These constitute our
-reference standard.
+and (c) a structured change-mapping JSON. The gold code is held under
+`data/gold/expert_code/`; 50-row output examples are under
+`data/gold/expert_snippets/`; and the mapping is
+`data/gold/sm_data_harmonization_mapping.json`.
 
-## Design Overview
+## Leave-One-Cluster-Out Workflow
 
-The study has two phases, and within each phase the skills are evaluated three ways.
+```
+gold mapping + expert code + skills
+              │
+              ▼
+        build_env.py
+              │
+              ▼
+ .runs/<fold-id>/        +        ~/ess-dive_wfsfa_soil_datasets/
+ ablated references               held-out raw inputs
+              │                              │
+              └──── AI agent runs ───────────┘
+                            │
+                            ▼
+                 output/ artifacts + tool trace
+                            │
+                            ▼
+                  invigilator audit (post-run)
+                            │
+                            ▼
+             external gold-based scoring and analysis
+```
 
-### Phases
+### What the fold modules do
 
-**Phase A — Retrospective cross-validation \[ground truth\]**
-We perform grouped leave-one-out cross-validation over the 19 expert-harmonized
-datasets. For each held-out dataset, the agent sees only the *other* datasets as
-exemplars and must harmonize the held-out one from its identifier alone. Outputs
-are scored against the expert's version. Because datasets may cluster by source,
-lab, or instrument, we hold out whole clusters where appropriate ("grouped" CV)
-to give an honest generalization estimate.
+- `src/folds/stage_raw_data.py` stages raw ESS-DIVE inputs under
+  `~/ess-dive_wfsfa_soil_datasets/<dataset_identifier>/`. Raw held-out data are
+  task inputs and are permitted.
+- `src/folds/expert_harmonizer.py` resolves holdouts and determines which expert
+  modules remain available as exemplars.
+- `src/folds/build_env.py` creates `.runs/<fold-id>/`, copies the skills,
+  filters held-out entries from the mapping, copies only non-held-out expert-code
+  modules, and writes `MANIFEST.json` plus `AGENT_INSTRUCTIONS.md`.
+- `src/folds/invigilator.py` audits an agent tool-call JSONL trace after the run.
+  It permits access only inside the fold environment and the shared raw-data
+  root, then flags reads of root gold data, processed mappings, or other
+  out-of-bounds paths.
 
-**Phase B — Prospective evaluation \[novel data\]**
-Using all 19 as exemplars, the agent harmonizes genuinely new ESS-DIVE datasets.
-In parallel and blind, the domain expert harmonizes the same datasets; their
-output becomes the reference. This estimates real-world deployment performance.
+The fold environment intentionally excludes the held-out answer. Gold-output
+comparison must therefore happen outside the environment, after the agent run.
 
-Phase A also *validates our automated metrics* against expert judgment; if the
-two agree well, we can lean on cheap automated scoring in Phase B.
+### AI-agent prompt and outputs
 
-### Evaluation Modes (both phases)
+The agent must start in the generated fold directory, read its manifest and
+instructions, use only its ablated references plus raw inputs, and write all
+deliverables under `output/`:
 
-1. **Skill 1 in isolation** — curator output scored field-by-field against expert
-   labels (decision, file selection, time-series inference, location resolution,
-   exemplar match, calibration of FLAG/defer decisions).
-2. **Skill 2 with oracle input** — harmonizer fed the *correct* curator bundle, so
-   transformation quality is measured independently of curator errors.
-3. **End-to-end** — full pipeline; errors propagate. The gap between (2) and (3)
-   quantifies how much curator error degrades the output.
+```text
+You are running a leave-one-cluster-out harmonization evaluation.
 
-## Metrics
+cd .runs/<fold-id>
 
-**Skill 1 (curator):** decision accuracy / precision / recall / F1; file-set
-precision/recall/F1 (payload, location, sensor); time-series binary accuracy;
-interval numeric error; manipulation-detection accuracy; qc_flag accuracy;
-exemplar-selection quality.
+Read AGENT_INSTRUCTIONS.md and MANIFEST.json. Harmonize the held-out dataset(s)
+using only skills/, the filtered mapping, the non-held-out expert-code patterns,
+and the shared raw inputs. Write harmonized CSVs, generated transformation code,
+the change-mapping JSON, and decision notes to output/. Do not read root gold
+data, root processed data, or any other fold environment.
+```
 
-**Skill 2 (harmonizer):**
-- **Primary endpoint — output-data equivalence:** run agent and expert code on the
-  same raw data, compare resulting tables cell-by-cell.
-- Schema conformance and ontology/controlled-vocabulary validity.
-- Semantic mapping accuracy (precision/recall over a controlled transformation-type
-  vocabulary).
-- Code executability (does it run and reproduce its claimed output).
-- Documentation completeness (change-mapping covers all and only the actual
-  transformations).
-
-**End-to-end:** task success plus an **error-propagation taxonomy** classifying
-each failure as (i) Skill-1 error propagated, (ii) Skill-2 error given correct
-input, (iii) inter-skill spec inconsistency, or (iv) genuinely ambiguous case.
-
-## Statistics
-
-Data are nested: stochastic runs within datasets within source-clusters. We use
-mixed-effects models (dataset and cluster as random effects) and cluster-level
-bootstrap confidence intervals, reporting effect sizes with CIs rather than
-relying on p-values given the small N (19). The error-propagation gap is reported
-as a paired difference with a bootstrap CI. We report distribution across
-stochastic repeats (variance, and pass@k where appropriate), not just means.
-
-## Controls and Confounds
-
-- **Baselines:** non-agentic single-call LLM; agent with exemplars removed
-  (isolates the value of the 19 references); naive string-matching heuristic.
-- **Similarity covariate:** each evaluation dataset's similarity to its nearest
-  exemplar is computed and modeled, converting a leakage risk into a finding
-  ("the agent generalizes up to similarity X, then degrades").
-- **Reproducibility:** model version, skill version, and seeds are pinned per run.
+`AGENT_INSTRUCTIONS.md` supplies the exact held-out identifiers and allowed
+paths for each fold. The GitHub workflow uses the same instruction pattern for
+the configured Claude agent.
 
 ## Repository Structure
 
 ```
 wfsfa-harmonization-eval/
-├── config/                      # Experiment configuration
-│   ├── experiment.yaml          # Global settings, model params, paths
-│   ├── cv_folds.yaml            # Cross-validation fold definitions
-│   └── metrics_weights.yaml     # Composite metric weights
+├── config/
+│   └── cv_folds.yaml            # Cluster definitions and holdout membership
 │
-├── data/                        # Data directories
-│   ├── gold/                    # 19 expert-harmonized datasets (READ-ONLY)
-│   │   ├── harmonized_outputs/  # Expert harmonized CSVs
-│   │   ├── expert_code/         # Expert Python code
-│   │   └── expert_mappings.json # Expert change-mappings (ground truth)
-│   ├── prospective/             # Novel datasets for Phase B
-│   ├── raw_cache/               # Cached ESS-DIVE packages
-│   └── cluster_metadata.csv     # Dataset clustering for grouped CV
+├── data/
+│   ├── gold/                    # Read-only reference material
+│   │   ├── expert_code/         # common.py + dataset_NN.py modules
+│   │   ├── expert_snippets/     # Short ideal-output examples
+│   │   └── sm_data_harmonization_mapping.json
+│   └── raw_cache/               # Source URLs and local raw-data cache
 │
-├── src/                         # Core implementation
-│   ├── schemas/                 # Pydantic data models
-│   │   ├── skill1_bundle.py     # Curator output schema
-│   │   ├── skill2_mapping.py    # Harmonizer output schema
-│   │   ├── target_schema.py     # Target harmonized schema
-│   │   └── target_schema.yaml   # LinkML version of the target schema
-│   │
-│   ├── harness/                 # Skill runners
-│   │   ├── run_skill1.py        # Curator runner
-│   │   ├── run_skill2.py        # Harmonizer runner
-│   │   ├── run_pipeline.py      # End-to-end runner
-│   │   ├── exemplar_selection.py # Exemplar matching logic
-│   │   └── oracle.py            # Oracle bundle creation
-│   │
-│   ├── execution/               # Code execution
-│   │   ├── sandbox.py           # Safe code execution
-│   │   └── output_loader.py     # Load and compare outputs
-│   │
-│   ├── metrics/                 # ALL scoring logic (phase-agnostic)
-│   │   ├── skill1_metrics.py    # Curator metrics
-│   │   ├── skill2_output_equiv.py # PRIMARY: data equivalence
-│   │   ├── skill2_structural.py # Schema conformance
-│   │   ├── skill2_semantic.py   # Mapping accuracy
-│   │   ├── skill2_executability.py # Code runs?
-│   │   └── composite.py         # Weighted aggregation
-│   │
-│   └── analysis/                # Statistical analysis
-│       ├── stats.py             # Bootstrap CIs, mixed models
-│       ├── error_taxonomy.py    # Error source classification
-│       ├── similarity.py        # Similarity covariate
-│       └── irr.py               # Inter-rater reliability
+├── skills/                      # Curator and harmonizer AI skill instructions
 │
-├── experiments/                 # Experiment orchestration
-│   ├── phase_a_crossval.py      # Phase A: cross-validation
-│   ├── phase_b_prospective.py   # Phase B: novel data
-│   └── metric_validation.py     # Validate automated vs expert scores
+├── src/
+│   ├── folds/                   # Stage, build, and audit fold environments
+│   └── schemas/                 # Target schema and agent-output models
 │
-├── examples/                    # LinkML schema example instances
-│   ├── valid/                   # Instances that MUST validate
-│   └── invalid/                 # Counter-examples that MUST fail
-│
-├── project/                     # Generated LinkML artifacts (do not edit)
-│   ├── pydantic/                # gen-pydantic output
-│   └── jsonschema/              # gen-json-schema output
-│
-├── results/                     # Outputs
-│   ├── raw_runs/                # Per-run outputs
-│   ├── scored/                  # Scored metrics (tidy CSV)
-│   ├── figures/                 # Plots
-│   └── tables/                  # Summary tables
-│
-├── notebooks/                   # Analysis notebooks
-│   ├── 01_explore_gold.ipynb
-│   ├── 02_results_phaseA.ipynb
-│   └── 03_results_phaseB.ipynb
-│
-└── tests/                       # Unit tests
-    └── test_metrics.py          # Known-answer test cases
+├── .github/workflows/run-eval.yml # Manually dispatched Claude evaluation
+├── examples/                    # LinkML validation examples
+├── project/                     # Generated LinkML artifacts
+└── tests/                       # Fold, staging, audit, and schema tests
 ```
 
 ## LinkML Target Schema
@@ -217,45 +164,48 @@ poetry install
 
 ## Usage
 
-### Phase A: Cross-Validation
+### Run a fold locally
 
 ```bash
-# Run all CV folds (all modes, all runs)
-python experiments/phase_a_crossval.py
+# Create an isolated environment for a cluster or a comma-separated holdout.
+uv run python -m src.folds.build_env \
+  --holdout 15,26 \
+  --name fold-02-holdout-15-26
 
-# Results written to:
-#   results/scored/phase_a_results.csv
+# Optionally stage held-out raw inputs. They are stored outside the fold env.
+uv run python -m src.folds.stage_raw_data --indices 15,26 --drive-method public
 ```
 
-### Phase B: Prospective Evaluation
+Give the AI agent the prompt in [AI-agent prompt and outputs](#ai-agent-prompt-and-outputs),
+substituting the fold name. The agent writes its deliverables to:
+
+```text
+.runs/fold-02-holdout-15-26/output/
+```
+
+If your agent provider records tool calls as JSONL, audit the run afterward:
 
 ```bash
-# Step 1: Run agent on novel datasets
-python experiments/phase_b_prospective.py
-
-# Step 2: Expert independently harmonizes same datasets
-# (manual step)
-
-# Step 3: Score agent vs expert
-python experiments/phase_b_prospective.py --score \
-    --agent-results results/scored/phase_b_agent_outputs.csv \
-    --expert-harmonizations data/prospective/expert_blind/
+uv run python -m src.folds.invigilator \
+  --trace path/to/agent-trace.jsonl \
+  --env .runs/fold-02-holdout-15-26
 ```
 
-### Metric Validation
+### Run through GitHub Actions
 
-```bash
-# Correlate automated metrics vs expert rubric
-python experiments/metric_validation.py
-```
+In GitHub Actions, run **Run Harmonization Eval** manually. Supply a dataset
+index, dataset identifier, comma-separated indices, or a cluster ID/name from
+`config/cv_folds.yaml`. The workflow builds the fold, optionally stages raw
+data, starts the configured Claude agent with the fold-specific prompt, and
+uploads the full `.runs/<fold-id>/` directory as an `eval-<fold-id>` artifact.
 
-## Deliverables
+### Results and scoring
 
-1. **Tidy scored results** (CSV): one row per run with all metrics
-2. **Phase-level summaries** (tables): mean ± CI per mode
-3. **Metric validation** (correlation): automated vs expert rubric
-4. **Error-propagation taxonomy** (table): failure attribution
-5. **Similarity-performance relationship** (plot + regression)
+The active workflow does not write to a shared `results/` directory or commit
+run outputs. Local results remain under `.runs/<fold-id>/output/`; GitHub runs
+are retained as workflow artifacts. Use a separate trusted process, outside the
+fold environment, to compare those outputs with the held-out gold standard and
+to aggregate performance metrics.
 
 ## Citation
 
