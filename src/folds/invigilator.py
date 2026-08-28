@@ -42,13 +42,26 @@ from typing import Optional
 
 import typer
 
-# System paths that show up as Bash tokens (mostly `2>/dev/null` redirects) but
-# are never data access — never treated as violations.
-IGNORED_ROOTS = [Path("/dev"), Path("/proc"), Path("/sys")]
+DEFAULT_RAW_DATA = Path.home() / "ess-dive_wfsfa_soil_datasets"
+
+# System paths that show up as Bash tokens (mostly interpreter and redirect
+# paths) but are never evaluation data access.
+IGNORED_ROOTS = [
+    Path("/dev"), Path("/proc"), Path("/sys"), Path("/usr"), Path("/bin"),
+    Path("/opt"), Path("/etc"),
+]
 
 # Path-like tokens inside a Bash command: at least one '/', path-ish chars.
-_PATH_TOKEN = re.compile(r"(?:~|\.{1,2}|/)?/?[\w.@+\-]+(?:/[\w.@+\-]+)+")
+_PATH_TOKEN = re.compile(r"(?<![$\w])(?:~|\.{1,2}|/)?/?[\w.@+\-]+(?:/[\w.@+\-]+)+")
 _CD = re.compile(r"^\s*cd\s+(?:--\s+)?['\"]?([^'\"&;|]+?)['\"]?\s*$")
+_ASSIGNMENT = re.compile(r"^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)=([^\s]+)")
+_VARIABLE = re.compile(r"\$(?:\{([A-Za-z_][A-Za-z0-9_]*)\}|([A-Za-z_][A-Za-z0-9_]*))")
+_HEREDOC = re.compile(r"<<-?\s*['\"]?([A-Za-z_][A-Za-z0-9_]*)['\"]?")
+_PYTHON_C = re.compile(
+    r"\bpython(?:3(?:\.\d+)?)?\s+-c\s+(?:'(?:[^'\\]|\\.)*'|\"(?:[^\"\\]|\\.)*\")"
+)
+_TIMEZONE = re.compile(r"(?:America|Antarctica|Arctic|Asia|Atlantic|Australia|Europe|Etc|Indian|Pacific)/[A-Za-z0-9_+\-]+$")
+_DATE_FRAGMENT = re.compile(r"\d{1,4}/\d{1,2}/\d{1,4}$")
 
 
 def load_tool_uses(trace_path: Path) -> list[tuple[str, dict]]:
@@ -107,9 +120,20 @@ class Violation:
 
 
 @dataclass
+class Warning:
+    """A recorded access that is benign but useful to report."""
+
+    tool: str
+    path: str
+    reason: str
+    context: str
+
+
+@dataclass
 class AuditReport:
     clean: bool
     violations: list[Violation] = field(default_factory=list)
+    warnings: list[Warning] = field(default_factory=list)
     n_tool_calls: int = 0
     n_reads: int = 0
     reads_in_bounds: int = 0
@@ -140,6 +164,104 @@ def _forbidden(p: Path, repo_root: Path) -> bool:
     if "eval_answer_keys" in s or re.search(r"expert_dataset_\d+|expert_mapping_entry", s):
         return True
     return under(p, repo_root / "data" / "gold") or under(p, repo_root / "data" / "processed")
+
+
+def _benign_external_input(p: Path, repo_root: Path) -> Optional[str]:
+    """Return a warning reason for an approved input reached outside its env copy."""
+    if under(p, repo_root / "skills"):
+        return "external repo input (skills; use the environment copy)"
+    if under(p, repo_root / "data" / "external" / "ess-dive_meta"):
+        return "external repo input (ESS-DIVE metadata; use the environment copy)"
+    parts = p.parts
+    if ".claude" in parts and "projects" in parts and "tool-results" in parts:
+        return "Claude tool-result transcript"
+    return None
+
+
+def _expand_variables(text: str, variables: dict[str, str]) -> str:
+    """Expand only previously recorded, simple shell variables.
+
+    This deliberately does not evaluate command substitutions, defaults, or
+    arbitrary shell syntax. Unknown variables remain untouched and therefore
+    cannot be mistaken for relative path prefixes.
+    """
+    return _VARIABLE.sub(lambda m: variables.get(m.group(1) or m.group(2), m.group(0)), text)
+
+
+def _consume_assignments(segment: str, variables: dict[str, str]) -> str:
+    """Record leading ``VAR=value`` / ``export VAR=value`` assignments."""
+    rest = segment
+    while (match := _ASSIGNMENT.match(rest)):
+        name, value = match.groups()
+        value = _expand_variables(value, variables).strip("'\"")
+        variables[name] = value
+        rest = rest[match.end():]
+    return rest
+
+
+def _strip_heredoc_bodies(command: str) -> str:
+    """Remove heredoc bodies, which are source/data rather than shell arguments."""
+    kept: list[str] = []
+    delimiter: Optional[str] = None
+    for line in command.splitlines():
+        if delimiter is not None:
+            if line.strip() == delimiter:
+                delimiter = None
+            continue
+        match = _HEREDOC.search(line)
+        if match:
+            delimiter = match.group(1)
+            line = line[:match.start()]
+        kept.append(line)
+    return "\n".join(kept)
+
+
+def _shell_segments(command: str) -> list[str]:
+    """Split shell command lists without splitting inside quoted code strings."""
+    segments: list[str] = []
+    buf: list[str] = []
+    quote: Optional[str] = None
+    escaped = False
+    i = 0
+    while i < len(command):
+        char = command[i]
+        if escaped:
+            buf.append(char)
+            escaped = False
+        elif char == "\\":
+            buf.append(char)
+            escaped = True
+        elif quote:
+            buf.append(char)
+            if char == quote:
+                quote = None
+        elif char in "'\"":
+            buf.append(char)
+            quote = char
+        elif char == "\n" or char == ";" or char == "|":
+            segments.append("".join(buf))
+            buf = []
+            if char == "|" and i + 1 < len(command) and command[i + 1] == "|":
+                i += 1
+        elif char == "&" and i + 1 < len(command) and command[i + 1] == "&":
+            segments.append("".join(buf))
+            buf = []
+            i += 1
+        else:
+            buf.append(char)
+        i += 1
+    if buf:
+        segments.append("".join(buf))
+    return segments
+
+
+def _path_tokens(segment: str) -> list[str]:
+    """Return path-like shell arguments, excluding embedded Python source."""
+    shell_only = _PYTHON_C.sub("python -c", segment)
+    return [
+        token for token in _PATH_TOKEN.findall(shell_only)
+        if not _TIMEZONE.fullmatch(token) and not _DATE_FRAGMENT.fullmatch(token)
+    ]
 
 
 def audit(
@@ -174,6 +296,9 @@ def audit(
             return True  # /dev/null redirects etc. — not data access
         if any(under(abs_path, r) for r in allowed):
             return True
+        if warning := _benign_external_input(abs_path, repo_root):
+            report.warnings.append(Warning(tool, str(abs_path), warning, raw[:200]))
+            return False
         report.clean = False
         report.violations.append(
             Violation(tool, str(abs_path), _reason(abs_path, repo_root, holdout_ids, raw), raw[:200])
@@ -202,7 +327,12 @@ def audit(
             cmd = inp.get("command", "")
             report.bash_commands.append(cmd)
             cwd = str(repo_root)
-            for seg in re.split(r"&&|\|\||\||;|\n", cmd):
+            variables: dict[str, str] = {}
+            for seg in _shell_segments(_strip_heredoc_bodies(cmd)):
+                seg = _consume_assignments(seg, variables)
+                seg = _expand_variables(seg, variables)
+                if not seg.strip():
+                    continue
                 m = _CD.match(seg)
                 if m:
                     target = lexical_resolve(m.group(1).strip(), cwd)
@@ -213,7 +343,7 @@ def audit(
                                       _reason(target, repo_root, holdout_ids, seg), seg.strip()))
                     cwd = str(target)
                     continue
-                for tok in _PATH_TOKEN.findall(seg):
+                for tok in _path_tokens(seg):
                     check("Bash", lexical_resolve(tok, cwd), seg.strip())
     return report
 
@@ -251,6 +381,12 @@ def main(
             typer.echo(f"  [{v.tool}] {v.reason}")
             typer.echo(f"      path: {v.path}")
             typer.echo(f"      in:   {v.context}")
+    if r.warnings:
+        typer.echo(f"\nℹ {len(r.warnings)} WARNING(S):")
+        for w in r.warnings:
+            typer.echo(f"  [{w.tool}] {w.reason}")
+            typer.echo(f"      path: {w.path}")
+            typer.echo(f"      in:   {w.context}")
     if show_bash:
         typer.echo("\n--- Bash commands (human review; parsing is best-effort) ---")
         for c in r.bash_commands:

@@ -109,6 +109,66 @@ def test_ignores_dev_null_redirects(tmp_path):
     assert r.clean, [v.reason for v in r.violations]
 
 
+def test_bash_expands_simple_shell_variables(tmp_path):
+    repo, env, raw = make_repo(tmp_path)
+    r = run_audit(tmp_path, repo, env, raw, [
+        ("Bash", {"command": f'RAW={raw}; d=$RAW; cat "$RAW/flmd.csv"; python3 -c "open(\'$d/bundle.json\')"'}),
+    ])
+    assert r.clean, [v.reason for v in r.violations]
+
+
+def test_python_code_and_heredoc_bodies_are_not_path_scanned(tmp_path):
+    repo, env, raw = make_repo(tmp_path)
+    r = run_audit(tmp_path, repo, env, raw, [
+        ("Bash", {"command": "python3 -c '(df[\"dtop\"]+df[\"dbot\"])/2/100; min/max; site/coord; dtypes/ranges; 7/23/21; America/Denver'"}),
+        ("Bash", {"command": "python3 - <<'PY'\nopen('/tmp/not-a-shell-read')\nx = (df['dtop']+df['dbot'])/2/100\nPY"}),
+    ])
+    assert r.clean, [v.reason for v in r.violations]
+
+
+def test_ignores_timezone_and_system_interpreter_paths(tmp_path):
+    repo, env, raw = make_repo(tmp_path)
+    r = run_audit(tmp_path, repo, env, raw, [
+        ("Bash", {"command": "date America/Denver Etc/GMT+7 /usr/bin/env /bin/sh /opt/tool /etc/hosts"}),
+    ])
+    assert r.clean, [v.reason for v in r.violations]
+
+
+def test_claude_transcript_and_external_repo_inputs_warn_not_fail(tmp_path):
+    repo, env, raw = make_repo(tmp_path)
+    skills = repo / "skills" / "essdive_sm_harmonizer" / "SKILL.md"
+    skills.parent.mkdir(parents=True)
+    metadata = repo / "data" / "external" / "ess-dive_meta" / "record.json"
+    metadata.parent.mkdir(parents=True)
+    transcript = Path.home() / ".claude" / "projects" / "p" / "tool-results" / "result.txt"
+    r = run_audit(tmp_path, repo, env, raw, [
+        ("Read", {"file_path": str(skills)}),
+        ("Read", {"file_path": str(metadata)}),
+        ("Read", {"file_path": str(transcript)}),
+    ])
+    assert r.clean
+    assert len(r.warnings) == 3
+    assert {w.reason for w in r.warnings} == {
+        "external repo input (skills; use the environment copy)",
+        "external repo input (ESS-DIVE metadata; use the environment copy)",
+        "Claude tool-result transcript",
+    }
+
+
+def test_gold_access_remains_a_violation_after_warning_rules(tmp_path):
+    repo, env, raw = make_repo(tmp_path)
+    gold = repo / "data" / "gold" / "expert_code" / "dataset_07.py"
+    gold.parent.mkdir(parents=True)
+    r = run_audit(tmp_path, repo, env, raw, [
+        ("Read", {"file_path": str(repo / "skills" / "x.md")}),
+        ("Read", {"file_path": str(gold)}),
+    ])
+    assert not r.clean
+    assert len(r.warnings) == 1
+    assert len(r.violations) == 1
+    assert "real expert gold" in r.violations[0].reason
+
+
 def test_ls_tool_out_of_bounds(tmp_path):
     repo, env, raw = make_repo(tmp_path)
     (repo / "data" / "gold").mkdir(parents=True)
