@@ -94,6 +94,10 @@ def test_build_env_separates_target_from_reference_holdout(tmp_path, sources):
     instructions = (env / "AGENT_INSTRUCTIONS.md").read_text()
     assert "## Target datasets" in instructions
     assert "## Reference holdout datasets" in instructions
+    assert "Harmonize only the target dataset(s)" in instructions
+    assert "Harmonize the held-out dataset(s)" not in instructions
+    assert "For each target dataset" in instructions
+    assert "For each held-out dataset" not in instructions
     assert "`ess-dive_a`" in instructions
     assert "`ess-dive_b`" in instructions
 

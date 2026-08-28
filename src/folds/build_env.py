@@ -196,11 +196,11 @@ def _instructions(target_ids: list, held_ids: list) -> str:
     target_list = "\n".join(f"- `{i}`" for i in target_ids if i)
     reference_holdout_list = "\n".join(f"- `{i}`" for i in held_ids if i)
     return (
-        "# Run environment — leave-one-cluster-out\n\n"
+        "# Run environment — targeted grouped leave-one-out\n\n"
         "This file is the authoritative contract for this fold evaluation. "
         "It overrides any generic or production-oriented guidance in `skills/`.\n\n"
         "## Allowed inputs\n\n"
-        "Harmonize the held-out dataset(s) using ONLY:\n"
+        "Harmonize only the target dataset(s) listed below, using ONLY:\n"
         "- the skills in `skills/`,\n"
         "- the held-out-free exemplars in "
         "`data/processed/ess-dive_wfsfa_soil_datasets/"
@@ -211,12 +211,12 @@ def _instructions(target_ids: list, held_ids: list) -> str:
         "Do not access parent directories, absolute paths outside this workspace, "
         "network services, APIs, or any other external data source. If required raw "
         "data or metadata is absent, record the limitation in the output rather than "
-        "retrieving it. Do NOT look up the held-out dataset's existing harmonized "
+        "retrieving it. Do NOT look up a target dataset's existing harmonized "
         "output, expert code, or mapping entry from any other location.\n\n"
         "## Required outputs\n\n"
         "Write every deliverable under `output/`: harmonized CSV file(s), generated "
         "transformation code, a change-mapping JSON, and notes documenting decisions "
-        "or missing inputs. For each held-out dataset, use its existing index from "
+        "or missing inputs. For each target dataset, use its existing index from "
         "`MANIFEST.json`; do not assign a new sequential index.\n\n"
         "## Target datasets\n\n"
         f"{target_list}\n\n"
