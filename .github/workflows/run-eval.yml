@@ -66,55 +66,11 @@ jobs:
           HOLDOUT_INPUT: ${{ inputs.holdout }}
           NAME_INPUT: ${{ inputs.name }}
         run: |
-          uv run python - <<'PY'
-          import os, re, yaml
-
-          raw = os.environ.get("HOLDOUT_INPUT", "").strip()
-          name_in = os.environ.get("NAME_INPUT", "").strip()
-          if not raw:
-              raise SystemExit("ERROR: `holdout` input is required")
-
-          config = yaml.safe_load(open("config/cv_folds.yaml")) or {}
-          clusters = config.get("clusters", {}) or {}
-          folds = config.get("folds", []) or []
-          holdout, target, cluster_id, fold_id = raw, raw, None, None
-
-          # A configured target has one staged dataset, but can remove an
-          # entire correlated cluster from the exemplar references.
-          if raw.isdigit():
-              configured = next((f for f in folds if f.get("target_dataset") == int(raw)), None)
-              if configured:
-                  target = str(configured["target_dataset"])
-                  holdout = ",".join(str(i) for i in configured["reference_holdout_datasets"])
-                  cluster_id = configured.get("held_out_cluster")
-                  fold_id = configured.get("fold_id")
-
-          # Cluster input intentionally preserves the legacy multi-target mode.
-          for cid, c in clusters.items():
-              if raw in {cid, str(c.get("name", "")).strip()}:
-                  holdout = ",".join(str(i) for i in c.get("datasets", []))
-                  target = holdout
-                  cluster_id = cid
-                  break
-
-          # env_name becomes a directory/artifact name and is interpolated into
-          # later steps, so sanitize it to a safe charset in EVERY branch
-          # (incl. the free-text `name` input) to avoid any injection.
-          env_name = name_in or (f"fold-{fold_id:02d}-target-{target}" if fold_id else cluster_id or f"holdout-{raw}")
-          env_name = re.sub(r"[^A-Za-z0-9._-]+", "-", env_name).strip("-") or "run"
-
-          # Stage only target datasets; cluster mates are reference holdouts.
-          stage_indices = ",".join(t for t in target.split(",") if t.strip().isdigit())
-
-          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
-              out.write(f"holdout={holdout}\n")
-              out.write(f"target={target}\n")
-              out.write(f"env_name={env_name}\n")
-              out.write(f"env_path={os.environ['GITHUB_WORKSPACE']}\n")
-              out.write(f"build_root={os.environ['RUNNER_TEMP']}/harmonization-eval-runs\n")
-              out.write(f"stage_indices={stage_indices}\n")
-          print(f"Resolved target={target!r} reference_holdout={holdout!r} env_name={env_name!r}")
-          PY
+          uv run python -m src.folds.resolve_fold \
+            --input "$HOLDOUT_INPUT" --name "$NAME_INPUT" \
+            >> "$GITHUB_OUTPUT"
+          echo "env_path=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
+          echo "build_root=$RUNNER_TEMP/harmonization-eval-runs" >> "$GITHUB_OUTPUT"
 
       - name: Build leave-one-cluster-out run environment
         env:
