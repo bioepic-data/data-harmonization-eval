@@ -56,18 +56,12 @@ dmypy.json
 # Data (large files should not be in git)
 data/gold/harmonized_outputs/*.csv
 data/prospective/expert_blind/*.csv
-results/raw_runs/**/*
-results/scored/*.csv
-results/figures/*
-results/tables/*
+data/raw_cache/ess-dive_wfsfa_soil_datasets/
+data/raw_cache/ess-dive_wfsfa_soil_datasets.zip
 
 # But keep directory structure
 !data/raw_cache/.gitkeep
 !data/prospective/expert_blind/.gitkeep
-!results/raw_runs/.gitkeep
-!results/scored/.gitkeep
-!results/figures/.gitkeep
-!results/tables/.gitkeep
 
 # Temporary files
 *.tmp
