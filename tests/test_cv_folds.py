@@ -14,16 +14,18 @@ def test_every_included_dataset_has_exactly_one_target_fold():
     targets = [fold["target_dataset"] for fold in folds]
 
     assert config["cv_strategy"] == "targeted_grouped_loo"
-    assert len(folds) == len(DATASET_INDICES) == 19
     assert sorted(targets) == sorted(DATASET_INDICES)
-    assert len(set(targets)) == len(targets)
 
 
 def test_cluster_folds_hold_out_cluster_but_target_one_dataset():
     config = yaml.safe_load(Path("config/cv_folds.yaml").read_text())
     clusters = config["clusters"]
     for fold in config["folds"]:
-        assert fold["target_dataset"] in fold["reference_holdout_datasets"]
-        cluster = fold.get("held_out_cluster")
-        if cluster in {"cluster_1", "cluster_2"}:
+        target = fold["target_dataset"]
+        cluster = fold["held_out_cluster"]
+        assert target in clusters[cluster]["datasets"]
+
+        if cluster == "cluster_3":
+            assert fold["reference_holdout_datasets"] == [target]
+        else:
             assert fold["reference_holdout_datasets"] == clusters[cluster]["datasets"]
