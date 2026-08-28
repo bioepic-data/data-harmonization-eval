@@ -163,7 +163,7 @@ jobs:
                  - the held-out-free exemplar mapping at
                    `data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json`,
                  - the held-out-free reference code in
-                   `data/gold/expert_code/harmonize_sm/`,
+                   `data/gold/expert_code/`,
                  - the shared raw inputs under `~/ess-dive_wfsfa_soil_datasets/` and
                    any cached metadata under `data/external/ess-dive_meta/`.
             3. Write EVERY output into an `output/` subdirectory of this run folder:

@@ -25,11 +25,11 @@ from typing import Iterable, Optional
 
 import typer
 
-PACKAGE_DIR = Path("data/gold/expert_code/harmonize_sm")
+PACKAGE_DIR = Path("data/gold/expert_code")
 DEFAULT_MAPPING = Path("data/gold/sm_data_harmonization_mapping.json")
 
 # Datasets the expert harmonizes, in module order. Kept in sync with
-# ``harmonize_sm/datasets.py``; :func:`block_indices` validates it against disk.
+# ``inclusions.py``; :func:`block_indices` validates it against disk.
 DATASET_INDICES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18, 23, 24, 25, 26, 27]
 
 
@@ -134,7 +134,7 @@ def run(
 ):
     """Execute the modular harmonizer with ``holdout`` removed.
 
-    Delegates to ``harmonize_sm/run.py``; imported lazily so this module stays
+    Delegates to ``run.py``; imported lazily so this module stays
     importable without the scientific stack.
     """
     import importlib.util
