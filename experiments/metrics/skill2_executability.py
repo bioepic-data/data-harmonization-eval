@@ -2,7 +2,7 @@
 from __future__ import annotations
 from pathlib import Path
 
-from src.execution.sandbox import execute_python_code, SafeExecutionResult
+from experiments.execution.sandbox import execute_python_code
 
 
 def score_code_executability(

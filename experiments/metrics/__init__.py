@@ -5,7 +5,9 @@ ensuring retrospective and prospective scores are strictly comparable.
 """
 
 from .skill1_metrics import score_skill1
-from .skill2_output_equiv import compare_harmonized
+from .output_loader import compare_csv_outputs, load_harmonized_csv
+from .skill2_documentation import score_documentation_completeness
+from .skill2_output_equiv import compare_harmonized, score_output_equivalence
 from .skill2_structural import score_schema_conformance
 from .skill2_semantic import score_mapping_accuracy
 from .skill2_executability import score_code_executability
@@ -13,7 +15,11 @@ from .composite import compute_composite_scores
 
 __all__ = [
     "score_skill1",
+    "compare_csv_outputs",
+    "load_harmonized_csv",
     "compare_harmonized",
+    "score_output_equivalence",
+    "score_documentation_completeness",
     "score_schema_conformance",
     "score_mapping_accuracy",
     "score_code_executability",

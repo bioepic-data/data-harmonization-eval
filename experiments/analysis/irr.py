@@ -26,7 +26,7 @@ def compute_irr(
     Returns:
         Dict with IRR metrics (same structure as agent scoring)
     """
-    from src.execution.output_loader import compare_csv_outputs
+    from experiments.metrics.output_loader import compare_csv_outputs
 
     return compare_csv_outputs(expert1_csv, expert2_csv, float_tol)
 
