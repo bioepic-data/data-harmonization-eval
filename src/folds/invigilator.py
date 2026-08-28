@@ -375,7 +375,13 @@ def main(
     holdout_ids: list[str] = []
     manifest = env / "MANIFEST.json"
     if manifest.exists():
-        holdout_ids = [h for h in json.loads(manifest.read_text()).get("holdout_identifiers", []) if h]
+        manifest_data = json.loads(manifest.read_text())
+        # Target identifiers are the only answer identifiers exposed in newly
+        # built environments. Retain the old field as a compatibility fallback
+        # for previously staged runs.
+        holdout_ids = [h for h in manifest_data.get(
+            "target_identifiers", manifest_data.get("holdout_identifiers", [])
+        ) if h]
 
     r = audit(trace, env, raw_data_dir=raw_data, repo_root=repo_root,
               extra_roots=list(allow), holdout_identifiers=holdout_ids)

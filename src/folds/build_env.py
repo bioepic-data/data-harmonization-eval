@@ -171,14 +171,12 @@ def build_env(
         shutil.copytree(metadata_dir, env / METADATA_REL)
 
     idx_to_dsid = {e["index"]: e.get("dataset_identifier") for e in mapping}
-    held_ids = [idx_to_dsid.get(i) for i in sorted(holdout)]
     target_ids = [idx_to_dsid.get(i) for i in sorted(target)]
     manifest = {
         "name": env.name,
-        "holdout_indices": sorted(holdout),
-        "holdout_identifiers": held_ids,
         "target_indices": sorted(target),
         "target_identifiers": target_ids,
+        "reference_holdout_count": len(holdout),
         "exemplar_indices": kept,
         "n_exemplars": len(filtered),
         "sources": {
@@ -188,13 +186,12 @@ def build_env(
         },
     }
     (env / "MANIFEST.json").write_text(json.dumps(manifest, indent=2))
-    (env / "AGENT_INSTRUCTIONS.md").write_text(_instructions(target_ids, held_ids))
+    (env / "AGENT_INSTRUCTIONS.md").write_text(_instructions(target_ids))
     return env
 
 
-def _instructions(target_ids: list, held_ids: list) -> str:
+def _instructions(target_ids: list) -> str:
     target_list = "\n".join(f"- `{i}`" for i in target_ids if i)
-    reference_holdout_list = "\n".join(f"- `{i}`" for i in held_ids if i)
     return (
         "# Run environment — targeted grouped leave-one-out\n\n"
         "This file is the authoritative contract for this fold evaluation. "
@@ -220,10 +217,8 @@ def _instructions(target_ids: list, held_ids: list) -> str:
         "`MANIFEST.json`; do not assign a new sequential index.\n\n"
         "## Target datasets\n\n"
         f"{target_list}\n\n"
-        "## Reference holdout datasets\n\n"
-        "The following datasets are excluded from the exemplar mapping and expert "
-        "code. Only the target dataset(s) above should be harmonized.\n\n"
-        f"{reference_holdout_list}\n"
+        "Only the target dataset(s) above should be harmonized. Additional datasets "
+        "may be absent from the exemplar references; they are not targets.\n"
     )
 
 
