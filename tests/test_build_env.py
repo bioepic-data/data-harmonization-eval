@@ -113,7 +113,7 @@ def test_cli_builds_env(tmp_path, sources):
 
 # --- Against the real modular harmonizer, when present ---
 
-PKG = Path("data/gold/expert_code/harmonize_sm")
+PKG = Path("data/gold/expert_code")
 needs_pkg = pytest.mark.skipif(not PKG.exists(), reason="modular expert harmonizer not present")
 
 

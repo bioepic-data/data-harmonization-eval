@@ -59,9 +59,9 @@ def test_clean_run(tmp_path):
 
 def test_detects_real_gold_and_answer_key(tmp_path):
     repo, env, raw = make_repo(tmp_path)
-    (repo / "data" / "gold" / "expert_code" / "harmonize_sm").mkdir(parents=True)
+    (repo / "data" / "gold" / "expert_code").mkdir(parents=True)
     r = run_audit(tmp_path, repo, env, raw, [
-        ("Read", {"file_path": str(repo / "data/gold/expert_code/harmonize_sm/dataset_07.py")}),
+        ("Read", {"file_path": str(repo / "data/gold/expert_code/dataset_07.py")}),
         ("Read", {"file_path": "/tmp/eval_answer_keys/cfg/expert_dataset_07.py"}),
         ("Bash", {"command": f"cat {repo}/data/gold/sm_data_harmonization_mapping.json"}),
     ])
@@ -78,7 +78,7 @@ def test_cwd_awareness_fixes_false_positive(tmp_path):
     assert not bad.clean
     # same relative path AFTER cd into env -> env-rooted -> clean
     ok = run_audit(tmp_path, repo, env, raw,
-                   [("Bash", {"command": f"cd {env} && cat data/gold/expert_code/harmonize_sm/common.py"})])
+                   [("Bash", {"command": f"cd {env} && cat data/gold/expert_code/common.py"})])
     assert ok.clean, [v.reason for v in ok.violations]
 
 

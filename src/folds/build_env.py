@@ -12,7 +12,7 @@ materialize a per-config sandbox under ``.runs/<name>/`` containing only:
 * the **held-out-free expert code** — ``common.py`` plus the kept
   ``dataset_NN.py`` modules of the modular expert harmonizer (see
   :mod:`src.folds.expert_harmonizer`), copied to the path the harmonizer reads
-  as a code-pattern reference (``data/gold/expert_code/harmonize_sm/``). The
+  as a code-pattern reference (``data/gold/expert_code/``). The
   held-out cluster's modules are simply not copied.
 
 Isolation is by *absence*: the held-out cluster is missing from both the
@@ -50,7 +50,7 @@ DEFAULT_SKILLS = Path("skills")
 DEFAULT_ENV_ROOT = Path(".runs")
 
 # Where each artifact lands inside the env, matching the skills' read paths.
-HARMONIZER_REL = Path("data/gold/expert_code/harmonize_sm")
+HARMONIZER_REL = Path("data/gold/expert_code")
 MAPPING_REL = Path("data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json")
 METADATA_REL = Path("data/external/ess-dive_meta")
 
@@ -144,7 +144,7 @@ def _instructions(held_ids: list) -> str:
         "Harmonize the held-out dataset(s) below using ONLY:\n"
         "- the skills in `skills/`,\n"
         "- the exemplars in `data/processed/.../sm_data_harmonization_mapping.json` "
-        "and the code patterns in `data/gold/expert_code/harmonize_sm/` "
+        "and the code patterns in `data/gold/expert_code/` "
         "(both have the held-out cluster removed),\n"
         "- the shared raw inputs under `~/ess-dive_wfsfa_soil_datasets/` and the "
         "cached metadata under `data/external/ess-dive_meta/`.\n\n"

@@ -17,7 +17,7 @@ from src.folds.expert_harmonizer import (
     resolve_holdout,
 )
 
-PACKAGE = Path("data/gold/expert_code/harmonize_sm")
+PACKAGE = Path("data/gold/expert_code")
 needs_pkg = pytest.mark.skipif(not PACKAGE.exists(), reason="expert package not present")
 
 # The expert harmonizes these 19 datasets; 0 (reference) and 11-14, 19-22
