@@ -4,18 +4,22 @@
     "dataset_identifier": "ess-dive_b924ba040ecefee_20250707T154402200",
     "doi": "doi:10.15485/1660962",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "exclude",
+    "exclusion_reason": "This is a location identifier dataset from which we try to retrieve site locations when they are not reported in a data package.",
     "data_payload_files": null,
     "location_metadata_files": [
       "data/East_Taylor_Watershed_Community_Observatory_Sites___Point_Locations__Surface_v3_2_20250327.csv"
     ],
     "sensor_metadata_files": null,
-    "harmonization_mappings": "None. This is a location identifier dataset from which we try to retrieve site locations when they are not reported in a data package."
+    "harmonization_mappings": null
   },
   {
     "index": 1,
     "dataset_identifier": "ess-dive-beca0be9bb38ece-20250516T122010234",
     "doi": "doi:10.15485/2566877",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "ER_SMN1B.csv",
       "ER_SMN3B.csv",
@@ -173,6 +177,8 @@
     "dataset_identifier": "ess-dive-9fd65df885a8e87-20250715T064942543",
     "doi": "doi:10.15485/1646477",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "ER_SMN1.csv",
       "ER_SMN3.csv",
@@ -287,6 +293,8 @@
     "dataset_identifier": "ess-dive-4c1829de1b8a2ec-20260220T045039633",
     "doi": "doi:10.15485/2998779",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "Soil_water_potential.csv"
     ],
@@ -395,6 +403,8 @@
     "dataset_identifier": "ess-dive-6c7085e9c544cc6-20250424T164534831",
     "doi": "doi:10.15485/2561511",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_data.csv"
     ],
@@ -490,6 +500,8 @@
     "dataset_identifier": "ess-dive-8ac2940c708a515-20230504T210140482233",
     "doi": "doi:10.15485/1842907",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "SM_SWC.csv"
     ],
@@ -581,6 +593,8 @@
     "dataset_identifier": "ess-dive-18e91eb74405882-20241017T173226640",
     "doi": "doi:10.15485/1909712",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "Snodgrass_ESS.csv"
     ],
@@ -680,6 +694,8 @@
     "dataset_identifier": "ess-dive-38e901ec3d7bd24-20230504T211548257225",
     "doi": "doi:10.15485/1660455",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "BM_Merged_T_VWC_0616_1018.csv"
     ],
@@ -701,7 +717,7 @@
       },
       "depth": {
         "pattern_1": {
-          "source_pattern": "Depth..cm.",
+          "source_pattern": "Depth (cm)",
           "source_files": [
             "BM_Merged_T_VWC_0616_1018.csv"
           ],
@@ -763,7 +779,7 @@
       },
       "volumetric_water_content": {
         "pattern_1": {
-          "source_pattern": "Volumetric.Water.Content",
+          "source_pattern": "Volumetric Water Content",
           "source_files": [
             "BM_Merged_T_VWC_0616_1018.csv"
           ],
@@ -779,6 +795,8 @@
     "dataset_identifier": "ess-dive-61a0ecd70856892-20230808T205724993",
     "doi": "doi:10.15485/1958210",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "SLT_OBJ2_SoilSensors_2018_data.csv",
       "SLT_OBJ2_SoilSensors_2019_data.csv",
@@ -902,6 +920,8 @@
     "dataset_identifier": "ess-dive-460e696d8210ed3-20260309T155937802",
     "doi": "doi:10.15485/3013006",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "NEON_plot_TDR.csv"
     ],
@@ -991,7 +1011,7 @@
           ],
           "destination_variable": "volumetric_water_content_m3_m3",
           "transformation": "Coerce from 'wide' format with column variables containing replicate information to 'long' format with separate columns for replicate and volumetric water content.",
-          "unit_conversion": "None; source units are m3/m3."
+          "unit_conversion": "Divide by 1e2 to convert from percent (%) to m3/m3."
         }
       }
     }
@@ -1001,6 +1021,8 @@
     "dataset_identifier": "ess-dive-01092fc392bc46d-20240819T143818677",
     "doi": "doi:10.15485/2322567",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "Soil_water_content_Fig4e.csv"
     ],
@@ -1092,6 +1114,8 @@
     "dataset_identifier": "ess-dive-1438b7d6eaa70e1-20250707T153211523",
     "doi": "doi:10.15485/1618130",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "exclude",
+    "exclusion_reason": "Dataset excluded because it duplicates soil moisture data reported in ess-dive-460e696d8210ed3-20260309T155937802.",
     "data_payload_files": [
       "sample_site.csv"
     ],
@@ -1099,13 +1123,15 @@
       "sample_site.csv"
     ],
     "sensor_metadata_files": null,
-    "harmonization_mappings": "None. Dataset excluded because it duplicates soil moisture data reported in ess-dive-460e696d8210ed3-20260309T155937802."
+    "harmonization_mappings": null
   },
   {
     "index": 12,
     "dataset_identifier": "ess-dive-1438b7d6eaa70e1-20260309T160550600",
     "doi": "doi:10.15485/1618130",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "exclude",
+    "exclusion_reason": "Dataset excluded because it is a prior version of ess-dive-1438b7d6eaa70e1-20250707T153211523, which duplicates soil moisture data reported in ess-dive-460e696d8210ed3-20260309T155937802.",
     "data_payload_files": [
       "sample_site.csv"
     ],
@@ -1113,23 +1139,27 @@
       "sample_site.csv"
     ],
     "sensor_metadata_files": null,
-    "harmonization_mappings": "None. Dataset excluded because it is a prior version of ess-dive-1438b7d6eaa70e1-20250707T153211523, which duplicates soil moisture data reported in ess-dive-460e696d8210ed3-20260309T155937802."
+    "harmonization_mappings": null
   },
   {
     "index": 13,
     "dataset_identifier": "ess-dive-1998cb84e8a132c-20230407T225648938144",
     "doi": "doi:10.15485/1861892",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "exclude",
+    "exclusion_reason": "None. Dataset does not contain soil moisture observations.",
     "data_payload_files": null,
     "location_metadata_files": null,
     "sensor_metadata_files": null,
-    "harmonization_mappings": "None. Dataset does not contain soil moisture observations."
+    "harmonization_mappings": null
   },
   {
     "index": 14,
     "dataset_identifier": "ess-dive-64109adb5fba6b5-20260114T183043578",
     "doi": "doi:10.15485/3013006",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "exclude",
+    "exclusion_reason": "None. Dataset excluded because it is a prior version of ess-dive-460e696d8210ed3-20260309T155937802.",
     "data_payload_files": [
       "NEON_plot_TDR.csv"
     ],
@@ -1137,13 +1167,15 @@
       "NEON_plot_TDR.csv"
     ],
     "sensor_metadata_files": null,
-    "harmonization_mappings": "None. Dataset excluded because it is a prior version of ess-dive-460e696d8210ed3-20260309T155937802."
+    "harmonization_mappings": null
   },
   {
     "index": 15,
     "dataset_identifier": "ess-dive-987726ef1235abc-20230504T210342929747",
     "doi": "doi:10.15485/1648526",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "TDR_survey_ER_20190701.csv"
     ],
@@ -1243,6 +1275,8 @@
     "dataset_identifier": "ess-dive-b3d271f19a94e8d-20260114T204512119",
     "doi": "doi:10.15485/3007697",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS1_v1-1.csv",
       "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS2_v1-1.csv",
@@ -1352,7 +1386,7 @@
           ],
           "destination_variable": "volumetric_water_content_m3_m3",
           "transformation": "Coerce from 'wide' format with column variables containing sampling depth information to 'long' format with separate columns for depth and volumetric water content.",
-          "unit_conversion": "None; source units are m3/m3."
+          "unit_conversion": "Divide by 1e2 to convert from percent (%) to m3/m3."
         }
       }
     }
@@ -1362,6 +1396,8 @@
     "dataset_identifier": "ess-dive-be919d7d5d42c94-20240130T205332180",
     "doi": "doi:10.15485/2283406",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "FieldData/Soil_Moisture_Data/TMC1.csv",
       "FieldData/Soil_Moisture_Data/TMC2.csv",
@@ -1466,6 +1502,8 @@
     "dataset_identifier": "ess-dive-b924878d23c9dd7-20250214T163427929",
     "doi": "doi:10.15485/1577267",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv"
     ],
@@ -1481,7 +1519,7 @@
             "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv"
           ],
           "destination_variable": "datetime_UTC",
-          "transformation": "Parse date from 'Date_Collected' column using format '%m/%d/%Y'. Convert from America/Denver timezone to UTC.",
+          "transformation": "Parse date from 'Date_Collected' column using format '%m/%d/%Y'. Convert from Etc/GMT+7 to UTC.",
           "unit_conversion": null
         }
       },
@@ -1502,7 +1540,7 @@
           "source_files": [
             "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv"
           ],
-          "destination_variable": "gravimetric_water_content_gh2o_gs",
+          "destination_variable": "gravimetric_water_content_gH2O_gs",
           "transformation": "Rename variable.",
           "unit_conversion": "None; source units are g H2O per g soil."
         }
@@ -1576,46 +1614,56 @@
     "dataset_identifier": "ess-dive-2978b63a1ea9841-20230504T210635631262",
     "doi": "doi:10.21952/WTR/1506941",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "exclude",
+    "exclusion_reason": "None. Dataset contains only a few single-point soil moisture observations and is not useful for model benchmarking.",
     "data_payload_files": null,
     "location_metadata_files": null,
     "sensor_metadata_files": null,
-    "harmonization_mappings": "None. Dataset contains only a few single-point soil moisture observations and is not useful for model benchmarking."
+    "harmonization_mappings": null
   },
   {
     "index": 20,
     "dataset_identifier": "ess-dive-8080e287f32a3ac-20230407T142332642960",
     "doi": "doi:10.15485/1813869",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "exclude",
+    "exclusion_reason": "None. Soil moisture observations were made in an experimental warming plot and reflect microclimate manipulations that make them unsuitable for model benchmarking.",
     "data_payload_files": null,
     "location_metadata_files": null,
     "sensor_metadata_files": null,
-    "harmonization_mappings": "None. Soil moisture observations were made in an experimental warming plot and reflect microclimate manipulations that make them unsuitable for model benchmarking."
+    "harmonization_mappings": null
   },
   {
     "index": 21,
     "dataset_identifier": "ess-dive-57669b2e094cb57-20230504T210436309600",
     "doi": "doi:10.15485/1650355",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "exclude",
+    "exclusion_reason": "None. Contains moisture estimates from nuclear magnetic resonance for borehole depth profiles without reported timestamps; likely not suitable for model benchmarking.",
     "data_payload_files": null,
     "location_metadata_files": null,
     "sensor_metadata_files": null,
-    "harmonization_mappings": "None. Contains moisture estimates from nuclear magnetic resonance for borehole depth profiles without reported timestamps; likely not suitable for model benchmarking."
+    "harmonization_mappings": null
   },
   {
     "index": 22,
     "dataset_identifier": "ess-dive-c4be737cc0c6781-20230407T151651083472",
     "doi": "doi:10.15485/1874376",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "exclude",
+    "exclusion_reason": "None. Dataset contains only a few single-point soil moisture observations and is not useful for model benchmarking.",
     "data_payload_files": null,
     "location_metadata_files": null,
     "sensor_metadata_files": null,
-    "harmonization_mappings": "None. Dataset contains only a few single-point soil moisture observations and is not useful for model benchmarking."
+    "harmonization_mappings": null
   },
   {
     "index": 23,
     "dataset_identifier": "ess-dive-a99be52b7a6114c-20230504T210134503379",
     "doi": "doi:10.15485/1842908",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "WM_SWC.csv"
     ],
@@ -1632,7 +1680,7 @@
             "WM_SWC.csv"
           ],
           "destination_variable": "datetime_UTC",
-          "transformation": "Parse datetime from 'Date Time' using format '%Y-%m-%d %H:%M:%S' in America/Denver timezone; convert to UTC.",
+          "transformation": "Parse datetime from 'Date Time' using format '%Y-%m-%d %H:%M:%S' in Etc/GMT+7 timezone; convert to UTC.",
           "unit_conversion": null
         }
       },
@@ -1714,6 +1762,8 @@
     "dataset_identifier": "ess-dive-daa156d2129c471-20250716T160748658",
     "doi": "doi:10.15485/2462766",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
     ],
@@ -1729,7 +1779,7 @@
             "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
           ],
           "destination_variable": "datetime_UTC",
-          "transformation": "Parse date from 'Timestamp' using format '%Y-%m-%d' in America/Denver timezone; convert to UTC.",
+          "transformation": "Parse date from 'Timestamp' using format '%Y-%m-%d'; coerce to UTC.",
           "unit_conversion": null
         }
       },
@@ -1813,6 +1863,8 @@
     "dataset_identifier": "ess-dive-e67ab1151ebc525-20230929T190307767",
     "doi": "doi:10.6084/M9.FIGSHARE.7834406.V2",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "Carbone_aspen.csv",
       "Carbone_conifer.csv"
@@ -1828,7 +1880,7 @@
             "Carbone_conifer.csv"
           ],
           "destination_variable": "datetime_UTC",
-          "transformation": "Construct datetime from Year, Month, Day, Hour; parse in America/Denver timezone; convert to UTC.",
+          "transformation": "Construct datetime from Year, Month, Day, Hour; parse in Etc/GMT+7 timezone; convert to UTC.",
           "unit_conversion": null
         }
       },
@@ -1849,7 +1901,7 @@
           "source_pattern": null,
           "source_files": null,
           "destination_variable": "latitude",
-          "transformation": "Assign fixed latitude for both aspen and conifer sites from metadata: 38.9592.",
+          "transformation": "Assign fixed latitude for both aspen and conifer sites from metadata: 38.9581589.",
           "unit_conversion": null
         }
       },
@@ -1858,7 +1910,7 @@
           "source_pattern": null,
           "source_files": null,
           "destination_variable": "longitude",
-          "transformation": "Assign fixed longitude for both aspen and conifer sites from metadata: -106.9898.",
+          "transformation": "Assign fixed longitude for both aspen and conifer sites from metadata: -106.9855848.",
           "unit_conversion": null
         }
       },
@@ -1911,6 +1963,8 @@
     "dataset_identifier": "ess-dive-f782da867133296-20230504T211008637996",
     "doi": "doi:10.15485/1671826",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "ER18_soil_physical.csv"
     ],
@@ -1924,7 +1978,7 @@
             "ER18_soil_physical.csv"
           ],
           "destination_variable": "datetime_UTC",
-          "transformation": "Parse date from 'Collection date' using format '%m/%d/%y' in America/Denver timezone; convert to UTC.",
+          "transformation": "Parse date from 'Collection date' using format '%m/%d/%y' in Etc/GMT+7 timezone; convert to UTC.",
           "unit_conversion": null
         }
       },
@@ -2008,6 +2062,8 @@
     "dataset_identifier": "ess-dive-c37aaf9ed6d4c0d-20230504T205923265966",
     "doi": "doi:10.15485/1788230",
     "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
     "data_payload_files": [
       "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
       "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",

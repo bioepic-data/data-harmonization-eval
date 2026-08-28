@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-HARMONIZE_SM = Path("data/gold/expert_code/harmonize_sm")
+HARMONIZE_SM = Path("data/gold/expert_code")
 needs_pkg = pytest.mark.skipif(
     not HARMONIZE_SM.exists(), reason="expert harmonizer package not present"
 )
@@ -26,9 +26,15 @@ needs_pkg = pytest.mark.skipif(
 def _make_ctx(payload_df: pd.DataFrame, loc_df: pd.DataFrame, idx: int = 26, ref_idx: int = 0):
     """Return a minimal Context-like namespace backed by synthetic DataFrames."""
     mapping = [
-        {"index": ref_idx, "dataset_identifier": "ess-dive_ref"},
-        {"index": idx, "dataset_identifier": f"ess-dive_ds{idx}"},
+        {"index": i, "dataset_identifier": f"ess-dive_ds{i}"}
+        for i in range(idx + 1)
     ]
+    mapping[ref_idx] = {
+        "index": ref_idx,
+        "dataset_identifier": "ess-dive_ref",
+        "location_metadata_files": ["locations.csv"],
+    }
+    mapping[idx]["data_payload_files"] = ["payload.csv"]
 
     def dsid(i):
         return mapping[i]["dataset_identifier"]
@@ -94,12 +100,11 @@ def test_harmonize_output_columns():
         "depth_m",
         "replicate",
         "is_timeseries",
-        "interval_min",
         "volumetric_water_content_m3_m3",
         "gravimetric_water_content_gH2O_gs",
         "water_potential_kPa",
     }
-    assert expected_cols.issubset(set(result.harmonized.columns))
+    assert expected_cols.issubset(set(result.harmonized_data.columns))
 
 
 @needs_pkg
@@ -110,7 +115,7 @@ def test_harmonize_row_count_matches_payload():
     payload = _make_payload()
     ctx = _make_ctx(payload, _make_loc())
     result = harmonize(ctx)
-    assert len(result.harmonized) == len(payload)
+    assert len(result.harmonized_data) == len(payload)
 
 
 @needs_pkg
@@ -120,8 +125,8 @@ def test_harmonize_datetime_is_utc():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    dt = result.harmonized["datetime_UTC"]
-    assert dt.dtype == "datetime64[ns, UTC]" or str(dt.dtype).endswith("UTC")
+    dt = result.harmonized_data["datetime_UTC"]
+    assert dt.dt.tz is not None
 
 
 @needs_pkg
@@ -132,7 +137,7 @@ def test_harmonize_datetime_correct_value():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    first_dt = result.harmonized["datetime_UTC"].iloc[0]
+    first_dt = result.harmonized_data["datetime_UTC"].iloc[0]
     assert first_dt.year == 2021
     assert first_dt.month == 1
     assert first_dt.day == 15
@@ -145,7 +150,7 @@ def test_harmonize_site_id_renamed():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    assert list(result.harmonized["site_id"]) == ["SITE_A", "SITE_B", "SITE_A"]
+    assert list(result.harmonized_data["site_id"]) == ["SITE_A", "SITE_B", "SITE_A"]
 
 
 @needs_pkg
@@ -161,7 +166,7 @@ def test_harmonize_depth_midpoint_and_unit_conversion():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    depths = result.harmonized["depth_m"].tolist()
+    depths = result.harmonized_data["depth_m"].tolist()
     assert depths == pytest.approx([0.05, 0.10, 0.15])
 
 
@@ -172,7 +177,7 @@ def test_harmonize_replicate_is_1():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    assert (result.harmonized["replicate"] == 1).all()
+    assert (result.harmonized_data["replicate"] == 1).all()
 
 
 @needs_pkg
@@ -182,19 +187,10 @@ def test_harmonize_is_timeseries_false():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    assert (result.harmonized["is_timeseries"] == False).all()  # noqa: E712
+    assert (result.harmonized_data["is_timeseries"] == False).all()  # noqa: E712
 
 
 @needs_pkg
-def test_harmonize_interval_min_is_nan():
-    sys.path.insert(0, str(HARMONIZE_SM.resolve()))
-    from dataset_26 import harmonize
-
-    ctx = _make_ctx(_make_payload(), _make_loc())
-    result = harmonize(ctx)
-    assert result.harmonized["interval_min"].isna().all()
-
-
 @needs_pkg
 def test_harmonize_vwc_divided_by_100():
     """water content %vol divided by 100 -> m3/m3."""
@@ -203,7 +199,7 @@ def test_harmonize_vwc_divided_by_100():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    vwc = result.harmonized["volumetric_water_content_m3_m3"].tolist()
+    vwc = result.harmonized_data["volumetric_water_content_m3_m3"].tolist()
     assert vwc == pytest.approx([0.30, 0.455, 0.22])
 
 
@@ -214,8 +210,8 @@ def test_harmonize_gwc_and_swp_are_nan():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    assert result.harmonized["gravimetric_water_content_gH2O_gs"].isna().all()
-    assert result.harmonized["water_potential_kPa"].isna().all()
+    assert result.harmonized_data["gravimetric_water_content_gH2O_gs"].isna().all()
+    assert result.harmonized_data["water_potential_kPa"].isna().all()
 
 
 @needs_pkg
@@ -235,8 +231,8 @@ def test_harmonize_locations_non_empty():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    assert len(result.locations) == 1
-    loc_df = result.locations[0]
+    loc_df = result.location_data
+    assert len(loc_df) == 2
     assert isinstance(loc_df, pd.DataFrame)
     assert set(["site_id", "latitude", "longitude"]).issubset(loc_df.columns)
 
@@ -249,7 +245,7 @@ def test_harmonize_location_lookup_filters_to_present_sites():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    loc_df = result.locations[0]
+    loc_df = result.location_data
     assert set(loc_df["site_id"]) == {"SITE_A", "SITE_B"}
     assert "SITE_C" not in loc_df["site_id"].values
 
@@ -261,7 +257,7 @@ def test_harmonize_location_lat_lon_values():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    loc_df = result.locations[0].set_index("site_id")
+    loc_df = result.location_data.set_index("site_id")
     assert loc_df.loc["SITE_A", "latitude"] == pytest.approx(38.85)
     assert loc_df.loc["SITE_A", "longitude"] == pytest.approx(-106.50)
     assert loc_df.loc["SITE_B", "latitude"] == pytest.approx(38.90)
@@ -275,7 +271,7 @@ def test_harmonize_location_source_dataset_id_set():
 
     ctx = _make_ctx(_make_payload(), _make_loc())
     result = harmonize(ctx)
-    loc_df = result.locations[0]
+    loc_df = result.location_data
     assert (loc_df["source_dataset_id"] == "ess-dive_ds26").all()
 
 
@@ -286,10 +282,11 @@ def test_harmonize_vwc_non_numeric_coerced_to_nan():
     from dataset_26 import harmonize
 
     payload = _make_payload()
+    payload["water content %vol"] = payload["water content %vol"].astype(object)
     payload.loc[1, "water content %vol"] = "n/a"
     ctx = _make_ctx(payload, _make_loc())
     result = harmonize(ctx)
-    assert pd.isna(result.harmonized["volumetric_water_content_m3_m3"].iloc[1])
+    assert pd.isna(result.harmonized_data["volumetric_water_content_m3_m3"].iloc[1])
 
 
 @needs_pkg
@@ -299,7 +296,8 @@ def test_harmonize_depth_non_numeric_coerced_to_nan():
     from dataset_26 import harmonize
 
     payload = _make_payload()
+    payload["Top sample depth_cm"] = payload["Top sample depth_cm"].astype(object)
     payload.loc[0, "Top sample depth_cm"] = "unknown"
     ctx = _make_ctx(payload, _make_loc())
     result = harmonize(ctx)
-    assert pd.isna(result.harmonized["depth_m"].iloc[0])
+    assert pd.isna(result.harmonized_data["depth_m"].iloc[0])

@@ -94,7 +94,7 @@ registry, `g2` unresolvable). Schema conformance is validated programmatically
 The reference standard is a corpus of **19 expert-harmonized** Watershed Function
 SFA (WFSFA) soil-moisture datasets drawn from ESS-DIVE. For each, the expert
 produced (a) a harmonized output table, (b) modular, documented Python
-transformation code (`data/gold/expert_code/harmonize_sm/`, one
+transformation code (`data/gold/expert_code/`, one
 `dataset_NN.py` per dataset plus shared `common.py`), and (c) a structured +
 free-text change-mapping (`data/gold/sm_data_harmonization_mapping.json`). The
 mapping file also encodes excluded datasets with their plain-language exclusion
