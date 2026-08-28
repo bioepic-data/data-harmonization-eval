@@ -139,49 +139,24 @@ jobs:
           mode: agent
           # Pin an explicit current model (the action's built-in default retired).
           model: "claude-opus-4-8"
-          # WebSearch/WebFetch are deliberately excluded: a public repository
-          # would otherwise be an alternate route to the withheld artifacts.
-          allowed_tools: "Bash(*),Edit,MultiEdit,Write,Read,Glob,Grep,mcp__ols__search_all_ontologies,mcp__ols__get_terms_from_ontology"
-          mcp_config: |
-            {
-              "mcpServers": {
-                "ols": {
-                  "command": "uvx",
-                  "args": ["ols-mcp"]
-                },
-                "sequential-thinking": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
-                }
-              }
-            }
-          # This prompt intentionally restates (more prescriptively) the
-          # instructions that build_env.py writes to AGENT_INSTRUCTIONS.md in the
-          # run folder. Keep the two in sync if either changes.
+          # External search, fetch, and ontology tools are deliberately excluded:
+          # they could become an alternate route to withheld artifacts or other
+          # non-staged data. The agent operates only on the local run workspace.
+          allowed_tools: "Bash(*),Edit,MultiEdit,Write,Read,Glob,Grep"
+          # AGENT_INSTRUCTIONS.md is the single source of truth for the fold
+          # contract. This bootstrap only establishes its authority and the
+          # isolation boundary before the agent reads it.
           direct_prompt: |
             You are running a single grouped leave-one-cluster-out harmonization
             evaluation. A self-contained run environment has already been built for
             you in your current working directory. This directory is the complete
             filesystem workspace supplied for the evaluation.
 
-            Then:
-            1. Read `AGENT_INSTRUCTIONS.md` and `MANIFEST.json` in this folder to
-               learn which dataset(s) are held out.
-            2. Harmonize each held-out dataset from its identifier ALONE, using ONLY:
-                 - the skills in `skills/`,
-                 - the held-out-free exemplar mapping at
-                   `data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json`,
-                 - the held-out-free reference code in
-                   `data/gold/expert_code/`,
-                 - raw inputs under `inputs/raw/` and
-                   any cached metadata under `data/external/ess-dive_meta/`.
-            3. Write EVERY output into an `output/` subdirectory of this run folder:
-               the harmonized CSV(s), the generated transformation code, the
-               change-mapping JSON, and any notes about your decisions.
-
-            Do NOT look up the held-out dataset's existing harmonized output, expert
-            code, or mapping entry from anywhere else. Do not access parent
-            directories or absolute paths outside this workspace.
+            First read and follow `AGENT_INSTRUCTIONS.md` and `MANIFEST.json`.
+            `AGENT_INSTRUCTIONS.md` is authoritative if it conflicts with generic
+            guidance in a skill. Remain inside this workspace: do not access parent
+            directories, absolute paths outside it, network services, APIs, or other
+            external data sources. Write every deliverable under `output/`.
 
       - name: Upload run outputs
         if: always()

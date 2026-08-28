@@ -70,7 +70,11 @@ def test_build_env_layout_and_content(tmp_path, sources):
     assert manifest["holdout_indices"] == [2]
     assert manifest["holdout_identifiers"] == ["ess-dive_b"]
     assert manifest["exemplar_indices"] == [1, 5]
-    assert "ess-dive_b" in (env / "AGENT_INSTRUCTIONS.md").read_text()
+    instructions = (env / "AGENT_INSTRUCTIONS.md").read_text()
+    assert "ess-dive_b" in instructions
+    assert "network services" in instructions
+    assert "Write every deliverable under `output/`" in instructions
+    assert "do not assign a new sequential index" in instructions
 
 
 def test_build_env_metadata_is_copied(tmp_path, sources):
