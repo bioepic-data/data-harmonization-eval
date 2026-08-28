@@ -116,6 +116,7 @@ def default_name(holdout: set[int]) -> str:
 
 def build_env(
     holdout: set[int],
+    target: Optional[set[int]] = None,
     name: Optional[str] = None,
     env_root: Path = DEFAULT_ENV_ROOT,
     package_dir: Path = DEFAULT_PACKAGE,
@@ -128,6 +129,11 @@ def build_env(
     Returns the env directory. Overwrites an existing env of the same name.
     """
     holdout = set(holdout)
+    target = set(target) if target is not None else set(holdout)
+    if not target:
+        raise ValueError("at least one target dataset is required")
+    if not target.issubset(holdout):
+        raise ValueError("target datasets must be included in the reference holdout")
     mapping = json.loads(Path(mapping_path).read_text())
 
     # kept_module_paths() raises if a hold-out index has no module (rejects
@@ -166,10 +172,13 @@ def build_env(
 
     idx_to_dsid = {e["index"]: e.get("dataset_identifier") for e in mapping}
     held_ids = [idx_to_dsid.get(i) for i in sorted(holdout)]
+    target_ids = [idx_to_dsid.get(i) for i in sorted(target)]
     manifest = {
         "name": env.name,
         "holdout_indices": sorted(holdout),
         "holdout_identifiers": held_ids,
+        "target_indices": sorted(target),
+        "target_identifiers": target_ids,
         "exemplar_indices": kept,
         "n_exemplars": len(filtered),
         "sources": {
@@ -179,12 +188,13 @@ def build_env(
         },
     }
     (env / "MANIFEST.json").write_text(json.dumps(manifest, indent=2))
-    (env / "AGENT_INSTRUCTIONS.md").write_text(_instructions(held_ids))
+    (env / "AGENT_INSTRUCTIONS.md").write_text(_instructions(target_ids, held_ids))
     return env
 
 
-def _instructions(held_ids: list) -> str:
-    ids = "\n".join(f"- `{i}`" for i in held_ids if i)
+def _instructions(target_ids: list, held_ids: list) -> str:
+    target_list = "\n".join(f"- `{i}`" for i in target_ids if i)
+    reference_holdout_list = "\n".join(f"- `{i}`" for i in held_ids if i)
     return (
         "# Run environment — leave-one-cluster-out\n\n"
         "This file is the authoritative contract for this fold evaluation. "
@@ -208,8 +218,12 @@ def _instructions(held_ids: list) -> str:
         "transformation code, a change-mapping JSON, and notes documenting decisions "
         "or missing inputs. For each held-out dataset, use its existing index from "
         "`MANIFEST.json`; do not assign a new sequential index.\n\n"
-        "## Held-out datasets\n\n"
-        f"{ids}\n"
+        "## Target datasets\n\n"
+        f"{target_list}\n\n"
+        "## Reference holdout datasets\n\n"
+        "The following datasets are excluded from the exemplar mapping and expert "
+        "code. Only the target dataset(s) above should be harmonized.\n\n"
+        f"{reference_holdout_list}\n"
     )
 
 
@@ -219,6 +233,7 @@ app = typer.Typer(add_completion=False, help="Build a leave-one-cluster-out run 
 @app.command()
 def main(
     holdout: str = typer.Option(..., "--holdout", help="Comma-separated indices or dataset_identifiers to hold out."),
+    target: Optional[str] = typer.Option(None, "--target", help="Comma-separated target indices or identifiers; defaults to all held-out datasets."),
     name: Optional[str] = typer.Option(None, "--name", help="Env dir name (default: holdout-<ids>)."),
     env_root: Path = typer.Option(DEFAULT_ENV_ROOT, "--env-root", help="Parent dir for run environments (must be outside the repository)."),
     package: Path = typer.Option(DEFAULT_PACKAGE, "--package", help="Modular expert harmonizer dir to draw modules from."),
@@ -228,11 +243,12 @@ def main(
 ) -> None:
     """Assemble an answer-free run environment for one hold-out config."""
     holdout_idx = resolve_holdout(holdout.split(","), mapping)
+    target_idx = resolve_holdout(target.split(","), mapping) if target else None
     env = build_env(
-        holdout_idx, name=name, env_root=env_root, package_dir=package,
+        holdout_idx, target=target_idx, name=name, env_root=env_root, package_dir=package,
         mapping_path=mapping, skills_dir=skills, metadata_dir=metadata_dir,
     )
-    typer.echo(f"built {env} (held out {sorted(holdout_idx)}; "
+    typer.echo(f"built {env} (target {sorted(target_idx or holdout_idx)}; held out {sorted(holdout_idx)}; "
                f"{len(block_indices(env / HARMONIZER_REL))} exemplar modules remain)")
 
 

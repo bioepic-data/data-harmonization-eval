@@ -1,88 +1,46 @@
-# Grouped cross-validation fold definitions
-# Each fold holds out one dataset (or cluster), using others as exemplar pool
-# Grouped folds ensure datasets from same source/lab/instrument are held out together
+# Targeted grouped leave-one-out cross-validation definitions.
+# Every included dataset is the target of exactly one fold. For correlated
+# clusters, every cluster member is withheld from exemplars, but only the
+# `target_dataset` is staged and harmonized in a given fold.
+cv_strategy: "targeted_grouped_loo"
 
-cv_strategy: "grouped_loo"  # grouped leave-one-out
-
-# Dataset clustering for grouped CV
-# Datasets from same cluster should not appear in each other's exemplar pools
 clusters:
-  cluster_1: 
-    name: 'sg_ph_micromet'
-    description: 'Micrometereology stations at Snodgrass'
-    datasets: [1, 2, 3, 6, 16, 27]  # indices from mapping JSON
-
+  cluster_1:
+    name: "sg_ph_micromet"
+    description: "Micrometeorology stations at Snodgrass."
+    datasets: [1, 2, 3, 6, 16, 27]
   cluster_2:
-    name: 'neon_point'
-    description: 'Point-in-time observations associated with specific field campaigns.'
+    name: "neon_point"
+    description: "Point-in-time observations associated with specific field campaigns."
     datasets: [15, 26]
-
   cluster_3:
-    name: 'independent'
-    description: 'Independent datasets to treat as individuals'
+    name: "independent"
+    description: "Independent datasets held out individually."
     datasets: [4, 5, 7, 8, 9, 10, 17, 18, 23, 24, 25]
-
-  cluster_4: 
-    name: 'global_exclude'
-    description: 'Datasets to exclude globally from consideration as harmonization targets or exemplars.'
+  cluster_4:
+    name: "global_exclude"
+    description: "Not harmonization targets or exemplars."
     datasets: [0, 11, 12, 13, 14, 19, 20, 21, 22]
 
-# Explicit fold definitions
-# For each fold, held_out can be dataset ID or cluster ID
-# exemplar_pool lists which datasets are visible as references
+# `reference_holdout_datasets` controls ablation. `target_dataset` is the only
+# raw input staged and the only dataset the agent must harmonize for that fold.
 folds:
-  - fold_id: 1
-    held_out_cluster: "cluster_1"
-    held_out_datasets: [1, 2, 3, 6, 16, 27]
-    exemplar_pool: [4, 5, 7, 8, 9, 10, 15, 17, 18, 23, 24, 25, 26]
-
-  - fold_id: 2
-    held_out_cluster: "cluster_2"
-    held_out_datasets: [15, 26]
-    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 17, 18, 23, 24, 25, 27]
-
-  # Individual folds for cluster_3 (independent datasets)
-  - fold_id: 3
-    held_out_cluster: "cluster_3"
-    held_out_datasets: [4]
-    exemplar_pool: [1, 2, 3, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18, 23, 24, 25, 26, 27]
-
-  - fold_id: 4
-    held_out_datasets: 5
-    exemplar_pool: [1, 2, 3, 4, 6, 7, 8, 9, 10, 15, 16, 17, 18, 23, 24, 25, 26, 27]
-
-  - fold_id: 5
-    held_out_datasets: 7
-    exemplar_pool: [1, 2, 3, 4, 5, 6, 8, 9, 10, 15, 16, 17, 18, 23, 24, 25, 26, 27]
-
-  - fold_id: 6
-    held_out_datasets: 8
-    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 9, 10, 15, 16, 17, 18, 23, 24, 25, 26, 27]
-
-  - fold_id: 7
-    held_out_datasets: 9
-    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 10, 15, 16, 17, 18, 23, 24, 25, 26, 27]
-
-  - fold_id: 8
-    held_out_datasets: 10
-    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 18, 23, 24, 25, 26, 27]
-
-  - fold_id: 9
-    held_out_datasets: 17
-    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 18, 23, 24, 25, 26, 27]
-
-  - fold_id: 10
-    held_out_datasets: 18
-    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 23, 24, 25, 26, 27]
-
-  - fold_id: 11
-    held_out_datasets: 23
-    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 23, 24, 25, 26, 27]
-
-  - fold_id: 12
-    held_out_datasets: 24
-    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 23, 25, 26, 27]
-
-  - fold_id: 13
-    held_out_datasets: 25
-    exemplar_pool: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 23, 24, 26, 27]
+  - {fold_id: 1, target_dataset: 1, held_out_cluster: "cluster_1", reference_holdout_datasets: [1, 2, 3, 6, 16, 27]}
+  - {fold_id: 2, target_dataset: 2, held_out_cluster: "cluster_1", reference_holdout_datasets: [1, 2, 3, 6, 16, 27]}
+  - {fold_id: 3, target_dataset: 3, held_out_cluster: "cluster_1", reference_holdout_datasets: [1, 2, 3, 6, 16, 27]}
+  - {fold_id: 4, target_dataset: 6, held_out_cluster: "cluster_1", reference_holdout_datasets: [1, 2, 3, 6, 16, 27]}
+  - {fold_id: 5, target_dataset: 16, held_out_cluster: "cluster_1", reference_holdout_datasets: [1, 2, 3, 6, 16, 27]}
+  - {fold_id: 6, target_dataset: 27, held_out_cluster: "cluster_1", reference_holdout_datasets: [1, 2, 3, 6, 16, 27]}
+  - {fold_id: 7, target_dataset: 15, held_out_cluster: "cluster_2", reference_holdout_datasets: [15, 26]}
+  - {fold_id: 8, target_dataset: 26, held_out_cluster: "cluster_2", reference_holdout_datasets: [15, 26]}
+  - {fold_id: 9, target_dataset: 4, held_out_cluster: "cluster_3", reference_holdout_datasets: [4]}
+  - {fold_id: 10, target_dataset: 5, held_out_cluster: "cluster_3", reference_holdout_datasets: [5]}
+  - {fold_id: 11, target_dataset: 7, held_out_cluster: "cluster_3", reference_holdout_datasets: [7]}
+  - {fold_id: 12, target_dataset: 8, held_out_cluster: "cluster_3", reference_holdout_datasets: [8]}
+  - {fold_id: 13, target_dataset: 9, held_out_cluster: "cluster_3", reference_holdout_datasets: [9]}
+  - {fold_id: 14, target_dataset: 10, held_out_cluster: "cluster_3", reference_holdout_datasets: [10]}
+  - {fold_id: 15, target_dataset: 17, held_out_cluster: "cluster_3", reference_holdout_datasets: [17]}
+  - {fold_id: 16, target_dataset: 18, held_out_cluster: "cluster_3", reference_holdout_datasets: [18]}
+  - {fold_id: 17, target_dataset: 23, held_out_cluster: "cluster_3", reference_holdout_datasets: [23]}
+  - {fold_id: 18, target_dataset: 24, held_out_cluster: "cluster_3", reference_holdout_datasets: [24]}
+  - {fold_id: 19, target_dataset: 25, held_out_cluster: "cluster_3", reference_holdout_datasets: [25]}
