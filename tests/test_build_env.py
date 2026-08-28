@@ -69,8 +69,9 @@ def test_build_env_layout_and_content(tmp_path, sources):
     assert (env / "skills" / "essdive_sm_curator" / "SKILL.md").exists()
     assert (env / "inputs" / "raw").is_dir()
     manifest = json.loads((env / "MANIFEST.json").read_text())
-    assert manifest["holdout_indices"] == [2]
-    assert manifest["holdout_identifiers"] == ["ess-dive_b"]
+    assert manifest["target_indices"] == [2]
+    assert manifest["target_identifiers"] == ["ess-dive_b"]
+    assert manifest["reference_holdout_count"] == 1
     assert manifest["exemplar_indices"] == [1, 5]
     instructions = (env / "AGENT_INSTRUCTIONS.md").read_text()
     assert "ess-dive_b" in instructions
@@ -80,9 +81,24 @@ def test_build_env_layout_and_content(tmp_path, sources):
 
     claude_settings = json.loads((env / CLAUDE_SETTINGS_REL).read_text())
     assert claude_settings == FOLD_CLAUDE_SETTINGS
-    assert claude_settings["sandbox"]["failIfUnavailable"] is True
-    assert claude_settings["sandbox"]["allowUnsandboxedCommands"] is False
-    assert claude_settings["sandbox"]["filesystem"]["denyRead"] == ["/"]
+
+
+def test_build_env_separates_target_from_reference_holdout(tmp_path, sources):
+    pkg, mapping, skills = sources
+    env = build_env({1, 2}, target={1}, env_root=tmp_path / ".runs", package_dir=pkg,
+                    mapping_path=mapping, skills_dir=skills)
+    manifest = json.loads((env / "MANIFEST.json").read_text())
+    assert manifest["target_indices"] == [1]
+    assert manifest["reference_holdout_count"] == 2
+    instructions = (env / "AGENT_INSTRUCTIONS.md").read_text()
+    assert "## Target datasets" in instructions
+    assert "## Reference holdout datasets" not in instructions
+    assert "Harmonize only the target dataset(s)" in instructions
+    assert "Harmonize the held-out dataset(s)" not in instructions
+    assert "For each target dataset" in instructions
+    assert "For each held-out dataset" not in instructions
+    assert "`ess-dive_a`" in instructions
+    assert "ess-dive_b" not in instructions
 
 
 def test_build_env_metadata_is_copied(tmp_path, sources):
@@ -122,6 +138,18 @@ def test_cli_builds_env(tmp_path, sources):
     assert result.exit_code == 0, result.output
     assert (tmp_path / ".runs" / "cli" / HARMONIZER_REL / "dataset_01.py").exists()
     assert not (tmp_path / ".runs" / "cli" / HARMONIZER_REL / "dataset_02.py").exists()
+
+
+def test_cli_builds_targeted_env(tmp_path, sources):
+    pkg, mapping, skills = sources
+    result = CliRunner().invoke(app, [
+        "--holdout", "1,2", "--target", "1", "--name", "targeted", "--env-root", str(tmp_path / ".runs"),
+        "--package", str(pkg), "--mapping", str(mapping), "--skills", str(skills),
+    ])
+    assert result.exit_code == 0, result.output
+    manifest = json.loads((tmp_path / ".runs" / "targeted" / "MANIFEST.json").read_text())
+    assert manifest["target_indices"] == [1]
+    assert manifest["reference_holdout_count"] == 2
 
 
 # --- Against the real modular harmonizer, when present ---

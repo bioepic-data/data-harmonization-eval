@@ -85,9 +85,10 @@ You are running a leave-one-cluster-out harmonization evaluation.
 
 cd /tmp/data-harmonization-eval-runs/<fold-id>
 
-Read AGENT_INSTRUCTIONS.md and MANIFEST.json. Harmonize the held-out dataset(s)
-using only skills/, the filtered mapping, the non-held-out expert-code patterns,
-and raw inputs under inputs/raw/. Write harmonized CSVs, generated transformation code,
+Read AGENT_INSTRUCTIONS.md and MANIFEST.json. Harmonize only the target dataset(s)
+using skills/, the filtered mapping, the available expert-code patterns, and raw
+inputs under inputs/raw/. Reference-holdout datasets are absent from the exemplars
+and are not additional targets. Write harmonized CSVs, generated transformation code,
 the change-mapping JSON, and decision notes to output/. Do not read root gold
 data, root processed data, or any other fold environment.
 ```
@@ -167,14 +168,15 @@ poetry install
 ### Run a fold locally
 
 ```bash
-# Create an isolated environment for a cluster or a comma-separated holdout.
+# Target dataset 15 while excluding its cluster mate 26 from exemplars.
 uv run python -m src.folds.build_env \
   --holdout 15,26 \
-  --name fold-02-holdout-15-26
+  --target 15 \
+  --name fold-07-target-15
 
-# Optionally stage held-out raw inputs into the fold environment.
-uv run python -m src.folds.stage_raw_data --indices 15,26 \
-  --dest /tmp/data-harmonization-eval-runs/fold-02-holdout-15-26/inputs/raw \
+# Stage only the target's raw input.
+uv run python -m src.folds.stage_raw_data --indices 15 \
+  --dest /tmp/data-harmonization-eval-runs/fold-07-target-15/inputs/raw \
   --drive-method public
 ```
 
@@ -182,7 +184,7 @@ Give the AI agent the prompt in [AI-agent prompt and outputs](#ai-agent-prompt-a
 substituting the fold name. The agent writes its deliverables to:
 
 ```text
-/tmp/data-harmonization-eval-runs/fold-02-holdout-15-26/output/
+/tmp/data-harmonization-eval-runs/fold-07-target-15/output/
 ```
 
 For a locally run agent, audit its tool-use JSONL afterward:
@@ -190,15 +192,17 @@ For a locally run agent, audit its tool-use JSONL afterward:
 ```bash
 uv run python -m src.folds.invigilator \
   --trace path/to/agent-trace.jsonl \
-  --env /tmp/data-harmonization-eval-runs/fold-02-holdout-15-26
+  --env /tmp/data-harmonization-eval-runs/fold-07-target-15
 ```
 
 ### Run through GitHub Actions
 
-In GitHub Actions, run **Run Harmonization Eval** manually. Supply a dataset
-index, dataset identifier, comma-separated indices, or a cluster ID/name from
-`config/cv_folds.yaml`. The workflow builds the fold, optionally stages raw
-data, starts the configured Claude agent with the fold-specific prompt, and
+In GitHub Actions, run **Run Harmonization Eval** manually. Supply a configured
+target dataset index from `config/cv_folds.yaml`; the workflow automatically
+uses that target's reference holdout and stages only the target input. A
+comma-separated list or cluster ID/name remains available for a legacy
+multi-target run. The workflow builds the fold, optionally stages raw data,
+starts the configured Claude agent with the fold-specific prompt, and
 replaces the checkout with the answer-free fold workspace. After the agent
 finishes, it creates a new orphan branch named
 `eval/<fold-name>-<run-id>-<attempt>` containing that isolated workspace, then

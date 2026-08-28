@@ -110,13 +110,15 @@ The study has two phases; within each, the agent pair is evaluated in three mode
 
 ### 4.1 Phase A — Retrospective cross-validation
 
-We perform **grouped leave-one-out cross-validation** over the gold datasets.
+We perform **targeted grouped leave-one-out cross-validation** over the gold
+datasets. Every included dataset is the target of one fold.
 Datasets are grouped into source/instrument **clusters** (`config/cv_folds.yaml`)
-so that datasets sharing a lab, site, or instrument family are held out together;
-this prevents a near-duplicate sibling from leaking into the exemplar pool and
-inflating apparent performance. For each fold, the held-out dataset(s) are
-harmonized using only the *other* datasets as exemplars, and outputs are scored
-against the expert version.
+so that datasets sharing a lab, site, or instrument family are removed from the
+exemplar pool together; this prevents a near-duplicate sibling from leaking into
+the exemplar pool and inflating apparent performance. Each fold stages and
+harmonizes only its target dataset, while the other members of its reference
+holdout remain absent from both the exemplar pool and the task inputs. Outputs
+are scored against the target's expert version.
 
 Phase A serves a second purpose: it **validates the automated metrics** against
 expert judgment. If automated output-equivalence scoring agrees with an expert

@@ -1,15 +1,16 @@
-"""Build a self-contained run environment for one leave-one-cluster-out config.
+"""Build a self-contained run environment for one targeted grouped-LOO config.
 
-Grouped leave-one-cluster-out evaluates the curator+harmonizer agent on a
-held-out cluster of datasets while the *other* datasets serve as exemplars. To
-keep the held-out cluster's reference answer out of the agent's reach, we
+Targeted grouped leave-one-out evaluates one target dataset per fold. When the
+target belongs to a correlated source/instrument cluster, every cluster member
+is removed from the exemplar pool, but only the target is staged and assigned
+to the agent. To keep those reference answers out of the agent's reach, we
 materialize a per-config sandbox outside the repository containing only:
 
 * the **skills** (curator + harmonizer), copied verbatim;
-* the **filtered mapping JSON** — the gold mapping with the held-out cluster's
+* the **filtered mapping JSON** — the gold mapping with the reference holdout's
   entries removed, written to the path the skills read for exemplars
   (``data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json``);
-* the **held-out-free expert code** — ``common.py`` plus the kept
+* the **reference-holdout-free expert code** — ``common.py`` plus the kept
   ``dataset_NN.py`` modules of the modular expert harmonizer (see
   :mod:`src.folds.expert_harmonizer`), copied to the path the harmonizer reads
   as a code-pattern reference (``data/gold/expert_code/``). The
@@ -20,7 +21,7 @@ exemplar mapping and the reference modules, which sit at the exact relative
 paths the skills resolve. Shared *inputs* are deliberately NOT treated as
 leakage and stay where they are:
 
-* raw per-dataset CSVs at ``inputs/raw/<dsid>/`` — staged into the run
+* raw per-target CSVs at ``inputs/raw/<dsid>/`` — staged into the run
   environment by :mod:`src.folds.stage_raw_data`;
 * cached ESS-DIVE metadata — optionally copied in via ``metadata_dir``.
 
@@ -116,6 +117,7 @@ def default_name(holdout: set[int]) -> str:
 
 def build_env(
     holdout: set[int],
+    target: Optional[set[int]] = None,
     name: Optional[str] = None,
     env_root: Path = DEFAULT_ENV_ROOT,
     package_dir: Path = DEFAULT_PACKAGE,
@@ -128,6 +130,11 @@ def build_env(
     Returns the env directory. Overwrites an existing env of the same name.
     """
     holdout = set(holdout)
+    target = set(target) if target is not None else set(holdout)
+    if not target:
+        raise ValueError("at least one target dataset is required")
+    if not target.issubset(holdout):
+        raise ValueError("target datasets must be included in the reference holdout")
     mapping = json.loads(Path(mapping_path).read_text())
 
     # kept_module_paths() raises if a hold-out index has no module (rejects
@@ -165,11 +172,12 @@ def build_env(
         shutil.copytree(metadata_dir, env / METADATA_REL)
 
     idx_to_dsid = {e["index"]: e.get("dataset_identifier") for e in mapping}
-    held_ids = [idx_to_dsid.get(i) for i in sorted(holdout)]
+    target_ids = [idx_to_dsid.get(i) for i in sorted(target)]
     manifest = {
         "name": env.name,
-        "holdout_indices": sorted(holdout),
-        "holdout_identifiers": held_ids,
+        "target_indices": sorted(target),
+        "target_identifiers": target_ids,
+        "reference_holdout_count": len(holdout),
         "exemplar_indices": kept,
         "n_exemplars": len(filtered),
         "sources": {
@@ -179,18 +187,18 @@ def build_env(
         },
     }
     (env / "MANIFEST.json").write_text(json.dumps(manifest, indent=2))
-    (env / "AGENT_INSTRUCTIONS.md").write_text(_instructions(held_ids))
+    (env / "AGENT_INSTRUCTIONS.md").write_text(_instructions(target_ids))
     return env
 
 
-def _instructions(held_ids: list) -> str:
-    ids = "\n".join(f"- `{i}`" for i in held_ids if i)
+def _instructions(target_ids: list) -> str:
+    target_list = "\n".join(f"- `{i}`" for i in target_ids if i)
     return (
-        "# Run environment — leave-one-cluster-out\n\n"
+        "# Run environment — targeted grouped leave-one-out\n\n"
         "This file is the authoritative contract for this fold evaluation. "
         "It overrides any generic or production-oriented guidance in `skills/`.\n\n"
         "## Allowed inputs\n\n"
-        "Harmonize the held-out dataset(s) using ONLY:\n"
+        "Harmonize only the target dataset(s) listed below, using ONLY:\n"
         "- the skills in `skills/`,\n"
         "- the held-out-free exemplars in "
         "`data/processed/ess-dive_wfsfa_soil_datasets/"
@@ -201,15 +209,17 @@ def _instructions(held_ids: list) -> str:
         "Do not access parent directories, absolute paths outside this workspace, "
         "network services, APIs, or any other external data source. If required raw "
         "data or metadata is absent, record the limitation in the output rather than "
-        "retrieving it. Do NOT look up the held-out dataset's existing harmonized "
+        "retrieving it. Do NOT look up a target dataset's existing harmonized "
         "output, expert code, or mapping entry from any other location.\n\n"
         "## Required outputs\n\n"
         "Write every deliverable under `output/`: harmonized CSV file(s), generated "
         "transformation code, a change-mapping JSON, and notes documenting decisions "
-        "or missing inputs. For each held-out dataset, use its existing index from "
+        "or missing inputs. For each target dataset, use its existing index from "
         "`MANIFEST.json`; do not assign a new sequential index.\n\n"
-        "## Held-out datasets\n\n"
-        f"{ids}\n"
+        "## Target datasets\n\n"
+        f"{target_list}\n\n"
+        "Only the target dataset(s) above should be harmonized. Additional datasets "
+        "may be absent from the exemplar references; they are not targets.\n"
     )
 
 
@@ -219,6 +229,7 @@ app = typer.Typer(add_completion=False, help="Build a leave-one-cluster-out run 
 @app.command()
 def main(
     holdout: str = typer.Option(..., "--holdout", help="Comma-separated indices or dataset_identifiers to hold out."),
+    target: Optional[str] = typer.Option(None, "--target", help="Comma-separated target indices or identifiers; defaults to all held-out datasets."),
     name: Optional[str] = typer.Option(None, "--name", help="Env dir name (default: holdout-<ids>)."),
     env_root: Path = typer.Option(DEFAULT_ENV_ROOT, "--env-root", help="Parent dir for run environments (must be outside the repository)."),
     package: Path = typer.Option(DEFAULT_PACKAGE, "--package", help="Modular expert harmonizer dir to draw modules from."),
@@ -228,11 +239,12 @@ def main(
 ) -> None:
     """Assemble an answer-free run environment for one hold-out config."""
     holdout_idx = resolve_holdout(holdout.split(","), mapping)
+    target_idx = resolve_holdout(target.split(","), mapping) if target else None
     env = build_env(
-        holdout_idx, name=name, env_root=env_root, package_dir=package,
+        holdout_idx, target=target_idx, name=name, env_root=env_root, package_dir=package,
         mapping_path=mapping, skills_dir=skills, metadata_dir=metadata_dir,
     )
-    typer.echo(f"built {env} (held out {sorted(holdout_idx)}; "
+    typer.echo(f"built {env} (target {sorted(target_idx or holdout_idx)}; held out {sorted(holdout_idx)}; "
                f"{len(block_indices(env / HARMONIZER_REL))} exemplar modules remain)")
 
 
