@@ -41,9 +41,9 @@ gold mapping + expert code + skills
         build_env.py
               │
               ▼
- .runs/<fold-id>/        +        ~/ess-dive_wfsfa_soil_datasets/
- ablated references               held-out raw inputs
-              │                              │
+ isolated fold workspace
+ ablated references + held-out raw inputs
+              │
               └──── AI agent runs ───────────┘
                             │
                             ▼
@@ -58,18 +58,18 @@ gold mapping + expert code + skills
 
 ### What the fold modules do
 
-- `src/folds/stage_raw_data.py` stages raw ESS-DIVE inputs under
-  `~/ess-dive_wfsfa_soil_datasets/<dataset_identifier>/`. Raw held-out data are
-  task inputs and are permitted.
+- `src/folds/stage_raw_data.py` stages raw ESS-DIVE inputs into the fold's
+  `inputs/raw/<dataset_identifier>/` directory. Raw held-out data are task
+  inputs and are permitted.
 - `src/folds/expert_harmonizer.py` resolves holdouts and determines which expert
   modules remain available as exemplars.
-- `src/folds/build_env.py` creates `.runs/<fold-id>/`, copies the skills,
+- `src/folds/build_env.py` creates an answer-free environment outside the
+  repository, copies the skills,
   filters held-out entries from the mapping, copies only non-held-out expert-code
   modules, and writes `MANIFEST.json` plus `AGENT_INSTRUCTIONS.md`.
 - `src/folds/invigilator.py` audits an agent tool-call JSONL trace after the run.
-  It permits access only inside the fold environment and the shared raw-data
-  root, then flags reads of root gold data, processed mappings, or other
-  out-of-bounds paths.
+  It permits access only inside the fold environment, then flags reads outside
+  that boundary.
 
 The fold environment intentionally excludes the held-out answer. Gold-output
 comparison must therefore happen outside the environment, after the agent run.
@@ -83,11 +83,11 @@ deliverables under `output/`:
 ```text
 You are running a leave-one-cluster-out harmonization evaluation.
 
-cd .runs/<fold-id>
+cd /tmp/data-harmonization-eval-runs/<fold-id>
 
 Read AGENT_INSTRUCTIONS.md and MANIFEST.json. Harmonize the held-out dataset(s)
 using only skills/, the filtered mapping, the non-held-out expert-code patterns,
-and the shared raw inputs. Write harmonized CSVs, generated transformation code,
+and raw inputs under inputs/raw/. Write harmonized CSVs, generated transformation code,
 the change-mapping JSON, and decision notes to output/. Do not read root gold
 data, root processed data, or any other fold environment.
 ```
@@ -172,15 +172,17 @@ uv run python -m src.folds.build_env \
   --holdout 15,26 \
   --name fold-02-holdout-15-26
 
-# Optionally stage held-out raw inputs. They are stored outside the fold env.
-uv run python -m src.folds.stage_raw_data --indices 15,26 --drive-method public
+# Optionally stage held-out raw inputs into the fold environment.
+uv run python -m src.folds.stage_raw_data --indices 15,26 \
+  --dest /tmp/data-harmonization-eval-runs/fold-02-holdout-15-26/inputs/raw \
+  --drive-method public
 ```
 
 Give the AI agent the prompt in [AI-agent prompt and outputs](#ai-agent-prompt-and-outputs),
 substituting the fold name. The agent writes its deliverables to:
 
 ```text
-.runs/fold-02-holdout-15-26/output/
+/tmp/data-harmonization-eval-runs/fold-02-holdout-15-26/output/
 ```
 
 If your agent provider records tool calls as JSONL, audit the run afterward:
@@ -188,7 +190,7 @@ If your agent provider records tool calls as JSONL, audit the run afterward:
 ```bash
 uv run python -m src.folds.invigilator \
   --trace path/to/agent-trace.jsonl \
-  --env .runs/fold-02-holdout-15-26
+  --env /tmp/data-harmonization-eval-runs/fold-02-holdout-15-26
 ```
 
 ### Run through GitHub Actions
@@ -197,12 +199,13 @@ In GitHub Actions, run **Run Harmonization Eval** manually. Supply a dataset
 index, dataset identifier, comma-separated indices, or a cluster ID/name from
 `config/cv_folds.yaml`. The workflow builds the fold, optionally stages raw
 data, starts the configured Claude agent with the fold-specific prompt, and
-uploads the full `.runs/<fold-id>/` directory as an `eval-<fold-id>` artifact.
+replaces the checkout with the answer-free fold workspace, then uploads it as
+an `eval-<fold-id>` artifact.
 
 ### Results and scoring
 
 The active workflow does not write to a shared `results/` directory or commit
-run outputs. Local results remain under `.runs/<fold-id>/output/`; GitHub runs
+run outputs. Local results remain under the isolated fold's `output/`; GitHub runs
 are retained as workflow artifacts. Use a separate trusted process, outside the
 fold environment, to compare those outputs with the held-out gold standard and
 to aggregate performance metrics.

@@ -57,6 +57,14 @@ def test_clean_run(tmp_path):
     assert r.reads_in_bounds == 2
 
 
+def test_external_raw_data_is_not_allowed_by_default(tmp_path):
+    repo, env, raw = make_repo(tmp_path)
+    trace = write_trace(tmp_path / "trace.jsonl", [
+        ("Read", {"file_path": str(raw / "ess-dive-HELD" / "payload.csv")}),
+    ])
+    assert not audit(trace, env, repo_root=repo).clean
+
+
 def test_detects_real_gold_and_answer_key(tmp_path):
     repo, env, raw = make_repo(tmp_path)
     (repo / "data" / "gold" / "expert_code").mkdir(parents=True)

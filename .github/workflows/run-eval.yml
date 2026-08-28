@@ -3,7 +3,7 @@ name: Run Harmonization Eval
 # Manually-triggered leave-one-cluster-out evaluation.
 #
 # Given the id of a held-out dataset (or a whole cluster), this workflow:
-#   1. builds a self-contained run environment under `.runs/<name>/` with the
+#   1. builds a self-contained run environment outside the checkout with the
 #      held-out cluster removed from both the exemplar mapping and the reference
 #      code (see src/folds/build_env.py);
 #   2. (optionally) stages the held-out dataset(s) raw inputs;
@@ -24,7 +24,7 @@ on:
       name:
         description: >-
           Optional name for the run environment (default: the cluster id, or
-          `holdout-<ids>`). Becomes the `.runs/<name>/` folder and artifact name.
+          `holdout-<ids>`). Becomes the run-environment and artifact name.
         required: false
         type: string
         default: ""
@@ -43,7 +43,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-      actions: read # Required for Claude to read CI results
 
     steps:
       - name: Checkout repository
@@ -94,7 +93,8 @@ jobs:
           with open(os.environ["GITHUB_OUTPUT"], "a") as out:
               out.write(f"holdout={holdout}\n")
               out.write(f"env_name={env_name}\n")
-              out.write(f"env_path=.runs/{env_name}\n")
+              out.write(f"env_path={os.environ['GITHUB_WORKSPACE']}\n")
+              out.write(f"build_root={os.environ['RUNNER_TEMP']}/harmonization-eval-runs\n")
               out.write(f"stage_indices={stage_indices}\n")
           print(f"Resolved holdout={holdout!r} env_name={env_name!r}")
           PY
@@ -103,18 +103,32 @@ jobs:
         env:
           HOLDOUT: ${{ steps.resolve.outputs.holdout }}
           ENV_NAME: ${{ steps.resolve.outputs.env_name }}
+          BUILD_ROOT: ${{ steps.resolve.outputs.build_root }}
         run: |
-          uv run python -m src.folds.build_env --holdout "$HOLDOUT" --name "$ENV_NAME"
+          uv run python -m src.folds.build_env \
+            --holdout "$HOLDOUT" --name "$ENV_NAME" --env-root "$BUILD_ROOT"
 
       - name: Stage raw data for held-out dataset(s)
         if: ${{ inputs.stage_raw && steps.resolve.outputs.stage_indices != '' }}
         continue-on-error: true
         env:
           STAGE_INDICES: ${{ steps.resolve.outputs.stage_indices }}
+          RUN_ENV: ${{ steps.resolve.outputs.build_root }}/${{ steps.resolve.outputs.env_name }}
         run: |
-          # Writes raw inputs to ~/ess-dive_wfsfa_soil_datasets/<id>/ by design;
-          # the agent reads them from that home path (not from the run folder).
-          uv run python -m src.folds.stage_raw_data --indices "$STAGE_INDICES" --drive-method public
+          # The agent is only given this copied input directory, never the shared
+          # home-directory cache or the repository checkout.
+          uv run python -m src.folds.stage_raw_data --indices "$STAGE_INDICES" \
+            --dest "$RUN_ENV/inputs/raw" --drive-method public
+
+      - name: Replace checkout with the isolated agent workspace
+        # This is the isolation boundary.  Build/staging happen in the trusted
+        # checkout; immediately before Claude starts, replace that checkout
+        # (including .git) with the answer-free fold.  The agent can therefore
+        # not reach data/gold, the complete mapping, or Git object history.
+        env:
+          RUN_ENV: ${{ steps.resolve.outputs.build_root }}/${{ steps.resolve.outputs.env_name }}
+        run: |
+          rsync -a --delete "$RUN_ENV/" "$GITHUB_WORKSPACE/"
 
       - name: Run harmonization agent in the run environment
         # Cap runaway evals so a hung/looping agent can't burn the full 6h limit.
@@ -125,9 +139,9 @@ jobs:
           mode: agent
           # Pin an explicit current model (the action's built-in default retired).
           model: "claude-opus-4-8"
-          allowed_tools: "Bash(*),Edit,MultiEdit,Write,Read,Glob,Grep,WebSearch,WebFetch,mcp__ols__search_all_ontologies,mcp__ols__get_terms_from_ontology"
-          additional_permissions: |
-            actions: read
+          # WebSearch/WebFetch are deliberately excluded: a public repository
+          # would otherwise be an alternate route to the withheld artifacts.
+          allowed_tools: "Bash(*),Edit,MultiEdit,Write,Read,Glob,Grep,mcp__ols__search_all_ontologies,mcp__ols__get_terms_from_ontology"
           mcp_config: |
             {
               "mcpServers": {
@@ -147,13 +161,8 @@ jobs:
           direct_prompt: |
             You are running a single grouped leave-one-cluster-out harmonization
             evaluation. A self-contained run environment has already been built for
-            you at `${{ steps.resolve.outputs.env_path }}` (relative to the repo
-            root).
-
-            Start by making that folder your working directory and treat it as your
-            root — resolve every relative path from there:
-
-                cd ${{ steps.resolve.outputs.env_path }}
+            you in your current working directory. This directory is the complete
+            filesystem workspace supplied for the evaluation.
 
             Then:
             1. Read `AGENT_INSTRUCTIONS.md` and `MANIFEST.json` in this folder to
@@ -164,14 +173,15 @@ jobs:
                    `data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json`,
                  - the held-out-free reference code in
                    `data/gold/expert_code/`,
-                 - the shared raw inputs under `~/ess-dive_wfsfa_soil_datasets/` and
+                 - raw inputs under `inputs/raw/` and
                    any cached metadata under `data/external/ess-dive_meta/`.
             3. Write EVERY output into an `output/` subdirectory of this run folder:
                the harmonized CSV(s), the generated transformation code, the
                change-mapping JSON, and any notes about your decisions.
 
             Do NOT look up the held-out dataset's existing harmonized output, expert
-            code, or mapping entry from anywhere else in the repository.
+            code, or mapping entry from anywhere else. Do not access parent
+            directories or absolute paths outside this workspace.
 
       - name: Upload run outputs
         if: always()
