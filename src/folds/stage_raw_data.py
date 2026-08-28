@@ -72,9 +72,21 @@ def _load_mapping(mapping_path: Path) -> list[dict]:
 
 
 def _load_drive_urls(urls_path: Path) -> list[str]:
-    """Return one Drive folder URL per line (skip blank lines)."""
-    lines = urls_path.read_text().splitlines()
-    return [ln.strip() for ln in lines if ln.strip()]
+    """Return the Drive folder URLs listed in ``urls_path``.
+
+    Accepts either a bare one-URL-per-line file or a CSV carrying a ``url``
+    column (the cache file gained a ``filename,object_id,url`` header). Lines
+    without a parseable folder URL — a header row, a comment — are skipped
+    rather than raising, so a format change adds folders instead of aborting
+    the staging run.
+    """
+    urls: list[str] = []
+    for line in urls_path.read_text().splitlines():
+        if not (line := line.strip()):
+            continue
+        if m := re.search(r"https://drive\.google\.com/[^\s,\"']*/folders/[A-Za-z0-9_-]+", line):
+            urls.append(m.group(0))
+    return urls
 
 
 def _folder_id_from_url(url: str) -> str:
