@@ -199,16 +199,20 @@ In GitHub Actions, run **Run Harmonization Eval** manually. Supply a dataset
 index, dataset identifier, comma-separated indices, or a cluster ID/name from
 `config/cv_folds.yaml`. The workflow builds the fold, optionally stages raw
 data, starts the configured Claude agent with the fold-specific prompt, and
-replaces the checkout with the answer-free fold workspace, then uploads it as
-an `eval-<fold-id>` artifact.
+replaces the checkout with the answer-free fold workspace. After the agent
+finishes, it creates a new orphan branch named
+`eval/<fold-name>-<run-id>-<attempt>` containing that isolated workspace, then
+uploads the same workspace as an `eval-<fold-id>` artifact. The branch is
+created only after the agent run and has no parent commit, so it does not carry
+the trusted checkout history or its held-out gold artifacts.
 
 ### Results and scoring
 
-The active workflow does not write to a shared `results/` directory or commit
-run outputs. Local results remain under the isolated fold's `output/`; GitHub runs
-are retained as workflow artifacts. Use a separate trusted process, outside the
-fold environment, to compare those outputs with the held-out gold standard and
-to aggregate performance metrics.
+The active workflow does not write to a shared `results/` directory. Local results
+remain under the isolated fold's `output/`; GitHub runs are retained both as
+answer-free `eval/*` branches and as workflow artifacts. Use a separate trusted
+process, outside the fold environment, to compare those outputs with the held-out
+gold standard and to aggregate performance metrics.
 
 ## Citation
 

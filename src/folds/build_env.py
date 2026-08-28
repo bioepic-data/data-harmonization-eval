@@ -55,6 +55,41 @@ HARMONIZER_REL = Path("data/gold/expert_code")
 MAPPING_REL = Path("data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json")
 METADATA_REL = Path("data/external/ess-dive_meta")
 RAW_DATA_REL = Path("inputs/raw")
+CLAUDE_SETTINGS_REL = Path(".claude/settings.local.json")
+
+# A path relative to the setting file resolves to the generated fold root.
+# The Bash sandbox enforces the filesystem boundary at the OS level; the deny
+# rules also prevent Claude's native file tools from using absolute or parent
+# paths. The strict setting makes an unavailable sandbox a hard failure rather
+# than silently falling back to unrestricted shell commands.
+FOLD_CLAUDE_SETTINGS = {
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "permissions": {
+        "deny": [
+            "Bash(dangerouslyDisableSandbox:true)",
+            "Read(//**)",
+            "Read(../**)",
+            "Read(**/../**)",
+            "Edit(//**)",
+            "Edit(../**)",
+            "Edit(**/../**)",
+            "WebFetch",
+            "WebSearch",
+        ]
+    },
+    "sandbox": {
+        "enabled": True,
+        "failIfUnavailable": True,
+        "allowUnsandboxedCommands": False,
+        "filesystem": {
+            "denyRead": ["/"],
+            "denyWrite": ["/"],
+            "allowRead": ["."],
+            "allowWrite": ["."],
+        },
+        "network": {"allowedDomains": []},
+    },
+}
 
 
 def filter_mapping(mapping: list[dict], holdout: set[int]) -> list[dict]:
@@ -119,6 +154,8 @@ def build_env(
     (env / MAPPING_REL).write_text(json.dumps(filtered, indent=2))
 
     shutil.copytree(skills_dir, env / "skills")
+    (env / CLAUDE_SETTINGS_REL).parent.mkdir(parents=True, exist_ok=True)
+    (env / CLAUDE_SETTINGS_REL).write_text(json.dumps(FOLD_CLAUDE_SETTINGS, indent=2) + "\n")
 
     if metadata_dir is not None:
         (env / METADATA_REL).parent.mkdir(parents=True, exist_ok=True)
