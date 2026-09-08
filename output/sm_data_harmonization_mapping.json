@@ -1,0 +1,136 @@
+[
+  {
+    "index": 8,
+    "dataset_identifier": "ess-dive-61a0ecd70856892-20230808T205724993",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "SLT_OBJ2_SoilSensors_2018_data.csv",
+      "SLT_OBJ2_SoilSensors_2019_data.csv",
+      "SLT_OBJ2_SoilSensors_2020_data.csv",
+      "SLT_OBJ2_SoilSensors_2021_data.csv"
+    ],
+    "location_metadata_files": [
+      "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+    ],
+    "sensor_metadata_files": [
+      "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+      "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+    ],
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "DateTime.MST",
+          "source_files": [
+            "SLT_OBJ2_SoilSensors_2018_data.csv",
+            "SLT_OBJ2_SoilSensors_2019_data.csv",
+            "SLT_OBJ2_SoilSensors_2020_data.csv",
+            "SLT_OBJ2_SoilSensors_2021_data.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse '%Y-%m-%d %H:%M:%S' and convert from local Mountain Standard Time to ISO 8601 UTC.",
+          "unit_conversion": "Localize as fixed offset UTC-7 (Etc/GMT+7; MST does not observe daylight saving) then convert to UTC."
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": "^(SoilMoisture|SoilMatricPot)_(\\d+\\.?\\d*)cm",
+          "source_files": [
+            "SLT_OBJ2_SoilSensors_2018_data.csv",
+            "SLT_OBJ2_SoilSensors_2019_data.csv",
+            "SLT_OBJ2_SoilSensors_2020_data.csv",
+            "SLT_OBJ2_SoilSensors_2021_data.csv"
+          ],
+          "destination_variable": "depth_m",
+          "transformation": "Extract the numeric depth embedded in each measurement column name during the wide-to-long reshape.",
+          "unit_conversion": "Divide by 100 to convert from cm to m."
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": "Latitude",
+          "source_files": [
+            "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+            "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+            "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+            "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+          ],
+          "destination_variable": "latitude",
+          "transformation": "Single station coordinate reported identically across all rows and years (WGS84 decimal degrees).",
+          "unit_conversion": null
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": "Longitude",
+          "source_files": [
+            "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+            "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+            "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+            "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+          ],
+          "destination_variable": "longitude",
+          "transformation": "Single station coordinate reported identically across all rows and years (WGS84 decimal degrees).",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "SiteName",
+          "source_files": [
+            "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+            "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+            "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+            "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Constant 'Slate River OBJ-2' (single station in package, from InstallationMethods SiteName).",
+          "unit_conversion": null
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "replicate",
+          "transformation": "One sensor per depth per variable; replicate set to 1.",
+          "unit_conversion": null
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "SoilMoisture_<depth>cm.m3.m3",
+          "source_files": [
+            "SLT_OBJ2_SoilSensors_2018_data.csv",
+            "SLT_OBJ2_SoilSensors_2019_data.csv",
+            "SLT_OBJ2_SoilSensors_2020_data.csv",
+            "SLT_OBJ2_SoilSensors_2021_data.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Reshape wide depth-encoded SoilMoisture columns to long format; -9999 sentinel set to NaN. Depths 40, 60, 82.5 cm (CS655 sensors).",
+          "unit_conversion": "None; source already reported in m3/m3."
+        }
+      },
+      "water_potential": {
+        "pattern_1": {
+          "source_pattern": "SoilMatricPot_<depth>cm.kPa",
+          "source_files": [
+            "SLT_OBJ2_SoilSensors_2019_data.csv",
+            "SLT_OBJ2_SoilSensors_2020_data.csv",
+            "SLT_OBJ2_SoilSensors_2021_data.csv"
+          ],
+          "destination_variable": "water_potential_kPa",
+          "transformation": "Reshape wide depth-encoded SoilMatricPot columns to long format; -9999 sentinel set to NaN. Depths 40, 60, 79, 100 cm; not present in the 2018 data file.",
+          "unit_conversion": "None; source already reported in kPa (negative)."
+        }
+      }
+    }
+  }
+]
