@@ -1,0 +1,112 @@
+[
+  {
+    "index": 15,
+    "dataset_identifier": "ess-dive-987726ef1235abc-20230504T210342929747",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "TDR_survey_ER_20190701.csv"
+    ],
+    "location_metadata_files": [
+      "TDR_survey_ER_20190701.csv"
+    ],
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "filename token '20190701'",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "No per-record timestamp is reported. Survey date parsed from the filename token (20190701 -> 2019-07-01), localized to America/Denver, and converted to UTC. Discrete field campaign.",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "depth_m",
+          "transformation": "None; probe depth not reported for the surface TDR survey. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": "Northing_m",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "latitude",
+          "transformation": "Look up 'Northing_m' for 'site_id' (GPS_id) in the payload file.",
+          "unit_conversion": "Reproject from EPSG:32613 (WGS84 UTM Zone 13N, meters) to EPSG:4326 (WGS84, decimal degrees)."
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": "Easting_m",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "longitude",
+          "transformation": "Look up 'Easting_m' for 'site_id' (GPS_id) in the payload file.",
+          "unit_conversion": "Reproject from EPSG:32613 (WGS84 UTM Zone 13N, meters) to EPSG:4326 (WGS84, decimal degrees)."
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": "TDR_SM(VWC%)_i",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "replicate",
+          "transformation": "Parse integer replicate index i from the 'TDR_SM(VWC%)_i' column suffix (three replicate readings per surveyed point).",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "GPS_id",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Rename point identifier column 'GPS_id' (e.g., 'ss01', 'TDR001') to 'site_id'.",
+          "unit_conversion": null
+        }
+      },
+      "soil_water_potential": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "water_potential_kPa",
+          "transformation": "None; soil water potential not reported in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "gravimetric_water_content": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "gravimetric_water_content_gH2O_gs",
+          "transformation": "None; gravimetric water content not reported in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "TDR_SM(VWC%)_i",
+          "source_files": [
+            "TDR_survey_ER_20190701.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Coerce from 'wide' format with three replicate VWC columns to 'long' format with separate columns for replicate and volumetric water content. Drop missing readings.",
+          "unit_conversion": "Divide by 1e2 to convert from percent (%) to m3/m3."
+        }
+      }
+    }
+  }
+]
