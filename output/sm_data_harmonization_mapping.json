@@ -1,0 +1,112 @@
+[
+  {
+    "index": 24,
+    "dataset_identifier": "ess-dive-daa156d2129c471-20250716T160748658",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+    ],
+    "location_metadata_files": [
+      "Locations.csv"
+    ],
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "Timestamp",
+          "source_files": [
+            "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse daily date from 'Timestamp' using format '%Y-%m-%d' in Etc/GMT+7 (Mountain Standard Time, no DST); convert to ISO 8601 UTC format.",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": "P{i}_MP_{jcm}",
+          "source_files": [
+            "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+          ],
+          "destination_variable": "depth_m",
+          "transformation": "Parse depth j (in cm) from the trailing integer of matric-potential column names 'P{i}_MP_{j}' (j in {15, 30, 60}).",
+          "unit_conversion": "Divide by 1e2 to convert from cm to m."
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": "Latitude",
+          "source_files": [
+            "Locations.csv"
+          ],
+          "destination_variable": "latitude",
+          "transformation": "Look up 'Latitude' by matching profile prefix ('P1', 'P2') from the matric-potential column names to 'ID' in Locations.csv.",
+          "unit_conversion": null
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": "Longitude",
+          "source_files": [
+            "Locations.csv"
+          ],
+          "destination_variable": "longitude",
+          "transformation": "Look up 'Longitude' by matching profile prefix ('P1', 'P2') from the matric-potential column names to 'ID' in Locations.csv.",
+          "unit_conversion": null
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "replicate",
+          "transformation": "None; a single matric-potential sensor per profile/depth. Populate with 1.",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "P{i}_MP_{jcm}",
+          "source_files": [
+            "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Parse site_id from the profile prefix of the matric-potential column names (e.g., 'P1' from 'P1_MP_15').",
+          "unit_conversion": null
+        }
+      },
+      "soil_water_potential": {
+        "pattern_1": {
+          "source_pattern": "P{i}_MP_{jcm}",
+          "source_files": [
+            "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+          ],
+          "destination_variable": "water_potential_kPa",
+          "transformation": "Select matric-potential (MP) columns and coerce from 'wide' format with column variables containing profile (site) and depth information to 'long' format with separate columns for site, depth, and water potential.",
+          "unit_conversion": "None; source units are kPa."
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "None; volumetric water content not reported in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "gravimetric_water_content": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "gravimetric_water_content_gH2O_gs",
+          "transformation": "None; gravimetric water content not reported in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      }
+    }
+  }
+]

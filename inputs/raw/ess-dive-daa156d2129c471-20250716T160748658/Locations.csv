@@ -1,0 +1,9 @@
+ID;Latitude;Longitude;Altitude;esrignss_f;DataCollec;GlobalID;Creator;Editor;Research_P;Notes
+A3;38.9606895;-106.9911054;2896.02353;2018-07-24;Matthias Sprenger;{94821c03-8c4b-4270-9f38-909d23c76419};gps_rmbl;gps_rmbl;Sprenger-RS2023-846;instrumented Aspen tree A#
+A2;38.96072229;-106.9911033;2895.52267;2018-07-24;Matthias Sprenger;{3845633a-1ebc-4de0-a3a5-4d59e0f05a17};gps_rmbl;gps_rmbl;Sprenger-RS2023-846;instrumented Aspen tree A2
+A1;38.96074694;-106.9910262;2896.656643;2018-07-24;Matthias Sprenger;{8d549db6-d818-4a78-aa94-6f1f7e802446};gps_rmbl;gps_rmbl;Sprenger-RS2023-846;instrumented Aspen tree A1
+P1;38.96071917;-106.9910977;2895.414399;2018-07-24;Matthias Sprenger;{e5672363-95bb-4e29-945f-782b5a1cecee};gps_rmbl;gps_rmbl;Sprenger-RS2023-846;isotope profile 1
+S2;38.9606908;-106.9910162;2898.487993;2018-07-24;Matthias Sprenger;{fb794928-955a-4f5b-a617-1a890fa8f846};gps_rmbl;gps_rmbl;Sprenger-RS2023-846;instrumented Spruce tree 2
+P2;38.96067806;-106.9910133;2897.958633;2018-07-24;Matthias Sprenger;{99162a90-1bef-4d38-90ce-268b0363d5f9};gps_rmbl;gps_rmbl;Sprenger-RS2023-846;isotope profile 2
+S3;38.96066615;-106.990948;2898.338909;2018-07-24;Matthias Sprenger;{6aedb9a5-335b-4c5c-a3cb-e0bfeea6f57b};gps_rmbl;gps_rmbl;Sprenger-RS2023-846;instrumented Spruce tree 3
+S1;38.96062106;-106.9910583;2898.431137;2018-07-24;Matthias Sprenger;{dd2e3e44-1aff-4d9d-9b07-0b1a8c4e46a2};gps_rmbl;gps_rmbl;Sprenger-RS2023-846;instrumented Spruce tree 1
