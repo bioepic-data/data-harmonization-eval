@@ -1,0 +1,8 @@
+tool calls: 32 | reads: 8 (8 in-bounds)
+allowed roots:
+  - /home/runner/work/data-harmonization-eval/data-harmonization-eval
+
+⚠ 1 VIOLATION(S):
+  [Bash] outside allowed roots
+      path: /home/runner/.local/lib/python3.12/site-packages
+      in:   ls /home/runner/.local/lib/python3.12/site-packages/

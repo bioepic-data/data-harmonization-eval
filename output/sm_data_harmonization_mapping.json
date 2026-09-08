@@ -1,0 +1,112 @@
+[
+  {
+    "index": 9,
+    "dataset_identifier": "ess-dive-460e696d8210ed3-20260309T155937802",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "NEON_plot_TDR.csv"
+    ],
+    "location_metadata_files": [
+      "NEON_plot_TDR.csv"
+    ],
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "Collection Date",
+          "source_files": [
+            "NEON_plot_TDR.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse date from 'Collection Date' using format '%Y-%m-%d'. Only a calendar date (no time-of-day) is reported, so timestamps are localized directly to UTC at 00:00. Discrete field campaign (one collection date per plot); is_timeseries = False and interval_min = NA.",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "depth_m",
+          "transformation": "Sampling depth is not reported in the staged payload and no package metadata or README is present in the workspace to resolve it; populate with NA. (For the structurally analogous ER TDR survey, dataset 15, the expert used a 25 cm near-surface depth taken from package metadata that is not available here.)",
+          "unit_conversion": null
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": "Northing",
+          "source_files": [
+            "NEON_plot_TDR.csv"
+          ],
+          "destination_variable": "latitude",
+          "transformation": "Look up 'Northing' for each 'SampleSiteCode' in NEON_plot_TDR.csv.",
+          "unit_conversion": "Reproject from EPSG:32613 (WGS84 UTM Zone 13N, meters) to EPSG:4326 (WGS84, decimal degrees)."
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": "Easting",
+          "source_files": [
+            "NEON_plot_TDR.csv"
+          ],
+          "destination_variable": "longitude",
+          "transformation": "Look up 'Easting' for each 'SampleSiteCode' in NEON_plot_TDR.csv.",
+          "unit_conversion": "Reproject from EPSG:32613 (WGS84 UTM Zone 13N, meters) to EPSG:4326 (WGS84, decimal degrees)."
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": "VWC_i",
+          "source_files": [
+            "NEON_plot_TDR.csv"
+          ],
+          "destination_variable": "replicate",
+          "transformation": "Parse integer i from replicate TDR reading columns 'VWC_1' and 'VWC_2'. The pre-computed 'avg_VWC' column is not used (redundant with the two replicates).",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "SampleSiteCode",
+          "source_files": [
+            "NEON_plot_TDR.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Rename column 'SampleSiteCode' to 'site_id'.",
+          "unit_conversion": null
+        }
+      },
+      "soil_water_potential": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "water_potential_kPa",
+          "transformation": "None; soil water potential not reported in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "gravimetric_water_content": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "gravimetric_water_content_gH2O_gs",
+          "transformation": "None; gravimetric water content not reported in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "VWC_i",
+          "source_files": [
+            "NEON_plot_TDR.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Coerce from 'wide' format (replicate TDR readings 'VWC_1', 'VWC_2') to 'long' format with separate columns for replicate and volumetric water content. Sentinel value -9999 treated as missing.",
+          "unit_conversion": "Divide by 1e2 to convert from percent (%) to m3/m3."
+        }
+      }
+    }
+  }
+]
