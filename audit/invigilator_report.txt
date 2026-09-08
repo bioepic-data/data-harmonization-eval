@@ -1,0 +1,5 @@
+tool calls: 33 | reads: 11 (11 in-bounds)
+allowed roots:
+  - /home/runner/work/data-harmonization-eval/data-harmonization-eval
+
+✅ CLEAN — no out-of-bounds access detected.

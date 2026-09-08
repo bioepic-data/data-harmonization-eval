@@ -1,0 +1,112 @@
+[
+  {
+    "index": 27,
+    "dataset_identifier": "ess-dive-c37aaf9ed6d4c0d-20230504T205923265966",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+      "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+      "ER-PHS3_Field dataset_2019_Oct12.csv",
+      "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+    ],
+    "location_metadata_files": null,
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "Time",
+          "source_files": [
+            "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+            "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+            "ER-PHS3_Field dataset_2019_Oct12.csv",
+            "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse local timestamps ('%m/%d/%Y %H:%M') as America/Denver and convert to ISO 8601 UTC.",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "(ER-PHS\\d+)",
+          "source_files": null,
+          "destination_variable": "site_id",
+          "transformation": "Parse station id from source filename (e.g., 'ER-PHS1' from 'ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv').",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "depth_m",
+          "transformation": "Per-sensor depth not reported in payload and no sensor-depth metadata file present in package. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": "S(\\d+)_wc_(m3/m3)",
+          "source_files": [
+            "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+            "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+            "ER-PHS3_Field dataset_2019_Oct12.csv",
+            "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+          ],
+          "destination_variable": "replicate",
+          "transformation": "Assign sequential replicate index to each co-located moisture sensor (S1-S4 VWC and S5 water potential) at a station.",
+          "unit_conversion": null
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "S\\d+_wc_(m3/m3)",
+          "source_files": [
+            "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+            "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+            "ER-PHS3_Field dataset_2019_Oct12.csv",
+            "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Reshape wide per-sensor columns (S1-S4) to long format; each sensor becomes a replicate row.",
+          "unit_conversion": "None; source units are m3/m3."
+        }
+      },
+      "soil_water_potential": {
+        "pattern_1": {
+          "source_pattern": "S\\d+_wp_(kPa)",
+          "source_files": [
+            "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+            "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+            "ER-PHS3_Field dataset_2019_Oct12.csv",
+            "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+          ],
+          "destination_variable": "water_potential_kPa",
+          "transformation": "Reshape wide per-sensor column (S5) to long format; sentinel values <= -9999 set to NA.",
+          "unit_conversion": "None; source units are kPa."
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "latitude",
+          "transformation": "No location metadata file, cached ESS-DIVE package metadata, or approved location registry present in the workspace. Coordinates unresolvable; qc_flag 'g2'.",
+          "unit_conversion": null
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "longitude",
+          "transformation": "No location metadata file, cached ESS-DIVE package metadata, or approved location registry present in the workspace. Coordinates unresolvable; qc_flag 'g2'.",
+          "unit_conversion": null
+        }
+      }
+    }
+  }
+]
