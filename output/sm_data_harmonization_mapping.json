@@ -1,0 +1,106 @@
+[
+  {
+    "index": 26,
+    "dataset_identifier": "ess-dive-f782da867133296-20230504T211008637996",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "ER18_soil_physical.csv"
+    ],
+    "location_metadata_files": null,
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "Collection date",
+          "source_files": [
+            "ER18_soil_physical.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse date from 'Collection date' using format '%m/%d/%y' in America/Denver timezone; convert to UTC. One record has a missing collection date and yields NaT.",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": "Top sample depth_cm, Bottom sample depth_cm",
+          "source_files": [
+            "ER18_soil_physical.csv"
+          ],
+          "destination_variable": "depth_m",
+          "transformation": "Compute representative midpoint depth as (Top sample depth_cm + Bottom sample depth_cm) / 2. Reported as a depth range, so qc_flag='d1'.",
+          "unit_conversion": "Divide by 1e2 to convert from cm to m."
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "latitude",
+          "transformation": "Coordinates not present in payload, no location metadata or sensor metadata file in package, and no cached package metadata supplied in the workspace (data/external/ess-dive_meta absent). Unresolvable; set to NA with qc_flag='g2'.",
+          "unit_conversion": null
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "longitude",
+          "transformation": "Coordinates not present in payload, no location metadata or sensor metadata file in package, and no cached package metadata supplied in the workspace (data/external/ess-dive_meta absent). Unresolvable; set to NA with qc_flag='g2'.",
+          "unit_conversion": null
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "replicate",
+          "transformation": "None; discrete sampling campaign with one destructive soil sample per SampleSiteCode. Populate with 1.",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "SampleSiteCode",
+          "source_files": [
+            "ER18_soil_physical.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Rename column 'SampleSiteCode' to 'site_id' (e.g., '001-ER18').",
+          "unit_conversion": null
+        }
+      },
+      "soil_water_potential": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "water_potential_kPa",
+          "transformation": "None; soil water potential not reported in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "gravimetric_water_content": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "gravimetric_water_content_gH2O_gs",
+          "transformation": "None; gravimetric water content not reported directly in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "water content %vol",
+          "source_files": [
+            "ER18_soil_physical.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Rename 'water content %vol' to volumetric water content. Rows with no reported water content (e.g., the 50-55 cm depth increment) are dropped. A small number of physically implausible values (negative or >1 m3/m3) are retained as reported and flagged in notes for operator review.",
+          "unit_conversion": "Divide by 1e2 to convert from percent (%vol) to m3/m3."
+        }
+      }
+    }
+  }
+]
