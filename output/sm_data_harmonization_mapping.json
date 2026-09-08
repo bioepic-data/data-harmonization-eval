@@ -1,0 +1,125 @@
+[
+  {
+    "index": 16,
+    "dataset_identifier": "ess-dive-b3d271f19a94e8d-20260114T204512119",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS1_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS2_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS3_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS4_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_SG-EHS5_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_SG-EHS6_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_SG-EHS7_v1-1.csv",
+      "WFSFA_EHG_SensorTowers_Wu_et_al/data_SG-EHS8_v1-1.csv"
+    ],
+    "location_metadata_files": [
+      "WFSFA_EHG_SensorTowers_Wu_et_al/metadata_site_v1-1.csv"
+    ],
+    "sensor_metadata_files": [
+      "WFSFA_EHG_SensorTowers_Wu_et_al/metadata_instrument_v1-1.csv"
+    ],
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "TIMESTAMP_START",
+          "source_files": [
+            "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS1_v1-1.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse start-of-interval timestamp using format '%Y-%m-%d %H:%M:%S' in Etc/GMT+7 (local UTC_OFFSET=-7 from metadata_site_v1-1.csv); convert to UTC ISO 8601.",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": "HEIGHT",
+          "source_files": [
+            "WFSFA_EHG_SensorTowers_Wu_et_al/metadata_instrument_v1-1.csv"
+          ],
+          "destination_variable": "depth_m",
+          "transformation": "Depth not encoded in payload column names. Join each SWC_/SWP_ variable to metadata_instrument_v1-1.csv on (SITE_ID, VARIABLE) and take signed sensor HEIGHT (negative = below surface). depth_m = -HEIGHT.",
+          "unit_conversion": "None; source HEIGHT is in meters."
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": "LOCATION_LAT",
+          "source_files": [
+            "WFSFA_EHG_SensorTowers_Wu_et_al/metadata_site_v1-1.csv"
+          ],
+          "destination_variable": "latitude",
+          "transformation": "Look up 'LOCATION_LAT' for 'site_id' (SITE_ID) in metadata_site_v1-1.csv.",
+          "unit_conversion": null
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": "LOCATION_LONG",
+          "source_files": [
+            "WFSFA_EHG_SensorTowers_Wu_et_al/metadata_site_v1-1.csv"
+          ],
+          "destination_variable": "longitude",
+          "transformation": "Look up 'LOCATION_LONG' for 'site_id' (SITE_ID) in metadata_site_v1-1.csv.",
+          "unit_conversion": null
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": "SWC_H_V_R / SWP_H_V_R",
+          "source_files": [
+            "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS1_v1-1.csv"
+          ],
+          "destination_variable": "replicate",
+          "transformation": "Parse the trailing replicate index R from the AmeriFlux-style H_V_R suffix of SWC_/SWP_ column names (e.g., 1 from 'SWC_1_2_1').",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "data_<SITE_ID>_v1-1.csv",
+          "source_files": [
+            "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS1_v1-1.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Parse site_id from source filename (e.g., 'ER-PHS1' from 'data_ER-PHS1_v1-1.csv'); matches SITE_ID in the site and instrument metadata.",
+          "unit_conversion": null
+        }
+      },
+      "soil_water_potential": {
+        "pattern_1": {
+          "source_pattern": "SWP_H_V_R",
+          "source_files": [
+            "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS1_v1-1.csv"
+          ],
+          "destination_variable": "water_potential_kPa",
+          "transformation": "Coerce from wide format (SWP_1_1_1 column per site) to long format keyed on depth and replicate. Treat -9999 as missing.",
+          "unit_conversion": "None; source units are kPa (negative matric potential, METER TEROS 21)."
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "SWC_H_V_R",
+          "source_files": [
+            "WFSFA_EHG_SensorTowers_Wu_et_al/data_ER-PHS1_v1-1.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Coerce from wide format (SWC_1_1_1..SWC_1_4_1 columns per site) to long format keyed on depth and replicate. Treat -9999/9999 as missing.",
+          "unit_conversion": "Divide by 1e2 to convert from percent (%) to m3/m3 (METER TEROS 12)."
+        }
+      },
+      "gravimetric_water_content": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "gravimetric_water_content_gH2O_gs",
+          "transformation": "None; gravimetric water content not reported in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      }
+    }
+  }
+]
