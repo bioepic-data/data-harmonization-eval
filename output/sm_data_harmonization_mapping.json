@@ -1,0 +1,106 @@
+[
+  {
+    "index": 5,
+    "dataset_identifier": "ess-dive-8ac2940c708a515-20230504T210140482233",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "SM_SWC.csv"
+    ],
+    "location_metadata_files": null,
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "Date Time",
+          "source_files": [
+            "SM_SWC.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse datetime from 'Date Time' using format '%Y-%m-%d %H:%M:%S' in Etc/GMT+7 (Watershed Function SFA local standard time, UTC-7, no DST); convert to UTC.",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "SFA_Location",
+          "source_files": [
+            "SM_SWC.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Rename column 'SFA_Location' to 'site_id'.",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "depth_m",
+          "transformation": "Sensor depth is not reported in this package (no depth column and no sensor/plot metadata file). Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": "Sensor.SN",
+          "source_files": [
+            "SM_SWC.csv"
+          ],
+          "destination_variable": "replicate",
+          "transformation": "Assign integer replicate identifier by numbering the distinct Sensor.SN records within each site_id/depth_m at a given timestamp (cumcount+1). Most sites have a single sensor; four sites (ER-LMB2L, ER-LMB2R, WG-LSB2, WG-USC2) carry two sensors.",
+          "unit_conversion": null
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "Measurement",
+          "source_files": [
+            "SM_SWC.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Rename 'Measurement' to volumetric water content. File name (SM_SWC) and observed value range (~0.0003-0.59) indicate soil water content already reported in m3/m3.",
+          "unit_conversion": "None; source units are m3/m3."
+        }
+      },
+      "gravimetric_water_content": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "gravimetric_water_content_gH2O_gs",
+          "transformation": "None; gravimetric water content not reported in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "soil_water_potential": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "water_potential_kPa",
+          "transformation": "None; soil water potential not reported in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "latitude",
+          "transformation": "Geospatial coordinates not provided in this package. The SFA point-location registry (mapping index 0) is the expected fallback but its CSV is not staged in this run workspace, so coordinates are unresolvable here. Set to NA with qc_flag 'g2'.",
+          "unit_conversion": null
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "longitude",
+          "transformation": "Geospatial coordinates not provided in this package. The SFA point-location registry (mapping index 0) is the expected fallback but its CSV is not staged in this run workspace, so coordinates are unresolvable here. Set to NA with qc_flag 'g2'.",
+          "unit_conversion": null
+        }
+      }
+    }
+  }
+]
