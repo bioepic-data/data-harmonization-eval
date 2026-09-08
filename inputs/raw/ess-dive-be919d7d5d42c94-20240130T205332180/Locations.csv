@@ -1,0 +1,11 @@
+ID,Easting,Northing,Elevation,Type
+ERT-End,328427.83,4310403.84,3135.84,ERT
+ERT-Start,328217.57,4310460.84,3213.99,ERT
+SNI1B,328380.83,4310423.99,3127.05,Borehole
+TMC1,328417.41,4310404.42,3122.07,Soil Moisture and Temperature
+TMC2,328380.81,4310413.98,3125.23,Soil Moisture and Temperature
+TMC3,328340.09,4310425.93,3134.07,Soil Moisture and Temperature
+TMC4,328309.52,4310433.88,3164.22,Soil Moisture and Temperature
+TMC5,328262.74,4310446.49,3172.22,Soil Moisture and Temperature
+TMC6,328227.22,4310456.88,3190.97,Soil Moisture and Temperature
+WeatherStation,328379.47,4310450.29,3129.29,Weather Station
