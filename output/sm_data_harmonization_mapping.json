@@ -1,0 +1,95 @@
+[
+  {
+    "index": 10,
+    "dataset_identifier": "ess-dive-01092fc392bc46d-20240819T143818677",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "Soil_water_content_Fig4e.csv"
+    ],
+    "location_metadata_files": null,
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "Date",
+          "source_files": [
+            "Soil_water_content_Fig4e.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse date-only 'Date' column with format '%Y-%m-%d'. No time-of-day or timezone reported; localize to UTC directly (midnight UTC).",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "depth_m",
+          "transformation": "None; measurement depth is not reported in the payload, metadata, or column names. Populate with NA. No d1 flag assigned because no depth range was available to approximate.",
+          "unit_conversion": null
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "latitude",
+          "transformation": "Not resolvable in this fold workspace. No location file, no cached ESS-DIVE metadata, and no approved location registry are available; populate with NA and set qc_flag='g2'.",
+          "unit_conversion": null
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "longitude",
+          "transformation": "Not resolvable in this fold workspace. No location file, no cached ESS-DIVE metadata, and no approved location registry are available; populate with NA and set qc_flag='g2'.",
+          "unit_conversion": null
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "replicate",
+          "transformation": "None; replicate information not provided in source. Populate with 1.",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "PLM\\d+ _vol_water_content",
+          "source_files": [
+            "Soil_water_content_Fig4e.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Wide-to-long reshape of the three value columns; parse site_id (PLM1, PLM2, PLM3) from the column names.",
+          "unit_conversion": null
+        }
+      },
+      "soil_water_potential": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "water_potential_kPa",
+          "transformation": "None; soil water potential not reported in source. Populate with NA.",
+          "unit_conversion": null
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "PLM\\d+ _vol_water_content",
+          "source_files": [
+            "Soil_water_content_Fig4e.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Coerce wide value columns to long format; drop -9999 sentinel missing values.",
+          "unit_conversion": "None; source units are already m3/m3."
+        }
+      }
+    }
+  }
+]
