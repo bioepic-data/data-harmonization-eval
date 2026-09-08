@@ -1,0 +1,146 @@
+[
+  {
+    "index": 1,
+    "dataset_identifier": "ess-dive-beca0be9bb38ece-20250516T122010234",
+    "doi": "doi:10.15485/2566877",
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "ER_SMN10.csv",
+      "ER_SMN1B.csv",
+      "ER_SMN30.csv",
+      "ER_SMN3B.csv",
+      "ER_SMN4B.csv",
+      "ER_SMN5B.csv",
+      "ER_SMS1.csv",
+      "ER_SMS2.csv",
+      "ER_SMS3.csv"
+    ],
+    "location_metadata_files": [
+      "Sensor_Location.csv"
+    ],
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "Time",
+          "source_files": [
+            "ER_SMN10.csv",
+            "ER_SMN1B.csv",
+            "ER_SMN30.csv",
+            "ER_SMN3B.csv",
+            "ER_SMN4B.csv",
+            "ER_SMN5B.csv",
+            "ER_SMS1.csv",
+            "ER_SMS2.csv",
+            "ER_SMS3.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse '%Y-%m-%d %H:%M:%S' as America/Denver (Mountain) local time and convert to ISO 8601 UTC.",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "site_id",
+          "transformation": "Parse site_id (logger name, e.g. 'ER_SMN10') from the source filename; this matches 'Name' in Sensor_Location.csv.",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": "*_at_(\\d+)cm",
+          "source_files": [
+            "ER_SMN10.csv",
+            "ER_SMN1B.csv",
+            "ER_SMN30.csv",
+            "ER_SMN3B.csv",
+            "ER_SMN4B.csv",
+            "ER_SMN5B.csv",
+            "ER_SMS1.csv",
+            "ER_SMS2.csv",
+            "ER_SMS3.csv"
+          ],
+          "destination_variable": "depth_m",
+          "transformation": "Coerce from 'wide' format; parse depth in cm from the '_at_<d>cm' suffix embedded in each measurement column name.",
+          "unit_conversion": "Divide by 100 to convert from cm to m."
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": "*_(\\d+)_at_*cm",
+          "source_files": [
+            "ER_SMN10.csv",
+            "ER_SMN1B.csv",
+            "ER_SMN30.csv",
+            "ER_SMN3B.csv",
+            "ER_SMN4B.csv",
+            "ER_SMN5B.csv",
+            "ER_SMS1.csv",
+            "ER_SMS2.csv",
+            "ER_SMS3.csv"
+          ],
+          "destination_variable": "replicate",
+          "transformation": "Parse the optional integer sensor index embedded in the column name (e.g. '2' in 'm3_m3_Water_Content_2_at_35cm'); columns without an index are replicate 1.",
+          "unit_conversion": null
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "m3_m3_(Water_Content|VWC)(_\\d+)?_at_\\d+cm",
+          "source_files": [
+            "ER_SMN10.csv",
+            "ER_SMN1B.csv",
+            "ER_SMN30.csv",
+            "ER_SMN3B.csv",
+            "ER_SMN4B.csv",
+            "ER_SMN5B.csv",
+            "ER_SMS1.csv",
+            "ER_SMS2.csv",
+            "ER_SMS3.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Coerce from 'wide' to 'long' format with separate depth/replicate columns; -9999 sentinel set to NaN. Source columns named 'Water_Content' (ER_SMN*/ER_SMS*) and 'VWC' (ER_SMN4B/ER_SMN5B) are the same variable.",
+          "unit_conversion": "None; source units are m3/m3."
+        }
+      },
+      "soil_water_potential": {
+        "pattern_1": {
+          "source_pattern": "kPa_Potential(_\\d+)?_at_\\d+cm",
+          "source_files": [
+            "ER_SMN4B.csv",
+            "ER_SMN5B.csv"
+          ],
+          "destination_variable": "water_potential_kPa",
+          "transformation": "Coerce from 'wide' to 'long' format with separate depth/replicate columns; -9999 sentinel set to NaN. Present only in ER_SMN4B and ER_SMN5B.",
+          "unit_conversion": "None; source units are kPa."
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": "Northing",
+          "source_files": [
+            "Sensor_Location.csv"
+          ],
+          "destination_variable": "latitude",
+          "transformation": "Look up 'Easting'/'Northing' for 'site_id' (matched on 'Name') and convert to latitude.",
+          "unit_conversion": "Convert UTM Zone 13N (EPSG:32613) Easting/Northing to WGS84 (EPSG:4326) latitude."
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": "Easting",
+          "source_files": [
+            "Sensor_Location.csv"
+          ],
+          "destination_variable": "longitude",
+          "transformation": "Look up 'Easting'/'Northing' for 'site_id' (matched on 'Name') and convert to longitude.",
+          "unit_conversion": "Convert UTM Zone 13N (EPSG:32613) Easting/Northing to WGS84 (EPSG:4326) longitude."
+        }
+      }
+    }
+  }
+]
