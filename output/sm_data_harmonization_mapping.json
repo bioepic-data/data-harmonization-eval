@@ -1,0 +1,96 @@
+[
+  {
+    "index": 3,
+    "dataset_identifier": "ess-dive-4c1829de1b8a2ec-20260220T045039633",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "Soil_water_potential.csv"
+    ],
+    "location_metadata_files": [
+      "locations.csv"
+    ],
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "TIMESTAMP",
+          "source_files": [
+            "Soil_water_potential.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse logger timestamps and convert to ISO 8601 UTC. Local time assumed Mountain (no DST), i.e. UTC-7.",
+          "unit_conversion": "Local (Etc/GMT+7) to UTC."
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "(SD\\d+)-\\d+cm_MP.*",
+          "source_files": [
+            "Soil_water_potential.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Parse the datalogger/station identifier (e.g. 'SD1', 'SD11') from the matric-potential column name prefix.",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": "SD\\d+-(\\d+)cm_MP.*",
+          "source_files": [
+            "Soil_water_potential.csv"
+          ],
+          "destination_variable": "depth_m",
+          "transformation": "Coerce from wide format (depth embedded in column name) to long format; parse the depth in cm from the column name.",
+          "unit_conversion": "Divide by 100 to convert from cm to m."
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": "SD\\d+-\\d+cm_(sagebrush_rhizo_)?MP.*",
+          "source_files": [
+            "Soil_water_potential.csv"
+          ],
+          "destination_variable": "replicate",
+          "transformation": "Default replicate = 1. The co-located sagebrush rhizosphere probe at SD1 25 cm is assigned replicate = 2 as a second sensor at the same station and depth.",
+          "unit_conversion": null
+        }
+      },
+      "soil_water_potential": {
+        "pattern_1": {
+          "source_pattern": "SD\\d+-\\d+cm_(?:sagebrush_rhizo_)?MP(?:_\\d+_Avg)?",
+          "source_files": [
+            "Soil_water_potential.csv"
+          ],
+          "destination_variable": "water_potential_kPa",
+          "transformation": "Coerce from wide format (one matric-potential column per station/depth/sensor) to long format. Replace the logger out-of-range sentinel (-7999) and non-finite values with missing.",
+          "unit_conversion": "None; source units are kPa."
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": "Latitude",
+          "source_files": [
+            "locations.csv"
+          ],
+          "destination_variable": "latitude",
+          "transformation": "Single site-level coordinate from the ancillary locations file (Location_ID ER-LLN1) applied to both logger stations; no per-station coordinate is available. qc_flag = g1.",
+          "unit_conversion": null
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": "Longitude",
+          "source_files": [
+            "locations.csv"
+          ],
+          "destination_variable": "longitude",
+          "transformation": "Single site-level coordinate from the ancillary locations file (Location_ID ER-LLN1) applied to both logger stations; no per-station coordinate is available. qc_flag = g1.",
+          "unit_conversion": null
+        }
+      }
+    }
+  }
+]
