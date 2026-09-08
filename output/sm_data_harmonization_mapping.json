@@ -1,0 +1,73 @@
+[
+  {
+    "index": 25,
+    "dataset_identifier": "ess-dive-e67ab1151ebc525-20230929T190307767",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "data_payload_files": [
+      "Carbone_conifer.csv",
+      "Carbone_aspen.csv"
+    ],
+    "location_metadata_files": null,
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "Year, Month, Day, Hour",
+          "source_files": [
+            "Carbone_conifer.csv",
+            "Carbone_aspen.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Assemble local timestamp from the split integer columns Year, Month, Day, Hour, then convert to ISO-8601 UTC. Local timezone assumed to be standard time UTC-7 (Etc/GMT+7) for these western-US Sierra sites; no package metadata was available to confirm the timezone.",
+          "unit_conversion": "Local time (UTC-7, no DST) to UTC."
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": "VWC-(\\d+)cm",
+          "source_files": [
+            "Carbone_conifer.csv",
+            "Carbone_aspen.csv"
+          ],
+          "destination_variable": "depth_m",
+          "transformation": "Depth is embedded in the VWC column names (VWC-50cm, VWC-15cm, VWC-5cm). Reshaped wide-to-long and parsed the numeric depth from the column name.",
+          "unit_conversion": "Divide by 100 to convert from cm to m (0.50 m, 0.15 m, 0.05 m)."
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "VWC-50cm, VWC-15cm, VWC-5cm",
+          "source_files": [
+            "Carbone_conifer.csv",
+            "Carbone_aspen.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Direct mapping of the three VWC sensor columns. Values are already reported in m3/m3 (observed roughly 0.05-0.30); -9999 treated as missing. A handful of physically implausible values (>1 or <0) are retained unclipped, consistent with raw-sensor exemplar handling.",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "<filename>",
+          "source_files": [
+            "Carbone_conifer.csv",
+            "Carbone_aspen.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "site_id assigned from the payload filename stem (Carbone_conifer, Carbone_aspen), as no site column is present in the files. Note: Carbone_aspen.csv has no header row; its 24 columns were assigned from the header of Carbone_conifer.csv, which has identical structure.",
+          "unit_conversion": null
+        }
+      },
+      "location": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "latitude/longitude",
+          "transformation": "No location metadata file in the package, no cached ESS-DIVE metadata directory present, and no approved location registry in the workspace resolves these sites. Coordinates left as null; qc_flag = 'g2'.",
+          "unit_conversion": null
+        }
+      }
+    }
+  }
+]
