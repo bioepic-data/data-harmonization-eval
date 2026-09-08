@@ -1,0 +1,104 @@
+[
+  {
+    "index": 2,
+    "dataset_identifier": "ess-dive-9fd65df885a8e87-20250715T064942543",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "ER_SMN1.csv",
+      "ER_SMN3.csv",
+      "ER_SMN4.csv",
+      "ER_SMN5.csv"
+    ],
+    "location_metadata_files": [
+      "SM_loc.csv"
+    ],
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "DateTime",
+          "source_files": [
+            "ER_SMN1.csv",
+            "ER_SMN3.csv",
+            "ER_SMN4.csv",
+            "ER_SMN5.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "Parse '%m/%d/%Y %I:%M:%S %p', localize to America/Denver (East River, CO), convert to ISO 8601 UTC.",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "site_id",
+          "transformation": "Parse site_id from source filename (e.g., 'ER_SMN1.csv' -> 'ER-SMN1'); normalize underscore to hyphen to match the location metadata 'Name' field.",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": "Moisture_m3/m3_<d>cm",
+          "source_files": [
+            "ER_SMN1.csv",
+            "ER_SMN3.csv",
+            "ER_SMN4.csv",
+            "ER_SMN5.csv"
+          ],
+          "destination_variable": "depth_m",
+          "transformation": "Reshape wide to long; parse depth integer d (cm) embedded in moisture column names (10cm, 50cm).",
+          "unit_conversion": "Divide by 100 to convert from cm to m."
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "Moisture_m3/m3_<d>cm",
+          "source_files": [
+            "ER_SMN1.csv",
+            "ER_SMN3.csv",
+            "ER_SMN4.csv",
+            "ER_SMN5.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Reshape wide to long across the 10cm and 50cm moisture columns; treat -9999 as missing (NaN) and drop those rows.",
+          "unit_conversion": "None; source units are m3/m3."
+        }
+      },
+      "replicate": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "replicate",
+          "transformation": "Not reported in source; set to 1 (single sensor per site+depth).",
+          "unit_conversion": null
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": "Lat",
+          "source_files": [
+            "SM_loc.csv"
+          ],
+          "destination_variable": "latitude",
+          "transformation": "Look up decimal-degree 'Lat' for site 'Name' in location metadata file.",
+          "unit_conversion": null
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": "Lon",
+          "source_files": [
+            "SM_loc.csv"
+          ],
+          "destination_variable": "longitude",
+          "transformation": "Look up decimal-degree 'Lon' for site 'Name' in location metadata file.",
+          "unit_conversion": null
+        }
+      }
+    }
+  }
+]
