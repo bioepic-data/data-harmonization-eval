@@ -1,0 +1,5 @@
+site_id,latitude,longitude,source_dataset_id,qc_flag
+ph1,,,ess-dive-6c7085e9c544cc6-20250424T164534831,g2
+ph2,,,ess-dive-6c7085e9c544cc6-20250424T164534831,g2
+sg5,,,ess-dive-6c7085e9c544cc6-20250424T164534831,g2
+tb,,,ess-dive-6c7085e9c544cc6-20250424T164534831,g2

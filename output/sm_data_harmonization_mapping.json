@@ -1,0 +1,88 @@
+[
+  {
+    "index": 4,
+    "dataset_identifier": "ess-dive-6c7085e9c544cc6-20250424T164534831",
+    "doi": null,
+    "archive_repository": "ESS-DIVE",
+    "inclusion_decision": "include",
+    "exclusion_reason": null,
+    "data_payload_files": [
+      "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_data.csv"
+    ],
+    "location_metadata_files": null,
+    "sensor_metadata_files": null,
+    "harmonization_mappings": {
+      "datetime": {
+        "pattern_1": {
+          "source_pattern": "datetime",
+          "source_files": [
+            "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_meta.csv"
+          ],
+          "destination_variable": "datetime_UTC",
+          "transformation": "df_data.csv and df_meta.csv are row-aligned (1001 rows each). Take the observation date from df_meta 'datetime', parse with format '%Y-%m-%d', localize to America/Denver, and convert to UTC ISO-8601.",
+          "unit_conversion": null
+        }
+      },
+      "site_id": {
+        "pattern_1": {
+          "source_pattern": "site",
+          "source_files": [
+            "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_meta.csv"
+          ],
+          "destination_variable": "site_id",
+          "transformation": "Direct column mapping from row-aligned df_meta 'site' (values: sg5, tb, ph1, ph2).",
+          "unit_conversion": null
+        }
+      },
+      "depth": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "depth_m",
+          "transformation": "Measurement depth is not reported anywhere in the package; set depth_m = NaN.",
+          "unit_conversion": null
+        }
+      },
+      "volumetric_water_content": {
+        "pattern_1": {
+          "source_pattern": "swc",
+          "source_files": [
+            "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_data.csv"
+          ],
+          "destination_variable": "volumetric_water_content_m3_m3",
+          "transformation": "Direct column mapping from 'swc' (soil water content). Values range 0.104-0.395, consistent with volumetric water content already in m3 m-3.",
+          "unit_conversion": "None; source units are m3 m-3."
+        }
+      },
+      "soil_water_potential": {
+        "pattern_1": {
+          "source_pattern": "swp",
+          "source_files": [
+            "Johnsen_Bi_2025_DAE_Manuscript_Data_Package/df_data.csv"
+          ],
+          "destination_variable": "water_potential_kPa",
+          "transformation": "Direct column mapping from 'swp' (soil water potential). Values are negative, range -8386.02..-3.45, consistent with kPa.",
+          "unit_conversion": "None; source units are kPa."
+        }
+      },
+      "latitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "latitude",
+          "transformation": "No coordinates are present in the package and no approved location registry is staged in this workspace; coordinates unresolvable. qc_flag = 'g2'.",
+          "unit_conversion": null
+        }
+      },
+      "longitude": {
+        "pattern_1": {
+          "source_pattern": null,
+          "source_files": null,
+          "destination_variable": "longitude",
+          "transformation": "No coordinates are present in the package and no approved location registry is staged in this workspace; coordinates unresolvable. qc_flag = 'g2'.",
+          "unit_conversion": null
+        }
+      }
+    }
+  }
+]
