@@ -76,15 +76,39 @@ jobs:
           echo "env_path=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
           echo "build_root=$RUNNER_TEMP/harmonization-eval-runs" >> "$GITHUB_OUTPUT"
 
+      - name: Cache ESS-DIVE package metadata for the target
+        # Published package records carry fields the payload files often omit —
+        # spatial coverage above all. Fetch only the target's record: the cache
+        # is the ablation boundary here, and build_env copies by target
+        # identifier, so a stray cluster-mate record could never reach the
+        # environment even if it were cached. Best-effort, like raw staging:
+        # a retired DOI degrades the fold to "no metadata", it does not fail it.
+        if: ${{ steps.resolve.outputs.stage_indices != '' }}
+        continue-on-error: true
+        env:
+          STAGE_INDICES: ${{ steps.resolve.outputs.stage_indices }}
+        run: |
+          uv run python -m src.folds.stage_metadata --indices "$STAGE_INDICES"
+
       - name: Build leave-one-cluster-out run environment
         env:
           HOLDOUT: ${{ steps.resolve.outputs.holdout }}
           TARGET: ${{ steps.resolve.outputs.target }}
           ENV_NAME: ${{ steps.resolve.outputs.env_name }}
           BUILD_ROOT: ${{ steps.resolve.outputs.build_root }}
+          METADATA_CACHE: data/raw_cache/ess-dive_wfsfa_soil_metadata
         run: |
+          # --metadata-dir is passed only when the cache exists; build_env
+          # copies just the target's <dataset_identifier>.json out of it.
+          metadata_args=()
+          if [ -d "$METADATA_CACHE" ]; then
+            metadata_args=(--metadata-dir "$METADATA_CACHE")
+          else
+            echo "No metadata cache at $METADATA_CACHE; building without it."
+          fi
           uv run python -m src.folds.build_env \
-            --holdout "$HOLDOUT" --target "$TARGET" --name "$ENV_NAME" --env-root "$BUILD_ROOT"
+            --holdout "$HOLDOUT" --target "$TARGET" --name "$ENV_NAME" --env-root "$BUILD_ROOT" \
+            "${metadata_args[@]}"
 
       - name: Stage raw data for held-out dataset(s)
         if: ${{ inputs.stage_raw && steps.resolve.outputs.stage_indices != '' }}
