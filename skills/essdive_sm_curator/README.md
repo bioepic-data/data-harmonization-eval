@@ -147,7 +147,6 @@ For each dataset, the curator produces:
   },
   "time_series_inference": {
     "is_timeseries": true | false,
-    "interval_min": N | null,
     "reasoning": "..."
   },
   "experimental_context": {

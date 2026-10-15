@@ -4,5 +4,4 @@ site_id: SITE_A
 depth_m: 0.10
 replicate: 1.0
 is_timeseries: true
-interval_min: 60.0
 volumetric_water_content_m3_m3: 0.32

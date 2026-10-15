@@ -326,14 +326,6 @@ Determine if dataset is time series or discrete sampling:
 - File size suggests few observations (<500 rows)
 - Timestamp precision only to date (no time component)
 
-Infer sampling interval for time series:
-```python
-# Calculate median time difference
-df['datetime'] = pd.to_datetime(df['timestamp_col'])
-intervals = df.groupby(['site', 'depth'])['datetime'].diff()
-median_interval_min = intervals.median().total_seconds() / 60
-```
-
 ## SECTION 8: EXCLUSION CRITERIA (PRE-SCREENING)
 
 Apply these rules to make preliminary inclusion/exclusion recommendations:
@@ -411,7 +403,6 @@ For each dataset evaluated, prepare this structured output:
   },
   "time_series_inference": {
     "is_timeseries": true | false,
-    "interval_min": 15.0 | null,
     "reasoning": "<brief explanation>"
   },
   "experimental_context": {
@@ -563,7 +554,6 @@ Output bundle:
   },
   "time_series_inference": {
     "is_timeseries": true,
-    "interval_min": 60.0,
     "reasoning": "Regular hourly timestamps, 8760 rows = 1 year of hourly data"
   },
   "experimental_context": {

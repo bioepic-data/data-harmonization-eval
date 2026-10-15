@@ -88,7 +88,6 @@ site_id                               # string
 depth_m                               # float, meters below surface
 replicate                             # int or np.nan
 is_timeseries                         # boolean
-interval_min                          # float or np.nan
 volumetric_water_content_m3_m3        # float or np.nan
 gravimetric_water_content_gH2O_gs     # float or np.nan
 water_potential_kPa                   # float or np.nan
@@ -195,16 +194,6 @@ Set `is_timeseries = False` if:
 - Timestamps are campaign dates, not continuous sensor output
 - README/methods describe discrete sampling
 
-Set `interval_min = np.nan` if `is_timeseries = False` or interval is irregular.
-
-Infer `interval_min` from median timestamp difference if not explicitly stated:
-
-```python
-x = x.sort_values(["site_id", "depth_m", "datetime_UTC"])
-x["interval_min"] = x.groupby(["site_id", "depth_m"])["datetime_UTC"] \
-    .diff().dt.total_seconds() / 60.0
-```
-
 ## SECTION 5: LOCATION RESOLUTION PRIORITY ORDER
 
 Resolve site coordinates using this fallback hierarchy:
@@ -246,7 +235,6 @@ idx = <dataset_index>
 - `ds_path(idx: int) -> Path` - get dataset directory path
 - `read_ds_csv(idx: int, filename: str, **kwargs) -> pd.DataFrame` - read dataset CSV
 - `parse_local_to_utc(series: pd.Series, fmt: str | None, tz: str) -> pd.Series` - convert local time to UTC
-- `interval_min(s: pd.Series) -> pd.Series` - calculate interval in minutes
 - `utm32613_to_latlon(df: pd.DataFrame, e_col: str, n_col: str) -> pd.DataFrame` - convert UTM to lat/lon
 - `ensure_harmonized_cols(df: pd.DataFrame) -> pd.DataFrame` - enforce column schema
 - `add_loc_qc(df: pd.DataFrame) -> pd.DataFrame` - add location QC flags
@@ -317,7 +305,6 @@ df["water_potential_kPa"] = pd.to_numeric(
 
 ```python
 x["is_timeseries"] = True          # or False
-x["interval_min"] = <float>        # or np.nan
 x["replicate"] = 1                 # or np.nan if not in source
 x["qc_flag"] = np.nan              # or "g1", "g2", "d1"
 ```
@@ -429,7 +416,7 @@ For included datasets:
 
 **STEP 5 — TIME SERIES DETERMINATION**
 
-Apply SECTION 4 rules. State `is_timeseries` and `interval_min` with reasoning.
+Apply SECTION 4 rules. State `is_timeseries` with reasoning.
 
 **STEP 6 — LOCATION RESOLUTION**
 
@@ -494,7 +481,6 @@ mdf42 = read_ds_csv(idx, m42)
 
 x = ddf42.copy()
 x["datetime_UTC"] = parse_local_to_utc(x["timestamp"], "%Y-%m-%d %H:%M:%S", "America/Denver")
-x["interval_min"] = interval_min(x["datetime_UTC"])
 x["site_id"] = x["site"]
 x["depth_m"] = pd.to_numeric(x["depth_cm"], errors="coerce") / 100
 x["replicate"] = 1

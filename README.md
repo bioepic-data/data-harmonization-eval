@@ -125,7 +125,7 @@ wfsfa-harmonization-eval/
 
 ## LinkML Target Schema
 
-The canonical 9-column harmonized schema is also defined declaratively in
+The canonical 8-column harmonized schema is also defined declaratively in
 [`src/schemas/target_schema.yaml`](src/schemas/target_schema.yaml), a
 [LinkML](https://linkml.io) schema equivalent to `target_schema.py`. It is the
 single source of truth for two committed, generated artifacts:
