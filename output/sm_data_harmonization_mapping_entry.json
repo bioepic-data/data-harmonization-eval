@@ -1,0 +1,56 @@
+{
+  "index": 26,
+  "dataset_identifier": "ess-dive-f782da867133296-20230504T211008637996",
+  "doi": "doi:10.15485/1671826",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": ["ER18_soil_physical.csv"],
+  "location_metadata_files": null,
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "Collection date",
+        "source_files": ["ER18_soil_physical.csv"],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse campaign collection date (%m/%d/%y) and convert from local Mountain Standard Time (Etc/GMT+7, UTC-7) to UTC ISO-8601. Discrete sampling campaign, not a sensor time series.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "SampleSiteCode",
+        "source_files": ["ER18_soil_physical.csv"],
+        "destination_variable": "site_id",
+        "transformation": "Direct column mapping (e.g. '001-ER18').",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "Top sample depth_cm, Bottom sample depth_cm",
+        "source_files": ["ER18_soil_physical.csv"],
+        "destination_variable": "depth_m",
+        "transformation": "Depth reported as a range; approximate as the midpoint of top and bottom depth. Surface samples 2.5-7.5 cm -> 0.05 m (only these carry a water-content measurement). qc_flag d1 applies (depth approximated from a reported range).",
+        "unit_conversion": "Average of top/bottom then divide by 100 to convert from cm to m."
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "water content %vol",
+        "source_files": ["ER18_soil_physical.csv"],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Direct column mapping. Measured on surface (2.5-7.5 cm) samples only; subsurface (50-55 cm) rows have no water-content value and are dropped. A few erroneous negative %vol values present in the source are retained as computed.",
+        "unit_conversion": "Divide by 100 to convert from % to m\u00b3 m\u207b\u00b3."
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": "SampleID",
+        "source_files": ["ER18_soil_physical.csv"],
+        "destination_variable": "replicate",
+        "transformation": "Sequential replicate number assigned within each site_id + depth_m + collection date group. Surface samples are single (replicate 1).",
+        "unit_conversion": null
+      }
+    }
+  }
+}
