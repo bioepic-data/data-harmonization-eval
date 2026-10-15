@@ -1,0 +1,125 @@
+{
+  "index": 2,
+  "dataset_identifier": "ess-dive-9fd65df885a8e87-20250715T064942543",
+  "doi": "doi:10.15485/1646477",
+  "archive_repository": "ESS-DIVE",
+  "inclusion_decision": "include",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    "ER_SMN1.csv",
+    "ER_SMN3.csv",
+    "ER_SMN4.csv",
+    "ER_SMN5.csv"
+  ],
+  "location_metadata_files": [
+    "SM_loc.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "DateTime",
+        "source_files": [
+          "ER_SMN1.csv",
+          "ER_SMN3.csv",
+          "ER_SMN4.csv",
+          "ER_SMN5.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse 'DateTime' using format '%m/%d/%Y %I:%M:%S %p' in Etc/GMT+7 (Mountain Standard Time); convert to ISO 8601 UTC.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "Moisture_m3/m3_jcm",
+        "source_files": [
+          "ER_SMN1.csv",
+          "ER_SMN3.csv",
+          "ER_SMN4.csv",
+          "ER_SMN5.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Parse depth j from the moisture column name suffix (e.g., '10cm', '50cm'). Sensors installed at 10 and 50 cm.",
+        "unit_conversion": "Divide by 1e2 to convert from cm to m."
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Lat",
+        "source_files": [
+          "SM_loc.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Look up 'Lat' for 'site_id' in SM_loc.csv by matching the payload filename-derived site_id (ER-SMNx) to 'Name'.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Lon",
+        "source_files": [
+          "SM_loc.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Look up 'Lon' for 'site_id' in SM_loc.csv by matching the payload filename-derived site_id (ER-SMNx) to 'Name'.",
+        "unit_conversion": null
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "replicate",
+        "transformation": "None; single sensor per site/depth. Populate with 1.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": [
+          "ER_SMN1.csv",
+          "ER_SMN3.csv",
+          "ER_SMN4.csv",
+          "ER_SMN5.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Parse site_id from the source filename stem and replace underscore with hyphen (e.g., 'ER_SMN1.csv' -> 'ER-SMN1') to match SM_loc.csv 'Name'.",
+        "unit_conversion": null
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "water_potential_kPa",
+        "transformation": "None; soil water potential not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "None; gravimetric water content not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "Moisture_m3/m3_jcm",
+        "source_files": [
+          "ER_SMN1.csv",
+          "ER_SMN3.csv",
+          "ER_SMN4.csv",
+          "ER_SMN5.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Coerce from 'wide' format (one moisture column per depth) to 'long' format with separate columns for depth and volumetric water content. Temperature and electrical-conductivity columns are dropped. No-data sentinel -9999 set to NA.",
+        "unit_conversion": "None; source units are m3/m3."
+      }
+    }
+  }
+}
