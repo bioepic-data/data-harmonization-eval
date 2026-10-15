@@ -76,15 +76,39 @@ jobs:
           echo "env_path=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
           echo "build_root=$RUNNER_TEMP/harmonization-eval-runs" >> "$GITHUB_OUTPUT"
 
+      - name: Cache ESS-DIVE package metadata for the target
+        # Published package records carry fields the payload files often omit —
+        # spatial coverage above all. Fetch only the target's record: the cache
+        # is the ablation boundary here, and build_env copies by target
+        # identifier, so a stray cluster-mate record could never reach the
+        # environment even if it were cached. Best-effort, like raw staging:
+        # a retired DOI degrades the fold to "no metadata", it does not fail it.
+        if: ${{ steps.resolve.outputs.stage_indices != '' }}
+        continue-on-error: true
+        env:
+          STAGE_INDICES: ${{ steps.resolve.outputs.stage_indices }}
+        run: |
+          uv run python -m src.folds.stage_metadata --indices "$STAGE_INDICES"
+
       - name: Build leave-one-cluster-out run environment
         env:
           HOLDOUT: ${{ steps.resolve.outputs.holdout }}
           TARGET: ${{ steps.resolve.outputs.target }}
           ENV_NAME: ${{ steps.resolve.outputs.env_name }}
           BUILD_ROOT: ${{ steps.resolve.outputs.build_root }}
+          METADATA_CACHE: data/raw_cache/ess-dive_wfsfa_soil_metadata
         run: |
+          # --metadata-dir is passed only when the cache exists; build_env
+          # copies just the target's <dataset_identifier>.json out of it.
+          metadata_args=()
+          if [ -d "$METADATA_CACHE" ]; then
+            metadata_args=(--metadata-dir "$METADATA_CACHE")
+          else
+            echo "No metadata cache at $METADATA_CACHE; building without it."
+          fi
           uv run python -m src.folds.build_env \
-            --holdout "$HOLDOUT" --target "$TARGET" --name "$ENV_NAME" --env-root "$BUILD_ROOT"
+            --holdout "$HOLDOUT" --target "$TARGET" --name "$ENV_NAME" --env-root "$BUILD_ROOT" \
+            "${metadata_args[@]}"
 
       - name: Stage raw data for held-out dataset(s)
         if: ${{ inputs.stage_raw && steps.resolve.outputs.stage_indices != '' }}
@@ -104,11 +128,23 @@ jobs:
         # outside the agent's filesystem boundary for the post-run audit.
         env:
           AUDITOR_DIR: ${{ runner.temp }}/harmonization-invigilator
+          HOLDOUT: ${{ steps.resolve.outputs.holdout }}
         run: |
           set -euo pipefail
           test -x .venv/bin/python
           mkdir -p "$AUDITOR_DIR"
           cp src/folds/invigilator.py "$AUDITOR_DIR/invigilator.py"
+          # The reference holdout decides CONTAMINATED vs LEAK_RISK, but
+          # MANIFEST.json deliberately hides it from the agent, and the next
+          # step deletes the checkout this mapping lives in. Resolve the
+          # indices to identifiers now, outside the agent's boundary.
+          # chr(10) rather than a newline escape: this string passes through
+          # YAML and single-quoted shell before Python sees it, and an escaped
+          # \n survives all three as two literal characters, collapsing the
+          # file to one unparseable token.
+          .venv/bin/python -c 'import json,sys; idx={int(t) for t in sys.argv[1].split(",") if t.strip().isdigit()}; m=json.load(open("data/gold/sm_data_harmonization_mapping.json")); print(*([str(i) for i in sorted(idx)] + [e["dataset_identifier"] for e in m if e.get("index") in idx and e.get("dataset_identifier")]), sep=chr(10))' \
+            "$HOLDOUT" > "$AUDITOR_DIR/reference_holdout.txt"
+          echo "reference holdout recorded:"; cat "$AUDITOR_DIR/reference_holdout.txt"
           mv .venv "$AUDITOR_DIR/venv"
 
       - name: Replace checkout with the isolated agent workspace
@@ -172,6 +208,8 @@ jobs:
           "$AUDITOR_DIR/venv/bin/python" "$AUDITOR_DIR/invigilator.py" \
             --trace audit/claude-execution.json --env "$GITHUB_WORKSPACE" \
             --repo-root "$GITHUB_WORKSPACE" \
+            --reference-holdout "$AUDITOR_DIR/reference_holdout.txt" \
+            --access-trace audit/access_trace.tsv \
             | tee audit/invigilator_report.txt
 
       - name: Manifest the staged raw inputs

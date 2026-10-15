@@ -1,0 +1,143 @@
+{
+  "id": "ess-dive-38e901ec3d7bd24-20230504T211548257225",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/1660455",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-38e901ec3d7bd24-20230504T211548257225",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-0dfdc289aa14ff6-20230407T154755831463",
+  "dateUploaded": "2023-05-04T21:15:49.130Z",
+  "dateModified": "2023-05-04T21:15:52.426Z",
+  "isPublic": true,
+  "citation": "Winnick M; Lawrence C; Maher K (2020): Soil Environmental Conditions in the East River Watershed, CO. Development of a molecularly informed biogeochemical framework for reactive transport modeling of subsurface carbon inventories, transformations and fluxes. Dataset. doi:10.15485/1660455",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/1660455",
+    "name": "Soil Environmental Conditions in the East River Watershed, CO",
+    "description": [
+      "This dataset contains depth-resolved soil environmental variables collected between June 2016 and October 2018 from the Bradley Meadow site in the East River watershed. Datalogger output from 7 Campbell CS655 12 cm Soil Moisture and Temperature Sensors including depth, temperature, volumetric water content, and electrical conductivity are included in \u2018BM_Merged_T_VWC_0616_10_18.csv\u2019. Sensors were installed in June 2016. Data have been processed to merge raw sensor data and to remove additional variables. No additional QA/QC was performed. Measured pCO2 and depth are contained in \u2018BM_EGM_WELL_CO2.csv\u2019. These data represent gas well samples measured via injection using a PP Systems EGM-5 infra-red gas analyzer as described in the methods section. Measured CO2 surface flux values are contained in 'BM_EGM_Surface_Flux.csv'. These were measured using the PP Systems EGM-5 with the Soil Respiration Chamber attachment. Multiple reps are reported for each measurement including CO2 flux rate calculations using built-in linear and quadratic function methods, and average and standard deviations are taken across all reps and calculation methods."
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-4237-9402",
+        "givenName": "Matthew",
+        "familyName": "Winnick",
+        "affiliation": "University of Massachusetts Amherst",
+        "email": "mwinnick@umass.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-6143-7781",
+        "givenName": "Corey",
+        "familyName": "Lawrence",
+        "affiliation": "US Geological Survey",
+        "email": "clawrence@usgs.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-5982-6064",
+        "givenName": "Kate",
+        "familyName": "Maher",
+        "affiliation": "Stanford University",
+        "email": "kmaher@stanford.edu"
+      }
+    ],
+    "datePublished": "2020",
+    "keywords": [
+      "EARTH SCIENCE > LAND SURFACE > SOILS"
+    ],
+    "variableMeasured": [
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL TEMPERATURE",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > ELECTRICAL CONDUCTIVITY",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL GAS/AIR",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "Bradley Meadow, Gothic, CO: Meadow hillslope field location within the Bradley Creek Drainage in the East River watershed.",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.98715,
+            "longitude": -107.003863
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.98715,
+            "longitude": -107.003863
+          }
+        ]
+      }
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2016-06-14",
+      "endDate": "2018-10-19",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0003-4237-9402",
+      "givenName": "Matthew",
+      "familyName": "Winnick",
+      "affiliation": "University of Massachusetts Amherst",
+      "email": "mwinnick@umass.edu"
+    },
+    "citation": [
+      "Winnick, M.J., Lawrence, C.R., McCormick, M., Druhan, J.L., Maher, K. (accepted) Soil Respiration Response to Rainfall Modulated by Plant Phenology in a Montane Meadow, East River, Colorado, USA. Journal of Geophysical Research: Biogeosciences. DOI:10.1029/2020JG005924"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "59cdd790-2b4c-4e9b-a9a5-270946e31e04"
+      },
+      "name": "Development of a molecularly informed biogeochemical framework for reactive transport modeling of subsurface carbon inventories, transformations and fluxes",
+      "member": {
+        "@type": "Person",
+        "givenName": "Katharine",
+        "familyName": "Maher",
+        "jobTitle": "Principal Investigator",
+        "affiliation": "Board of Trustees of the Leland Stanford Junior University, Palo Alto, CA",
+        "email": "kmaher@stanford.edu"
+      }
+    },
+    "measurementTechnique": [
+      "A nested gas well array was installed at the BM site consisting of 6 wells (stainless steel tubing w/ 60 \u03bcm mesh screen attached to the buried end and compression fittings on the surface end) in November, 2015. Each gas well was buried within a ~4 cm layer of carbonate-free sand between two layers of bentonite clay to limit vertical diffusion within the installation core hole. Gas samples were taken via gas-tight syringe by first evacuating 2x the tubing volume. We pulled 60 mL of gas sample, and injected 30 mL into a field-portable PP Systems EGM-5 IRGA unit. Sample pCO2 was recorded as the maximum measured value based on laboratory calibration."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-b3c9472c55a575b-20200909T190404278",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-b3c9472c55a575b-20200909T190404278",
+        "name": "BM_Merged_T_VWC_0616_1018.csv",
+        "contentSize": 2362.3974609375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-f2a46349bdb04ca-20200909T190404284",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-f2a46349bdb04ca-20200909T190404284",
+        "name": "BM_EGM_Well_CO2.csv",
+        "contentSize": 14.99609375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-045c5cefc711e92-20200909T203137050",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-045c5cefc711e92-20200909T203137050",
+        "name": "BM_EGM_Surface_Flux.csv",
+        "contentSize": 8.2333984375
+      }
+    ]
+  }
+}

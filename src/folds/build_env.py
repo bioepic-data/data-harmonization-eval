@@ -54,7 +54,7 @@ DEFAULT_ENV_ROOT = Path(tempfile.gettempdir()) / "data-harmonization-eval-runs"
 # Where each artifact lands inside the env, matching the skills' read paths.
 HARMONIZER_REL = Path("data/gold/expert_code")
 MAPPING_REL = Path("data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json")
-METADATA_REL = Path("data/external/ess-dive_meta")
+METADATA_REL = Path("data/raw_cache/ess-dive_wfsfa_soil_metadata")
 RAW_DATA_REL = Path("inputs/raw")
 CLAUDE_SETTINGS_REL = Path(".claude/settings.local.json")
 
@@ -165,14 +165,24 @@ def build_env(
     (env / CLAUDE_SETTINGS_REL).parent.mkdir(parents=True, exist_ok=True)
     (env / CLAUDE_SETTINGS_REL).write_text(json.dumps(FOLD_CLAUDE_SETTINGS, indent=2) + "\n")
 
-    if metadata_dir is not None:
-        (env / METADATA_REL).parent.mkdir(parents=True, exist_ok=True)
-        # Copy rather than link: a symlink turns the environment into a portal
-        # back to the trusted preparation filesystem.
-        shutil.copytree(metadata_dir, env / METADATA_REL)
-
     idx_to_dsid = {e["index"]: e.get("dataset_identifier") for e in mapping}
     target_ids = [idx_to_dsid.get(i) for i in sorted(target)]
+
+    if metadata_dir is not None:
+        # Ablate: copy ONLY the target dataset(s)' ESS-DIVE package records.
+        # The cache at data/raw_cache/ess-dive_wfsfa_soil_metadata/ holds every
+        # dataset; a whole-tree copy would hand the agent the metadata of the
+        # reference-holdout cluster mates it is supposed to be deprived of, and
+        # of datasets that are not its concern at all. Copy rather than link —
+        # a symlink turns the environment into a portal back to the trusted
+        # preparation filesystem.
+        wanted = {f"{dsid}.json" for dsid in target_ids if dsid}
+        metadata_dir = Path(metadata_dir)
+        (env / METADATA_REL).mkdir(parents=True, exist_ok=True)
+        for fname in sorted(wanted):
+            src = metadata_dir / fname
+            if src.is_file():
+                shutil.copy2(src, env / METADATA_REL / fname)
     manifest = {
         "name": env.name,
         "target_indices": sorted(target),
@@ -205,17 +215,29 @@ def _instructions(target_ids: list) -> str:
         "sm_data_harmonization_mapping.json` and code patterns in "
         "`data/gold/expert_code/`,\n"
         "- raw inputs staged under `inputs/raw/<dataset_identifier>/`, and\n"
-        "- cached metadata under `data/external/ess-dive_meta/`, if present.\n\n"
+        "- the target dataset's ESS-DIVE package metadata under "
+        "`data/raw_cache/ess-dive_wfsfa_soil_metadata/<dataset_identifier>.json`, if present "
+        "(only the target's record is supplied; other datasets' records are "
+        "deliberately withheld).\n\n"
         "Do not access parent directories, absolute paths outside this workspace, "
         "network services, APIs, or any other external data source. If required raw "
         "data or metadata is absent, record the limitation in the output rather than "
         "retrieving it. Do NOT look up a target dataset's existing harmonized "
         "output, expert code, or mapping entry from any other location.\n\n"
         "## Required outputs\n\n"
-        "Write every deliverable under `output/`: harmonized CSV file(s), generated "
-        "transformation code, a change-mapping JSON, and notes documenting decisions "
-        "or missing inputs. For each target dataset, use its existing index from "
-        "`MANIFEST.json`; do not assign a new sequential index.\n\n"
+        "Write every deliverable under `output/`. For each target dataset, produce "
+        "all five:\n\n"
+        "1. `<dataset_identifier>_harmonized.csv` — the harmonized data.\n"
+        "2. `<dataset_identifier>_location.csv` — one row per distinct `site_id`, "
+        "with columns `site_id,latitude,longitude,source_dataset_id,qc_flag`. "
+        "**This file is required even when coordinates cannot be resolved**: emit "
+        "every `site_id` with empty `latitude`/`longitude` and the appropriate "
+        "`qc_flag`. Do not omit the file, and do not invent coordinates.\n"
+        "3. the generated transformation code.\n"
+        "4. the change-mapping JSON.\n"
+        "5. notes documenting decisions or missing inputs.\n\n"
+        "For each target dataset, use its existing index from `MANIFEST.json`; do "
+        "not assign a new sequential index.\n\n"
         "## Target datasets\n\n"
         f"{target_list}\n\n"
         "Only the target dataset(s) above should be harmonized. Additional datasets "

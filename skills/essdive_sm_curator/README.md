@@ -268,7 +268,7 @@ Test the two-skill workflow with a mixed DOI list:
 ## Dependencies
 
 - ESS-DIVE API access: `https://api.ess-dive.lbl.gov/`
-- Local metadata cache: `data/raw_cache/ess-dive_meta/`
+- Local metadata cache: `data/raw_cache/ess-dive_wfsfa_soil_metadata/`
 - Context dependencies: 
   - data/gold/sm_data_harmonization_mapping.json  # for schema reference and examples
   - data/gold/expert_code/  # modular expert harmonizer (common.py + dataset_NN.py) for code pattern reference

@@ -102,14 +102,56 @@ def test_build_env_separates_target_from_reference_holdout(tmp_path, sources):
 
 
 def test_build_env_metadata_is_copied(tmp_path, sources):
+    """Only the target's ESS-DIVE package record reaches the environment.
+
+    The cache holds every dataset; a whole-tree copy would hand the agent the
+    records of the cluster mates it is supposed to be deprived of.
+    """
     pkg, mapping, skills = sources
     meta = tmp_path / "meta"
     meta.mkdir()
-    (meta / "x.json").write_text("{}")
+    for dsid in ("ess-dive_a", "ess-dive_b", "ess-dive_c"):
+        (meta / f"{dsid}.json").write_text(json.dumps({"id": dsid}))
     env = build_env({1}, env_root=tmp_path / ".runs", package_dir=pkg,
                     mapping_path=mapping, skills_dir=skills, metadata_dir=meta)
-    link = env / "data" / "external" / "ess-dive_meta"
-    assert not link.is_symlink() and (link / "x.json").exists()
+    mdir = env / "data" / "raw_cache" / "ess-dive_wfsfa_soil_metadata"
+    assert not mdir.is_symlink()
+    assert sorted(p.name for p in mdir.iterdir()) == ["ess-dive_a.json"]
+
+
+def test_build_env_metadata_ablates_reference_holdout_mates(tmp_path, sources):
+    """A cluster mate withheld from exemplars must be withheld here too."""
+    pkg, mapping, skills = sources
+    meta = tmp_path / "meta"
+    meta.mkdir()
+    for dsid in ("ess-dive_a", "ess-dive_b", "ess-dive_c"):
+        (meta / f"{dsid}.json").write_text(json.dumps({"id": dsid}))
+    env = build_env({1, 2}, target={1}, env_root=tmp_path / ".runs", package_dir=pkg,
+                    mapping_path=mapping, skills_dir=skills, metadata_dir=meta)
+    present = sorted(p.name for p in (env / "data" / "raw_cache" / "ess-dive_wfsfa_soil_metadata").iterdir())
+    assert present == ["ess-dive_a.json"], present
+
+
+def test_build_env_metadata_absent_record_is_not_fatal(tmp_path, sources):
+    """A dataset missing from the cache yields an empty dir, not a crash."""
+    pkg, mapping, skills = sources
+    meta = tmp_path / "meta"
+    meta.mkdir()
+    env = build_env({1}, env_root=tmp_path / ".runs", package_dir=pkg,
+                    mapping_path=mapping, skills_dir=skills, metadata_dir=meta)
+    assert list((env / "data" / "raw_cache" / "ess-dive_wfsfa_soil_metadata").iterdir()) == []
+
+
+def test_instructions_require_a_location_file(tmp_path, sources):
+    """location.csv is a contract deliverable, including when unresolvable."""
+    pkg, mapping, skills = sources
+    env = build_env({1}, env_root=tmp_path / ".runs", package_dir=pkg,
+                    mapping_path=mapping, skills_dir=skills)
+    instructions = (env / "AGENT_INSTRUCTIONS.md").read_text()
+    assert "_location.csv" in instructions
+    assert "site_id,latitude,longitude,source_dataset_id,qc_flag" in instructions
+    assert "required even when coordinates cannot be resolved" in instructions
+    assert "do not invent coordinates" in instructions
 
 
 def test_build_env_rejects_holdout_without_module(tmp_path, sources):

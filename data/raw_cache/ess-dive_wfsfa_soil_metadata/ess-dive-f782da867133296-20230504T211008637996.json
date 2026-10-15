@@ -1,0 +1,224 @@
+{
+  "id": "ess-dive-f782da867133296-20230504T211008637996",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/1671826",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-f782da867133296-20230504T211008637996",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-078022025b4ddba-20230407T154746559936",
+  "dateUploaded": "2023-05-04T21:10:09.842Z",
+  "dateModified": "2023-05-04T21:10:13.355Z",
+  "isPublic": true,
+  "citation": "Chadwick K D; Pierce S; Sirles M; Lawrence C; Cullen J; Grant K; Falco N; Maher K; Dafflon B (2020): Soil bulk density and texture data collected during field survey associated with NEON AOP survey, East River, CO 2018. A Multiscale Approach to Modeling Carbon and Nitrogen Cycling within a High Elevation Watershed. Dataset. doi:10.15485/1671826",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/1671826",
+    "name": "Soil bulk density and texture data collected during field survey associated with NEON AOP survey, East River, CO 2018",
+    "description": [
+      "The purpose of soil core sampling was to determine soil bulk density, volumetric water content, and soil texture across the sites that were sampled in association with the National Ecological Observatory Network's Airborne Observation Platform (NEON AOP) in 2018. Soil cores were collected from surface (2.5-7.5 cm) and subsurface (50-55cm) depths at sampling sites across East River, Washington Gulch, Slate River, and Coal Creek watersheds in Gunnison, Colorado during the summer of 2018. Surface samples were weighed for determination of soil water content prior to dry down for bulk density calculations. For all samples, we measured dry weight and weight of < 2mm fraction and conducted soil textural analysis. We provide metadata for the samples, raw data files, python code that was used to calculate bulk density, water content, and texture fraction densities from primary datasets, and a final csv file with the calculated soil bulk density, volumetric water content, and soil texture data. Additional associated site metadata and vegetation fractional cover information can be found in the associated data release."
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-5633-4865",
+        "givenName": "K. Dana",
+        "familyName": "Chadwick",
+        "affiliation": "Stanford University",
+        "email": "kdc@stanford.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-7614-0227",
+        "givenName": "Samuel",
+        "familyName": "Pierce",
+        "affiliation": "Stanford Linear Accelerator Center - National Accelerator Laboratory",
+        "email": "swpierce@stanford.edu"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Michael",
+        "familyName": "Sirles",
+        "affiliation": "U.S. Geological Survey",
+        "email": "mjsirles@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-6143-7781",
+        "givenName": "Corey",
+        "familyName": "Lawrence",
+        "affiliation": "U.S. Geological Survey",
+        "email": "clawrence@usgs.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Juliana",
+        "familyName": "Cullen",
+        "affiliation": "U.S. Geological Survey",
+        "email": "julianacullen@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-0219-1758",
+        "givenName": "Kathleen",
+        "familyName": "Grant",
+        "affiliation": "Stanford University",
+        "email": "kdennist@usc.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-3307-6098",
+        "givenName": "Nicola",
+        "familyName": "Falco",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "nicolafalco@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-5982-6064",
+        "givenName": "Katharine",
+        "familyName": "Maher",
+        "affiliation": "Stanford University",
+        "email": "kmaher@stanford.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9871-5650",
+        "givenName": "Baptiste",
+        "familyName": "Dafflon",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "BDafflon@lbl.gov"
+      }
+    ],
+    "datePublished": "2020",
+    "keywords": [
+      "EARTH SCIENCE > LAND SURFACE > SOILS"
+    ],
+    "variableMeasured": [
+      "soils",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL TEXTURE",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL BULK DENSITY",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL POROSITY"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "Upper east river watershed, Colorado, United States",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.04,
+            "longitude": -107.129
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.814,
+            "longitude": -106.877
+          }
+        ]
+      }
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      },
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006235",
+        "name": "U.S. DOE > Laboratory Directed Research and Development (LDRD) > Lawrence Berkeley National Laboratory"
+      },
+      {
+        "@type": "Organization",
+        "name": "U.S. Geological Survey Land Change Science - Climate and Land Use R&D Program"
+      },
+      {
+        "@type": "Organization",
+        "name": "National Science Foundation, E"
+      },
+      {
+        "@type": "Organization",
+        "name": "National Science Foundation > EArly-concept Grant for Exploratory Research (EAGER) > Signals in the Soil (SitS)"
+      },
+      {
+        "@type": "Organization",
+        "name": "National Science Foundation >"
+      },
+      {
+        "@type": "Organization",
+        "name": "National Science Foundation > Division of Earth Sciences > Postdoctoral Fellowship"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2018-06-12",
+      "endDate": "2018-10-15",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-5633-4865",
+      "givenName": "K. Dana",
+      "familyName": "Chadwick",
+      "affiliation": "Stanford University",
+      "email": "kdc@stanford.edu"
+    },
+    "citation": [
+      "Chadwick, K Dana, Philip G Brodrick, Kathleen Grant, Tristan Goulden, Amanda Henderson, Nicola Falco, Haruko Wainwright, et al. \u201cIntegrating Airborne Remote Sensing and Field Campaigns for Ecology and Earth System Science.\u201d Edited by Sydne Record. Methods in Ecology and Evolution, September 24, 2020, 2041-210X.13463. https://doi.org/10.1111/2041-210X.13463.",
+      "Chadwick, K. Dana, Kathleen Grant, Amanda N Henderson, Ian Breckheimer, C. F. Rick Williams, Nicola Falco, J Chen, et al. \u201cLocations, Metadata, and Species Cover from Field Sampling Survey Associated with NEON AOP Survey, East River, CO 2018.\u201d Watershed Function SFA, 2020. https://doi.org/10.15485/1618130."
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "15e6cd05-37d8-407b-aa44-8ad65235b33f"
+      },
+      "name": "A Multiscale Approach to Modeling Carbon and Nitrogen Cycling within a High Elevation Watershed",
+      "member": {
+        "@type": "Person",
+        "givenName": "Corey",
+        "familyName": "Lawrence",
+        "jobTitle": "Principal Investigator",
+        "affiliation": "U.S. Geological Survey, Lakewood, Lakewood, CO",
+        "email": "clawrence@usgs.gov"
+      }
+    },
+    "measurementTechnique": [
+      "Surface samples (2.5 - 7.5 cm) were collected in June in association with the ground sampling work paired with National Ecological Observatory Network Airborne Observation Platform surveys of the area. Sampling for surface samples (-SBD) was conducted using an AMS core sampler with two stacked 2 in x 2 in inserts to allow for sample overflow without compaction. Samples were weighed field moist at the Rocky Mountain Biological Laboratory and then placed into an oven for drying at 105-110 \u02daC until weights stabilized. Samples were then shipped to Agricultural Diagnostic Laboratory at the University of Arkansas, Fayetteville for sieving, loss on ignition (LOI), and texture analysis via the hydrometer method. Note that the LOI data are appropriate for determining mineral density fractions, but not as an estimate for soil organic carbon due to the prior high heat drying.",
+      "Subsurface samples were collected on return visits to each site at 50 cm depth whenever possible (-SBD50). The samples were collected between July and October. They were transported to the USGS in Denver for drying at 110 \u02daC, dry weights were recorded, the samples were sieved to 2 mm and then reweighed. They will be shipped to the Agricultural Diagnostic Laboratory at the University of Arkansas, Fayetteville for loss on ignition (LOI) and texture analysis via the hydrometer method.\nWe provide python code that was used in the calculation of water content, bulk density, and texture density fractions. Densities were calculated with the reported volume from the manufacturer, 90.59 cm3. The documentation of sampling equipment and laboratory methods are provided."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-d54afcfb1f61ba6-20201007T171126352",
+        "encodingFormat": "application/zip",
+        "identifier": "ess-dive-d54afcfb1f61ba6-20201007T171126352",
+        "name": "documentation.zip",
+        "contentSize": 4877.880859375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-270e3cb33427e4b-20201007T171126411",
+        "encodingFormat": "application/x-python",
+        "identifier": "ess-dive-270e3cb33427e4b-20201007T171126411",
+        "name": "soil_physical_merge_calculate.py",
+        "contentSize": 2.7451171875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-b70c01bcf9fb274-20201007T171126366",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-b70c01bcf9fb274-20201007T171126366",
+        "name": "ER18_soil_physical.csv",
+        "contentSize": 79.1123046875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-d2e9bae2a37cf89-20201012T182501925",
+        "encodingFormat": "application/zip",
+        "identifier": "ess-dive-d2e9bae2a37cf89-20201012T182501925",
+        "name": "raw_data.zip",
+        "contentSize": 46.435546875
+      }
+    ]
+  }
+}

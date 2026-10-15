@@ -1,0 +1,302 @@
+{
+  "id": "ess-dive-4c1829de1b8a2ec-20260401T171210416",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/2998779",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-4c1829de1b8a2ec-20260401T171210416",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-4c1829de1b8a2ec-20260220T045039633",
+  "dateUploaded": "2026-04-01T17:12:12.516Z",
+  "dateModified": "2026-04-01T17:12:12.859Z",
+  "isPublic": true,
+  "citation": "Li L; Christensen J; Bill M; Dong W; Wu Y; Beulter C; Sprenger M; Gulick B; Bone S; Faybishenko B; Sanders J; Henderson A; Bouskill N; Williams K; Gilbert B (2026): Data for \"Depth of nutrient uptake by deep-rooted plants is regulated by water availability\". Watershed Function SFA. Dataset. doi:10.15485/2998779",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/2998779",
+    "name": "Data for \"Depth of nutrient uptake by deep-rooted plants is regulated by water availability\"",
+    "description": [
+      "The data set consists of strontium (Sr) isotope ratios (87Sr/86Sr), water isotopes, soil cation concentrations, soil water potential sensor data, and results of 87Sr/86Sr mixing model. The plant canopy size files include the dataset of canopy dimension of sagebrush, lupine, and sunflower. The soil and plant ICPMS (Inductively Coupled Plasma Mass Spectrometry) data file includes both of 87Sr/86Sr, and cation concentration dataset from soil exchangeable pool, apatite pool, silicate extract, atmospheric rain deposition, and plant leaf and stem tissues. The plant dendrochronology file includes the dendrochronogical ring width of several sagebrush, and dendrochemical sample data includes the 87Sr/86Sr for each separated growth ring. The modeling result gives the proportion of nutrient sources of each plants (based on their 87Sr/86Sr in leaf tissues and growth rings) from atmospheric deposition and mineral weathering. Soil water potential data includes continuous collection of soil water potential dataset at 2 depths (30 cm and 60 cm, from Nov 24 - Jun 25) of the sampling site. All the samples were collected from 2 sampling campaign June and July 2023, and rain water is a separate sampling from Aug - Sept 2023, at north-facing hillslope near pumphouse site. The data showed that the depth of cation nutrient acquisition is thus tightly coupled with, and likely determined by, water availability in soil, saprolite and bedrock. The enhanced uptake of cations and water from regions of mineral weathering could confer plant and ecosystem resilience during low water years and may impact the rate of bedrock weathering and watershed chemistry during drought. This dataset includes a file-level metadata (flmd.csv) file that lists each file contained in the dataset with associated metadata; a data dictionary (dd.csv) file that contains column/row headers used throughout the files along with a definition, units, and data type; a location metadata file (locations.csv); and a samples metadata file (samples.csv).",
+      "All files are provided as comma-separated values (CSV) files (.csv).",
+      "This work was supported by the Watershed Function Science Focus Area at Lawrence Berkeley National Laboratory funded by the US Department of Energy, Office of Science, Biological and Environmental Research under Contract No. DE-AC02-05CH11231."
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-8153-241X",
+        "givenName": "Langlang",
+        "familyName": "Li",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "langlangli@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "John",
+        "familyName": "Christensen",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "jnchristensen@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Markus",
+        "familyName": "Bill",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "mbill@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Wenming",
+        "familyName": "Dong",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "wenmingdong@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Yuxin",
+        "familyName": "Wu",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "ywu3@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Curtis",
+        "familyName": "Beulter",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "cbeutler@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Matthias",
+        "familyName": "Sprenger",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "msprenger@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Brian",
+        "familyName": "Gulick",
+        "affiliation": "Stony Brook University",
+        "email": "brian.gulick@stonybrook.edu"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Sharon",
+        "familyName": "Bone",
+        "affiliation": "Stanford Linear Accelerator Center - National Accelerator Laboratory",
+        "email": "s.bone@fz-juelich.de"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Boris",
+        "familyName": "Faybishenko",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "bafaybishenko@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "John",
+        "familyName": "Sanders",
+        "affiliation": "University of California Berkeley",
+        "email": "jesanders@berkeley.edu"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Amanda",
+        "familyName": "Henderson",
+        "affiliation": "Rocky Mountain Biological Laboratory",
+        "email": "amanda.henderson3@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Nicholas",
+        "familyName": "Bouskill",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "njbouskill@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Kenneth",
+        "familyName": "Williams",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "khwilliams@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Benjamin",
+        "familyName": "Gilbert",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "bgilbert@lbl.gov"
+      }
+    ],
+    "datePublished": "2026",
+    "keywords": [
+      "EARTH SCIENCE > LAND SURFACE > SOILS",
+      "EARTH SCIENCE > SOLID EARTH > ROCKS/MINERALS/CRYSTALS",
+      "EARTH SCIENCE > BIOLOGICAL CLASSIFICATION > PLANTS",
+      "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > SURFACE WATER",
+      "ESS-DIVE File Level Metadata Reporting Format",
+      "ESS-DIVE CSV File Formatting Guidelines Reporting Format",
+      "ESS-DIVE Sample ID and Metadata Reporting Format",
+      "ESS-DIVE Location Metadata Reporting Format"
+    ],
+    "variableMeasured": [
+      "EARTH SCIENCE > SOLID EARTH > GEOCHEMISTRY > GEOCHEMICAL PROPERTIES > ISOTOPES"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory and SLAC Accelerator Laboratory's Watershed Function Scientific Focus Area (WFSFA). This portion of the ER watershed contains the project-defined boundaries of East River, Washington Gulch, Slate River, and Coal Creek, as described in the location metadata. Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry. The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. This data package contains geographic metadata for specific observation points throughout the watershed. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C. et al. (2025) doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.033,
+            "longitude": -107.12
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.82,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "award": [
+      "DE-AC02 \u2212 05CH11231"
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2023-06-16",
+      "endDate": "2025-06-04",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0001-8153-241X",
+      "givenName": "Langlang",
+      "familyName": "Li",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "email": "langlangli@lbl.gov"
+    },
+    "citation": [
+      "Wason, J. W., Dovciak, M., Beier, C. M., & Battles, J. J. (2017). Tree growth is more sensitive than species distributions to recent changes in climate and acidic deposition in the northeastern United States. Journal of applied ecology, 54(6), 1648-1657. doi:10.1111/1365-2664.12899",
+      "Additional metadata on specific locations within the watershed are provided in the following related data package:",
+      "Varadharajan C ; Burrus M ; O'Ryan D ; Kakalia Z ; Alper E ; Banfield J ; Berkelhammer M ; Beutler C ; Boye K ; Brodie E ; Brown W ; Carbone M S ; Carroll R ; Christianson D ; Chou C ; Crystal-Ornelas R ; Chadwick K D ; Christensen J ; Dafflon B ; de Boer G ; Elbashandy H ; Enquist B J ; Feldman D ; Fox P ; Gilbert B ; Gochis D ; Henderson M ; Johnson D ; Kueppers L ; Li L ; Matheus Carnevali P ; Newman A ; Perzan Z ; Pierce S ; Powell T ; Singha K ; Sorensen P ; Sprenger M ; Thibaut R ; Tokunaga T ; Versteeg R ; Wielandt S ; Wilkins M ; Williams K ; Worsham M ; Wong C ; Wu Y ; Zhang D ; Agarwal D (2025): Location Identifiers, Metadata, and Map for Field Measurements at the East-Taylor Watershed Community Observatory, Colorado, USA (Version 3.2). Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1660962",
+      "Li L, Christensen JN, Bill M, Dong W, Wu Y, Beutler C, Sprenger M, Gulick BW, Bone SE, Faybishenko B, Sanders J. Depth of nutrient uptake by deep-rooted plants is regulated by water availability. Proceedings of the National Academy of Sciences. 2026 Mar 31;123(13):e2528407123. doi:10.1073/pnas.2528407123"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "principalInvestigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "Sample collection and analysis\nThe 2 sampling campaigns were conducted June and July 2023 (monthly temperature: 14.0 \u00b1 2 \u00baC). The soil thickness was determined by coring to as deep as the hand-auger could be advanced. Two sites (SD1 and SD11) were selected for further sampling and analysis. Four plant species, big sagebrush (Artemisia Tridentata), lupine (Lupinus), sunflower (Helianthus), and bunchgrass were mixed along the transect. Leaves of each individual plants (n = 3 \u2013 4 for each plant species), and soil profile (every 30 cm from surface soil to saprolite 150 cm) were collected in falcon tubes with parafilm, and immediately stored in cooler. Rain water were collected in August-September 2023 close to the sampling location. All water samples (rain water and river water) were filtered to 0.22 \u03bcm and subsequently acidified to pH of ~2 with high-purity concentrated HNO3 (nitric acid).\nBulk soil and saprolite samples were analyzed for major elements quantification at the laboratory of ALS Global (Reno, NV). The major elements (SiO2, Fe2O3, Al2O3, CaO, MgO, Na2O, K2O, Cr2O3, TiO2, MnO, P2O5, SrO and BaO) were analyzed following the method ME-ICP06.\nRain precipitation data\nThe monthly time series of precipitation from 1996 \u2013 2023 was downloaded from PRISM Group (Parameter-elevation Regression on Independent Slopes Model), Northwest Alliance for Computational Science and Operation at the Oregon State University. The total precipitation each water year was calculated by summing up monthly precipitation data from Oct-1st to Sept-30th of the following year. SPI (Standard Precipitation Index) was calculated using the time periods of 12 \u2013 36 months (depends on growth ring data) with the application of the R library \u201cSCI\u201d.",
+      "Soil moisture and leaf water content were measured by extracting all water contents from fresh soil and leaves. The water isotopes of soils and leaf tissues were then measured for the extracted water, using an Off-Axis Integrated Cavity Output Spectrometer coupled with an auto-sampler interfaced with a heated injector block (Los Gatos Research, San Jose, USA) at center of isotopic geochemistry at Lawrence Berkeley National Lab. Subsamples of plant leaves and soil were ground to fine powder using an agate ball mill before extraction.\nThe dried soil samples were extracted and separated into several pools: exchangeable pool (digest 1) using 1 g of soil mixing and shaken for 2 hrs with 10 ml of unbuffered 1M NH4Ac extraction; (digest 2) apatite pool using residue of exchangeable extraction shaken with 1M HNO3 extraction overnight; and (digest 3) silicate pool using HF-HClO4 assisted whole rock digest.\nSubsamples of ground plant leaf powder were then ashed using muffle furnace at 450 \u02daC for 8 hrs, with a rate of 30 \u2013 40 \u02daC/hr of ramping up temperature. The plant ash was then dissolved in 1 M HNO3 several times until all ash minerals dissolved. Solution was then combined and filter through 0.22 \u03bcm PES membrane and acidified to 2% ultra-pure HNO3 before further analysis. The cation concentrations, and DOC (dissolved organic carbon) in all solutions were measured using inductively coupled plasma mass spectrometry (ICP-MS, Elan DRC II, PerkinElemer SCIEX, USA) and TOC-VCPH (Shimadzu Corporation, Japan), respectively.\nThe extracted solutions of soil exchangeable pool were aliquoted in Teflon vials and evaporated water for Sr purification. The dried aliquots were treated with concentrated nitric acid at 120 \u02daC to breakdown organic matters. 200 ng of Sr were purified and collected with DI water using Teflon columns filled with Sr specific resin (Eichrom Technologies). The purified Sr were dilute into 2% phosphoric acid, and dried on Re filaments with TaCl emitter solution. 87Sr/86Sr were measured using Triton multicollector TIMS (Thermo Fisher) at center for isotope geochemistry at Lawrence Berkeley Lab. During the analysis, the average of 87Sr/86Sr NBS 987 (Sr standard) was 0.710260\u202f\u00b1\u202f9 (\u00b12\u202fs external; n\u202f=\u202f10).",
+      "Growth ring separation:\nThe dendrochronology records of the sagebrush growth ring are determined following standard dendrochronology procedures (Wason, 2017). The growth ring sample was mounted, sanded, and measured ring width using a sliding scale micrometer (Velmex Inc., Bloomfield, NY) with Acu-Rite encoder (Heidenhain 178 Corp., Shaumberg, IL). Although distinct ring bands were small, combined 2-3 growth-rings were separated manually because they were easy to separate. The Sr concentration and isotopic analysis of each separated samples were determined following the same protocol as leaf treatment in Sample analysis."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-6b11e41e6e3ac5a-20260220T045021268",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-6b11e41e6e3ac5a-20260220T045021268",
+        "name": "Modeling_results_of_sources_v2.csv",
+        "contentSize": 13.1123046875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-308663f67f4cd63-20260220T045013042",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-308663f67f4cd63-20260220T045013042",
+        "name": "Soil_and_plant_Sr_and_ICPMS_v2.csv",
+        "contentSize": 24.1884765625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-135f5387d520b73-20251020T184404731",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-135f5387d520b73-20251020T184404731",
+        "name": "Soil_water_potential.csv",
+        "contentSize": 2756.775390625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-9f8d7fcd8843f01-20251124T181811536",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-9f8d7fcd8843f01-20251124T181811536",
+        "name": "Plant_dendrochemical_sample_data.csv",
+        "contentSize": 1.232421875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-1eb3e5f31a0b2b7-20251204T171052660",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-1eb3e5f31a0b2b7-20251204T171052660",
+        "name": "locations.csv",
+        "contentSize": 0.8203125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-1121a3a2c6dd0f3-20251204T171052665",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-1121a3a2c6dd0f3-20251204T171052665",
+        "name": "samples.csv",
+        "contentSize": 4.6142578125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-cbfafaa8822d192-20251204T171052655",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-cbfafaa8822d192-20251204T171052655",
+        "name": "flmd.csv",
+        "contentSize": 1.6669921875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-ca1c77e52cbe439-20251124T181811528",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-ca1c77e52cbe439-20251124T181811528",
+        "name": "Lupine_Plant_Canopy_Size.csv",
+        "contentSize": 3.119140625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-9d90ddbe220052d-20251124T181811539",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-9d90ddbe220052d-20251124T181811539",
+        "name": "Plant_dendrochronology.csv",
+        "contentSize": 0.73046875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-e514fff9970f06d-20251124T181811547",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-e514fff9970f06d-20251124T181811547",
+        "name": "Sunflower_Plant_Canopy_Size.csv",
+        "contentSize": 2.9296875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-5746fb6a0e36623-20251205T232035530",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-5746fb6a0e36623-20251205T232035530",
+        "name": "dd.csv",
+        "contentSize": 12.1455078125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-ca8e82c7a08af18-20251124T181811541",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-ca8e82c7a08af18-20251124T181811541",
+        "name": "Sagebrush_Plant_Canopy_Size.csv",
+        "contentSize": 2.7919921875
+      }
+    ]
+  }
+}

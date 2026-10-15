@@ -1,0 +1,169 @@
+{
+  "id": "ess-dive-9fd65df885a8e87-20250715T064942543",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/1646477",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-9fd65df885a8e87-20250715T064942543",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-b068003625f30e8-20230504T210356186171",
+  "dateUploaded": "2025-07-15T06:49:44.531Z",
+  "dateModified": "2025-07-15T06:49:45.178Z",
+  "isPublic": true,
+  "citation": "Dafflon B; Leger E (2021): Soil moisture and temperature data along the northeast facing hillslope at the Lower Montane site in the East River Watershed, Colorado. Watershed Function SFA. Dataset. doi:10.15485/1646477",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/1646477",
+    "name": "Soil moisture and temperature data along the northeast facing hillslope at the Lower Montane site in the East River Watershed, Colorado",
+    "description": [
+      "Soil moisture, temperature, and electrical conductivity were monitored with 5TE sensors (Decagon Inc.) located at 10 and 50 cm depth at four different locations along the northeast-facing slope at the Lower Montane site in the East River Watershed, Colorado, from Oct 2016 to Oct 2018. The purpose of this dataset was to inform hydrobiogeochemical analyses for the Watershed Function Scientific Focus Area (SFA), including helping to answer several research questions (see reference list for publications that used this dataset). The data are reported in four CSV files labeled by their location identifiers (ER-SMN1\u20135), and location metadata is provided in SM_loc.csv. In 2018\u20132019, wildlife interactions with the sensors led to several failures. In 2019, the sensors were replaced and/or repaired. The data from 2019 to 2024 at these and other sites in the area are part of another archive (Dafflon et al., 2025). These data products are part of the Watershed Function Scientific Focus Area collection effort to further scientific understanding of biogeochemical dynamics from genome to watershed scales."
+    ],
+    "alternateName": [
+      "paf_530"
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9871-5650",
+        "givenName": "Baptiste",
+        "familyName": "Dafflon",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "bdafflon@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-7669-3622",
+        "givenName": "Emmanuel",
+        "familyName": "Leger",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "eleger@lbl.gov"
+      }
+    ],
+    "contributor": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9045-1160",
+        "givenName": "Zarine",
+        "familyName": "Kakalia",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "zarinekakalia@berkeley.edu"
+      }
+    ],
+    "datePublished": "2021",
+    "keywords": [
+      "moisture",
+      "temperature",
+      "hillslope",
+      "toe",
+      "sensor",
+      "EARTH SCIENCE > LAND SURFACE > SOILS"
+    ],
+    "variableMeasured": [
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL TEMPERATURE"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry.The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. The exact coordinates of the locations surveyed are in the data files. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C ; Kakalia Z ; Banfield J ; Berkelhammer M ; Brodie E ; Christianson D ; Dafflon B ; Carbone M S ; Carroll R ; Chadwick K D ; Christensen J ; Enquist B J ; Fox P ; Henderson M ; Gochis D ; Kueppers L ; Powell T ; Matheus Carnevali P ; Singha K ; Sorensen P ; Tokunaga T ; Versteeg R ; Wilkins M ; Williams K ; Worsham M ; Wu Y ; Agarwal D (2020): Location Identifiers, Metadata, and Map for Field Measurements at the East River Watershed, Colorado, USA. Watershed Function SFA. doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.05
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.88,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2016-11-06",
+      "endDate": "2018-10-15",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0001-9871-5650",
+      "givenName": "Baptiste",
+      "familyName": "Dafflon",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "email": "bdafflon@lbl.gov"
+    },
+    "citation": [
+      "Devadoss, J., Falco, N., Dafflon, B., Wu, Y., Franklin, M., Hermes, A., Hinckley, E.-L.S. and Wainwright, H. (2020) Remote Sensing-Informed Zonation for Understanding Snow, Plant and Soil Moisture Dynamics within a Mountain Ecosystem. Remote Sensing 12(17), 2733, https://doi.org/10.3390/rs12172733",
+      "Dafflon B (2025): Soil moisture and temperature from 2019 to 2024 along northeast- and southwest-facing hillslopes at the Lower Montane site in the East River Watershed, Colorado. Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/2566877",
+      "Dafflon, B., L\u00e9ger, E., Falco, N., Wainwright, H. M., Peterson, J., Chen, J., ... & Hubbard, S. S. (2023). Advanced monitoring of soil-vegetation co-dynamics reveals the successive controls of snowmelt on soil moisture and on plant seasonal dynamics in a mountainous watershed. Frontiers in Earth Science, 11, 976227. https://doi.org/10.3389/feart.2023.976227",
+      "Additional metadata on specific locations within the watershed are provided in the following related data package:",
+      "Varadharajan C ; Kakalia Z ; Banfield J ; Berkelhammer M ; Brodie E ; Christianson D ; Dafflon B ; Carbone M S ; Carroll R ; Chadwick K D ; Christensen J ; Enquist B J ; Fox P ; Henderson M ; Gochis D ; Kueppers L ; Powell T ; Matheus Carnevali P ; Singha K ; Sorensen P ; Tokunaga T ; Versteeg R ; Wilkins M ; Williams K ; Worsham M ; Wu Y ; Agarwal D (2020): Location Identifiers, Metadata, and Map for Field Measurements at the East River Watershed, Colorado, USA. Watershed Function SFA. doi:10.15485/1660962"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "Principal Investigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "Soil moisture, temperature and electrical conductivity have been monitored with 5TE sensors (Decagon Inc.) located at 10 and 50 cm depth at 4 different locations along the NE-facing slope at the Lower Montane site in the East River Watershed, Colorado from oct 2016 to oct 2018.\nThe soil moisture sensors have been installed after digging a small pit. The sensors were inserted in the pit wall, before filling it back. The datasets have several gaps in data due to instrument failure related primarily to damages from animals which was facilitated by the poor protection of the cable/instrumentation (limiting sleeving and no fencing), as well as to snowmelt impacting sensor to logger connectivity. Each data file corresponds to one location and two depths (10 and 50 cm). The moisture, temperature and electrical conductivity (EC) have for unit, m3/m3, oC and mS/cm, respectively. No data is shown with a value of -9999."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-9f990dd506b0884-20210527T172712289",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-9f990dd506b0884-20210527T172712289",
+        "name": "SM_loc.csv",
+        "contentSize": 0.412109375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-0ce2d53994b2949-20210527T172706648",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-0ce2d53994b2949-20210527T172706648",
+        "name": "ER_SMN1.csv",
+        "contentSize": 571.9033203125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-40527ecf5ef2ea9-20210527T172706643",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-40527ecf5ef2ea9-20210527T172706643",
+        "name": "ER_SMN3.csv",
+        "contentSize": 1528.2275390625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-2bab0e232d2e9e9-20210527T172706637",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-2bab0e232d2e9e9-20210527T172706637",
+        "name": "ER_SMN4.csv",
+        "contentSize": 1219.4267578125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-be745542d204417-20210527T172706622",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-be745542d204417-20210527T172706622",
+        "name": "ER_SMN5.csv",
+        "contentSize": 937.0234375
+      }
+    ]
+  }
+}

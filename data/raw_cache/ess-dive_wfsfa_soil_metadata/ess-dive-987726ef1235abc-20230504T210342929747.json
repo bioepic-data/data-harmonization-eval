@@ -1,0 +1,164 @@
+{
+  "id": "ess-dive-987726ef1235abc-20230504T210342929747",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/1648526",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-987726ef1235abc-20230504T210342929747",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-2c2a588eca52b7a-20230407T153331560119",
+  "dateUploaded": "2023-05-04T21:03:43.861Z",
+  "dateModified": "2024-02-08T19:33:41.746Z",
+  "isPublic": true,
+  "citation": "Falco N; Dafflon B; Devadoss J; Shirley I; Soom F; Uhlemann S; Wainwright H (2020): Time-domain reflectometer survey across the East River Watershed, Colorado. Watershed Function SFA. Dataset. doi:10.15485/1648526",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/1648526",
+    "name": "Time-domain reflectometer survey across the East River Watershed, Colorado",
+    "description": [
+      "Lawrence Berkeley National Laboratory (LBNL) collected near-surface point-measurements of soil temperature (file variable TDR_T(C)), volumetric water content (file variable TDR_SM(VWC%)), and soil electrical conductivity (file variable TDR_EC(mS/m)) using a time-domain reflectometer (TDR) at a depth of 25 cm. The survey aimed to characterize the spatial heterogeneity of near-surface hydrological properties at the hillslope scale considering sites with different aspects and elevation within the watershed. The East River is part of the Watershed Function Scientific Focus Area (WFSFA) located in the Upper Colorado River Basin, United States. These data were collected in early July 2019 over four hillslope sites: Pumphouse (north-east facing slope), Bradley (west and east-facing slopes), and Snodgrass (east-facing slope) within the East River watershed. Part of this survey was used to investigate soil-plant interactions at the hillslope scale in Jashvina et al. 2020."
+    ],
+    "alternateName": [
+      "paf_553"
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-3307-6098",
+        "givenName": "Nicola",
+        "familyName": "Falco",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "nicolafalco@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9871-5650",
+        "givenName": "Baptiste",
+        "familyName": "Dafflon",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "bdafflon@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Jashvina",
+        "familyName": "Devadoss",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "jdevadoss@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Ian",
+        "familyName": "Shirley",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "ishirley@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Florian",
+        "familyName": "Soom",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "flosoom@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-7673-7346",
+        "givenName": "Sebastian",
+        "familyName": "Uhlemann",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "suhlemann@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-2140-6072",
+        "givenName": "Haruko",
+        "familyName": "Wainwright",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "hmwainwright@lbl.gov"
+      }
+    ],
+    "datePublished": "2020",
+    "keywords": [
+      "TDR",
+      "soil temperature",
+      "volumetric water content",
+      "soil electrical conductivity",
+      "EARTH SCIENCE > AGRICULTURE > SOILS"
+    ],
+    "variableMeasured": [
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL TEMPERATURE",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > ELECTRICAL CONDUCTIVITY"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry.The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. The exact coordinates of the sites are in the data file.",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.05
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.88,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2019-07-02",
+      "endDate": "2019-07-07",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0003-3307-6098",
+      "givenName": "Nicola",
+      "familyName": "Falco",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "email": "nicolafalco@lbl.gov"
+    },
+    "citation": [
+      "Jashvina Devadoss, Nicola Falco, Baptiste Dafflon, Yuxin Wu, Maya Franklin, Anna Hermes, Eve-Lyn Hinckley, Haruko Wainwright (2020). Remote sensing-informed zonation for understanding snow, plant, and soil moisture dynamics within a mountain ecosystem. Remote Sensing. (in prep)"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "Principal Investigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "The survey was performed using a 25-cm probe TDR and collecting 3 measurements at each pre-selected plot. The data are in CSV format and include plot id, site information, TDR measurements, geographical coordinates in Universal Transverse Mercator (UTM) (EPSG: 26913 \u2013 NAD83/UTM zone 13N), and elevation (m). Each plot was surveyed with a high resolution (~2cm) RTK-GPS system, a Real Time Kinematic Global Positioning System."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-33853666c3f76f6-20200821T204344843",
+        "encodingFormat": "application/vnd.ms-excel",
+        "identifier": "ess-dive-33853666c3f76f6-20200821T204344843",
+        "name": "TDR_survey_ER_20190701.csv",
+        "contentSize": 9.7109375
+      }
+    ]
+  }
+}

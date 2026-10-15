@@ -10,7 +10,7 @@ metadata:
   created: "2026-06-29"
   context_dependencies:
     - inputs/raw/<dataset_identifier>/  # staged package files in a fold evaluation
-    - data/external/ess-dive_meta/*.json  # cached ESS-DIVE metadata
+    - data/raw_cache/ess-dive_wfsfa_soil_metadata/*.json  # cached ESS-DIVE metadata
     - data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json  # for reference examples
   companion_skill: wfsfa_sm_harmonization
   usage: >
@@ -76,7 +76,7 @@ structured inputs for the harmonization skill.
 When `AGENT_INSTRUCTIONS.md` is present, it is authoritative and overrides this
 skill's generic data-retrieval workflow. In that mode, inspect only the staged
 package files in `inputs/raw/<dataset_identifier>/` and cached metadata in
-`data/external/ess-dive_meta/` when present. Do not use the ESS-DIVE API, DOI
+`data/raw_cache/ess-dive_wfsfa_soil_metadata/` when present. Do not use the ESS-DIVE API, DOI
 resolvers, network services, parent directories, absolute paths outside the run
 workspace, or any other external source. If information is absent, document that
 limitation rather than retrieving it. Use only the held-out-free references supplied
@@ -97,12 +97,23 @@ ESS-DIVE API. In fold evaluation mode, use the dataset identifiers in
 
 **Priority 1: Check local cache first**
 
-Search for cached metadata in `data/external/ess-dive_meta/`:
+Search for cached metadata in `data/raw_cache/ess-dive_wfsfa_soil_metadata/`.
+Records are named for the dataset identifier, so in fold evaluation mode the
+path is known exactly:
 ```bash
-find data/external/ess-dive_meta -name "*<package_id_fragment>*.json"
+cat data/raw_cache/ess-dive_wfsfa_soil_metadata/<dataset_identifier>.json
+# or, if the identifier is only partly known:
+find data/raw_cache/ess-dive_wfsfa_soil_metadata -name "*<package_id_fragment>*.json"
 ```
 
-If found, read the cached JSON file directly.
+If found, read the cached JSON file directly. In a fold only the target
+dataset's record is supplied; the absence of any other dataset's record is
+deliberate, not a gap to work around.
+
+The record is the published ESS-DIVE package document. `spatialCoverage` is
+usually the most valuable part — it carries per-site `GeoCoordinates` that the
+payload files frequently omit, and is often the only route to resolving site
+coordinates.
 
 **Priority 2: Fetch from ESS-DIVE API**
 
@@ -113,9 +124,10 @@ If not cached, retrieve from ESS-DIVE API:
 - Base URL: `https://api.ess-dive.lbl.gov/packages/<package_id>`
 - For DOI lookup: `https://data.ess-dive.lbl.gov/view/<doi>` (extract package ID from redirect)
 
-Save fetched metadata to cache for future use:
+Save fetched metadata to cache for future use, named for the dataset
+identifier so it matches what `src.folds.stage_metadata` writes:
 ```bash
-data/external/ess-dive_meta/ess-dive_meta_<package_id>.json
+data/raw_cache/ess-dive_wfsfa_soil_metadata/<dataset_identifier>.json
 ```
 
 **Priority 3: Download file listings**

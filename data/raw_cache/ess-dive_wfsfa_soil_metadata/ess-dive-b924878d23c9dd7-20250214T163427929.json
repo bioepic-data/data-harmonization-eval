@@ -1,0 +1,209 @@
+{
+  "id": "ess-dive-b924878d23c9dd7-20250214T163427929",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/1577267",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-b924878d23c9dd7-20250214T163427929",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-b924878d23c9dd7-20230808T235822445",
+  "dateUploaded": "2025-02-14T16:34:28.679Z",
+  "dateModified": "2025-02-14T16:34:32.093Z",
+  "isPublic": true,
+  "citation": "Sorensen P; Brodie E; Beller H; Wang S; Bill M; Bouskill N (2019): Soil Nitrogen, Water Content, Microbial Biomass, and Archaeal, Bacterial and Fungal Communities from the East River Watershed, Colorado collected in 2016-2017. Watershed Function SFA. Dataset. doi:10.15485/1577267",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/1577267",
+    "name": "Soil Nitrogen, Water Content, Microbial Biomass, and Archaeal, Bacterial and Fungal Communities from the East River Watershed, Colorado collected in 2016-2017",
+    "description": [
+      "This data set contains soil measurements made at the Pumphouse Hillslope to Floodplain transect at the locations of the early snowmelt-timing manipulation experiments in the East River Watershed in Colorado, USA. The data were collected in 2016 and 2017 to determine soil microbial responses to snow accumulation, snowmelt, and transition from winter to spring. Some additional data from the Washington Gulch snowmelt manipulation experiment lcoations are also included here.",
+      "Data were collected on soil cores collected in the field at three soil depths (0 to 5 cm, 5 to 15 cm, 15 cm +) below the soil surface and analyzed in the on homogenized samples with roots and gravel removed.",
+      "Data include gravimetric soil water content (48 hr oven-dried) and soil pH measurements (1:1 w/vol in ddH2O), dissolved nitrogen pools measured in soil extracts (2M KCl extractant), microbial biomass carbon and nitrogen (0.5M K2SO4 extractant), and archaeal, bacterial, and fungal species determined by Illumina 300 bp paired-read marker gene sequencing (16S rDNA for archaea and bacteria and ITS for fungi)."
+    ],
+    "alternateName": [
+      "paf_275"
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-0558-2789",
+        "givenName": "Patrick",
+        "familyName": "Sorensen",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "posorensen@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Harry",
+        "familyName": "Beller",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "hrbeller@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Shi",
+        "familyName": "Wang",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "shiwang@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Markus",
+        "familyName": "Bill",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "mbill@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Nick",
+        "familyName": "Bouskill",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "njbouskill@lbl.gov"
+      }
+    ],
+    "datePublished": "2019",
+    "keywords": [
+      "Snowmelt",
+      "Soil Nitrogen",
+      "Microbial Biomass",
+      "Metagenomics",
+      "ESS-DIVE Sample ID and Metadata Reporting Format",
+      "related identifiers",
+      "EARTH SCIENCE > BIOLOGICAL CLASSIFICATION > BACTERIA/ARCHAEA"
+    ],
+    "variableMeasured": [
+      "Anions",
+      "Cations",
+      "Metagenomics"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry.The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation.",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.05
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.88,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2016-09-12",
+      "endDate": "2017-10-24",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-0558-2789",
+      "givenName": "Patrick",
+      "familyName": "Sorensen",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "email": "posorensen@lbl.gov"
+    },
+    "citation": [
+      "SAMPLES WITHIN THIS DATASET",
+      "Globally unique identifier (IGSN) for physical sample associated with dataset. There are a total of 53 individual samples associated with the dataset, which consist of 53 Soil samples. More information describing the samples is provided in the WatershedSFA_SoilCores_Metadata__2_.xls and 2017_East_River_Soil_Core_Metadata__3_.csv dataset files.",
+      "ASSOCIATED JOURNAL ARTICLE(S)",
+      "Sorensen et al., (2020) \u201cThe Snowmelt Niche Differentiates Three Microbial Life Strategies That Influence Soil Nitrogen Availability During and After Winter.\u201d https://doi.org/10.3389/fmicb.2020.00871",
+      "REFERENCES - STUDY REGISTRATION(S)",
+      "NMDC study page \"Bulk soil microbial communities from the East River watershed near Crested Butte, Colorado, United States\" https://data.microbiomedata.org/details/study/nmdc:sty-11-dcqce727",
+      "REFERENCES - RELATED DATASET(S)",
+      "Sorensen et al., (2019) \u201cSample Collection Metadata for Soil Cores from the East River Watershed, Colorado collected in 2017\u201d. ESS-DIVE. https://doi.org/10.21952/WTR/1573029"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "Principal Investigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "Soil cores were collected using a 4-cm diameter bulk density corer and split in the field at three depth increments 0 to 5 cm, 5 to 15 cm, 15 cm +). An ~10 g subsample of each soil sample was immediately frozen on a dry ice in the field for microbial DNA analysis. The remainder was kept at 4 deg C for chemical analysis.",
+      "Gravimetric water content was measured as water lost during a 48 hr incubation at 60 deg C. Soil pH was measured in a 1:1 w/vol soil slurry in ddH2O. Total dissolved nitrogen was measured colorimetrically following persulfate digestion. Inorganic nitrogen pools (e.g., ammonium and nitrate) were measured in 2M KCl soil extracts using colorimetry. Microbial biomass carbon and nitrogen were measured using the chloroform fumigation extraction method followed by colorimetric determination of organic carbon or total nitrogen by colorimetry for carbon or nitrogen, respectively. Microbial community DNA was extracted from soil samples using the PowerSoil DNA extraction kit and marker genes sequenced using Illumina MiSeq v3 250 bp paired read sequencing.",
+      "This section provides a list of all source material physical samples used in this dataset, collected by using a soil bulk density corer attached to a slide hammer. More information describing the samples is provided in sample landing pages (links below), and the WatershedSFA_SoilCores_Metadata__2_.xls dataset file.\nSample Name IGSN PID IGSN URL\n115 IGSN:10.58052/IEWFS0001 https://doi.org/10.58052/IEWFS0001\n116 IGSN:10.58052/IEWFS0002 https://doi.org/10.58052/IEWFS0002\n117 IGSN:10.58052/IEWFS0003 https://doi.org/10.58052/IEWFS0003\n118 IGSN:10.58052/IEWFS0004 https://doi.org/10.58052/IEWFS0004\n119 IGSN:10.58052/IEWFS0005 https://doi.org/10.58052/IEWFS0005\n120 IGSN:10.58052/IEWFS0006 https://doi.org/10.58052/IEWFS0006\n121 IGSN:10.58052/IEWFS0007 https://doi.org/10.58052/IEWFS0007\n122 IGSN:10.58052/IEWFS0008 https://doi.org/10.58052/IEWFS0008\n123 IGSN:10.58052/IEWFS0009 https://doi.org/10.58052/IEWFS0009\n134 IGSN:10.58052/IEWFS000A https://doi.org/10.58052/IEWFS000A\n135 IGSN:10.58052/IEWFS000B https://doi.org/10.58052/IEWFS000B\n139 IGSN:10.58052/IEWFS000C https://doi.org/10.58052/IEWFS000C\n140 IGSN:10.58052/IEWFS000D https://doi.org/10.58052/IEWFS000D\n141 IGSN:10.58052/IEWFS000E https://doi.org/10.58052/IEWFS000E\n142 IGSN:10.58052/IEWFS000F https://doi.org/10.58052/IEWFS000F\n143 IGSN:10.58052/IEWFS000G https://doi.org/10.58052/IEWFS000G\n144 IGSN:10.58052/IEWFS000H https://doi.org/10.58052/IEWFS000H\n145 IGSN:10.58052/IEWFS000I https://doi.org/10.58052/IEWFS000I\n146 IGSN:10.58052/IEWFS000J https://doi.org/10.58052/IEWFS000J\n147 IGSN:10.58052/IEWFS000K https://doi.org/10.58052/IEWFS000K\n148 IGSN:10.58052/IEWFS000L https://doi.org/10.58052/IEWFS000L\n149 IGSN:10.58052/IEWFS000M https://doi.org/10.58052/IEWFS000M\n150 IGSN:10.58052/IEWFS000N https://doi.org/10.58052/IEWFS000N\n151 IGSN:10.58052/IEWFS000O https://doi.org/10.58052/IEWFS000O\n152 IGSN:10.58052/IEWFS000P https://doi.org/10.58052/IEWFS000P\n153 IGSN:10.58052/IEWFS000Q https://doi.org/10.58052/IEWFS000Q\n157 IGSN:10.58052/IEWFS000R https://doi.org/10.58052/IEWFS000R\n158 IGSN:10.58052/IEWFS000S https://doi.org/10.58052/IEWFS000S\n159 IGSN:10.58052/IEWFS000T https://doi.org/10.58052/IEWFS000T\n181 IGSN:10.58052/IEWFS000U https://doi.org/10.58052/IEWFS000U\n182 IGSN:10.58052/IEWFS000V https://doi.org/10.58052/IEWFS000V\n183 IGSN:10.58052/IEWFS000W https://doi.org/10.58052/IEWFS000W\n184 IGSN:10.58052/IEWFS000X https://doi.org/10.58052/IEWFS000X\n185 IGSN:10.58052/IEWFS000Y https://doi.org/10.58052/IEWFS000Y\n186 IGSN:10.58052/IEWFS000Z https://doi.org/10.58052/IEWFS000Z\n193 IGSN:10.58052/IEWFS0010 https://doi.org/10.58052/IEWFS0010\n194 IGSN:10.58052/IEWFS0011 https://doi.org/10.58052/IEWFS0011\n195 IGSN:10.58052/IEWFS0012 https://doi.org/10.58052/IEWFS0012\n196 IGSN:10.58052/IEWFS0013 https://doi.org/10.58052/IEWFS0013\n197 IGSN:10.58052/IEWFS0014 https://doi.org/10.58052/IEWFS0014\n198 IGSN:10.58052/IEWFS0015 https://doi.org/10.58052/IEWFS0015\n202 IGSN:10.58052/IEWFS0016 https://doi.org/10.58052/IEWFS0016\n203 IGSN:10.58052/IEWFS0017 https://doi.org/10.58052/IEWFS0017\n204 IGSN:10.58052/IEWFS0018 https://doi.org/10.58052/IEWFS0018\n355 IGSN:10.58052/IEWFS0019 https://doi.org/10.58052/IEWFS0019\n356 IGSN:10.58052/IEWFS001A https://doi.org/10.58052/IEWFS001A\n357 IGSN:10.58052/IEWFS001B https://doi.org/10.58052/IEWFS001B\n367 IGSN:10.58052/IEWFS001C https://doi.org/10.58052/IEWFS001C\n368 IGSN:10.58052/IEWFS001D https://doi.org/10.58052/IEWFS001D\n369 IGSN:10.58052/IEWFS001E https://doi.org/10.58052/IEWFS001E\n379 IGSN:10.58052/IEWFS001F https://doi.org/10.58052/IEWFS001F\n380 IGSN:10.58052/IEWFS001G https://doi.org/10.58052/IEWFS001G\n381 IGSN:10.58052/IEWFS001H https://doi.org/10.58052/IEWFS001H"
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-446c82f5254fc8d-20191203T193625833",
+        "encodingFormat": "application/vnd.ms-excel",
+        "identifier": "ess-dive-446c82f5254fc8d-20191203T193625833",
+        "name": "2017_East_River_Pumphouse_Fungal_Life_Strategies__2_.csv",
+        "contentSize": 447.5927734375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-06c6441bd694034-20191203T193625851",
+        "encodingFormat": "application/vnd.ms-excel",
+        "identifier": "ess-dive-06c6441bd694034-20191203T193625851",
+        "name": "2017_East_River_Pumphouse_Microbial_Biomass__1_.csv",
+        "contentSize": 44.6640625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-6bd0c0b8590d04a-20191203T193625814",
+        "encodingFormat": "application/vnd.ms-excel",
+        "identifier": "ess-dive-6bd0c0b8590d04a-20191203T193625814",
+        "name": "WatershedSFA_SoilCores_Metadata__2_.xls",
+        "contentSize": 1299.5
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-2a6ab60ff72c2cc-20191203T193625861",
+        "encodingFormat": "application/vnd.ms-excel",
+        "identifier": "ess-dive-2a6ab60ff72c2cc-20191203T193625861",
+        "name": "2017_East_River_Pumphouse_Extractable_Soil_N_Pools__1_.csv",
+        "contentSize": 48.1142578125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-2d1c511341a6101-20191203T193625842",
+        "encodingFormat": "application/vnd.ms-excel",
+        "identifier": "ess-dive-2d1c511341a6101-20191203T193625842",
+        "name": "2017_East_River_Pumphouse_Soil_Water_Content_and_pH__1_.csv",
+        "contentSize": 44.6689453125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-924f0a243e86e81-20191203T193625797",
+        "encodingFormat": "application/vnd.ms-excel",
+        "identifier": "ess-dive-924f0a243e86e81-20191203T193625797",
+        "name": "2017_East_River_Soil_Core_Metadata__3_.csv",
+        "contentSize": 41.3994140625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-6c19cb13ba94a7b-20191203T193625824",
+        "encodingFormat": "application/vnd.ms-excel",
+        "identifier": "ess-dive-6c19cb13ba94a7b-20191203T193625824",
+        "name": "2017_East_River_Pumphouse_Archaea_and_Bacteria_Life_Strategies__1_.csv",
+        "contentSize": 5241.400390625
+      }
+    ]
+  }
+}

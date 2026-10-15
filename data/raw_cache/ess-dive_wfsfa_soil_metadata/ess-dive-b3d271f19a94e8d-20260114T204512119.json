@@ -1,0 +1,376 @@
+{
+  "id": "ess-dive-b3d271f19a94e8d-20260114T204512119",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/3007697",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-b3d271f19a94e8d-20260114T204512119",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-b3d271f19a94e8d-20260114T195159507",
+  "dateUploaded": "2026-01-14T20:45:12.765Z",
+  "dateModified": "2026-01-15T00:00:39.859Z",
+  "isPublic": true,
+  "citation": "Wu Y; Chou C; Beutler C; Henderson A; Dafflon B; Wielandt S; Newman A; Brodie E; Gilbert B; Peruzzo L; Williams K (2026): Meteorological and Soil Data from Ecohydrology Sensor Towers at Pump House and Snodgrass Mountain in East River Watershed, Colorado, 2019-2025. Watershed Function SFA. Dataset. doi:10.15485/3007697",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/3007697",
+    "name": "Meteorological and Soil Data from Ecohydrology Sensor Towers at Pump House and Snodgrass Mountain in East River Watershed, Colorado, 2019-2025",
+    "description": [
+      "This data package includes hourly meteorological and soil sensor data at eight ecohydrology monitoring sites in East River Watershed, Colorado as part of the Watershed Function Scientific Focus Area (WFSFA) research led by Lawrence Berkeley National Lab (LBNL).",
+      "Four field sites were located on the hillslope of East River (ER) near Pump House (PH) at Mount Crested Butte (ER-PHS1 to 4), and the other four are in the Snodgrass Mountain (SG) area (SG-EHS5 to 8). In terms of vegetation cover, three sites are in montane grasslands (ER-PHS1, ER-PHS2, and SG-EHS5), three are below evergreen conifer canopy (ER-PHS3, SG-EHS6, and SG-EHS7), and two are below deciduous aspen canopy (ER-PHS4 and SG-EHS8). The monitoring period began in October 2019 at the East River sites, in October 2020 at SG-EHS5 and SG-EHS6, and in October 2021 at SG-EHS7 and SG-EHS8. In September 2024, all four East River sites were fully retired. The four Snodgrass Mountain sites remain active.",
+      "Each site is equipped with a comprehensive suite of meteorological sensors on a tripod and soil sensors that measure weather, energy fluxes, and soil variables. This data package includes measurements from ten different types of sensors and up to thirteen individual sensors per site, including (1) a weather station (measurement height ranges from 2.8~3.8 meters (m) above ground), (2) a quantum sensor for photosynthetic active radiation (PAR) (2.4~3.3m), (3) a net radiometer (1.7~2.1m), (4) an infrared radiometer (1.6~2.2m), (5) a sonic distance sensor (1.5~1.9m), (6) a soil carbon dioxide (CO2) flux chamber (0m), (7) a soil heat flux plate (-0.05m below ground), (8) a soil oxygen sensor (-0.3m), (9) a soil water potential sensor (-0.3m), and (10) soil water content sensors at 3~4 depths (-1.15 ~ -0.1m).",
+      "A total of twenty-three variables is reported in this data package, including (1) atmospheric variables: air temperature (TA), atmospheric pressure (PA), vapor pressure (VP), and vapor pressure deficit (VPD), (2) precipitation variables: rain precipitation (P) and snow depth (D_SNOW), (3) energy fluxes variables: four-component net radiation (NETRAD) (shortwave/longwave incoming/outgoing radiation, SW_IN, SW_OUT, LW_IN, LW_OUT), photosynthetic photon flux density (PPFD), and soil heat flux (G), (4) soil variables: soil water content (SWC), soil water potential (SWP), soil temperature (TS), soil bulk electrical conductivity (COND_SOIL), and soil gaseous oxygen concentration (O2_SOIL), (5) wind variables: two-dimensional wind speed (WS), gust speed (WS_MAX), and wind direction (WD), and (6) surface variables: surface infrared temperature (T_CANOPY) and soil CO2 flux (CO2_SOIL). Please see the Methods section for data processing and QA/QC steps taken to generate the hourly datasets.",
+      "The following files are included in this data package (notes on version: v{x}-{y}, where x is the metadata version, and y is the data version, when applicable): (1) \u201cmetadata_site_v{x}-{y}.csv\u201d - a site metadata file that summarizes location information of all sites, including site ID, description, coordinates, timeframe, elevation, and vegetation cover, (2) \u201cmetadata_instrument_v{x}-{y}.csv\u201d - an instrument metadata file that summarizes sensor information of all sites, including sensor manufacturer and model, measurement height, and sampling and averaging interval of all variables, (3) \"data_{SITE_ID}_v{x}-{y}.csv\" - eight data files that contain hourly data of each site indicated by {SITE_ID} in the filename, (4) \u201c/figure/data_{SITE_ID}_v{x}-{y}.png\" - eight figures that help visualize data of each site indicated by {SITE_ID} in the filename, (5) \u201c/photo/*\u201d - photos of each site indicated by {SITE_ID} in the filename, and (6) four file level metadata (flmd.csv) and data dictionary (*_dd.csv) files that summarize file, header, column, and variable information of all files.",
+      "Notes:",
+      "(1) Measurement height: Each variable name is followed by conventional positional qualifiers \u201cH_V_R\u201d, where H indicates the relative horizontal positions of that specific variable, V the vertical positions, and R the replicates. In this data package, only the vertical qualifier V varies, and V increases from the highest vertical position (V=1) to the lowest. Variables with the same qualifier are not necessarily measured by the same sensor, and the same variable with the same qualifier across different sites are not necessarily measured at the same height. Please refer to \u201cmetadata_instrument.csv\u201d for the sensor information and measurement heights, and whether a variable is measured below the canopy.",
+      "(2) Variable availability: Snow depth is not available at ER-PHS3 and SG-EHS7. SWC, soil temperature, and soil bulk EC at the deepest depth (<-1m) are not available at SG-EHS6 and SG-EHS7. The missing value code for numeric variables is -9999, except for SWP. For SWP, the missing value code is +9999, because SWP values are negative.",
+      "(3) Sampling frequency: Please refer to \u201cmetadata_instrument.csv\u201d for the increase of sampling frequency of some variables from 30-min to 1-min at ER-PHS1 to 4 in July 2020.",
+      "(4) Sensors: While the methods of each sensor are not detailed, all sensors are commercially available, and their methods can be found in their manuals. Please refer to \u201cmetadata_instrument.csv\u201d for the sensor manufacturer and model information.",
+      "This work was supported by the Watershed Function Science Focus Area at Lawrence Berkeley National Laboratory funded by the US Department of Energy, Office of Science, Biological and Environmental Research under Contract No. DE-AC02-05CH11231."
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-6953-0179",
+        "givenName": "Yuxin",
+        "familyName": "Wu",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "ywu3@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-9600-4270",
+        "givenName": "Chunwei",
+        "familyName": "Chou",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "chunweichou@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-0740-3112",
+        "givenName": "Curtis",
+        "familyName": "Beutler",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "cbeutler@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9613-5003",
+        "givenName": "Amanda",
+        "familyName": "Henderson",
+        "affiliation": "Rocky Mountain Biological Lab",
+        "email": "amanda@rmbl.org"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9871-5650",
+        "givenName": "Baptiste",
+        "familyName": "Dafflon",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "BDafflon@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-2672-2998",
+        "givenName": "Stijn",
+        "familyName": "Wielandt",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "swielandt@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-1574-8754",
+        "givenName": "Alexander",
+        "familyName": "Newman",
+        "email": "alexnewman760@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-8453-8435",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-0853-0826",
+        "givenName": "Benjamin",
+        "familyName": "Gilbert",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "bgilbert@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-4065-8910",
+        "givenName": "Luca",
+        "familyName": "Peruzzo",
+        "affiliation": "University of Padova",
+        "email": "luca.peruzzo.1@unipd.it"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-3568-1155",
+        "givenName": "Kenneth",
+        "familyName": "Williams",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "khwilliams@lbl.gov"
+      }
+    ],
+    "datePublished": "2026",
+    "keywords": [
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC PRESSURE",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR",
+      "EARTH SCIENCE > ATMOSPHERE > PRECIPITATION",
+      "EARTH SCIENCE > CRYOSPHERE > SNOW/ICE",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION",
+      "EARTH SCIENCE > LAND SURFACE > SOILS",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS",
+      "ESS-DIVE File Level Metadata Reporting Format",
+      "ESS-DIVE CSV File Formatting Guidelines Reporting Format"
+    ],
+    "variableMeasured": [
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > SURFACE TEMPERATURE > AIR TEMPERATURE",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC PRESSURE > ATMOSPHERIC PRESSURE MEASUREMENTS",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR INDICATORS > VAPOR PRESSURE",
+      "EARTH SCIENCE > ATMOSPHERE > PRECIPITATION > LIQUID PRECIPITATION > RAIN",
+      "EARTH SCIENCE > CRYOSPHERE > SNOW/ICE > SNOW DEPTH",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > NET RADIATION",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > SHORTWAVE RADIATION",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > LONGWAVE RADIATION",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > OUTGOING LONGWAVE RADIATION",
+      "EARTH SCIENCE > BIOSPHERE > VEGETATION > PHOTOSYNTHETICALLY ACTIVE RADIATION",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL TEMPERATURE",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > ELECTRICAL CONDUCTIVITY",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > SURFACE WINDS > WIND SPEED",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > SURFACE WINDS > WIND DIRECTION",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > SURFACE TEMPERATURE > SKIN TEMPERATURE",
+      "downward_heat_flux_at_ground_level_in_soil",
+      "surface_upward_mole_flux_of_carbon_dioxide",
+      "soil oxygen"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "ER-PHS1; East River, Pump House Site, ecohydrology sensor tower #1; Montane grassland on the northeast-facing hillslope, close to ER-PLM5",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.9199388,
+            "longitude": -106.9489718
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.9199388,
+            "longitude": -106.9489718
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "ER-PHS2; East River, Pump House Site, ecohydrology sensor tower #2; Montane grassland on the southwest-facing hillslope, close to ER-PLM8",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.9225826,
+            "longitude": -106.9472883
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.9225826,
+            "longitude": -106.9472883
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "ER-PHS3; East River, Pump House Site, ecohydrology sensor tower #3; Below canopy of a conifer-aspen mixed grove on the hillslope, on the conifer side",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.9206498,
+            "longitude": -106.9516586
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.9206498,
+            "longitude": -106.9516586
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "ER-PHS4; East River, Pump House Site, ecohydrology sensor tower #4; Below canopy of a conifer-aspen mixed grove on the hillslope, on the aspen side",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.9205581,
+            "longitude": -106.95154
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.9205581,
+            "longitude": -106.95154
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "SG-EHS5; Snodgrass Mountain, Ecohydrology Site, sensor tower #5; Montane meadow",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.9262459,
+            "longitude": -106.9797896
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.9262459,
+            "longitude": -106.9797896
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "SG-EHS6; Snodgrass Mountain, Ecohydrology Site, sensor tower #6; Below canopy of a conifer forest",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.92565,
+            "longitude": -106.9766603
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.92565,
+            "longitude": -106.9766603
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "SG-EHS7; Snodgrass Mountain, Ecohydrology Site, sensor tower #7; Below canopy of a conifer forest",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.9323418,
+            "longitude": -106.9861122
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.9323418,
+            "longitude": -106.9861122
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "SG-EHS8; Snodgrass Mountain, Ecohydrology Site, sensor tower #8; Below canopy of an aspen forest",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.9255186,
+            "longitude": -106.9707767
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.9255186,
+            "longitude": -106.9707767
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory and SLAC Accelerator Laboratory's Watershed Function Scientific Focus Area (WFSFA). This portion of the ER watershed contains the project-defined boundaries of East River, Washington Gulch, Slate River, and Coal Creek, as described in the location metadata. Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry. The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. This data package contains geographic metadata for specific observation points throughout the watershed. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C. et al. (2025) doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.033,
+            "longitude": -107.12
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.82,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2019-10-10",
+      "endDate": "2025-10-08",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-6953-0179",
+      "givenName": "Yuxin",
+      "familyName": "Wu",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "email": "ywu3@lbl.gov"
+    },
+    "citation": [
+      "Wu, Y., Chou, C., Dafflon, B., & Peruzzo, L. (2021). Continuous sensor suite measurements of weather, energy, soil and flux at four PumpHouse sites at the East River, Colorado. Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1788230",
+      "Additional metadata on specific locations within the watershed are provided in the following related data package:",
+      "Varadharajan C ; Burrus M ; O'Ryan D ; Kakalia Z ; Alper E ; Banfield J ; Berkelhammer M ; Beutler C ; Boye K ; Brodie E ; Brown W ; Carbone M S ; Carroll R ; Christianson D ; Chou C ; Crystal-Ornelas R ; Chadwick K D ; Christensen J ; Dafflon B ; de Boer G ; Elbashandy H ; Enquist B J ; Feldman D ; Fox P ; Gilbert B ; Gochis D ; Henderson M ; Johnson D ; Kueppers L ; Li L ; Matheus Carnevali P ; Newman A ; Perzan Z ; Pierce S ; Powell T ; Singha K ; Sorensen P ; Sprenger M ; Thibaut R ; Tokunaga T ; Versteeg R ; Wielandt S ; Wilkins M ; Williams K ; Worsham M ; Wong C ; Wu Y ; Zhang D ; Agarwal D (2025): Location Identifiers, Metadata, and Map for Field Measurements at the East-Taylor Watershed Community Observatory, Colorado, USA (Version 3.2). Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1660962"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "principalInvestigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "This section details the two types of data loggers and sensor communication protocols at each site:\n(1) Campbell Scientific CR300 data logger\n(a) Connected to five sensors via SDI-12 communication protocol (PAR, net, and infrared radiometers, sonic distance sensor, and soil oxygen sensor)\n(b) Connected to two sensors via differential voltage measurement ports (soil heat flux plate and soil CO2 flux chamber)\n(2) Meter Zentra ZL6 data logger\n(a) Connected to five to six sensors via SDI-12 communication protocol (weather station, SWC, and SWP sensors)",
+      "This section details the data processing steps taken to adjust timestamps and calculate values:\n(1) Sonic distance is adjusted to the installation angle of the sonic distance sensor if the sensor was installed on a slope. Snow cover is determined by albedo (outgoing divided by incoming shortwave radiation), where days with minimum albedo <20% are classified as soil, and days with maximum albedo >50% are classified as snow (high reflectance). Transitional periods involved user decisions based on local measurements of surface temperature, soil temperature, and soil heat flux, nearby snow measurements, and snow cover status of the previous and following days when albedo thresholds are applicable.\n(2) Soil oxygen concentration is adjusted to the local atmospheric pressure if on-site calibration was not performed before sensor burial.\n(3) Soil CO2 flux calculated from differential voltage readings is subject to a systematic offset in flux values due to the voltage measurement accuracy. These calculations are replaced by actual flux data downloaded from the flux chambers\u2019 internal memory whenever available. When manual downloads are not yet available, the systematic offset in flux values is adjusted on a per logger basis.\n(4) Timestamps of Zentra loggers require occasional adjustment because of unpredictable time change behaviors entering or exiting daylight saving (if data are downloaded from the online cloud) and because of occasional internal clock glitches.",
+      "This section details the data Quality Assurance, Quality Control (QA/QC) steps taken to exclude certain time periods:\n(1) Erroneous periods due to data logger hardware issues, such as CR300 data logger glitches or SDI-12 communication glitches, are excluded. These errors can be detected when battery readings are negative, or when all or some variables of the SDI-12 sensors are error codes (\u00b17999, \u00b19999), 0, repeated readings, or missing values at a timestamp.\n(2) Periods when sensor issues arose are excluded, most typically for soil heat flux plates (severed wires or exposed to direct sun), soil CO2 flux chambers (sensor failure), and infrared radiometers (sensor failure). These periods can be detected when differential voltage or SDI-12 readings of a specific sensor are extremely noisy.\n(3) Periods when lower above-ground sensors (net radiometers, infrared radiometers, or sonic distance sensors) were covered in snow are excluded. These periods can be detected when snow depth readings are negative or invalid, and when daytime incoming shortwave radiation is abnormally low.",
+      "This section details the data QA/QC steps taken to specify variable range or exclude erroneous data based on thresholds\n(1) The minimum values of snow depth, incoming shortwave radiation, outgoing shortwave radiation, and PPFD are capped at 0. (physical threshold)\n(2) The minimum valid value of SWP is limited to -2000 kPa (at SG-EHS5 and 6) -99999 kPa (all other sites), depending on the specification of the sensors. (sensor limitation)\n(3) Valid soil oxygen concentration values are limited to 0 and 21 percent. The values beyond indicate SDI-12 communication errors, contamination of error codes (\u00b17999, \u00b19999) from 1-min samples into 1-hour average values, a malfunctioned sensor, and/or saturated soil (this sensor is meant for gas measurements). (logger error, sensor error, or sensor limitation)\n(4) Valid infrared temperature values are limited to -50 and 80 degrees Celsius. The values beyond indicate SDI-12 communication errors, contamination of error codes (\u00b17999, \u00b19999) from 1-min samples into 1-hour average values. (logger error, or sensor error)\n(5) Sonic distance measurements with low data quality (indicated by a sensor output value) are excluded. (data quality)",
+      "This section details the gap-filling steps taken:\nThe only type of gap-filling performed in this data package is when CR300 data loggers skipped scans of all or some variables at the top of the hour, which is also when the 1-hour average values are programmed to be calculated and recorded. After July 2020, 1-min samples have also been saved and collected from the CR300 data loggers. Hourly average values calculated from these 1-min samples are used to gap-fill skipped scans if there are at least 30 minutes of samples per hour. Calculations of hourly average values from 1-min samples are also subject to the thresholds as discussed above. Additionally, outliers of 1-min samples per hour are removed using the 1.5 interquartile range (IQR) rule (Q1-1.5IQR < valid samples < Q3+1.5IQR)."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-0e486b08c81a760-20260107T184454789",
+        "encodingFormat": "application/zip",
+        "identifier": "ess-dive-0e486b08c81a760-20260107T184454789",
+        "name": "WFSFA_EHG_SensorTowers_Wu_et_al.zip",
+        "contentSize": 66642.1376953125
+      }
+    ]
+  }
+}
