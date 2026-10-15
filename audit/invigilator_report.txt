@@ -1,0 +1,17 @@
+tool calls: 29 | reads: 11 (11 in-bounds)
+allowed roots:
+  - /home/runner/work/data-harmonization-eval/data-harmonization-eval
+
+access by zone (20 resolved):
+     8  output
+     4  exemplar_code
+     2  instructions
+     2  skills
+     1  env_root
+     1  essdive_metadata
+     1  filtered_mapping
+     1  raw_input
+
+access trace written to audit/access_trace.tsv
+
+✅ CLEAN — no out-of-bounds access detected.
