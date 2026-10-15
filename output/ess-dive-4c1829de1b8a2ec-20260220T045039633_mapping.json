@@ -1,0 +1,112 @@
+{
+  "index": 3,
+  "dataset_identifier": "ess-dive-4c1829de1b8a2ec-20260220T045039633",
+  "doi": "doi:10.15485/2998779",
+  "archive_repository": "ESS-DIVE",
+  "inclusion_decision": "include",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    "Soil_water_potential.csv"
+  ],
+  "location_metadata_files": [
+    "locations.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "TIMESTAMP",
+        "source_files": [
+          "Soil_water_potential.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse datetime from 'TIMESTAMP' using format '%Y-%m-%d %H:%M' (CR1000 logger local Mountain Standard Time) in Etc/GMT+7 timezone; convert to UTC.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "SD*-jcm_*MP*",
+        "source_files": [
+          "Soil_water_potential.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Parse depth j from the matric potential column names (e.g., '25cm' from 'SD11-25cm_MP', '60cm' from 'SD1-60cm_MP_4_Avg').",
+        "unit_conversion": "Divide by 1e2 to convert from cm to m."
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Latitude",
+        "source_files": [
+          "locations.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Assign the single site latitude reported in locations.csv (ER-LLN1, North Facing Hillslope Sagebrush Site 1) to every sensor-derived site_id (SD1, SD11).",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Longitude",
+        "source_files": [
+          "locations.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Assign the single site longitude reported in locations.csv (ER-LLN1, North Facing Hillslope Sagebrush Site 1) to every sensor-derived site_id (SD1, SD11).",
+        "unit_conversion": null
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": "SD1-25cm_MP_3_Avg, SD1-25cm_sagebrush_rhizo_MP_5_Avg",
+        "source_files": [
+          "Soil_water_potential.csv"
+        ],
+        "destination_variable": "replicate",
+        "transformation": "Assign integer replicate within each site/depth. The two sensors at SD1 0.25 m (bulk soil 'SD1-25cm_MP_3_Avg' and sagebrush rhizosphere 'SD1-25cm_sagebrush_rhizo_MP_5_Avg') are replicate 1 and 2 respectively; all other site/depth combinations have a single sensor (replicate 1).",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "SDj-*cm_*MP*",
+        "source_files": [
+          "Soil_water_potential.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Parse site identifier from the matric potential column names (e.g., 'SD11' from 'SD11-25cm_MP', 'SD1' from 'SD1-60cm_MP_4_Avg').",
+        "unit_conversion": null
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": "SD*_MP*",
+        "source_files": [
+          "Soil_water_potential.csv"
+        ],
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Coerce the five matric potential (MP) sensor columns ('SD11-25cm_MP', 'SD11-60cm_MP_2_Avg', 'SD1-25cm_MP_3_Avg', 'SD1-60cm_MP_4_Avg', 'SD1-25cm_sagebrush_rhizo_MP_5_Avg') from wide to long format with separate columns for site_id, depth, replicate, and water potential. Treat logger error/overrange codes (NAN, INF, -7999) and dryness-overrange values at or below -3000 kPa as missing.",
+        "unit_conversion": "None; source units are kPa."
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "None; volumetric water content not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "None; gravimetric water content not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    }
+  }
+}
