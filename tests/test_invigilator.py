@@ -235,3 +235,51 @@ def test_cli_exit_codes(tmp_path):
     res2 = CliRunner().invoke(app, ["--trace", str(dirty), "--env", str(env),
                                     "--raw-data", str(raw), "--repo-root", str(repo)])
     assert res2.exit_code == 1 and "VIOLATION" in res2.output
+
+
+def test_cd_into_env_own_exemplars_is_not_a_violation(tmp_path):
+    """Regression: the CI layout audits with repo_root == env.
+
+    After the workflow's ``rsync --delete``, ``$GITHUB_WORKSPACE`` *is* the fold,
+    and ``build_env`` places the **ablated** exemplars at
+    ``env/data/gold/expert_code/``. Treating that as an answer location flagged
+    agents for using inputs AGENT_INSTRUCTIONS.md tells them to use — runs
+    38784752977 (fold-08) and 38784900309 (fold-19) failed this way. Every other
+    test keeps repo_root != env, which is why the suite never caught it.
+    """
+    env = tmp_path / "ws"
+    (env / "data" / "gold" / "expert_code").mkdir(parents=True)
+    (env / "MANIFEST.json").write_text(json.dumps({"target_identifiers": ["ess-dive-HELD"]}))
+    trace = write_trace(tmp_path / "trace.jsonl", [
+        ("Bash", {"command": f"cd {env}/data/gold/expert_code"}),
+        ("Bash", {"command": "cd data/gold/expert_code"}),
+    ])
+    r = audit(trace, env, repo_root=env, holdout_identifiers=["ess-dive-HELD"])
+    assert r.clean, [v.reason for v in r.violations]
+    assert all(a.zone == "exemplar_code" for a in r.accesses), r.zone_counts()
+
+
+def test_real_gold_outside_env_still_violates_when_roots_differ(tmp_path):
+    """The fix must not weaken detection when the real gold *is* outside env."""
+    repo, env, raw = make_repo(tmp_path)
+    (repo / "data" / "gold" / "expert_code").mkdir(parents=True)
+    r = run_audit(tmp_path, repo, env, raw, [
+        ("Bash", {"command": f"cd {repo}/data/gold/expert_code"}),
+    ])
+    assert not r.clean
+    assert "real expert gold" in " ".join(v.reason for v in r.violations)
+
+
+def test_access_trace_records_in_bounds_zones(tmp_path):
+    """Accesses are recorded regardless of verdict, classified by zone."""
+    repo, env, raw = make_repo(tmp_path)
+    r = run_audit(tmp_path, repo, env, raw, [
+        ("Read", {"file_path": str(env / "AGENT_INSTRUCTIONS.md")}),
+        ("Read", {"file_path": str(env / "inputs/raw/ds/a.csv")}),
+        ("Bash", {"command": f"cd {env} && cat data/gold/expert_code/common.py"}),
+        ("Write", {"file_path": str(env / "output/x_harmonized.csv")}),
+    ])
+    assert r.clean, [v.reason for v in r.violations]
+    counts = r.zone_counts()
+    for zone in ("instructions", "raw_input", "exemplar_code", "output"):
+        assert counts.get(zone), (zone, counts)

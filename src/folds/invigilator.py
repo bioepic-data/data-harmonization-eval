@@ -141,15 +141,80 @@ class Warning:
 
 
 @dataclass
+class Access:
+    """One resolved access, in-bounds or not.
+
+    Violations answer "did the agent cheat?"; accesses answer "what did the
+    agent actually look at?". The latter is the more useful signal for
+    interpreting a run, and the substrate any severity/class scheme needs.
+    """
+
+    tool: str
+    path: str
+    in_bounds: bool
+    zone: str
+    context: str
+
+
+# Information zones inside a fold environment, matched against the env-relative
+# path. Order matters: first match wins. These mirror build_env.py's layout
+# constants (HARMONIZER_REL, MAPPING_REL, METADATA_REL, RAW_DATA_REL).
+_ENV_ZONES: list[tuple[str, str]] = [
+    ("output", "output"),
+    ("raw_input", "inputs/raw"),
+    ("exemplar_code", "data/gold/expert_code"),
+    ("filtered_mapping", "data/processed"),
+    ("essdive_metadata", "data/external/ess-dive_meta"),
+    ("skills", "skills"),
+    ("audit", "audit"),
+    ("agent_settings", ".claude"),
+]
+
+
+def _zone(p: Path, in_bounds: bool, env_dir: Path) -> str:
+    """Classify *where* an access landed, for the access trace."""
+    if any(under(p, r) for r in IGNORED_ROOTS):
+        return "system"
+    if not in_bounds:
+        return "outside_env"
+    try:
+        rel = p.relative_to(env_dir).as_posix()
+    except ValueError:
+        return "allowed_extra"
+    if rel in (".", ""):
+        return "env_root"
+    for name, prefix in _ENV_ZONES:
+        if rel == prefix or rel.startswith(prefix + "/"):
+            return name
+    if rel in ("AGENT_INSTRUCTIONS.md", "MANIFEST.json"):
+        return "instructions"
+    return "env_other"
+
+
+def _record(report: "AuditReport", tool: str, p: Path, in_bounds: bool,
+            allowed: list[Path], env_dir: Path, context: str) -> None:
+    report.accesses.append(
+        Access(tool, str(p), in_bounds, _zone(p, in_bounds, env_dir), context[:200])
+    )
+
+
+@dataclass
 class AuditReport:
     clean: bool
     violations: list[Violation] = field(default_factory=list)
     warnings: list[Warning] = field(default_factory=list)
+    accesses: list[Access] = field(default_factory=list)
     n_tool_calls: int = 0
     n_reads: int = 0
     reads_in_bounds: int = 0
     bash_commands: list[str] = field(default_factory=list)
     allowed_roots: list[str] = field(default_factory=list)
+
+    def zone_counts(self) -> dict[str, int]:
+        counts: dict[str, int] = {}
+        for a in self.accesses:
+            counts[a.zone] = counts.get(a.zone, 0) + 1
+        return dict(sorted(counts.items(), key=lambda kv: (-kv[1], kv[0])))
 
 
 def _reason(p: Path, repo_root: Path, holdout_ids: list[str], raw: str) -> str:
@@ -304,9 +369,12 @@ def audit(
 
     def check(tool: str, abs_path: Path, raw: str):
         if any(under(abs_path, r) for r in IGNORED_ROOTS):
+            _record(report, tool, abs_path, True, allowed, env_dir, raw)
             return True  # /dev/null redirects etc. — not data access
         if any(under(abs_path, r) for r in allowed):
+            _record(report, tool, abs_path, True, allowed, env_dir, raw)
             return True
+        _record(report, tool, abs_path, False, allowed, env_dir, raw)
         if warning := _benign_external_input(abs_path, repo_root):
             report.warnings.append(Warning(tool, str(abs_path), warning, raw[:200]))
             return False
@@ -347,7 +415,17 @@ def audit(
                 m = _CD.match(seg)
                 if m:
                     target = lexical_resolve(m.group(1).strip(), cwd)
-                    if _forbidden(target, repo_root):  # cd-ing into an answer location
+                    # Only an answer location *outside* the environment is a
+                    # violation. The workflow audits with --repo-root equal to
+                    # --env (post-rsync, the workspace *is* the fold), so
+                    # `repo_root/data/gold/expert_code` is the fold's own
+                    # ablated exemplar set — which AGENT_INSTRUCTIONS.md tells
+                    # the agent to use. Testing `allowed` first keeps this
+                    # branch consistent with `check()` and with the root-based
+                    # policy described in the module docstring.
+                    in_bounds = any(under(target, r) for r in allowed)
+                    _record(report, "Bash(cd)", target, in_bounds, allowed, env_dir, seg.strip())
+                    if not in_bounds and _forbidden(target, repo_root):
                         report.clean = False
                         report.violations.append(
                             Violation("Bash(cd)", str(target),
@@ -370,6 +448,7 @@ def main(
     repo_root: Optional[Path] = typer.Option(None, "--repo-root", help="Repo root (start cwd for relative paths); defaults to the current dir."),
     allow: list[Path] = typer.Option([], "--allow", help="Extra allowed root(s)."),
     show_bash: bool = typer.Option(False, "--show-bash", help="Print every Bash command for human review."),
+    access_trace: Optional[Path] = typer.Option(None, "--access-trace", help="Write a TSV of every resolved access (tool, in_bounds, zone, path)."),
 ) -> None:
     """Audit a run's trace; exit non-zero if any out-of-bounds access is found."""
     holdout_ids: list[str] = []
@@ -390,6 +469,20 @@ def main(
     typer.echo("allowed roots:")
     for root in r.allowed_roots:
         typer.echo(f"  - {root}")
+
+    counts = r.zone_counts()
+    if counts:
+        typer.echo(f"\naccess by zone ({len(r.accesses)} resolved):")
+        for zone, n in counts.items():
+            typer.echo(f"  {n:>4}  {zone}")
+    if access_trace is not None:
+        access_trace.parent.mkdir(parents=True, exist_ok=True)
+        with access_trace.open("w") as fh:
+            fh.write("tool\tin_bounds\tzone\tpath\tcontext\n")
+            for a in r.accesses:
+                ctx = a.context.replace("\t", " ").replace("\n", " ")
+                fh.write(f"{a.tool}\t{a.in_bounds}\t{a.zone}\t{a.path}\t{ctx}\n")
+        typer.echo(f"\naccess trace written to {access_trace}")
     if r.clean:
         typer.echo("\n✅ CLEAN — no out-of-bounds access detected.")
     else:
