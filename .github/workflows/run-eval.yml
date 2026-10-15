@@ -8,9 +8,13 @@ name: Run Harmonization Eval
 #      code (see src/folds/build_env.py);
 #   2. (optionally) stages the held-out dataset(s) raw inputs;
 #   3. runs the curator+harmonizer agent *starting in that run folder*; and
-#   4. stages the completed, isolated workspace on a new orphan `eval/*` branch;
-#      and
-#   5. uploads the same workspace as a build artifact.
+#   4. stages the completed, isolated workspace on a new orphan `eval/*` branch,
+#      minus `inputs/raw/` (published source data, recorded instead as a sha256
+#      manifest so the branch stays under GitHub's 100 MB per-file limit); and
+#   5. uploads the *complete* workspace, raw inputs included, as a build artifact.
+#
+# The branch is the durable record; the artifact is the full-fidelity one but
+# expires. Keep that asymmetry in mind when recovering a fold.
 
 on:
   workflow_dispatch:
@@ -170,6 +174,33 @@ jobs:
             --repo-root "$GITHUB_WORKSPACE" \
             | tee audit/invigilator_report.txt
 
+      - name: Manifest the staged raw inputs
+        # `inputs/raw/` holds copies of published ESS-DIVE source data staged for
+        # the agent. They are task inputs, not results, and they are the only
+        # thing in a fold that routinely exceeds GitHub's 100 MB per-file limit:
+        # fold-17/target-23 (run 34244349344) had its branch push rejected outright
+        # for a 113.25 MB `WM_SWC.csv`, losing that fold's only durable copy.
+        #
+        # Record what the agent was given — path, size, sha256 — so the branch
+        # still documents its inputs verifiably, then let the staging step commit
+        # the manifest instead of the bytes. The bytes stay in the working tree,
+        # so the run artifact remains a complete workspace.
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p audit
+          printf 'sha256\tbytes\tpath\n' > audit/raw_inputs_manifest.tsv
+          if [ -d inputs/raw ]; then
+            find inputs/raw -type f -print0 \
+              | sort -z \
+              | while IFS= read -r -d '' f; do
+                  printf '%s\t%s\t%s\n' \
+                    "$(sha256sum "$f" | cut -d' ' -f1)" "$(stat -c%s "$f")" "$f"
+                done >> audit/raw_inputs_manifest.tsv
+          fi
+          echo "Staged raw inputs recorded:"
+          cat audit/raw_inputs_manifest.tsv
+
       - name: Stage completed isolated environment on an eval branch
         # This deliberately runs only after the agent. At this point the current
         # workspace is the answer-free fold (not the trusted checkout), so an
@@ -193,7 +224,12 @@ jobs:
           git switch --orphan "$branch"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add --all
+          # Everything except the staged raw inputs, which are published source
+          # data recoverable via `stage_raw_data.py --indices <target>` and are
+          # recorded byte-for-byte in audit/raw_inputs_manifest.tsv. Excluding
+          # them here keeps the push under GitHub's file-size limit without
+          # touching the working tree the artifact is uploaded from.
+          git add --all -- . ':(exclude)inputs/raw'
           # Claude Code normally ignores project-local settings. This generated
           # file is part of the evaluated environment and must accompany it.
           git add -f .claude/settings.local.json
