@@ -1,0 +1,106 @@
+{
+  "index": 27,
+  "dataset_identifier": "ess-dive-c37aaf9ed6d4c0d-20230504T205923265966",
+  "doi": "doi:10.15485/1788230",
+  "archive_repository": "ESS-DIVE",
+  "inclusion_decision": "include",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+    "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+    "ER-PHS3_Field dataset_2019_Oct12.csv",
+    "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+  ],
+  "location_metadata_files": null,
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "Time",
+        "source_files": [
+          "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+          "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+          "ER-PHS3_Field dataset_2019_Oct12.csv",
+          "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse local timestamp from 'Time' using format '%m/%d/%Y %H:%M'. Convert from America/Denver (Mountain Time) to UTC and format as ISO 8601.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "ER-PHS[1-4]",
+        "source_files": [
+          "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+          "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+          "ER-PHS3_Field dataset_2019_Oct12.csv",
+          "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Assign site_id from the source filename: each CSV is one PumpHouse station (ER-PHS1, ER-PHS2, ER-PHS3, ER-PHS4).",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "S[1-4]_wc_(m3/m3)",
+        "source_files": [
+          "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+          "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+          "ER-PHS3_Field dataset_2019_Oct12.csv",
+          "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Map the soil sensor channel to its installation depth (from the package field notes / measurementTechnique): S1=115 cm (106 cm at ER-PHS4), S2=60 cm, S3=30 cm, S4=10 cm; the S5 water-potential sensor is at 30 cm.",
+        "unit_conversion": "Depths taken from field notes in cm and converted to m (divide by 100)."
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "S[1-4]_wc_(m3/m3)",
+        "source_files": [
+          "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+          "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+          "ER-PHS3_Field dataset_2019_Oct12.csv",
+          "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Melt the four Teros12 soil VWC channels (S1-S4) from wide to long; each value becomes one observation at the channel's depth. Source instrument: Teros12.",
+        "unit_conversion": "None; source units are already m3 m-3."
+      }
+    },
+    "water_potential": {
+      "pattern_1": {
+        "source_pattern": "S5_wp_(kPa)",
+        "source_files": [
+          "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+          "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+          "ER-PHS3_Field dataset_2019_Oct12.csv",
+          "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv"
+        ],
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Map the S5 MPS6 (TEROS 21) matric-potential channel at 30 cm. Replace the -99999 missing-value sentinel with NaN. The ER-PHS4 S5 channel is entirely sentinel-valued (no valid water potential).",
+        "unit_conversion": "None; source units are already kPa (negative)."
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "latitude",
+        "transformation": "Unresolvable in this workspace. Per-site coordinates are not present in the payload, any ancillary file, or the cached package metadata (which gives only a watershed-level bounding box). The authoritative location registry (Varadharajan et al. 2020, doi:10.15485/1660962) referenced by the package is not staged here. Emitted empty with qc_flag = g2.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "longitude",
+        "transformation": "Unresolvable in this workspace; see 'latitude'. Emitted empty with qc_flag = g2.",
+        "unit_conversion": null
+      }
+    }
+  }
+}

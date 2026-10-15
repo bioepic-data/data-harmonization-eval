@@ -1,0 +1,239 @@
+{
+  "id": "ess-dive-c37aaf9ed6d4c0d-20230504T205923265966",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/1788230",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-c37aaf9ed6d4c0d-20230504T205923265966",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-54f25673eb968d6-20230407T154325469913",
+  "dateUploaded": "2023-05-04T20:59:24.234Z",
+  "dateModified": "2024-02-08T19:37:30.094Z",
+  "isPublic": true,
+  "citation": "Wu Y; Chou C; Dafflon B; Peruzzo L (2021): Continuous sensor suite measurements of weather, energy, soil and flux at four PumpHouse sites at the East River, Colorado. Watershed Function SFA. Dataset. doi:10.15485/1788230",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/1788230",
+    "name": "Continuous sensor suite measurements of weather, energy, soil and flux at four PumpHouse sites at the East River, Colorado",
+    "description": [
+      "The purpose of this package is to monitor energy and water fluxes using a comprehensive set of sensors integrated on a tripod set up at 4 locations at the East River watershed in Colorado in the Upper Colorado River Basin as part of the Scientific Focus Area (SFA) research led by the Lawrence Berkeley National Lab (LBNL). This is a continuous sensor suite measurements of weather, energy, soil and flux at four East River pumphouse sites (ER-PHS1, ER-PHS2, ER-PHS3 and ER-PHS4) include: (1) soil CO2 concentration, CO2 flux and heat flux from soil surface; (2) photosynthetic active radiation flux at 1 m; (3) incoming/outcoming short and long wave radiation at 1 m, and user calculated net short and long wave radiation; (4) oxygen concentration and surface infrared temperature; (5) soil volumetric water content, temperature, and electrical conductivity at 10, 30, 60, 115 cm depth 115 cm depth; (6) soil matric potential and temperature at 30 cm depth; (7) incoming short wave radiation at 3 m height; (8) rainfall precipitation; (9) lightning strikes and strike distances; (10) wind direction and speed, maximum wind gust at 3 m; (11) air temperature, vapor pressure and barometric pressure at 3 m; (12) X _axis_level and Y_axis_level_(degree), tilt of the ATMOS 41 sensor; (13) maximum rainfall rate; (14) relative humidity sensor temperature at 3 m; (15) internally calculated vapor pressure deficit at 3 m with vapor pressure, relative humidity and sensor temperature measurements; (16) user calculated vapor pressure.These datasets contain data from Oct 11 2019 to March 20, 2020, and new datasets will be updated on annual basis. Files uploaded in Excel and Word, with copies in csv and pdf format."
+    ],
+    "alternateName": [
+      "paf_411_696"
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-6953-0179",
+        "givenName": "Yuxin",
+        "familyName": "Wu",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "ywu3@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Chunwei",
+        "familyName": "Chou",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "chunweichou@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9871-5650",
+        "givenName": "Baptiste",
+        "familyName": "Dafflon",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "bdafflon@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Luca",
+        "familyName": "Peruzzo",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "lperuzzo@lbl.gov"
+      }
+    ],
+    "contributor": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9045-1160",
+        "givenName": "Zarine",
+        "familyName": "Kakalia",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "zarinekakalia@berkeley.edu"
+      }
+    ],
+    "datePublished": "2021",
+    "keywords": [
+      "CO2 concentration and flux",
+      "photosynthetic active radiation flux",
+      "wave radiation",
+      "oxygen concentration",
+      "water content",
+      "temperature",
+      "electrical conductivity",
+      "soil water potential",
+      "rainfall precipitation",
+      "wind direction and speed",
+      "air temperature",
+      "vapor pressure",
+      "lightning strikes"
+    ],
+    "variableMeasured": [
+      "Atmopheric Deposition",
+      "Meteorology \u2013 weather stations",
+      "sensor depth",
+      "Soil Moisture",
+      "Soil Temperature",
+      "Carbon Fluxes (Vegetation)"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry.The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C ; Kakalia Z ; Banfield J ; Berkelhammer M ; Brodie E ; Christianson D ; Dafflon B ; Carbone M S ; Carroll R ; Chadwick K D ; Christensen J ; Enquist B J ; Fox P ; Henderson M ; Gochis D ; Kueppers L ; Powell T ; Matheus Carnevali P ; Singha K ; Sorensen P ; Tokunaga T ; Versteeg R ; Wilkins M ; Williams K ; Worsham M ; Wu Y ; Agarwal D (2020): Location Identifiers, Metadata, and Map for Field Measurements at the East River Watershed, Colorado, USA. Watershed Function SFA. doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.05
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.88,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2019-10-11",
+      "endDate": "2020-04-20",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-6953-0179",
+      "givenName": "Yuxin",
+      "familyName": "Wu",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "email": "ywu3@lbl.gov"
+    },
+    "citation": [
+      "Additional metadata on specific locations within the watershed are provided in the following related data package:",
+      "Varadharajan C ; Kakalia Z ; Banfield J ; Berkelhammer M ; Brodie E ; Christianson D ; Dafflon B ; Carbone M S ; Carroll R ; Chadwick K D ; Christensen J ; Enquist B J ; Fox P ; Henderson M ; Gochis D ; Kueppers L ; Powell T ; Matheus Carnevali P ; Singha K ; Sorensen P ; Tokunaga T ; Versteeg R ; Wilkins M ; Williams K ; Worsham M ; Wu Y ; Agarwal D (2020): Location Identifiers, Metadata, and Map for Field Measurements at the East River Watershed, Colorado, USA. Watershed Function SFA. doi:10.15485/1660962"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "Principal Investigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "Refer to the uploaded file of ER-PHS Field Notes and Metadata descriptions\nEast River pilot sites installation campaign (Oct 8, 2019). Soil sensor depths: S1-115cm (Note if site is ER-PHS4 depth = 106 cm); S2-60cm; S3-30cm; S4-10cm; S5 \u2013 30cm (WP), S6-weather station. Sensor 1-4 are Teros12 soil moisture/conductivity/temperature, Sensor 5 is MPS6 (TEROS 21) water potential. For Teros12 depth is top prone of the sensor, distance between top and bottom prone is 5 cm."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-ccf67de650307d1-20210528T224647256180",
+        "encodingFormat": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "identifier": "ess-dive-ccf67de650307d1-20210528T224647256180",
+        "name": "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.xlsx",
+        "contentSize": 1105.091796875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-ac3a2965d26f34b-20210528T224651904655",
+        "encodingFormat": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "identifier": "ess-dive-ac3a2965d26f34b-20210528T224651904655",
+        "name": "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.xlsx",
+        "contentSize": 1020.6201171875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-ddc493547248930-20210528T224644989874",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-ddc493547248930-20210528T224644989874",
+        "name": "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.csv",
+        "contentSize": 803.1455078125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-56dea4bc1f2f939-20210528T224656276982",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-56dea4bc1f2f939-20210528T224656276982",
+        "name": "ER-PHS2_Field Dataset_2019_Oct11 to 2020_Apr03.csv",
+        "contentSize": 966.8896484375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-ac3449f8389ce37-20210528T224648148395",
+        "encodingFormat": "application/pdf",
+        "identifier": "ess-dive-ac3449f8389ce37-20210528T224648148395",
+        "name": "ER-PHS_FieldNote_2019_10_08.pdf",
+        "contentSize": 301.1787109375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-e25090e96f6c139-20210528T224648524554",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-e25090e96f6c139-20210528T224648524554",
+        "name": "ER-PHS3_Field dataset_2019_Oct12.csv",
+        "contentSize": 2.345703125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-0ff690b02b55955-20210528T224652429476",
+        "encodingFormat": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "identifier": "ess-dive-0ff690b02b55955-20210528T224652429476",
+        "name": "ER-PHS_FieldNote_2019_10_08.docx",
+        "contentSize": 13.451171875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-ff9fae12d75da49-20210528T224647789075",
+        "encodingFormat": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "identifier": "ess-dive-ff9fae12d75da49-20210528T224647789075",
+        "name": "ER-PHS_Metadata Despription.xlsx",
+        "contentSize": 11.0869140625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-ee4c16912a03091-20210528T224649798419",
+        "encodingFormat": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "identifier": "ess-dive-ee4c16912a03091-20210528T224649798419",
+        "name": "ER-PHS4_Field Dataset_2019_Oct14 to 2020_Apr03.xlsx",
+        "contentSize": 839.0771484375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-87dfb85f9f47dd1-20210528T224648871449",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-87dfb85f9f47dd1-20210528T224648871449",
+        "name": "ER-PHS_Metadata Despription.csv",
+        "contentSize": 5.1044921875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-92aacff5d31c73b-20210528T224654008262",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-92aacff5d31c73b-20210528T224654008262",
+        "name": "ER-PHS1_Field dataset_2019_Oct11 to_2020_Mar20.csv",
+        "contentSize": 903.5830078125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-18fbe36628554f7-20210528T224652769569",
+        "encodingFormat": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "identifier": "ess-dive-18fbe36628554f7-20210528T224652769569",
+        "name": "ER-PHS3_Field dataset_2019_Oct12.xlsx",
+        "contentSize": 11.9580078125
+      }
+    ]
+  }
+}
