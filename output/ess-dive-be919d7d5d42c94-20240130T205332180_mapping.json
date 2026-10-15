@@ -1,0 +1,118 @@
+{
+  "index": 17,
+  "dataset_identifier": "ess-dive-be919d7d5d42c94-20240130T205332180",
+  "doi": "doi:10.15485/2283406",
+  "archive_repository": "ESS-DIVE",
+  "inclusion_decision": "include",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    "FieldData/Soil_Moisture_Data/TMC1.csv",
+    "FieldData/Soil_Moisture_Data/TMC2.csv",
+    "FieldData/Soil_Moisture_Data/TMC4.csv",
+    "FieldData/Soil_Moisture_Data/TMC5.csv",
+    "FieldData/Soil_Moisture_Data/TMC6.csv"
+  ],
+  "location_metadata_files": [
+    "Locations.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "DateTime",
+        "source_files": [
+          "FieldData/Soil_Moisture_Data/TMC1.csv",
+          "FieldData/Soil_Moisture_Data/TMC2.csv",
+          "FieldData/Soil_Moisture_Data/TMC4.csv",
+          "FieldData/Soil_Moisture_Data/TMC5.csv",
+          "FieldData/Soil_Moisture_Data/TMC6.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse 'YYYY-MM-DD hh:mm:ss' local timestamps and convert to ISO 8601 UTC. Hourly-averaged sensor records.",
+        "unit_conversion": "Localize to Etc/GMT+7 (fixed MST, Crested Butte CO) then convert to UTC."
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "MC_<depth>m",
+        "source_files": [
+          "FieldData/Soil_Moisture_Data/TMC1.csv",
+          "FieldData/Soil_Moisture_Data/TMC2.csv",
+          "FieldData/Soil_Moisture_Data/TMC4.csv",
+          "FieldData/Soil_Moisture_Data/TMC5.csv",
+          "FieldData/Soil_Moisture_Data/TMC6.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Parse float depth from moisture-content column name 'MC_<depth>m' (e.g. MC_0.1m -> 0.1). Sensors installed at 0.1, 0.3, 0.6, 0.8 m.",
+        "unit_conversion": "None; column-name depth is already in meters."
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "MC_<depth>m",
+        "source_files": [
+          "FieldData/Soil_Moisture_Data/TMC1.csv",
+          "FieldData/Soil_Moisture_Data/TMC2.csv",
+          "FieldData/Soil_Moisture_Data/TMC4.csv",
+          "FieldData/Soil_Moisture_Data/TMC5.csv",
+          "FieldData/Soil_Moisture_Data/TMC6.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Wide-to-long melt of MC_* moisture-content columns (Teros 12 sensors). Temperature (T_*) and electrical-conductivity (EC_*) columns excluded.",
+        "unit_conversion": "None; source units are V/V = m3 m-3."
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": [
+          "FieldData/Soil_Moisture_Data/TMC1.csv",
+          "FieldData/Soil_Moisture_Data/TMC2.csv",
+          "FieldData/Soil_Moisture_Data/TMC4.csv",
+          "FieldData/Soil_Moisture_Data/TMC5.csv",
+          "FieldData/Soil_Moisture_Data/TMC6.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Derive site_id from the data filename stem (TMC1, TMC2, TMC4, TMC5, TMC6); matches the 'ID' column in Locations.csv.",
+        "unit_conversion": null
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": [
+          "FieldData/Soil_Moisture_Data/TMC1.csv",
+          "FieldData/Soil_Moisture_Data/TMC2.csv",
+          "FieldData/Soil_Moisture_Data/TMC4.csv",
+          "FieldData/Soil_Moisture_Data/TMC5.csv",
+          "FieldData/Soil_Moisture_Data/TMC6.csv"
+        ],
+        "destination_variable": "replicate",
+        "transformation": "Single sensor per site+depth; replicate set to 1.",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Northing",
+        "source_files": [
+          "Locations.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Look up 'Northing' for each site 'ID' in Locations.csv.",
+        "unit_conversion": "Reproject from EPSG:32613 (NAD83/WGS84 UTM Zone 13N, meters) to EPSG:4326 (decimal degrees)."
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Easting",
+        "source_files": [
+          "Locations.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Look up 'Easting' for each site 'ID' in Locations.csv.",
+        "unit_conversion": "Reproject from EPSG:32613 (NAD83/WGS84 UTM Zone 13N, meters) to EPSG:4326 (decimal degrees)."
+      }
+    }
+  }
+}
