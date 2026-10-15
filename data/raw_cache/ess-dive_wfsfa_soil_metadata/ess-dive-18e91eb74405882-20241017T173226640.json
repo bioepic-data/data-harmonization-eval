@@ -1,0 +1,157 @@
+{
+  "id": "ess-dive-18e91eb74405882-20260403T192628125",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/1909712",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-18e91eb74405882-20260403T192628125",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-18e91eb74405882-20241017T173226640",
+  "dateUploaded": "2026-04-03T19:26:30.018Z",
+  "dateModified": "2026-04-03T19:26:30.839Z",
+  "isPublic": true,
+  "citation": "Simonpietri A; Carbone M (2026): Raw soil carbon dioxide, moisture, temperature and micrometeorological data in the East River Watershed, Colorado June 2021-June 2024. (DE-SC0021139). Ecohydrological controls on root and microbial respiration in the East River watershed of Colorado. Dataset. doi:10.15485/1909712",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/1909712",
+    "name": "Raw soil carbon dioxide, moisture, temperature and micrometeorological data in the East River Watershed, Colorado June 2021-June 2024. (DE-SC0021139)",
+    "description": [
+      "This dataset contains raw data from four tripod stations along an elevation gradient on Snodgrass Mountain in the East River Watershed, CO, USA. Each station contains a datalogger connected to 3 soil Carbon Dioxide CO2 gas probes, 3 soil temperature/moisture sensors and a micrometeorological station. Sensors are scanned every minute, and the 30 minute average is reported. The file snodgrass_soil_ESS.csv contains raw data, a row of column descriptors, and units of measurements. some data processing and QA/QC was done to filter out data from sensors that went bad and extreme outliers. CO2 sensors that went bad were replaced with new sensors as soon as possible. This research was performed to investigate the ecohydrological linkages of belowground carbon processes in the East River watershed forested communities to better understand how these ecosystems will respond to a changing cold-season moisture input.",
+      "This is the second version of this data set and was modified on 10/01/2024. The primary change in the data was the addition of data from the fall of 2022 to June of 2024. In addition, minor QA/QC was done to filter out data from sensors that went bad and extreme outliers. THe filtered data are now NA's in this data frame and primarily the CO2 sensors. Limited to no QA/QC has been done on the other environmental data.",
+      "This is now the third version of the data set, and was modified 03/25/2026. The primary change in the data was the addition of data from the June of 2024 to December 2025. Further r QA/QC was done with the new data to filter out bad data from faulty sensors and extreme outliers. The filtered data are now NA's in this data frame and primarily the CO2 sensors. Limited to no QA/QC has been done on the other environmental data. ##This additional data was funded under DE-SC0024218( Responses of Plant and Microbial Respiration Sources to Changing Cold Season Climate Drivers in the East River Watershed)"
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-6671-1487",
+        "givenName": "Austin",
+        "familyName": "Simonpietri",
+        "affiliation": "Northern Arizona University Center for Ecosystem Science and Communication",
+        "email": "ats327@nau.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-7832-7009",
+        "givenName": "Mariah",
+        "familyName": "Carbone",
+        "affiliation": "Northern Arizona University Center for Ecosystem Science and Communication",
+        "email": "mariah.carbon@nau.edu"
+      }
+    ],
+    "contributor": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-0148-6714",
+        "givenName": "Andrew",
+        "familyName": "Richardson",
+        "affiliation": "Northern Arizona University Center for Ecosystem Science and Communication",
+        "email": "andrew.richardson@nau.edu"
+      }
+    ],
+    "datePublished": "2026",
+    "keywords": [
+      "Soil CO2",
+      "Soil Moisture",
+      "Soil Temperature",
+      "Aspen",
+      "Mixed-Conifer",
+      "Soil Respiration",
+      "EARTH SCIENCE > LAND SURFACE > SOILS"
+    ],
+    "variableMeasured": [
+      "Air temperature",
+      "soil temperature",
+      "precipitation",
+      "Soil CO2 concentration",
+      "soil water content",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL TEMPERATURE"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "These data were collected at 4 sites along the Snodgrass Mountain trail in the East River Watershed of Colorado USA (https://www.alltrails.com/trail/us/colorado/snodgrass-mountain-trail). The trail begins near Gothic Road in meadow conditions and then climbs through aspen groves before transitioning to conifers (spruce and fir). Each of the sites provided in this data package is located within 50-100 meters of the Snodgrass Mountain trail that begins where the Gothic Road transitions from paved to dirt. The Snodgrass Mountain trail ends at the weather station at the top of the Mountain and this is where the upper most site is. The latitude and longitude of each site is included with the data file and the sites can be easily located by identifying the solar panels on top of tripods.",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.94781,
+            "longitude": -106.9865
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.92084,
+            "longitude": -106.9633
+          }
+        ]
+      }
+    ],
+    "award": [
+      "DE-SC0021139",
+      "DE-SC0024218"
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      },
+      {
+        "@type": "Organization",
+        "name": "Rocky Mountain Biological Laboratory"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2021-06-24",
+      "endDate": "2024-06-08",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-7832-7009",
+      "givenName": "Mariah",
+      "familyName": "Carbone",
+      "affiliation": "Northern Arizona University Center for Ecosystem Science and Communication",
+      "email": "mariah.carbone@nau.edu"
+    },
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "140a85c4-8a2d-4521-9b21-0ff2f97376c2"
+      },
+      "name": "Ecohydrological controls on root and microbial respiration in the East River watershed of Colorado",
+      "member": {
+        "@type": "Person",
+        "givenName": "Mariah",
+        "familyName": "Carbone",
+        "jobTitle": "principalInvestigator",
+        "affiliation": "Northern Arizona University, Flagstaff, AZ",
+        "email": "mariah.carbone@nau.edu"
+      }
+    },
+    "measurementTechnique": [
+      "Field sites:\nThese measurements are obtained from four different field sites up an elevational gradient on Snodgrass Mountain in Crested Butte, Colorado USA. These sites were established by late June 2021. The sites are split into two different forest types throughout the elevation profile: deciduous (Populus tremuloides) at 3023m, and 3141m above sea level, and mix conifer (Picea englemannii and Abies lasiocarpa) at 3152m and 3363m above sea level. These sites are co-located with, and complement, plots established by Berkelhammer/Still (DE-SC0019210) and LBNL SFA Watershed hydrologic research.",
+      "Soil Profile Measurements:\nEach site has soil profile measurements of soil CO2, soil moisture and soil temperature at three depths 50 cm, 15 cm and 5 cm below the soil surface. In June of 2021 soil pits were dug to 50 cm depth, upon digging each horizon layer was separated and placed in corresponding order to allow for best refilling of the soil profile. PVC tubes were placed at each depth (50cm, 15cm, 5 cm) and (Eosense eosGP) CO2 probes that measure CO2 concentration (ppm) using non-dispersive infrared (NDIR) sensing were placed within PVC tubes at the respective soil surface. The remaining headspace of the PVC tubes was filled with packing foam, then the top of the PVC was capped and sealed with putty. Soil moisture and temperature probes (Campbell Sci. CS655) were inserted horizontally within the soil pit at the same depths as the CO2 probes (50, 15, and 5 cm). Once all the probes were situated, the pit was refilled in the corresponding order of the removed soil horizons. All probes are connected to the same (Campbell Sci. CR1000x) datalogger and logged at continuous 30-minute intervals in Mountain Standard Time.\nThe soil CO2 sensors at all sites have been replaced with Vaisala GMP 252 steady state sensors.\nAt the middle sites, elevations of 3141 and 3152m, they were replaced in June of 2024.\nAt the top (3363m) and bottom (3023m) elevations, they were replaced in June of 2025.",
+      "Meteorological measurements:\nAt each site a meteorological sensor (Cambell Sci. ClimaVUETM50) is placed on the top of the tripod at around 3 meters height. Each of these sensors are either under, or near tree canopies, and so rainfall interpretation must consider throughfall effects at each site.",
+      "The only QA/QC that was done on this data set was the filtering out of data from CO2 sensors that had gone bad. Sensors were taken out of the field, and new CO2 sensors were put in the field as soon as possible."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-b8692adf691f36a-20260403T191959190",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-b8692adf691f36a-20260403T191959190",
+        "name": "Snodgrass_ess_vers3.csv",
+        "contentSize": 82036.6767578125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-923c5d104d4d847-20241009T222154328",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-923c5d104d4d847-20241009T222154328",
+        "name": "Snodgrass_ESS.csv",
+        "contentSize": 45469.7900390625
+      }
+    ]
+  }
+}

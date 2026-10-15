@@ -1,0 +1,98 @@
+{
+  "index": 6,
+  "dataset_identifier": "ess-dive-18e91eb74405882-20241017T173226640",
+  "doi": "doi:10.15485/1909712",
+  "archive_repository": "ESS-DIVE",
+  "inclusion_decision": "include",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    "Snodgrass_ESS.csv"
+  ],
+  "location_metadata_files": [
+    "Snodgrass_ESS.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "TIMESTAMP",
+        "source_files": ["Snodgrass_ESS.csv"],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse mm/dd/yy HH:MM timestamps. The file's own descriptor row labels this column date_time \"UTC\", so values are treated as UTC with no local-to-UTC conversion and emitted as ISO 8601 (YYYY-MM-DDTHH:MM:SSZ). NOTE: package measurementTechnique states logging in Mountain Standard Time; the in-file descriptor was treated as authoritative. See notes.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "site",
+        "source_files": ["Snodgrass_ESS.csv"],
+        "destination_variable": "site_id",
+        "transformation": "Direct column mapping (low_aspen, middle_aspen, middle_conifer, high_conifer).",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "VWC_(\\d+)cm",
+        "source_files": ["Snodgrass_ESS.csv"],
+        "destination_variable": "depth_m",
+        "transformation": "Depth embedded in wide-format VWC column names (VWC_5cm, VWC_15cm, VWC_50cm). Melt wide-to-long; extract numeric depth from column name.",
+        "unit_conversion": "Divide by 100 to convert from cm to m."
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "replicate",
+        "transformation": "None; a single sensor per site+depth. Populate with 1.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "VWC_5cm|VWC_15cm|VWC_50cm",
+        "source_files": ["Snodgrass_ESS.csv"],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Melt wide-format VWC columns to long. Source units are m3/m3 per the file's units row; NA and -9999 sentinels set to missing.",
+        "unit_conversion": "None; already in m3 m-3."
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "Not measured. Populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "water_potential": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Not measured. Populate with NA.",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "latitude",
+        "source_files": ["Snodgrass_ESS.csv"],
+        "destination_variable": "latitude",
+        "transformation": "Per-site latitude embedded directly in the data payload (location resolution priority 1). One row per distinct site_id.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "longitude",
+        "source_files": ["Snodgrass_ESS.csv"],
+        "destination_variable": "longitude",
+        "transformation": "Per-site longitude embedded directly in the data payload (location resolution priority 1). One row per distinct site_id.",
+        "unit_conversion": null
+      }
+    }
+  }
+}
