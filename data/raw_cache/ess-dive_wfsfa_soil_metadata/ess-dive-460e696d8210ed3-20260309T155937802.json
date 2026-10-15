@@ -1,0 +1,213 @@
+{
+  "id": "ess-dive-460e696d8210ed3-20260903T221739840",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/3013006",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-460e696d8210ed3-20260903T221739840",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-460e696d8210ed3-20260309T155937802",
+  "dateUploaded": "2026-09-03T22:17:41.046Z",
+  "dateModified": "2026-09-03T22:17:41.195Z",
+  "isPublic": true,
+  "citation": "Falco N; Lamb J; Chen J; Tuvshintugs O; Balde A; Dafflon B; Wainwright H M (2026): Geophysical survey associated with NEON AOP survey, East River, CO 2018. Watershed Function SFA. Dataset. doi:10.15485/3013006",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/3013006",
+    "name": "Geophysical survey associated with NEON AOP survey, East River, CO 2018",
+    "description": [
+      "The package contains data layers developed and used in Falco\u202fet\u202fal.\u202f2024: \u201cEcoImaging: Advanced Sensing to Investigate Plant and Abiotic Hierarchical Spatial Patterns in Mountainous Watersheds\". The package is part of the DOE Watershed Function Science Focus Area (SFA) project and includes geophysical measurements collected at the East River, Colorado, in conjunction with the National Ecological Observatory Network (NEON) Airborne Observation Platform (AOP) survey conducted in June\u202f2018. This dataset provide soil geophysical information and were used to investigate soil-plant relationships.",
+      "The dataset consists of:",
+      "- NEON_2018_EMI_survey.zip: the electromagnetic induction (EMI) survey as shape-file;",
+      "- NEON_plot_TDR.csv: plot\u2011level data from Time\u2011Domain Reflectometry (TDR) measurements, providing:",
+      "* volumetric water content (VWC) in percent (%);",
+      "* soil temperature in degrees Celsius (\u00b0C);",
+      "- file level metadata (flmd.csv)",
+      "- data dictionary (dd.csv) file",
+      "This work was supported by the Watershed Function Science Focus Area at Lawrence Berkeley National Laboratory funded by the US Department of Energy, Office of Science, Biological and Environmental Research under Contract No. DE-AC02-05CH11231."
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-3307-6098",
+        "givenName": "Nicola",
+        "familyName": "Falco",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "nicolafalco@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Jack",
+        "familyName": "Lamb",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "jlamb@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Jiancong",
+        "familyName": "Chen",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "jiancongchen@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Orgil",
+        "familyName": "Tuvshintugs",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "orgiltuvshintugs@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Abdoulaye",
+        "familyName": "Balde",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "lamaranabalde02@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Baptiste",
+        "familyName": "Dafflon",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "bdafflon@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Haruko",
+        "familyName": "M. Wainwright",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "hmwainwright@lbl.gov"
+      }
+    ],
+    "datePublished": "2026",
+    "keywords": [
+      "NEON Campaign 2018",
+      "Soil temperature",
+      "Geophysical survey",
+      "Soil electrical conductivity",
+      "Time domain reflectometry",
+      "ESS-DIVE File Level Metadata Reporting Format",
+      "ESS-DIVE CSV File Formatting Guidelines Reporting Format",
+      "2018 NEON and 2025 CHESS Campaigns"
+    ],
+    "variableMeasured": [
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > ELECTRICAL CONDUCTIVITY",
+      "EARTH SCIENCE > AGRICULTURE > SOILS > SOIL TEMPERATURE"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "The Upper East River (UER), including East River, Washington Gulch, Coal Creek, and Slate River watersheds, is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. This domain covers about 300 squared km with an elevation gradient that ranges between 2700m to 4100m.",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.131
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.812,
+            "longitude": -106.868
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry. The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C. et al. (2023) doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.05
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.88,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "award": [
+      "DEAC0205CH11231"
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2018-06-18",
+      "endDate": "2018-06-30",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0003-3307-6098",
+      "givenName": "Nicola",
+      "familyName": "Falco",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "email": "nicolafalco@lbl.gov"
+    },
+    "citation": [
+      "Other packages linked to this analysis: Falco N ; M. Wainwright H ; Chadwick K D ; Dafflon B ; J. Enquist B ; Unhlemann S ; Breckheimer I ; Lamb J ; Chen J ; Tuvshintugs O ; Balde A ; H. Williams K ; Brodie E (2026): Vegetation classification map and covariates associated with NEON AOP survey, East River, CO 2018. Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1602034 accessed via https://data.ess-dive.lbl.gov/datasets/doi:10.15485/1602034",
+      "Additional metadata on specific locations within the watershed are provided in the following related data package:",
+      "Varadharajan C ; Burrus M ; O'Ryan D ; Kakalia Z ; Alper E ; Banfield J ; Berkelhammer M ; Beutler C ; Boye K ; Brodie E ; Brown W ; Carbone M S ; Carroll R ; Christianson D ; Chou C ; Crystal-Ornelas R ; Chadwick K D ; Christensen J ; Dafflon B ; de Boer G ; Elbashandy H ; Enquist B J ; Feldman D ; Fox P ; Gilbert B ; Gochis D ; Henderson M ; Johnson D ; Kueppers L ; Li L ; Matheus Carnevali P ; Newman A ; Perzan Z ; Pierce S ; Powell T ; Singha K ; Sorensen P ; Sprenger M ; Thibaut R ; Tokunaga T ; Versteeg R ; Wielandt S ; Wilkins M ; Williams K ; Worsham M ; Wong C ; Wu Y ; Zhang D ; Agarwal D (2025): Location Identifiers, Metadata, and Map for Field Measurements at the East-Taylor Watershed Community Observatory, Colorado, USA (Version 3.2). Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1660962"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "principalInvestigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "Geophysical measurements of apparent soil electrical conductivity (ECa) were collected at 11 hillslope sites using an electromagnetic induction-based (EMI) system, a CMD Mini-Explorer (GF Instruments). The system allows acquisitions of soil ECa in mS/m to a depth range of 0.5 m, 1.0 m, and 1.8 m. Every measurement was geotagged using the DGPS system previously described. Measurements at 0.5 m were discarded due to the high noise level. Data acquisition followed the same schedule as the ground field campaign to allow us to compare plot measurements of soil moisture with the acquired soil ECa. Soil volumetric water content and soil temperature were measured at each plot using a soil\u2010moisture\u2010trase\u2010system time domain reflectometer (TDR, 20\u2010cm probe length). We performed three readings for each plot and used the average for the analysis"
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-7e34be35febda95-20260105T175941150",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-7e34be35febda95-20260105T175941150",
+        "name": "dd.csv",
+        "contentSize": 2.2578125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-9489d6105bd150e-20240314T232331152",
+        "encodingFormat": "application/zip",
+        "identifier": "ess-dive-9489d6105bd150e-20240314T232331152",
+        "name": "NEON_2018_EMI_survey.zip",
+        "contentSize": 11228.28125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-c1ed46379a02ffe-20260105T175941157",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-c1ed46379a02ffe-20260105T175941157",
+        "name": "flmd.csv",
+        "contentSize": 1.4150390625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-829a8e12d696df6-20251224T222623377",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-829a8e12d696df6-20251224T222623377",
+        "name": "NEON_plot_TDR.csv",
+        "contentSize": 34.138671875
+      }
+    ]
+  }
+}
