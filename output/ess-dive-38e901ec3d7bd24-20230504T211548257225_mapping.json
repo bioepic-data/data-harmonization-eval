@@ -1,0 +1,74 @@
+{
+  "index": 7,
+  "dataset_identifier": "ess-dive-38e901ec3d7bd24-20230504T211548257225",
+  "doi": "doi:10.15485/1660455",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": ["BM_Merged_T_VWC_0616_1018.csv"],
+  "location_metadata_files": ["BM_EGM_Well_CO2.csv"],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "date.time",
+        "source_files": ["BM_Merged_T_VWC_0616_1018.csv"],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse local datalogger timestamps (format %m/%d/%y %H:%M) and convert to UTC. Local time treated as fixed MST (Etc/GMT+7) consistent with other East River, CO datasets in the project; the package does not state a timezone.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "constant \"BM\"",
+        "source_files": ["BM_Merged_T_VWC_0616_1018.csv"],
+        "destination_variable": "site_id",
+        "transformation": "Single site, Bradley Meadow (BM), East River watershed, CO. Assigned as a constant since the payload has no site column; corroborated by the Location column of BM_EGM_Well_CO2.csv.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "Depth (cm)",
+        "source_files": ["BM_Merged_T_VWC_0616_1018.csv"],
+        "destination_variable": "depth_m",
+        "transformation": "Direct column mapping from sensor installation depth (10, 20, 30, 50, 75, 100, 130 cm).",
+        "unit_conversion": "Divide by 100 to convert from cm to m."
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "Volumetric Water Content",
+        "source_files": ["BM_Merged_T_VWC_0616_1018.csv"],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Direct column mapping from Campbell CS655 sensor output.",
+        "unit_conversion": "None; values already reported as a decimal fraction (m3 m-3)."
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": "constant 1",
+        "source_files": ["BM_Merged_T_VWC_0616_1018.csv"],
+        "destination_variable": "replicate",
+        "transformation": "Assigned 1; a single observation exists per site+depth+timestamp (one sensor per depth).",
+        "unit_conversion": null
+      }
+    },
+    "is_timeseries": {
+      "pattern_1": {
+        "source_pattern": "constant True",
+        "source_files": ["BM_Merged_T_VWC_0616_1018.csv"],
+        "destination_variable": "is_timeseries",
+        "transformation": "Set True; hourly datalogger output from fixed CS655 sensors deployed Jun 2016 - Oct 2018.",
+        "unit_conversion": null
+      }
+    },
+    "location": {
+      "pattern_1": {
+        "source_pattern": "Latitude, Longitude",
+        "source_files": ["BM_EGM_Well_CO2.csv"],
+        "destination_variable": "latitude, longitude",
+        "transformation": "Single site BM coordinates (38.98715, -107.003863) taken from the Latitude/Longitude columns of BM_EGM_Well_CO2.csv; consistent with the package ESS-DIVE spatialCoverage record. qc_flag left empty (coordinates resolved from package files).",
+        "unit_conversion": null
+      }
+    }
+  }
+}
