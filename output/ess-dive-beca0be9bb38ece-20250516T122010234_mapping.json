@@ -1,0 +1,156 @@
+{
+  "index": 1,
+  "dataset_identifier": "ess-dive-beca0be9bb38ece-20250516T122010234",
+  "doi": "doi:10.15485/2566877",
+  "archive_repository": "ESS-DIVE",
+  "inclusion_decision": "include",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    "ER_SMN10.csv",
+    "ER_SMN1B.csv",
+    "ER_SMN30.csv",
+    "ER_SMN3B.csv",
+    "ER_SMN4B.csv",
+    "ER_SMN5B.csv",
+    "ER_SMS1.csv",
+    "ER_SMS2.csv",
+    "ER_SMS3.csv"
+  ],
+  "location_metadata_files": [
+    "Sensor_Location.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "Time",
+        "source_files": [
+          "ER_SMN10.csv",
+          "ER_SMN1B.csv",
+          "ER_SMN30.csv",
+          "ER_SMN3B.csv",
+          "ER_SMN4B.csv",
+          "ER_SMN5B.csv",
+          "ER_SMS1.csv",
+          "ER_SMS2.csv",
+          "ER_SMS3.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse 'Time' with format '%Y-%m-%d %H:%M:%S'; localize from assumed Mountain Standard Time (UTC+7, Etc/GMT+7) and convert to UTC ISO 8601.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "*_at_<j>cm",
+        "source_files": [
+          "ER_SMN10.csv",
+          "ER_SMN1B.csv",
+          "ER_SMN30.csv",
+          "ER_SMN3B.csv",
+          "ER_SMN4B.csv",
+          "ER_SMN5B.csv",
+          "ER_SMS1.csv",
+          "ER_SMS2.csv",
+          "ER_SMS3.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Parse numeric depth j from the '_at_<j>cm' suffix of each measurement column name.",
+        "unit_conversion": "Divide by 100 to convert from cm to m."
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Northing",
+        "source_files": [
+          "Sensor_Location.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Look up 'Northing' for 'site_id' (matched on 'Name') and reproject from UTM Zone 13N to WGS84 latitude.",
+        "unit_conversion": "UTM Zone 13N (EPSG:32613) Easting/Northing in meters reprojected to WGS84 (EPSG:4326) decimal degrees."
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Easting",
+        "source_files": [
+          "Sensor_Location.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Look up 'Easting' for 'site_id' (matched on 'Name') and reproject from UTM Zone 13N to WGS84 longitude.",
+        "unit_conversion": "UTM Zone 13N (EPSG:32613) Easting/Northing in meters reprojected to WGS84 (EPSG:4326) decimal degrees."
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": "*_<k>_at_<j>cm",
+        "source_files": [
+          "ER_SMN10.csv",
+          "ER_SMN30.csv",
+          "ER_SMN5B.csv"
+        ],
+        "destination_variable": "replicate",
+        "transformation": "Number co-located sensors sequentially (starting at 1) when more than one sensor of the same measurement type reports at the same site and depth; otherwise 1.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "site_id",
+        "transformation": "Parse site_id from the source filename stem (e.g., 'ER_SMN10' from 'ER_SMN10.csv'); matched to 'Name' in Sensor_Location.csv.",
+        "unit_conversion": null
+      }
+    },
+    "is_timeseries": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "is_timeseries",
+        "transformation": "Set True: continuous 30-min to hourly logger output (TEROS12 / 5TE) from 2019 to 2024, with repeated observations per site and depth.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "m3_m3_Water_Content*_at_<j>cm, m3_m3_VWC*_at_<j>cm",
+        "source_files": [
+          "ER_SMN10.csv",
+          "ER_SMN1B.csv",
+          "ER_SMN30.csv",
+          "ER_SMN3B.csv",
+          "ER_SMN4B.csv",
+          "ER_SMN5B.csv",
+          "ER_SMS1.csv",
+          "ER_SMS2.csv",
+          "ER_SMS3.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Reshape from wide (one column per sensor/depth) to long format with separate site_id, depth, replicate, and volumetric water content columns. Treat -9999 as missing.",
+        "unit_conversion": "None; source units are m3/m3."
+      }
+    },
+    "soil_water_potential": {
+      "pattern_1": {
+        "source_pattern": "kPa_Potential*_at_<j>cm",
+        "source_files": [
+          "ER_SMN4B.csv",
+          "ER_SMN5B.csv"
+        ],
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Reshape from wide to long format with site_id, depth, replicate, and water potential columns. Treat -9999 as missing.",
+        "unit_conversion": "None; source units are kPa."
+      }
+    },
+    "gravimetric_water_content": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "gravimetric_water_content_gH2O_gs",
+        "transformation": "None; gravimetric water content not reported in source. Populate with NA.",
+        "unit_conversion": null
+      }
+    }
+  }
+}
