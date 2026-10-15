@@ -250,6 +250,10 @@ def _record(report: "AuditReport", tool: str, p: Path, in_bounds: bool,
 
 _DATASET_MODULE = re.compile(r"dataset_0*(\d+)\.py")
 _ANSWER_KEY = re.compile(r"eval_answer_keys|expert_dataset_\d+|expert_mapping_entry")
+# A dataset identifier is long and made of identifier-ish characters. Used to
+# reject junk in --reference-holdout rather than accept it as an identifier
+# that can never match, which would silently weaken severity classification.
+_PLAUSIBLE_IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.:-]{7,}")
 
 
 def _is_answer_key(p: Path) -> bool:
@@ -620,14 +624,40 @@ def main(
     # the point the invigilator is preserved.
     holdout_indices: set[int] = set()
     if reference_holdout is not None and reference_holdout.exists():
-        for token in reference_holdout.read_text().replace(",", " ").split():
+        raw_holdout = reference_holdout.read_text()
+        # Tolerate commas, any whitespace, and a literal backslash-n: this file
+        # is produced by a shell one-liner inside YAML, where a newline escape
+        # can survive as two characters and collapse the whole list into one
+        # token.
+        parsed_from_file = 0
+        for token in raw_holdout.replace("\\n", " ").replace(",", " ").split():
             token = token.strip()
             if not token:
                 continue
             if token.isdigit():
                 holdout_indices.add(int(token))
-            elif token not in holdout_ids:
-                holdout_ids.append(token)
+                parsed_from_file += 1
+            elif _PLAUSIBLE_IDENTIFIER.fullmatch(token):
+                parsed_from_file += 1
+                if token not in holdout_ids:
+                    holdout_ids.append(token)
+            else:
+                typer.echo(f"  ignoring unparseable holdout token: {token!r}", err=True)
+        # Fail closed. Without the reference holdout, nothing matches as
+        # withheld and every finding downgrades to LEAK_RISK — the audit would
+        # pass while the control it implements is switched off. A malformed
+        # file must stop the run, not quietly weaken it.
+        # Count what *this file* contributed, not the merged set: MANIFEST.json
+        # pre-populates holdout_ids with the target identifiers, which would
+        # mask a completely unparseable file.
+        if raw_holdout.strip() and parsed_from_file == 0:
+            typer.echo(
+                f"ERROR: --reference-holdout {reference_holdout} is non-empty but no "
+                "indices or identifiers could be parsed from it. Refusing to audit "
+                "with the holdout unknown, which would downgrade every finding.",
+                err=True,
+            )
+            raise typer.Exit(code=2)
 
     r = audit(trace, env, raw_data_dir=raw_data, repo_root=repo_root,
               extra_roots=list(allow), holdout_identifiers=holdout_ids,

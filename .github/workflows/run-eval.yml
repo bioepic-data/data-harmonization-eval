@@ -138,7 +138,11 @@ jobs:
           # MANIFEST.json deliberately hides it from the agent, and the next
           # step deletes the checkout this mapping lives in. Resolve the
           # indices to identifiers now, outside the agent's boundary.
-          .venv/bin/python -c 'import json,sys; idx={int(t) for t in sys.argv[1].split(",") if t.strip().isdigit()}; m=json.load(open("data/gold/sm_data_harmonization_mapping.json")); print("\\n".join([str(i) for i in sorted(idx)] + [e["dataset_identifier"] for e in m if e.get("index") in idx and e.get("dataset_identifier")]))' \
+          # chr(10) rather than a newline escape: this string passes through
+          # YAML and single-quoted shell before Python sees it, and an escaped
+          # \n survives all three as two literal characters, collapsing the
+          # file to one unparseable token.
+          .venv/bin/python -c 'import json,sys; idx={int(t) for t in sys.argv[1].split(",") if t.strip().isdigit()}; m=json.load(open("data/gold/sm_data_harmonization_mapping.json")); print(*([str(i) for i in sorted(idx)] + [e["dataset_identifier"] for e in m if e.get("index") in idx and e.get("dataset_identifier")]), sep=chr(10))' \
             "$HOLDOUT" > "$AUDITOR_DIR/reference_holdout.txt"
           echo "reference holdout recorded:"; cat "$AUDITOR_DIR/reference_holdout.txt"
           mv .venv "$AUDITOR_DIR/venv"

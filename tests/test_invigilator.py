@@ -339,3 +339,43 @@ def test_unfiltered_mapping_read_is_contaminated(tmp_path):
     r = run_audit(tmp_path, repo, env, raw, [
         ("Read", {"file_path": str(repo / "data/gold/sm_data_harmonization_mapping.json")})])
     assert r.worst_severity == CONTAMINATED and not r.clean
+
+
+def test_malformed_reference_holdout_fails_closed(tmp_path):
+    """A holdout file that parses to nothing must stop the run, not weaken it.
+
+    Without the reference holdout nothing matches as withheld, so every finding
+    downgrades to LEAK_RISK and the audit passes while the control it implements
+    is off. CI once produced exactly this: a newline escape survived YAML and
+    the shell as two literal characters, collapsing the file to one token.
+    """
+    repo, env, raw = make_repo(tmp_path)
+    trace = write_trace(tmp_path / "t.jsonl", [("Read", {"file_path": str(env / "a.md")})])
+    bad = tmp_path / "rh.txt"
+    bad.write_text(r"1\n2\n3\ness-dive-X" + "\n")
+    res = CliRunner().invoke(app, ["--trace", str(trace), "--env", str(env),
+                                   "--repo-root", str(repo),
+                                   "--reference-holdout", str(bad)])
+    # The literal-\n form is now tolerated, so this parses rather than aborting.
+    assert res.exit_code == 0, res.output
+
+    empty_but_junk = tmp_path / "rh2.txt"
+    empty_but_junk.write_text("!!!\n")
+    res2 = CliRunner().invoke(app, ["--trace", str(trace), "--env", str(env),
+                                    "--repo-root", str(repo),
+                                    "--reference-holdout", str(empty_but_junk)])
+    assert res2.exit_code == 2, res2.output
+
+
+def test_literal_backslash_n_holdout_still_classifies(tmp_path):
+    """The CI-malformed form must still resolve withheld datasets."""
+    repo, env, raw = make_repo(tmp_path)
+    gold = repo / "data" / "gold" / "expert_code" / "dataset_06.py"
+    gold.parent.mkdir(parents=True)
+    trace = write_trace(tmp_path / "t.jsonl", [("Read", {"file_path": str(gold)})])
+    rh = tmp_path / "rh.txt"
+    rh.write_text(r"1\n2\n3\n6\n16\n27" + "\n")
+    res = CliRunner().invoke(app, ["--trace", str(trace), "--env", str(env),
+                                   "--repo-root", str(repo), "--reference-holdout", str(rh)])
+    assert res.exit_code == 1, res.output          # dataset 6 is withheld
+    assert "CONTAMINATED" in res.output
