@@ -1,0 +1,35 @@
+{
+  "name": "fold-07-target-15",
+  "target_indices": [
+    15
+  ],
+  "target_identifiers": [
+    "ess-dive-987726ef1235abc-20230504T210342929747"
+  ],
+  "reference_holdout_count": 2,
+  "exemplar_indices": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    16,
+    17,
+    18,
+    23,
+    24,
+    25,
+    27
+  ],
+  "n_exemplars": 26,
+  "sources": {
+    "package": "data/gold/expert_code",
+    "mapping": "data/gold/sm_data_harmonization_mapping.json",
+    "skills": "skills"
+  }
+}
