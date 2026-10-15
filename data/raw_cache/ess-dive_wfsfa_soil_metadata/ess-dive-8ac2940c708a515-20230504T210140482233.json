@@ -1,0 +1,166 @@
+{
+  "id": "ess-dive-8ac2940c708a515-20230504T210140482233",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/1842907",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-8ac2940c708a515-20230504T210140482233",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-9903b0edb8f1fa0-20230407T153814372492",
+  "dateUploaded": "2023-05-04T21:01:41.373Z",
+  "dateModified": "2024-02-08T19:35:23.322Z",
+  "isPublic": true,
+  "citation": "Steltzer H; Wilmer C; Henderson A (2021): Microclimate observations associated with snowmelt experiment gradient sites, East River, Colorado, 2017 to 2020. Watershed Function SFA. Dataset. doi:10.15485/1842907",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/1842907",
+    "name": "Microclimate observations associated with snowmelt experiment gradient sites, East River, Colorado, 2017 to 2020",
+    "description": [
+      "The timing of snowmelt in mountain systems is a main driver of vegetation phenology and production, as well as recharge of soil moisture and ground water. Decreases in maximum snowpack and warmer spring temperatures have led to a higher frequency of early snowmelt. This study combines a natural elevation gradient with an experimental manipulation of snowmelt timing to assess the effect of earlier melt on hillslope and watershed ecohydrological processes. This data package includes csv files with plot and sub-plot level observations of soil temperature (SM_ST.csv), soil moisture (SM_SWC.csv), air temperature (SM_AirT.csv), and relative humidity (SM_rH.csv). The date range of this dataset includes a pre-treatment year (2017), two treatment years (2018 and 2019), and a post-treatment year (2020). Location IDs associated with this data package are: ER-LM, WG-UM, WG-LS, ER-US, and XX-AL. Related data packages include: \u201cColorado Elevation Gradient Snowmelt Manipulation Plant Phenology 2017-2018\u201d and \u201cSensor-based phenology from snowmelt experiment gradient, East River, Colorado, 2017 to 2020\u201d"
+    ],
+    "alternateName": [
+      "paf_335_741"
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-5199-9932",
+        "givenName": "Heidi",
+        "familyName": "Steltzer",
+        "affiliation": "Fort Lewis College",
+        "email": "steltzer_h@fortlewis.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-5244-4824",
+        "givenName": "Chelsea",
+        "familyName": "Wilmer",
+        "affiliation": "Colorado State University",
+        "email": "chelsea.f.wilmer@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9613-5003",
+        "givenName": "Amanda",
+        "familyName": "Henderson",
+        "affiliation": "Rocky Mountain Biological Laboratory",
+        "email": "amanda.henderson3@gmail.com"
+      }
+    ],
+    "datePublished": "2021",
+    "keywords": [
+      "elevation gradient",
+      "soil temperature",
+      "soil water content",
+      "paired-plot design"
+    ],
+    "variableMeasured": [
+      "Air Temperature",
+      "Relative Humidity",
+      "Soil Moisture",
+      "Soil Temperature"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry. The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C. et al. (2020) doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.05
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.88,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2017-05-26",
+      "endDate": "2020-10-23",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0001-5199-9932",
+      "givenName": "Heidi",
+      "familyName": "Steltzer",
+      "affiliation": "Fort Lewis College",
+      "email": "steltzer_h@fortlewis.edu"
+    },
+    "citation": [
+      "Additional metadata on specific locations within the watershed are provided in the following related data package:",
+      "Varadharajan C ; Kakalia Z ; Banfield J ; Berkelhammer M ; Brodie E ; Christianson D ; Dafflon B ; Carbone M S ; Carroll R ; Chadwick K D ; Christensen J ; Enquist B J ; Fox P ; Henderson M ; Gochis D ; Kueppers L ; Powell T ; Matheus Carnevali P ; Singha K ; Sorensen P ; Tokunaga T ; Versteeg R ; Wilkins M ; Williams K ; Worsham M ; Wu Y ; Agarwal D (2020): Location Identifiers, Metadata, and Map for Field Measurements at the East River Watershed, Colorado, USA. Watershed Function SFA. doi:10.15485/1660962",
+      "Wilmer C ; Steltzer H (2021): Colorado Elevation Gradient Snowmelt Manipulation Plant Phenology 2017-2018. Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1842905 accessed via https://data.ess-dive.lbl.gov/datasets/doi:10.15485/1842905 on 2022-02-01",
+      "Steltzer H ; Henderson A ; Wilmer C (2021): Sensor-based phenology from snowmelt experiment gradient, East River, Colorado, 2017 to 2020. Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1842910 accessed via https://data.ess-dive.lbl.gov/datasets/doi:10.15485/1842910 on 2022-02-01"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "Principal Investigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "The five sites were established along an elevation gradient from 2774m to 3597m. Four out of the five sites included an experimental early snowmelt manipulation in 2018 and 2019. At each site, six 10mX14m plots were laid out and grouped into pairs, one designated as an experimental early snowmelt plot and one designated as a control plot. At the highest site it was impossible to implement a snowmelt manipulation due to dangerous access in the spring and avalanche risk; this site was purely observational and included three 10mX14m plots.\nMicroclimate sensors were installed at the plot-level for air temperature and relative humidity, and at the sub-plot level for soil water content and soil temperature to capture heterogeneity associated with shrub and non-shrub vegetation. Data ranges for each sensor type were filtered based on a combination of sensor specifications and assumed reasonable values."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-7ed3808ca163e9e-20211207T204230482296",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-7ed3808ca163e9e-20211207T204230482296",
+        "name": "SM_SWC.csv",
+        "contentSize": 50237.3232421875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-4fbeeb98a1a3277-20211207T204249545237",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-4fbeeb98a1a3277-20211207T204249545237",
+        "name": "SM_rH.csv",
+        "contentSize": 20919.833984375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-3201632e6ecd503-20211207T204315893150",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-3201632e6ecd503-20211207T204315893150",
+        "name": "SM_ST.csv",
+        "contentSize": 33035.5703125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-7d952bb13d5a284-20211207T204251147710",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-7d952bb13d5a284-20211207T204251147710",
+        "name": "Microclimate_Sensors.csv",
+        "contentSize": 8.8251953125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-8c4fb726ed0078e-20211207T204148184999",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-8c4fb726ed0078e-20211207T204148184999",
+        "name": "SM_AirT.csv",
+        "contentSize": 27300.7646484375
+      }
+    ]
+  }
+}

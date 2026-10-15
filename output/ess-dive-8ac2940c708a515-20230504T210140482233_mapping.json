@@ -1,0 +1,95 @@
+{
+  "index": 5,
+  "dataset_identifier": "ess-dive-8ac2940c708a515-20230504T210140482233",
+  "doi": "doi:10.15485/1842907",
+  "archive_repository": "ESS-DIVE",
+  "inclusion_decision": "include",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    "SM_SWC.csv"
+  ],
+  "location_metadata_files": null,
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "Date Time",
+        "source_files": [
+          "SM_SWC.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse datetime from 'Date Time' using format '%Y-%m-%d %H:%M:%S' in Etc/GMT+7 (MST, no DST) timezone; convert to UTC. Timezone matches the sibling warming-manipulation package (index 23).",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "SFA_Location",
+        "source_files": [
+          "SM_SWC.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Direct column mapping from 'SFA_Location' (plot/sub-plot identifier, e.g. ER-LMB1L).",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "depth_m",
+        "transformation": "Depth not available. In the sibling package (index 23) depth is joined from sensor_metadata.csv on Sensor.SN, but that sensor-metadata file is NOT staged in this fold. Left as NaN.",
+        "unit_conversion": null
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": "Sensor.SN",
+        "source_files": [
+          "SM_SWC.csv"
+        ],
+        "destination_variable": "replicate",
+        "transformation": "Number replicates with cumcount+1 within each (datetime_UTC, site_id, depth_m) group; a few SFA_Locations host two sensors (distinct Sensor.SN), yielding replicate values 1-2.",
+        "unit_conversion": null
+      }
+    },
+    "is_timeseries": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "is_timeseries",
+        "transformation": "Set True; hourly logger output over 2017-2020 (continuous microclimate sensor deployment).",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "Measurement",
+        "source_files": [
+          "SM_SWC.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Direct column mapping from 'Measurement' (soil water content). Observed range 0.0003-0.5887 is consistent with volumetric water content already expressed in m3 m-3. Note: this dataset comes from an experimental early-snowmelt manipulation (treatment and control plots). The payload lacks a treatment column, and the package's plot_metadata.csv (which labels Treatment in the sibling package, index 23) is NOT staged in this fold, so treatment and control plots cannot be separated; all plots are included and the manipulation is flagged for operator review.",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "latitude",
+        "transformation": "Per-site coordinates not provided in the payload. Package metadata gives only a watershed bounding box (NW/SE corners), not per-site points. The Varadharajan location registry (index 0) referenced by the sibling package is NOT staged in this fold. Coordinates unresolvable; set NaN with qc_flag 'g2'. Coordinates were not invented.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "longitude",
+        "transformation": "Per-site coordinates not provided in the payload. Package metadata gives only a watershed bounding box (NW/SE corners), not per-site points. The Varadharajan location registry (index 0) referenced by the sibling package is NOT staged in this fold. Coordinates unresolvable; set NaN with qc_flag 'g2'. Coordinates were not invented.",
+        "unit_conversion": null
+      }
+    }
+  }
+}
