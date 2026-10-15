@@ -128,11 +128,19 @@ jobs:
         # outside the agent's filesystem boundary for the post-run audit.
         env:
           AUDITOR_DIR: ${{ runner.temp }}/harmonization-invigilator
+          HOLDOUT: ${{ steps.resolve.outputs.holdout }}
         run: |
           set -euo pipefail
           test -x .venv/bin/python
           mkdir -p "$AUDITOR_DIR"
           cp src/folds/invigilator.py "$AUDITOR_DIR/invigilator.py"
+          # The reference holdout decides CONTAMINATED vs LEAK_RISK, but
+          # MANIFEST.json deliberately hides it from the agent, and the next
+          # step deletes the checkout this mapping lives in. Resolve the
+          # indices to identifiers now, outside the agent's boundary.
+          .venv/bin/python -c 'import json,sys; idx={int(t) for t in sys.argv[1].split(",") if t.strip().isdigit()}; m=json.load(open("data/gold/sm_data_harmonization_mapping.json")); print("\\n".join([str(i) for i in sorted(idx)] + [e["dataset_identifier"] for e in m if e.get("index") in idx and e.get("dataset_identifier")]))' \
+            "$HOLDOUT" > "$AUDITOR_DIR/reference_holdout.txt"
+          echo "reference holdout recorded:"; cat "$AUDITOR_DIR/reference_holdout.txt"
           mv .venv "$AUDITOR_DIR/venv"
 
       - name: Replace checkout with the isolated agent workspace
@@ -196,6 +204,8 @@ jobs:
           "$AUDITOR_DIR/venv/bin/python" "$AUDITOR_DIR/invigilator.py" \
             --trace audit/claude-execution.json --env "$GITHUB_WORKSPACE" \
             --repo-root "$GITHUB_WORKSPACE" \
+            --reference-holdout "$AUDITOR_DIR/reference_holdout.txt" \
+            --access-trace audit/access_trace.tsv \
             | tee audit/invigilator_report.txt
 
       - name: Manifest the staged raw inputs

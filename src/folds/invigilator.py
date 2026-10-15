@@ -122,12 +122,58 @@ def under(path: Path, root: Path) -> bool:
         return False
 
 
+# --- Severity -----------------------------------------------------------
+#
+# A single pass/fail bit cannot tell `ls ~/.local/.../site-packages` apart from
+# reading a held-out answer, and conflating them produced spurious run
+# failures. Severity is *derived*: take the character of the action and the
+# location it landed in, then rank the evidential harm. Only CONTAMINATED
+# invalidates a fold and fails the step.
+CONTAMINATED = "CONTAMINATED"   # answer material for a withheld dataset was reachable
+LEAK_RISK = "LEAK_RISK"         # answer location touched; no withheld content shown
+BOUNDARY = "BOUNDARY"           # outside the env, but no answer material there
+IN_BOUNDS = "IN_BOUNDS"         # inside the fold; the normal case
+
+SEVERITY_RANK = {IN_BOUNDS: 0, BOUNDARY: 1, LEAK_RISK: 2, CONTAMINATED: 3}
+
+# --- Access character ---------------------------------------------------
+#
+# `grep -r pat data/gold/` returns file *contents* while looking like an
+# enumeration, so it is kept apart from name-only listing: treating both as
+# "enumerate" would let the highest-bandwidth leak through as a warning.
+READ = "read"                            # contents of a named file
+ENUMERATE_CONTENT = "enumerate_content"  # grep/rg — searches *inside* files
+ENUMERATE_NAMES = "enumerate_names"      # ls/find/glob — names only
+TRAVERSE = "traverse"                    # cd — intent to look, nothing shown
+WRITE = "write"
+ACCESS = "access"                        # unclassified path mention
+
+_CONTENT_SEARCH = re.compile(r"(?:^|[\s;|&(])(?:grep|egrep|fgrep|rg|ack|ag|zgrep)\b")
+_NAME_SEARCH = re.compile(r"(?:^|[\s;|&(])(?:ls|find|tree|stat|du|basename|dirname)\b")
+_CONTENT_READ = re.compile(
+    r"(?:^|[\s;|&(])(?:cat|head|tail|less|more|od|xxd|strings|cp|rsync|install|sed|awk|python3?|jq)\b"
+)
+
+
+def _bash_character(segment: str) -> str:
+    """Best-effort character of a Bash segment, biased toward the worse case."""
+    if _CONTENT_SEARCH.search(segment):
+        return ENUMERATE_CONTENT
+    if _CONTENT_READ.search(segment):
+        return READ
+    if _NAME_SEARCH.search(segment):
+        return ENUMERATE_NAMES
+    return ACCESS
+
+
 @dataclass
 class Violation:
     tool: str
     path: str
     reason: str
     context: str
+    severity: str = CONTAMINATED
+    character: str = ACCESS
 
 
 @dataclass
@@ -154,6 +200,8 @@ class Access:
     in_bounds: bool
     zone: str
     context: str
+    severity: str = IN_BOUNDS
+    character: str = ACCESS
 
 
 # Information zones inside a fold environment, matched against the env-relative
@@ -192,10 +240,71 @@ def _zone(p: Path, in_bounds: bool, env_dir: Path) -> str:
 
 
 def _record(report: "AuditReport", tool: str, p: Path, in_bounds: bool,
-            allowed: list[Path], env_dir: Path, context: str) -> None:
+            allowed: list[Path], env_dir: Path, context: str,
+            severity: str = IN_BOUNDS, character: str = ACCESS) -> None:
     report.accesses.append(
-        Access(tool, str(p), in_bounds, _zone(p, in_bounds, env_dir), context[:200])
+        Access(tool, str(p), in_bounds, _zone(p, in_bounds, env_dir), context[:200],
+               severity=severity, character=character)
     )
+
+
+_DATASET_MODULE = re.compile(r"dataset_0*(\d+)\.py")
+_ANSWER_KEY = re.compile(r"eval_answer_keys|expert_dataset_\d+|expert_mapping_entry")
+
+
+def _is_answer_key(p: Path) -> bool:
+    """A path whose only purpose is to hold answers."""
+    return bool(_ANSWER_KEY.search(str(p)))
+
+
+def _touches_withheld(p: Path, raw: str, holdout_ids: list[str],
+                      holdout_indices: set[int]) -> Optional[bool]:
+    """Does this access name a dataset withheld from this fold's exemplars?
+
+    True = a withheld dataset; False = one that was *not* withheld, whose
+    expert code the agent already had legitimately; None = the access does not
+    identify a dataset at all — a whole-directory search, or the unfiltered
+    mapping, both of which span withheld material.
+    """
+    hay = f"{p}\n{raw}"
+    if any(h and h in hay for h in holdout_ids):
+        return True
+    if m := _DATASET_MODULE.search(hay):
+        return int(m.group(1)) in holdout_indices
+    return None
+
+
+def _severity(character: str, p: Path, raw: str, repo_root: Path,
+              holdout_ids: list[str], holdout_indices: set[int]) -> str:
+    """Rank an out-of-bounds access.
+
+    Not every out-of-bounds access is a leak, and not every answer-location
+    touch shows withheld content:
+
+    * nothing answer-bearing out there → BOUNDARY;
+    * an answer-key path exists only to hold answers, so arriving there is
+      never incidental → CONTAMINATED. This is also the case the ``cd`` rule
+      was written for: ``cd <answer dir> && cat expert_dataset_07.py`` leaves a
+      single-component read that is never tokenised, so the traversal is the
+      only evidence there is;
+    * a search that reads *inside* files across an answer directory spans
+      withheld material whether or not it names a dataset → CONTAMINATED;
+    * a read of answer material for a withheld dataset → CONTAMINATED; for a
+      dataset never withheld, the agent already had that exemplar → LEAK_RISK;
+    * merely arriving somewhere, or listing names → LEAK_RISK.
+    """
+    if not _forbidden(p, repo_root):
+        return BOUNDARY
+    if _is_answer_key(p):
+        return CONTAMINATED
+    if character == ENUMERATE_CONTENT:
+        return CONTAMINATED
+    if character in (READ, WRITE):
+        withheld = _touches_withheld(p, raw, holdout_ids, holdout_indices)
+        # None = unattributable (e.g. the unfiltered mapping, which carries
+        # every held-out entry); treat as contaminated rather than guess.
+        return LEAK_RISK if withheld is False else CONTAMINATED
+    return LEAK_RISK
 
 
 @dataclass
@@ -215,6 +324,19 @@ class AuditReport:
         for a in self.accesses:
             counts[a.zone] = counts.get(a.zone, 0) + 1
         return dict(sorted(counts.items(), key=lambda kv: (-kv[1], kv[0])))
+
+    def severity_counts(self) -> dict[str, int]:
+        """Findings by severity, worst first."""
+        counts: dict[str, int] = {}
+        for v in self.violations:
+            counts[v.severity] = counts.get(v.severity, 0) + 1
+        return dict(sorted(counts.items(), key=lambda kv: -SEVERITY_RANK.get(kv[0], 0)))
+
+    @property
+    def worst_severity(self) -> str:
+        """Highest severity recorded; IN_BOUNDS when there are no findings."""
+        return max((v.severity for v in self.violations),
+                   key=lambda s: SEVERITY_RANK.get(s, 0), default=IN_BOUNDS)
 
 
 def _reason(p: Path, repo_root: Path, holdout_ids: list[str], raw: str) -> str:
@@ -347,8 +469,21 @@ def audit(
     repo_root: Optional[Path] = None,
     extra_roots: Optional[list[Path]] = None,
     holdout_identifiers: Optional[list[str]] = None,
+    holdout_indices: Optional[set[int]] = None,
 ) -> AuditReport:
-    """Audit a trace; return an :class:`AuditReport` (``clean`` False on any violation)."""
+    """Audit a trace; return an :class:`AuditReport`.
+
+    ``clean`` stays True unless something reached CONTAMINATED. Lesser findings
+    are still recorded as violations carrying their own severity — a fold can
+    be worth reviewing without being worth invalidating.
+
+    ``holdout_identifiers`` / ``holdout_indices`` are this fold's *reference
+    holdout*: the datasets withheld from its exemplars. They decide whether
+    answer material the agent touched was withheld from it or was already
+    legitimately available — the difference between CONTAMINATED and
+    LEAK_RISK. They are passed in rather than read from ``MANIFEST.json``,
+    which deliberately hides holdout identities from the agent.
+    """
     repo_root = Path(repo_root or Path.cwd()).resolve()
 
     def _abs(p) -> Path:
@@ -362,25 +497,29 @@ def audit(
     allowed = [env_dir] + ([_abs(raw_data_dir)] if raw_data_dir is not None else []) \
         + [_abs(p) for p in (extra_roots or [])]
     holdout_ids = holdout_identifiers or []
+    holdout_idx = set(holdout_indices or ())
 
     report = AuditReport(clean=True, allowed_roots=[str(r) for r in allowed])
     tool_uses = load_tool_uses(trace_path)
     report.n_tool_calls = len(tool_uses)
 
-    def check(tool: str, abs_path: Path, raw: str):
+    def check(tool: str, abs_path: Path, raw: str, character: str = ACCESS):
         if any(under(abs_path, r) for r in IGNORED_ROOTS):
-            _record(report, tool, abs_path, True, allowed, env_dir, raw)
+            _record(report, tool, abs_path, True, allowed, env_dir, raw, IN_BOUNDS, character)
             return True  # /dev/null redirects etc. — not data access
         if any(under(abs_path, r) for r in allowed):
-            _record(report, tool, abs_path, True, allowed, env_dir, raw)
+            _record(report, tool, abs_path, True, allowed, env_dir, raw, IN_BOUNDS, character)
             return True
-        _record(report, tool, abs_path, False, allowed, env_dir, raw)
+        sev = _severity(character, abs_path, raw, repo_root, holdout_ids, holdout_idx)
+        _record(report, tool, abs_path, False, allowed, env_dir, raw, sev, character)
         if warning := _benign_external_input(abs_path, repo_root):
             report.warnings.append(Warning(tool, str(abs_path), warning, raw[:200]))
             return False
-        report.clean = False
+        if sev == CONTAMINATED:
+            report.clean = False
         report.violations.append(
-            Violation(tool, str(abs_path), _reason(abs_path, repo_root, holdout_ids, raw), raw[:200])
+            Violation(tool, str(abs_path), _reason(abs_path, repo_root, holdout_ids, raw),
+                      raw[:200], severity=sev, character=character)
         )
         return False
 
@@ -391,17 +530,20 @@ def audit(
                 continue
             if name == "Read":
                 report.n_reads += 1
-            if check(name, lexical_resolve(fp, str(repo_root)), fp) and name == "Read":
+            char = READ if name == "Read" else WRITE
+            if check(name, lexical_resolve(fp, str(repo_root)), fp, char) and name == "Read":
                 report.reads_in_bounds += 1
         elif name in ("Grep", "Glob", "LS"):
+            # Grep searches inside files; Glob and LS reveal names only.
+            char = ENUMERATE_CONTENT if name == "Grep" else ENUMERATE_NAMES
             p = inp.get("path")
             if p:
-                check(name, lexical_resolve(str(p), str(repo_root)), str(p))
+                check(name, lexical_resolve(str(p), str(repo_root)), str(p), char)
             for key in ("glob", "pattern"):  # a path-bearing glob can leak too
                 val = inp.get(key)
                 if val:
                     for tok in _PATH_TOKEN.findall(str(val)):
-                        check(name, lexical_resolve(tok, str(repo_root)), str(val))
+                        check(name, lexical_resolve(tok, str(repo_root)), str(val), char)
         elif name == "Bash":
             cmd = inp.get("command", "")
             report.bash_commands.append(cmd)
@@ -424,16 +566,26 @@ def audit(
                     # branch consistent with `check()` and with the root-based
                     # policy described in the module docstring.
                     in_bounds = any(under(target, r) for r in allowed)
-                    _record(report, "Bash(cd)", target, in_bounds, allowed, env_dir, seg.strip())
+                    sev = IN_BOUNDS if in_bounds else _severity(
+                        TRAVERSE, target, seg, repo_root, holdout_ids, holdout_idx)
+                    _record(report, "Bash(cd)", target, in_bounds, allowed, env_dir,
+                            seg.strip(), sev, TRAVERSE)
                     if not in_bounds and _forbidden(target, repo_root):
-                        report.clean = False
+                        # Arriving somewhere proves intent, not exposure, so a
+                        # bare cd ranks below a read of the same location —
+                        # except at an answer-key path, where _severity already
+                        # returns CONTAMINATED.
+                        if sev == CONTAMINATED:
+                            report.clean = False
                         report.violations.append(
                             Violation("Bash(cd)", str(target),
-                                      _reason(target, repo_root, holdout_ids, seg), seg.strip()))
+                                      _reason(target, repo_root, holdout_ids, seg), seg.strip(),
+                                      severity=sev, character=TRAVERSE))
                     cwd = str(target)
                     continue
+                seg_char = _bash_character(seg)
                 for tok in _path_tokens(seg):
-                    check("Bash", lexical_resolve(tok, cwd), seg.strip())
+                    check("Bash", lexical_resolve(tok, cwd), seg.strip(), seg_char)
     return report
 
 
@@ -448,9 +600,10 @@ def main(
     repo_root: Optional[Path] = typer.Option(None, "--repo-root", help="Repo root (start cwd for relative paths); defaults to the current dir."),
     allow: list[Path] = typer.Option([], "--allow", help="Extra allowed root(s)."),
     show_bash: bool = typer.Option(False, "--show-bash", help="Print every Bash command for human review."),
-    access_trace: Optional[Path] = typer.Option(None, "--access-trace", help="Write a TSV of every resolved access (tool, in_bounds, zone, path)."),
+    access_trace: Optional[Path] = typer.Option(None, "--access-trace", help="Write a TSV of every resolved access (tool, severity, character, zone, path)."),
+    reference_holdout: Optional[Path] = typer.Option(None, "--reference-holdout", help="File of this fold's reference-holdout dataset identifiers and/or indices, one per line. Decides CONTAMINATED vs LEAK_RISK."),
 ) -> None:
-    """Audit a run's trace; exit non-zero if any out-of-bounds access is found."""
+    """Audit a run's trace; exit non-zero only on CONTAMINATED."""
     holdout_ids: list[str] = []
     manifest = env / "MANIFEST.json"
     if manifest.exists():
@@ -462,8 +615,23 @@ def main(
             "target_identifiers", manifest_data.get("holdout_identifiers", [])
         ) if h]
 
+    # The manifest hides the reference holdout from the agent, so the full set
+    # is supplied out-of-band by the workflow, which still has the mapping at
+    # the point the invigilator is preserved.
+    holdout_indices: set[int] = set()
+    if reference_holdout is not None and reference_holdout.exists():
+        for token in reference_holdout.read_text().replace(",", " ").split():
+            token = token.strip()
+            if not token:
+                continue
+            if token.isdigit():
+                holdout_indices.add(int(token))
+            elif token not in holdout_ids:
+                holdout_ids.append(token)
+
     r = audit(trace, env, raw_data_dir=raw_data, repo_root=repo_root,
-              extra_roots=list(allow), holdout_identifiers=holdout_ids)
+              extra_roots=list(allow), holdout_identifiers=holdout_ids,
+              holdout_indices=holdout_indices)
 
     typer.echo(f"tool calls: {r.n_tool_calls} | reads: {r.n_reads} ({r.reads_in_bounds} in-bounds)")
     typer.echo("allowed roots:")
@@ -478,19 +646,29 @@ def main(
     if access_trace is not None:
         access_trace.parent.mkdir(parents=True, exist_ok=True)
         with access_trace.open("w") as fh:
-            fh.write("tool\tin_bounds\tzone\tpath\tcontext\n")
+            fh.write("tool\tseverity\tcharacter\tin_bounds\tzone\tpath\tcontext\n")
             for a in r.accesses:
                 ctx = a.context.replace("\t", " ").replace("\n", " ")
-                fh.write(f"{a.tool}\t{a.in_bounds}\t{a.zone}\t{a.path}\t{ctx}\n")
+                fh.write(f"{a.tool}\t{a.severity}\t{a.character}\t{a.in_bounds}"
+                         f"\t{a.zone}\t{a.path}\t{ctx}\n")
         typer.echo(f"\naccess trace written to {access_trace}")
-    if r.clean:
+    if not r.violations:
         typer.echo("\n✅ CLEAN — no out-of-bounds access detected.")
     else:
-        typer.echo(f"\n⚠ {len(r.violations)} VIOLATION(S):")
-        for v in r.violations:
-            typer.echo(f"  [{v.tool}] {v.reason}")
+        # Worst first: the verdict is the first thing a reader needs.
+        ranked = sorted(r.violations, key=lambda v: -SEVERITY_RANK.get(v.severity, 0))
+        summary = ", ".join(f"{n} {s}" for s, n in r.severity_counts().items())
+        typer.echo(f"\n{'⛔' if not r.clean else '⚠'} {len(ranked)} FINDING(S): {summary}")
+        for v in ranked:
+            typer.echo(f"  [{v.severity}/{v.character}] [{v.tool}] {v.reason}")
             typer.echo(f"      path: {v.path}")
             typer.echo(f"      in:   {v.context}")
+        if r.clean:
+            typer.echo("\n✅ No CONTAMINATED finding — the fold stands. "
+                       "Findings above are recorded for review.")
+        else:
+            typer.echo("\n⛔ CONTAMINATED — withheld answer material was reachable; "
+                       "this fold's result is not trustworthy.")
     if r.warnings:
         typer.echo(f"\nℹ {len(r.warnings)} WARNING(S):")
         for w in r.warnings:
