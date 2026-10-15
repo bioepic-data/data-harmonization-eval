@@ -1,0 +1,131 @@
+{
+  "index": 16,
+  "dataset_identifier": "ess-dive-b3d271f19a94e8d-20260114T204512119",
+  "doi": "doi:10.15485/3007697",
+  "archive_repository": "ESS-DIVE",
+  "inclusion_decision": "include",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    "data_ER-PHS1_v1-1.csv",
+    "data_ER-PHS2_v1-1.csv",
+    "data_ER-PHS3_v1-1.csv",
+    "data_ER-PHS4_v1-1.csv",
+    "data_SG-EHS5_v1-1.csv",
+    "data_SG-EHS6_v1-1.csv",
+    "data_SG-EHS7_v1-1.csv",
+    "data_SG-EHS8_v1-1.csv"
+  ],
+  "location_metadata_files": [
+    "metadata_site_v1-1.csv"
+  ],
+  "sensor_metadata_files": [
+    "metadata_instrument_v1-1.csv"
+  ],
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "TIMESTAMP_START",
+        "source_files": [
+          "data_ER-PHS1_v1-1.csv",
+          "data_ER-PHS2_v1-1.csv",
+          "data_ER-PHS3_v1-1.csv",
+          "data_ER-PHS4_v1-1.csv",
+          "data_SG-EHS5_v1-1.csv",
+          "data_SG-EHS6_v1-1.csv",
+          "data_SG-EHS7_v1-1.csv",
+          "data_SG-EHS8_v1-1.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse TIMESTAMP_START with format '%Y-%m-%d %H:%M:%S' in fixed local time (Etc/GMT+7, i.e. UTC-7, per site metadata UTC_OFFSET=-7) and convert to UTC.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "data_(.+?)_v\\d",
+        "source_files": [
+          "data_ER-PHS1_v1-1.csv",
+          "data_ER-PHS2_v1-1.csv",
+          "data_ER-PHS3_v1-1.csv",
+          "data_ER-PHS4_v1-1.csv",
+          "data_SG-EHS5_v1-1.csv",
+          "data_SG-EHS6_v1-1.csv",
+          "data_SG-EHS7_v1-1.csv",
+          "data_SG-EHS8_v1-1.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Site identifier taken from the {SITE_ID} token embedded in each per-site data filename.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "HEIGHT (metadata_instrument_v1-1.csv)",
+        "source_files": [
+          "metadata_instrument_v1-1.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Join each SWC_1_V_1 / SWP_1_1_1 observation column to the instrument metadata by (SITE_ID, VARIABLE); use the sensor installation HEIGHT (negative, below surface) as the measurement depth.",
+        "unit_conversion": "Take absolute value of HEIGHT (already in meters) to express depth below surface as a positive value."
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "SWC_1_\\d_1",
+        "source_files": [
+          "data_ER-PHS1_v1-1.csv",
+          "data_ER-PHS2_v1-1.csv",
+          "data_ER-PHS3_v1-1.csv",
+          "data_ER-PHS4_v1-1.csv",
+          "data_SG-EHS5_v1-1.csv",
+          "data_SG-EHS6_v1-1.csv",
+          "data_SG-EHS7_v1-1.csv",
+          "data_SG-EHS8_v1-1.csv"
+        ],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Melt the SWC_1_V_1 wide columns to long form; one row per timestamp/site/depth. Missing-value code -9999 set to NaN.",
+        "unit_conversion": "Divide by 100 to convert from % to m3 m-3."
+      }
+    },
+    "water_potential": {
+      "pattern_1": {
+        "source_pattern": "SWP_1_1_1",
+        "source_files": [
+          "data_ER-PHS1_v1-1.csv",
+          "data_ER-PHS2_v1-1.csv",
+          "data_ER-PHS3_v1-1.csv",
+          "data_ER-PHS4_v1-1.csv",
+          "data_SG-EHS5_v1-1.csv",
+          "data_SG-EHS6_v1-1.csv",
+          "data_SG-EHS7_v1-1.csv",
+          "data_SG-EHS8_v1-1.csv"
+        ],
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Melt the SWP_1_1_1 column to long form. Already negative kPa; missing-value code +9999 set to NaN (SWP uses +9999 because valid values are negative).",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "LOCATION_LAT",
+        "source_files": [
+          "metadata_site_v1-1.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Look up latitude by matching site_id to SITE_ID in the package site metadata file.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "LOCATION_LONG",
+        "source_files": [
+          "metadata_site_v1-1.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Look up longitude by matching site_id to SITE_ID in the package site metadata file.",
+        "unit_conversion": null
+      }
+    }
+  }
+}
