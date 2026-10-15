@@ -1,6 +1,6 @@
 """Target harmonized schema definition and validation.
 
-Every harmonized dataset must conform to this exact 9-column schema.
+Every harmonized dataset must conform to this exact 8-column schema.
 This module provides validation utilities and constants.
 """
 from __future__ import annotations
@@ -17,7 +17,6 @@ HARMONIZED_COLUMNS = [
     "depth_m",
     "replicate",
     "is_timeseries",
-    "interval_min",
     "volumetric_water_content_m3_m3",
     "gravimetric_water_content_gH2O_gs",
     "water_potential_kPa",
@@ -38,7 +37,6 @@ EXPECTED_DTYPES = {
     "depth_m": "float64",
     "replicate": "float64",  # allows NaN
     "is_timeseries": "bool",
-    "interval_min": "float64",  # allows NaN
     "volumetric_water_content_m3_m3": "float64",
     "gravimetric_water_content_gH2O_gs": "float64",
     "water_potential_kPa": "float64",
@@ -48,7 +46,6 @@ EXPECTED_DTYPES = {
 # Valid ranges for numeric columns (for sanity checks)
 VALID_RANGES = {
     "depth_m": (0.0, 100.0),  # 0 to 100 meters
-    "interval_min": (0.0, 1e6),  # up to ~2 years
     "volumetric_water_content_m3_m3": (0.0, 1.0),  # fraction
     "gravimetric_water_content_gH2O_gs": (0.0, 10.0),  # g/g, generous upper bound
     "water_potential_kPa": (-1e6, 0.0),  # negative, up to -1 MPa

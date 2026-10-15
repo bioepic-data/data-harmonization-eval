@@ -76,11 +76,11 @@ Given a curator bundle (or an operator-supplied equivalent), the harmonizer:
 
 ### 2.3 Target schema
 
-Every harmonized table must contain exactly nine columns
+Every harmonized table must contain exactly eight columns
 (`src/schemas/target_schema.py`):
 
 `datetime_UTC`, `site_id`, `depth_m`, `replicate`, `is_timeseries`,
-`interval_min`, `volumetric_water_content_m3_m3`,
+`volumetric_water_content_m3_m3`,
 `gravimetric_water_content_gH2O_gs`, `water_potential_kPa`.
 
 Canonical units are meters (depth), m³ m⁻³ (VWC), g H₂O g⁻¹ soil (GWC), and kPa

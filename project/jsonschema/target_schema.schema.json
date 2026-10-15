@@ -53,15 +53,6 @@
                         "null"
                     ]
                 },
-                "interval_min": {
-                    "description": "Sampling interval in minutes for time-series records. Stored as a float to allow NaN (missing) values. Nullable.",
-                    "maximum": 1000000.0,
-                    "minimum": 0.0,
-                    "type": [
-                        "number",
-                        "null"
-                    ]
-                },
                 "is_timeseries": {
                     "description": "Whether the record belongs to a time series (true) or is a one-off / point measurement (false).",
                     "type": [
@@ -148,7 +139,7 @@
     "$id": "https://w3id.org/bioepic/data-harmonization-eval/target-schema",
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "additionalProperties": true,
-    "metamodel_version": "1.11.0",
+    "metamodel_version": "1.12.0",
     "title": "target_schema",
     "type": "object",
     "version": null

@@ -153,14 +153,13 @@
         </ul>
       </div>
       <div>
-        <p class="small muted" style="margin:0 0 .3em;">Target schema — 9 columns, fixed units:</p>
+        <p class="small muted" style="margin:0 0 .3em;">Target schema — 8 columns, fixed units:</p>
         <div class="schema">
 <span class="k">datetime_UTC</span>           <span class="u">ISO-8601 UTC</span><br/>
 <span class="k">site_id</span>                string<br/>
 <span class="k">depth_m</span>                <span class="u">m</span><br/>
 <span class="k">replicate</span>              int / NaN<br/>
 <span class="k">is_timeseries</span>          bool<br/>
-<span class="k">interval_min</span>           float / NaN<br/>
 <span class="k">volumetric_water…</span>      <span class="u">m³ m⁻³</span><br/>
 <span class="k">gravimetric_water…</span>     <span class="u">g g⁻¹</span><br/>
 <span class="k">water_potential_kPa</span>    <span class="u">kPa (neg.)</span>
@@ -289,7 +288,7 @@
         <div class="cols3" style="margin-top:.5em; gap:.5em;">
           <div class="card teal" style="text-align:center;"><div class="stat" style="font-size:1.4em;">56,861<span class="unit">/56,861</span></div><p class="tiny muted" style="margin:.2em 0 0;">rows recovered (P=R=1.0)</p></div>
           <div class="card teal" style="text-align:center;"><div class="stat" style="font-size:1.4em;">100%</div><p class="tiny muted" style="margin:.2em 0 0;">VWC &amp; potential cells match</p></div>
-          <div class="card gold" style="text-align:center;"><div class="stat" style="font-size:1.4em;">6</div><p class="tiny muted" style="margin:.2em 0 0;">interval_min cells differ (ordering)</p></div>
+          <div class="card gold" style="text-align:center;"><div class="stat" style="font-size:1.4em;">6</div><p class="tiny muted" style="margin:.2em 0 0;">cells differed, all in <code>interval_min</code> (ordering) — column since deprecated</p></div>
         </div>
         <p class="tiny muted" style="margin-top:.5em;">This is the whole argument for an <strong>output-equivalence</strong> endpoint: stylistic divergence in the
           mapping/code is irrelevant when the harmonized table is identical. The mapping JSON gives auditable

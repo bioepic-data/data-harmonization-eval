@@ -46,7 +46,6 @@ class LocationResolution(BaseModel):
 class TimeSeriesInference(BaseModel):
     """Determination of whether dataset is time series or discrete sampling."""
     is_timeseries: bool
-    interval_min: Optional[float] = None
     reasoning: str
 
 
@@ -124,7 +123,6 @@ class ExpertCuratorLabels(BaseModel):
 
     # Ground truth inferences
     gold_is_timeseries: bool
-    gold_interval_min: Optional[float] = None
     gold_location_source: str
     gold_qc_flag: Optional[Literal["g1", "g2"]] = None
 
