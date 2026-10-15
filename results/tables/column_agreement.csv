@@ -1,0 +1,5 @@
+column,median_agreement,min_agreement,median_null_mask,n_folds
+gravimetric_water_content_gH2O_gs,1.0,1.0,1.0,19
+is_timeseries,1.0,1.0,1.0,19
+water_potential_kPa,1.0,0.7729943387565665,1.0,19
+volumetric_water_content_m3_m3,0.9907376622042159,0.544237074727544,1.0,19

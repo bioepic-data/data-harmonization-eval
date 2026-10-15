@@ -1,0 +1,632 @@
+{
+  "branch": "eval/fold-01-target-1-38806158209-1",
+  "fold_id": 1,
+  "target": 1,
+  "run_id": "38806158209",
+  "dataset_identifier": "ess-dive-beca0be9bb38ece-20250516t122010234",
+  "artifact_warnings": [],
+  "fold": {
+    "fold_id": 1,
+    "cluster": "cluster_1",
+    "cluster_name": "sg_ph_micromet",
+    "n_withheld": 6,
+    "holdout": [
+      1,
+      2,
+      3,
+      6,
+      16,
+      27
+    ],
+    "exemplar_pool": 13
+  },
+  "equivalence": {
+    "L0": {
+      "n_agent": 1326691,
+      "n_gold": 1253839,
+      "row_count_ratio": 1.05810315359468,
+      "columns": {
+        "depth_m": {
+          "agent_non_null": 1326691,
+          "gold_non_null": 1253839,
+          "agent_null_rate": 0.0,
+          "gold_null_rate": 0.0,
+          "agent_median": 0.35,
+          "gold_median": 0.35,
+          "median_ratio": 1.0,
+          "agent_min": 0.1,
+          "agent_max": 0.5,
+          "gold_min": 0.1,
+          "gold_max": 0.5
+        },
+        "replicate": {
+          "agent_non_null": 1326691,
+          "gold_non_null": 1253839,
+          "agent_null_rate": 0.0,
+          "gold_null_rate": 0.0,
+          "agent_median": 1.0,
+          "gold_median": 1.0,
+          "median_ratio": 1.0,
+          "agent_min": 1.0,
+          "agent_max": 2.0,
+          "gold_min": 1.0,
+          "gold_max": 2.0
+        },
+        "volumetric_water_content_m3_m3": {
+          "agent_non_null": 1228003,
+          "gold_non_null": 1228003,
+          "agent_null_rate": 0.07438657532160842,
+          "gold_null_rate": 0.020605516338222052,
+          "agent_median": 0.214772639,
+          "gold_median": 0.214772639,
+          "median_ratio": 1.0,
+          "agent_min": -0.023222042,
+          "agent_max": 0.601143479,
+          "gold_min": -0.023222042,
+          "gold_max": 0.601143479
+        },
+        "gravimetric_water_content_gH2O_gs": {
+          "agent_non_null": 0,
+          "gold_non_null": 0,
+          "agent_null_rate": 1.0,
+          "gold_null_rate": 1.0
+        },
+        "water_potential_kPa": {
+          "agent_non_null": 98688,
+          "gold_non_null": 98688,
+          "agent_null_rate": 0.9256134246783916,
+          "gold_null_rate": 0.921291330067098,
+          "agent_median": -24.86143303,
+          "gold_median": -24.86143303,
+          "median_ratio": 1.0,
+          "agent_min": -100006.0234,
+          "agent_max": -7.800566673,
+          "gold_min": -100006.0234,
+          "gold_max": -7.8005666730000005
+        },
+        "is_timeseries": {
+          "agent_non_null": 1326691,
+          "gold_non_null": 1253839,
+          "agent_null_rate": 0.0,
+          "gold_null_rate": 0.0,
+          "agent_median": 1.0,
+          "gold_median": 1.0,
+          "median_ratio": 1.0,
+          "agent_min": 1.0,
+          "agent_max": 1.0,
+          "gold_min": 1.0,
+          "gold_max": 1.0
+        }
+      }
+    },
+    "L1": {
+      "matched_rows": 1252443,
+      "n_agent": 1326691,
+      "n_gold": 1253839,
+      "precision": 0.9440351973443704,
+      "recall": 0.9988866194144543,
+      "f1": 0.9706866418913944,
+      "cells": {
+        "by_column": {
+          "site_id": {
+            "n": 1252443,
+            "agreement": 0.8619985101118375,
+            "null_mask_agreement": 1.0,
+            "both_null": 0
+          },
+          "is_timeseries": {
+            "n": 1252443,
+            "agreement": 1.0,
+            "null_mask_agreement": 1.0,
+            "both_null": 0
+          },
+          "volumetric_water_content_m3_m3": {
+            "n": 1252443,
+            "agreement": 0.8620743618671668,
+            "null_mask_agreement": 0.9606920235092535,
+            "both_null": 25836
+          },
+          "gravimetric_water_content_gH2O_gs": {
+            "n": 1252443,
+            "agreement": 1.0,
+            "null_mask_agreement": 1.0,
+            "both_null": 1252443
+          },
+          "water_potential_kPa": {
+            "n": 1252443,
+            "agreement": 0.902524106885503,
+            "null_mask_agreement": 0.902524106885503,
+            "both_null": 1104524
+          }
+        },
+        "overall": 0.9253193957729013
+      },
+      "gap_structure": {
+        "n_unmatched_gold": 1396,
+        "top_site_share": 0.5,
+        "n_sites_affected": 2,
+        "time_span": [
+          "2023-07-31 20:30:00+00:00",
+          "2023-08-30 03:00:00+00:00"
+        ]
+      }
+    },
+    "L2": {
+      "matched_rows": 1252443,
+      "n_agent": 1326691,
+      "n_gold": 1253839,
+      "precision": 0.9440351973443704,
+      "recall": 0.9988866194144543,
+      "f1": 0.9706866418913944,
+      "cells": {
+        "by_column": {
+          "is_timeseries": {
+            "n": 1252443,
+            "agreement": 1.0,
+            "null_mask_agreement": 1.0,
+            "both_null": 0
+          },
+          "volumetric_water_content_m3_m3": {
+            "n": 1252443,
+            "agreement": 1.0,
+            "null_mask_agreement": 1.0,
+            "both_null": 25836
+          },
+          "gravimetric_water_content_gH2O_gs": {
+            "n": 1252443,
+            "agreement": 1.0,
+            "null_mask_agreement": 1.0,
+            "both_null": 1252443
+          },
+          "water_potential_kPa": {
+            "n": 1252443,
+            "agreement": 0.9418320833762495,
+            "null_mask_agreement": 0.9418320833762495,
+            "both_null": 1153755
+          }
+        },
+        "overall": 0.9854580208440624
+      },
+      "gap_structure": {
+        "n_unmatched_gold": 1396,
+        "top_site_share": 1.0,
+        "n_sites_affected": 1,
+        "time_span": [
+          "2023-07-31 20:30:00+00:00",
+          "2023-08-30 03:00:00+00:00"
+        ]
+      }
+    },
+    "L3": {
+      "matched_rows": 1252443,
+      "n_agent": 1326691,
+      "n_gold": 1253839,
+      "precision": 0.9440351973443704,
+      "recall": 0.9988866194144543,
+      "f1": 0.9706866418913944,
+      "cells": {
+        "by_column": {
+          "is_timeseries": {
+            "n": 1252443,
+            "agreement": 1.0,
+            "null_mask_agreement": 1.0,
+            "both_null": 0
+          },
+          "volumetric_water_content_m3_m3": {
+            "n": 1252443,
+            "agreement": 1.0,
+            "null_mask_agreement": 1.0,
+            "both_null": 25836
+          },
+          "gravimetric_water_content_gH2O_gs": {
+            "n": 1252443,
+            "agreement": 1.0,
+            "null_mask_agreement": 1.0,
+            "both_null": 1252443
+          },
+          "water_potential_kPa": {
+            "n": 1252443,
+            "agreement": 0.9418320833762495,
+            "null_mask_agreement": 0.9418320833762495,
+            "both_null": 1153755
+          }
+        },
+        "overall": 0.9854580208440624
+      },
+      "gap_structure": {
+        "n_unmatched_gold": 1396,
+        "top_site_share": 1.0,
+        "n_sites_affected": 1,
+        "time_span": [
+          "2023-07-31 20:30:00+00:00",
+          "2023-08-30 03:00:00+00:00"
+        ]
+      }
+    },
+    "crosswalk": {
+      "kind": "identity",
+      "n_agent_sites": 9,
+      "n_gold_sites": 9,
+      "n_mapped": 9,
+      "agent_only": [],
+      "gold_only": [],
+      "mapping": {
+        "ER_SMN30": "ER_SMN30",
+        "ER_SMN3B": "ER_SMN3B",
+        "ER_SMS1": "ER_SMS1",
+        "ER_SMN4B": "ER_SMN4B",
+        "ER_SMN5B": "ER_SMN5B",
+        "ER_SMS3": "ER_SMS3",
+        "ER_SMN1B": "ER_SMN1B",
+        "ER_SMN10": "ER_SMN10",
+        "ER_SMS2": "ER_SMS2"
+      }
+    },
+    "time_offset": {
+      "detected": false,
+      "offset_hours": 0,
+      "overlap_at_offset": 78279,
+      "overlap_at_zero": 78279,
+      "recovered_fraction": 1.0
+    }
+  },
+  "schema": {
+    "has_all_columns": true,
+    "has_only_columns": true,
+    "missing_columns": [],
+    "extra_columns": [],
+    "column_order_correct": true,
+    "raw_dtypes_informational": [
+      [
+        "datetime_UTC",
+        "datetime64[ns, UTC]",
+        "str"
+      ],
+      [
+        "site_id",
+        "object",
+        "str"
+      ],
+      [
+        "replicate",
+        "float64",
+        "int64"
+      ]
+    ],
+    "coercion": {
+      "datetime_UTC": {
+        "n_present": 1326691,
+        "uncoercible": 0
+      },
+      "site_id": {
+        "n_present": 1326691,
+        "uncoercible": 0
+      },
+      "depth_m": {
+        "n_present": 1326691,
+        "uncoercible": 0
+      },
+      "replicate": {
+        "n_present": 1326691,
+        "uncoercible": 0
+      },
+      "is_timeseries": {
+        "n_present": 1326691,
+        "uncoercible": 0
+      },
+      "volumetric_water_content_m3_m3": {
+        "n_present": 1228003,
+        "uncoercible": 0
+      },
+      "gravimetric_water_content_gH2O_gs": {
+        "n_present": 0,
+        "uncoercible": 0
+      },
+      "water_potential_kPa": {
+        "n_present": 98688,
+        "uncoercible": 0
+      }
+    },
+    "n_uncoercible_columns": 0,
+    "n_out_of_range_columns": 1,
+    "out_of_range": [
+      [
+        "volumetric_water_content_m3_m3",
+        "67",
+        "-0.023222042",
+        "0.601143479"
+      ]
+    ],
+    "passes_required_fields": true,
+    "required_field_issues": [],
+    "conformant": false
+  },
+  "findings": [
+    {
+      "code": "ROW_INFLATION",
+      "severity": "major",
+      "message": "agent emitted 1.06x the reference row count (more rows)",
+      "evidence": {
+        "n_agent": 1326691,
+        "n_gold": 1253839,
+        "ratio": 1.05810315359468
+      }
+    },
+    {
+      "code": "DUPLICATE_KEYS",
+      "severity": "major",
+      "message": "72852 agent rows duplicate the natural key (reference has 0); the key should identify a row",
+      "evidence": {
+        "agent_duplicates": 72852,
+        "gold_duplicates": 0
+      }
+    },
+    {
+      "code": "NULL_PATTERN_MISMATCH",
+      "severity": "major",
+      "message": "water_potential_kPa null positions disagree on 5.8% of paired rows; a value may be substituted where the reference records missing",
+      "evidence": {
+        "column": "water_potential_kPa",
+        "null_mask_agreement": 0.9418320833762495
+      }
+    },
+    {
+      "code": "SYSTEMATIC_GAP",
+      "severity": "major",
+      "message": "100% of unmatched reference rows fall in a single site; the omission is systematic rather than scattered",
+      "evidence": {
+        "n_unmatched_gold": 1396,
+        "top_site_share": 1.0,
+        "n_sites_affected": 1,
+        "time_span": [
+          "2023-07-31 20:30:00+00:00",
+          "2023-08-30 03:00:00+00:00"
+        ]
+      }
+    }
+  ],
+  "location": {
+    "available": true,
+    "n_agent_sites": 9,
+    "n_gold_sites": 9,
+    "n_gold_sites_with_coords": 9,
+    "n_agent_rows_with_coords": 9,
+    "site_set": {
+      "tp": 9,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "coordinates": {
+      "n_compared": 9,
+      "median_error_m": 1.7211583502498764e-08,
+      "max_error_m": 4.217949766393716e-08,
+      "within_10m": 1.0,
+      "within_100m": 1.0,
+      "within_1km": 1.0
+    },
+    "qc_flag": {
+      "n_compared": 9,
+      "accuracy": 1.0
+    }
+  },
+  "mapping": {
+    "available": true,
+    "data_payload_files": {
+      "tp": 9,
+      "n_agent": 9,
+      "n_gold": 9,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "missing": [],
+      "extra": []
+    },
+    "location_metadata_files": {
+      "tp": 1,
+      "n_agent": 1,
+      "n_gold": 1,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "missing": [],
+      "extra": []
+    },
+    "variable_groups": {
+      "tp": 8,
+      "n_agent": 10,
+      "n_gold": 8,
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.888888888888889,
+      "missing": [],
+      "extra": [
+        "gravimetric_water_content",
+        "is_timeseries"
+      ]
+    },
+    "destination_variables": {
+      "tp": 8,
+      "n_agent": 10,
+      "n_gold": 8,
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.888888888888889,
+      "missing": [],
+      "extra": [
+        "gravimetric_water_content_gH2O_gs",
+        "is_timeseries"
+      ]
+    },
+    "unit_conversions": {
+      "tp": 1,
+      "n_agent": 1,
+      "n_gold": 1,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "missing": [],
+      "extra": []
+    },
+    "steps": {
+      "n_gold_ops": 3,
+      "n_recovered": 3,
+      "missing_ops": [],
+      "extra_ops_mapping": [
+        "ASSIGN_CONSTANT",
+        "COORD_TRANSFORM",
+        "RESHAPE_WIDE_LONG"
+      ],
+      "extra_ops_notes": [
+        "DEDUPE",
+        "FILTER",
+        "METADATA_LOOKUP"
+      ],
+      "by_operation": {
+        "ASSIGN_CONSTANT": {
+          "in_gold": false,
+          "in_agent_mapping": true,
+          "in_agent_notes": false,
+          "stated": true,
+          "parameterised": false,
+          "gold_occurrences": 0
+        },
+        "COORD_TRANSFORM": {
+          "in_gold": false,
+          "in_agent_mapping": true,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": true,
+          "gold_occurrences": 0
+        },
+        "DEDUPE": {
+          "in_gold": false,
+          "in_agent_mapping": false,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": false,
+          "gold_occurrences": 0
+        },
+        "FILTER": {
+          "in_gold": false,
+          "in_agent_mapping": false,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": false,
+          "gold_occurrences": 0
+        },
+        "METADATA_LOOKUP": {
+          "in_gold": false,
+          "in_agent_mapping": false,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": false,
+          "gold_occurrences": 0
+        },
+        "PARSE_DATETIME": {
+          "in_gold": true,
+          "in_agent_mapping": true,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": true,
+          "gold_occurrences": 1
+        },
+        "PARSE_FROM_COLNAME": {
+          "in_gold": true,
+          "in_agent_mapping": true,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": true,
+          "gold_occurrences": 5
+        },
+        "RESHAPE_WIDE_LONG": {
+          "in_gold": false,
+          "in_agent_mapping": true,
+          "in_agent_notes": false,
+          "stated": true,
+          "parameterised": true,
+          "gold_occurrences": 0
+        },
+        "TIMEZONE": {
+          "in_gold": true,
+          "in_agent_mapping": true,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": true,
+          "gold_occurrences": 1
+        }
+      }
+    }
+  },
+  "access": {
+    "available": true,
+    "n_accesses": 26,
+    "zones": {
+      "instructions": 2,
+      "env_root": 3,
+      "skills": 2,
+      "essdive_metadata": 1,
+      "exemplar_code": 6,
+      "raw_input": 3,
+      "system": 1,
+      "output": 8
+    },
+    "exemplars_read": [
+      15,
+      17,
+      24,
+      25
+    ],
+    "n_exemplars_read": 4,
+    "n_in_cluster_read": 0,
+    "n_out_of_cluster_read": 4,
+    "enumerated_exemplar_dir": true
+  },
+  "telemetry": {
+    "available": true,
+    "subtype": "success",
+    "is_error": false,
+    "num_turns": 94,
+    "duration_ms": 250945,
+    "total_cost_usd": 5.1406702499999986,
+    "permission_denials": 0,
+    "input_tokens": 2,
+    "output_tokens": 459,
+    "cache_read_input_tokens": 81600,
+    "model": "claude-opus-4-8",
+    "tool_counts": {
+      "Read": 11,
+      "LS": 1,
+      "TodoWrite": 4,
+      "Bash": 15,
+      "Grep": 1,
+      "Write": 3,
+      "Edit": 1
+    },
+    "n_tool_calls": 36
+  },
+  "integrity": {
+    "available": true,
+    "contaminated": false,
+    "clean": true,
+    "n_findings": 0,
+    "severities": {},
+    "n_tool_calls": 36,
+    "n_reads": 11,
+    "reads_in_bounds": 11
+  },
+  "difficulty": {
+    "gold_rows": 1253839,
+    "n_gold_sites": 9,
+    "n_source_files": 10,
+    "n_mapping_patterns": 9,
+    "n_unit_conversions": 3,
+    "n_variable_groups": 8
+  },
+  "reference_coverage": {
+    "gravimetric_water_content_gH2O_gs": 6.5e-05,
+    "water_potential_kPa": 0.0928,
+    "volumetric_water_content_m3_m3": 0.9486,
+    "depth_m": 0.8303
+  }
+}

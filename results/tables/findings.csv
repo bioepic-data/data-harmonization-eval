@@ -1,0 +1,54 @@
+fold,target,cluster,severity,code,message
+1,1,sg_ph_micromet,major,ROW_INFLATION,agent emitted 1.06x the reference row count (more rows)
+1,1,sg_ph_micromet,major,DUPLICATE_KEYS,72852 agent rows duplicate the natural key (reference has 0); the key should identify a row
+1,1,sg_ph_micromet,major,NULL_PATTERN_MISMATCH,water_potential_kPa null positions disagree on 5.8% of paired rows; a value may be substituted where the reference records missing
+1,1,sg_ph_micromet,major,SYSTEMATIC_GAP,100% of unmatched reference rows fall in a single site; the omission is systematic rather than scattered
+2,2,sg_ph_micromet,major,DUPLICATE_KEYS,54 agent rows duplicate the natural key (reference has 0); the key should identify a row
+3,3,sg_ph_micromet,critical,ROW_DEFICIT,agent emitted 0.688x the reference row count (fewer rows)
+3,3,sg_ph_micromet,critical,SITE_SUPERSET,2 site(s) present in the agent output have no reference counterpart; the reference may apply a row filter the agent omitted
+3,3,sg_ph_micromet,critical,SITE_MISSING,1 reference site(s) absent from the agent output
+3,3,sg_ph_micromet,major,NULL_DEFICIT,water_potential_kPa is populated in the agent output (0.0% null) where the reference is mostly null (23.8%); values may be invented or zero-filled
+3,3,sg_ph_micromet,major,SYSTEMATIC_GAP,100% of unmatched reference rows fall in a single site; the omission is systematic rather than scattered
+5,16,sg_ph_micromet,major,ROW_INFLATION,agent emitted 1.15x the reference row count (more rows)
+5,16,sg_ph_micromet,major,NULL_INFLATION,volumetric_water_content_m3_m3 is null in 18.6% of agent rows vs 6.1% of reference rows
+5,16,sg_ph_micromet,major,DUPLICATE_KEYS,264810 agent rows duplicate the natural key (reference has 0); the key should identify a row
+5,16,sg_ph_micromet,major,NULL_PATTERN_MISMATCH,water_potential_kPa null positions disagree on 22.5% of paired rows; a value may be substituted where the reference records missing
+6,27,sg_ph_micromet,critical,COORD_UNRESOLVED,"agent emitted no coordinates, but the reference resolves 4 site(s); an available location source appears not to have been consulted"
+6,27,sg_ph_micromet,major,DUPLICATE_KEYS,397 agent rows duplicate the natural key (reference has 0); the key should identify a row
+6,27,sg_ph_micromet,major,QC_FLAG_MISMATCH,qc_flag disagrees with the reference provenance on 100% of 4 compared site(s)
+7,15,neon_point,critical,SITE_SUPERSET,1 site(s) present in the agent output have no reference counterpart; the reference may apply a row filter the agent omitted
+8,26,neon_point,critical,ROW_DEFICIT,agent emitted 0.725x the reference row count (fewer rows)
+8,26,neon_point,critical,TZ_SHIFT,every timestamp is offset by +7 h from the reference; correcting it raises L3 F1 to 0.839
+8,26,neon_point,critical,SITE_MISSING,3 reference site(s) absent from the agent output
+8,26,neon_point,critical,COORD_UNRESOLVED,"agent emitted no coordinates, but the reference resolves 416 site(s); an available location source appears not to have been consulted"
+8,26,neon_point,major,NULL_DEFICIT,volumetric_water_content_m3_m3 is populated in the agent output (0.0% null) where the reference is mostly null (27.5%); values may be invented or zero-filled
+8,26,neon_point,major,QC_FLAG_MISMATCH,qc_flag disagrees with the reference provenance on 100% of 425 compared site(s)
+9,4,independent,critical,ROW_INFLATION,agent emitted 1.81x the reference row count (more rows)
+9,4,independent,critical,TZ_SHIFT,every timestamp is offset by -6 h from the reference; correcting it raises L3 F1 to 0.645
+9,4,independent,critical,SITE_SUPERSET,1 site(s) present in the agent output have no reference counterpart; the reference may apply a row filter the agent omitted
+10,5,independent,critical,COORD_UNRESOLVED,"agent emitted no coordinates, but the reference resolves 26 site(s); an available location source appears not to have been consulted"
+10,5,independent,major,QC_FLAG_MISMATCH,qc_flag disagrees with the reference provenance on 79% of 33 compared site(s)
+12,8,independent,critical,SITE_SUPERSET,1 site(s) present in the agent output have no reference counterpart; the reference may apply a row filter the agent omitted
+12,8,independent,critical,SITE_MISSING,1 reference site(s) absent from the agent output
+12,8,independent,major,SYSTEMATIC_GAP,100% of unmatched reference rows fall in a single site; the omission is systematic rather than scattered
+13,9,independent,critical,SITE_SUPERSET,20 site(s) present in the agent output have no reference counterpart; the reference may apply a row filter the agent omitted
+13,9,independent,major,ROW_INFLATION,agent emitted 1.12x the reference row count (more rows)
+13,9,independent,major,NULL_INFLATION,volumetric_water_content_m3_m3 is null in 10.4% of agent rows vs 0.0% of reference rows
+14,10,independent,critical,TZ_SHIFT,every timestamp is offset by +1 h from the reference; correcting it raises L3 F1 to 0.000
+14,10,independent,critical,COORD_UNRESOLVED,"agent emitted no coordinates, but the reference resolves 3 site(s); an available location source appears not to have been consulted"
+14,10,independent,major,NULL_INFLATION,depth_m is null in 100.0% of agent rows vs 0.0% of reference rows
+14,10,independent,major,QC_FLAG_MISMATCH,qc_flag disagrees with the reference provenance on 100% of 3 compared site(s)
+15,17,independent,major,SYSTEMATIC_GAP,100% of unmatched reference rows fall in a single site; the omission is systematic rather than scattered
+16,18,independent,critical,TZ_SHIFT,every timestamp is offset by -7 h from the reference; correcting it raises L3 F1 to 0.000
+16,18,independent,critical,SITE_SUPERSET,20 site(s) present in the agent output have no reference counterpart; the reference may apply a row filter the agent omitted
+16,18,independent,critical,SITE_MISSING,20 reference site(s) absent from the agent output
+17,23,independent,critical,ROW_INFLATION,agent emitted 1.89x the reference row count (more rows)
+17,23,independent,critical,SITE_SUPERSET,10 site(s) present in the agent output have no reference counterpart; the reference may apply a row filter the agent omitted
+17,23,independent,critical,COORD_UNRESOLVED,"agent emitted no coordinates, but the reference resolves 10 site(s); an available location source appears not to have been consulted"
+17,23,independent,major,SITE_VOCAB_COLLAPSE,reference site names extend the agent's with a qualifier the agent did not emit; sites are only matchable after stripping it
+17,23,independent,major,EMPTY_SITE_ID,36 agent rows have an empty site_id (a required field)
+17,23,independent,major,QC_FLAG_MISMATCH,qc_flag disagrees with the reference provenance on 100% of 10 compared site(s)
+18,24,independent,critical,TZ_SHIFT,every timestamp is offset by +6 h from the reference; correcting it raises L3 F1 to 0.764
+19,25,independent,critical,SITE_SUPERSET,2 site(s) present in the agent output have no reference counterpart; the reference may apply a row filter the agent omitted
+19,25,independent,critical,SITE_MISSING,2 reference site(s) absent from the agent output
+19,25,independent,major,DUPLICATE_KEYS,4365 agent rows duplicate the natural key (reference has 4260); the key should identify a row

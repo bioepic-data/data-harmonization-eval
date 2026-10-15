@@ -1,0 +1,659 @@
+{
+  "branch": "eval/fold-07-target-15-38806278799-1",
+  "fold_id": 7,
+  "target": 15,
+  "run_id": "38806278799",
+  "dataset_identifier": "ess-dive-987726ef1235abc-20230504t210342929747",
+  "artifact_warnings": [],
+  "fold": {
+    "fold_id": 7,
+    "cluster": "cluster_2",
+    "cluster_name": "neon_point",
+    "n_withheld": 2,
+    "holdout": [
+      15,
+      26
+    ],
+    "exemplar_pool": 17
+  },
+  "equivalence": {
+    "L0": {
+      "n_agent": 286,
+      "n_gold": 300,
+      "row_count_ratio": 0.9533333333333334,
+      "columns": {
+        "depth_m": {
+          "agent_non_null": 286,
+          "gold_non_null": 300,
+          "agent_null_rate": 0.0,
+          "gold_null_rate": 0.0,
+          "agent_median": 0.25,
+          "gold_median": 0.25,
+          "median_ratio": 1.0,
+          "agent_min": 0.25,
+          "agent_max": 0.25,
+          "gold_min": 0.25,
+          "gold_max": 0.25
+        },
+        "replicate": {
+          "agent_non_null": 286,
+          "gold_non_null": 300,
+          "agent_null_rate": 0.0,
+          "gold_null_rate": 0.0,
+          "agent_median": 2.0,
+          "gold_median": 2.0,
+          "median_ratio": 1.0,
+          "agent_min": 1.0,
+          "agent_max": 3.0,
+          "gold_min": 1.0,
+          "gold_max": 3.0
+        },
+        "volumetric_water_content_m3_m3": {
+          "agent_non_null": 286,
+          "gold_non_null": 283,
+          "agent_null_rate": 0.0,
+          "gold_null_rate": 0.056666666666666664,
+          "agent_median": 0.1369999999999999,
+          "gold_median": 0.137,
+          "median_ratio": 0.9999999999999992,
+          "agent_min": 0.0,
+          "agent_max": 0.495,
+          "gold_min": 0.0,
+          "gold_max": 0.495
+        },
+        "gravimetric_water_content_gH2O_gs": {
+          "agent_non_null": 0,
+          "gold_non_null": 0,
+          "agent_null_rate": 1.0,
+          "gold_null_rate": 1.0
+        },
+        "water_potential_kPa": {
+          "agent_non_null": 0,
+          "gold_non_null": 0,
+          "agent_null_rate": 1.0,
+          "gold_null_rate": 1.0
+        },
+        "is_timeseries": {
+          "agent_non_null": 286,
+          "gold_non_null": 300,
+          "agent_null_rate": 0.0,
+          "gold_null_rate": 0.0,
+          "agent_median": 0.0,
+          "gold_median": 0.0,
+          "median_ratio": null,
+          "agent_min": 0.0,
+          "agent_max": 0.0,
+          "gold_min": 0.0,
+          "gold_max": 0.0
+        }
+      }
+    },
+    "L1": {
+      "matched_rows": 0,
+      "n_agent": 286,
+      "n_gold": 300,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "cells": {
+        "by_column": {
+          "site_id": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          },
+          "is_timeseries": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          },
+          "volumetric_water_content_m3_m3": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          },
+          "gravimetric_water_content_gH2O_gs": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          },
+          "water_potential_kPa": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          }
+        },
+        "overall": null
+      },
+      "gap_structure": {
+        "n_unmatched_gold": 300,
+        "top_site_share": 0.01,
+        "n_sites_affected": 100,
+        "time_span": [
+          "2019-07-02 06:00:00+00:00",
+          "2019-07-02 06:00:00+00:00"
+        ]
+      }
+    },
+    "L2": {
+      "matched_rows": 0,
+      "n_agent": 286,
+      "n_gold": 300,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "cells": {
+        "by_column": {
+          "is_timeseries": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          },
+          "volumetric_water_content_m3_m3": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          },
+          "gravimetric_water_content_gH2O_gs": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          },
+          "water_potential_kPa": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          }
+        },
+        "overall": null
+      },
+      "gap_structure": {
+        "n_unmatched_gold": 300,
+        "top_site_share": 0.01,
+        "n_sites_affected": 100,
+        "time_span": [
+          "2019-07-02 06:00:00+00:00",
+          "2019-07-02 06:00:00+00:00"
+        ]
+      }
+    },
+    "L3": {
+      "matched_rows": 0,
+      "n_agent": 286,
+      "n_gold": 300,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "cells": {
+        "by_column": {
+          "is_timeseries": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          },
+          "volumetric_water_content_m3_m3": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          },
+          "gravimetric_water_content_gH2O_gs": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          },
+          "water_potential_kPa": {
+            "n": 0,
+            "agreement": null,
+            "null_mask_agreement": null
+          }
+        },
+        "overall": null
+      },
+      "gap_structure": {
+        "n_unmatched_gold": 300,
+        "top_site_share": 0.01,
+        "n_sites_affected": 100,
+        "time_span": [
+          "2019-07-02 06:00:00+00:00",
+          "2019-07-02 06:00:00+00:00"
+        ]
+      }
+    },
+    "crosswalk": {
+      "kind": "exact",
+      "n_agent_sites": 101,
+      "n_gold_sites": 100,
+      "n_mapped": 100,
+      "agent_only": [
+        "ss01"
+      ],
+      "gold_only": [],
+      "mapping": {
+        "ss122": "ss122",
+        "TDR001": "TDR001",
+        "ss26": "ss26",
+        "ss25": "ss25",
+        "ss15": "ss15",
+        "TDR002": "TDR002",
+        "ss103": "ss103",
+        "ss27": "ss27",
+        "ss64": "ss64",
+        "TDR003": "TDR003",
+        "ss16": "ss16",
+        "ss102": "ss102",
+        "ss115": "ss115",
+        "ss10": "ss10",
+        "ss97": "ss97",
+        "ss69": "ss69",
+        "ss76": "ss76",
+        "ss84": "ss84",
+        "ss109": "ss109",
+        "ss94": "ss94",
+        "ss04": "ss04",
+        "ss117": "ss117",
+        "ss98": "ss98",
+        "ss80": "ss80",
+        "TDR004": "TDR004",
+        "ss124": "ss124",
+        "ss21": "ss21",
+        "TDR007": "TDR007",
+        "ss03": "ss03",
+        "ss86": "ss86",
+        "ss11": "ss11",
+        "ss17": "ss17",
+        "ss107": "ss107",
+        "ss114": "ss114",
+        "ss121": "ss121",
+        "ss110": "ss110",
+        "ss81": "ss81",
+        "ss05": "ss05",
+        "ss119": "ss119",
+        "ss90": "ss90",
+        "ss06": "ss06",
+        "ss92": "ss92",
+        "ss12": "ss12",
+        "ss62": "ss62",
+        "ss19": "ss19",
+        "ss100": "ss100",
+        "ss20": "ss20",
+        "ss08": "ss08",
+        "ss70": "ss70",
+        "ss72": "ss72",
+        "ss104": "ss104",
+        "ss02": "ss02",
+        "ss96": "ss96",
+        "ss79": "ss79",
+        "ss105": "ss105",
+        "ss89": "ss89",
+        "ss09": "ss09",
+        "ss108": "ss108",
+        "ss13": "ss13",
+        "ss106": "ss106",
+        "ss118": "ss118",
+        "ss120": "ss120",
+        "ss73": "ss73",
+        "TDR005": "TDR005",
+        "ss75": "ss75",
+        "ss68": "ss68",
+        "ss07": "ss07",
+        "ss91": "ss91",
+        "ss77": "ss77",
+        "ss93": "ss93",
+        "ss23": "ss23",
+        "TDR008": "TDR008",
+        "ss111": "ss111",
+        "ss113": "ss113",
+        "TDR006": "TDR006",
+        "ss71": "ss71",
+        "ss22": "ss22",
+        "ss63": "ss63",
+        "ss66": "ss66",
+        "ss95": "ss95",
+        "ss112": "ss112",
+        "ss67": "ss67",
+        "ss125": "ss125",
+        "ss24": "ss24",
+        "ss78": "ss78",
+        "ss85": "ss85",
+        "ss18": "ss18",
+        "ss126": "ss126",
+        "ss65": "ss65",
+        "ss83": "ss83",
+        "ss28": "ss28",
+        "ss29": "ss29",
+        "ss74": "ss74",
+        "ss82": "ss82",
+        "ss101": "ss101",
+        "ss99": "ss99",
+        "ss88": "ss88",
+        "ss61": "ss61",
+        "ss123": "ss123",
+        "ss87": "ss87"
+      }
+    },
+    "time_offset": {
+      "detected": false
+    }
+  },
+  "schema": {
+    "has_all_columns": true,
+    "has_only_columns": true,
+    "missing_columns": [],
+    "extra_columns": [],
+    "column_order_correct": true,
+    "raw_dtypes_informational": [
+      [
+        "datetime_UTC",
+        "datetime64[ns, UTC]",
+        "float64"
+      ],
+      [
+        "site_id",
+        "object",
+        "str"
+      ],
+      [
+        "replicate",
+        "float64",
+        "int64"
+      ]
+    ],
+    "coercion": {
+      "datetime_UTC": {
+        "n_present": 0,
+        "uncoercible": 0
+      },
+      "site_id": {
+        "n_present": 286,
+        "uncoercible": 0
+      },
+      "depth_m": {
+        "n_present": 286,
+        "uncoercible": 0
+      },
+      "replicate": {
+        "n_present": 286,
+        "uncoercible": 0
+      },
+      "is_timeseries": {
+        "n_present": 286,
+        "uncoercible": 0
+      },
+      "volumetric_water_content_m3_m3": {
+        "n_present": 286,
+        "uncoercible": 0
+      },
+      "gravimetric_water_content_gH2O_gs": {
+        "n_present": 0,
+        "uncoercible": 0
+      },
+      "water_potential_kPa": {
+        "n_present": 0,
+        "uncoercible": 0
+      }
+    },
+    "n_uncoercible_columns": 0,
+    "n_out_of_range_columns": 0,
+    "out_of_range": [],
+    "passes_required_fields": false,
+    "required_field_issues": [
+      "datetime_UTC is all NaN"
+    ],
+    "conformant": false
+  },
+  "findings": [
+    {
+      "code": "SITE_SUPERSET",
+      "severity": "critical",
+      "message": "1 site(s) present in the agent output have no reference counterpart; the reference may apply a row filter the agent omitted",
+      "evidence": {
+        "agent_only_sites": [
+          "ss01"
+        ]
+      }
+    }
+  ],
+  "location": {
+    "available": true,
+    "n_agent_sites": 101,
+    "n_gold_sites": 101,
+    "n_gold_sites_with_coords": 101,
+    "n_agent_rows_with_coords": 101,
+    "site_set": {
+      "tp": 101,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "coordinates": {
+      "n_compared": 101,
+      "median_error_m": 0.00011251155540535396,
+      "max_error_m": 0.00011259801603188832,
+      "within_10m": 1.0,
+      "within_100m": 1.0,
+      "within_1km": 1.0
+    },
+    "qc_flag": {
+      "n_compared": 101,
+      "accuracy": 1.0
+    }
+  },
+  "mapping": {
+    "available": true,
+    "data_payload_files": {
+      "tp": 1,
+      "n_agent": 1,
+      "n_gold": 1,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "missing": [],
+      "extra": []
+    },
+    "location_metadata_files": {
+      "tp": 1,
+      "n_agent": 1,
+      "n_gold": 1,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "missing": [],
+      "extra": []
+    },
+    "variable_groups": {
+      "tp": 8,
+      "n_agent": 9,
+      "n_gold": 8,
+      "precision": 0.8888888888888888,
+      "recall": 1.0,
+      "f1": 0.9411764705882353,
+      "missing": [],
+      "extra": [
+        "gravimetric_water_content"
+      ]
+    },
+    "destination_variables": {
+      "tp": 8,
+      "n_agent": 9,
+      "n_gold": 8,
+      "precision": 0.8888888888888888,
+      "recall": 1.0,
+      "f1": 0.9411764705882353,
+      "missing": [],
+      "extra": [
+        "gravimetric_water_content_gH2O_gs"
+      ]
+    },
+    "unit_conversions": {
+      "tp": 2,
+      "n_agent": 2,
+      "n_gold": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "missing": [],
+      "extra": []
+    },
+    "steps": {
+      "n_gold_ops": 5,
+      "n_recovered": 4,
+      "missing_ops": [
+        "TIMEZONE"
+      ],
+      "extra_ops_mapping": [
+        "FILTER"
+      ],
+      "extra_ops_notes": [
+        "COORD_TRANSFORM",
+        "DEDUPE",
+        "RESHAPE_WIDE_LONG"
+      ],
+      "by_operation": {
+        "ASSIGN_CONSTANT": {
+          "in_gold": true,
+          "in_agent_mapping": true,
+          "in_agent_notes": false,
+          "stated": true,
+          "parameterised": true,
+          "gold_occurrences": 3
+        },
+        "COORD_TRANSFORM": {
+          "in_gold": false,
+          "in_agent_mapping": false,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": false,
+          "gold_occurrences": 0
+        },
+        "DEDUPE": {
+          "in_gold": false,
+          "in_agent_mapping": false,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": false,
+          "gold_occurrences": 0
+        },
+        "FILTER": {
+          "in_gold": false,
+          "in_agent_mapping": true,
+          "in_agent_notes": false,
+          "stated": true,
+          "parameterised": false,
+          "gold_occurrences": 0
+        },
+        "METADATA_LOOKUP": {
+          "in_gold": true,
+          "in_agent_mapping": true,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": true,
+          "gold_occurrences": 2
+        },
+        "PARSE_FROM_COLNAME": {
+          "in_gold": true,
+          "in_agent_mapping": true,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": true,
+          "gold_occurrences": 1
+        },
+        "RENAME": {
+          "in_gold": true,
+          "in_agent_mapping": true,
+          "in_agent_notes": false,
+          "stated": true,
+          "parameterised": true,
+          "gold_occurrences": 1
+        },
+        "RESHAPE_WIDE_LONG": {
+          "in_gold": false,
+          "in_agent_mapping": false,
+          "in_agent_notes": true,
+          "stated": true,
+          "parameterised": false,
+          "gold_occurrences": 0
+        },
+        "TIMEZONE": {
+          "in_gold": true,
+          "in_agent_mapping": false,
+          "in_agent_notes": false,
+          "stated": false,
+          "parameterised": false,
+          "gold_occurrences": 1
+        }
+      }
+    }
+  },
+  "access": {
+    "available": true,
+    "n_accesses": 31,
+    "zones": {
+      "instructions": 2,
+      "env_root": 2,
+      "skills": 2,
+      "raw_input": 4,
+      "essdive_metadata": 1,
+      "exemplar_code": 9,
+      "system": 1,
+      "output": 10
+    },
+    "exemplars_read": [
+      1,
+      3,
+      9,
+      18
+    ],
+    "n_exemplars_read": 4,
+    "n_in_cluster_read": 0,
+    "n_out_of_cluster_read": 4,
+    "enumerated_exemplar_dir": true
+  },
+  "telemetry": {
+    "available": true,
+    "subtype": "success",
+    "is_error": false,
+    "num_turns": 108,
+    "duration_ms": 205919,
+    "total_cost_usd": 5.293958250000001,
+    "permission_denials": 0,
+    "input_tokens": 2,
+    "output_tokens": 391,
+    "cache_read_input_tokens": 71872,
+    "model": "claude-opus-4-8",
+    "tool_counts": {
+      "Read": 12,
+      "LS": 2,
+      "Grep": 4,
+      "Bash": 14,
+      "TodoWrite": 4,
+      "Write": 3,
+      "Edit": 2,
+      "MultiEdit": 2
+    },
+    "n_tool_calls": 43
+  },
+  "integrity": {
+    "available": true,
+    "contaminated": false,
+    "clean": true,
+    "n_findings": 0,
+    "severities": {},
+    "n_tool_calls": 43,
+    "n_reads": 12,
+    "reads_in_bounds": 12
+  },
+  "difficulty": {
+    "gold_rows": 300,
+    "n_gold_sites": 100,
+    "n_source_files": 1,
+    "n_mapping_patterns": 8,
+    "n_unit_conversions": 4,
+    "n_variable_groups": 8
+  },
+  "reference_coverage": {
+    "gravimetric_water_content_gH2O_gs": 6.5e-05,
+    "water_potential_kPa": 0.0928,
+    "volumetric_water_content_m3_m3": 0.9486,
+    "depth_m": 0.8303
+  }
+}

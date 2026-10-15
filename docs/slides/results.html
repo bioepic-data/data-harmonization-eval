@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harmonization agent evaluation — methods and results</title>
+<style>
+  :root { --ink:#1a1a1a; --mute:#666; --rule:#d8d8d8; --bad:#b2182b; --ok:#2166ac; }
+  html,body { margin:0; padding:0; }
+  body { font: 16px/1.55 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background:#fff; }
+  .slide { max-width: 52rem; margin: 0 auto; padding: 2.8rem 1.5rem 2.4rem;
+           border-bottom: 1px solid var(--rule); }
+  .slide:last-child { border-bottom: none; }
+  h1 { font-size: 1.6rem; margin: 0 0 .4rem; font-weight: 650; }
+  h2 { font-size: 1.2rem; margin: 0 0 .9rem; font-weight: 650; }
+  h3 { font-size: .95rem; margin: 1.3rem 0 .4rem; font-weight: 650;
+       text-transform: uppercase; letter-spacing: .04em; color:#444; }
+  .num { color: var(--mute); font-size: .78rem; letter-spacing: .07em;
+         text-transform: uppercase; margin-bottom: .45rem; }
+  p { margin: 0 0 .8rem; }
+  ul { margin: 0 0 .8rem; padding-left: 1.2rem; }
+  li { margin-bottom: .3rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .85rem; margin: .5rem 0 1rem; }
+  th, td { text-align: left; padding: .33rem .5rem; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { font-weight: 650; border-bottom: 2px solid #bbb; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .88em;
+         background:#f4f4f4; padding: .05em .3em; border-radius: 2px; }
+  .bad { color: var(--bad); font-weight: 600; }
+  .ok  { color: var(--ok); font-weight: 600; }
+  .note { color: var(--mute); font-size: .87rem; }
+  .caveat { border-left: 3px solid #bbb; padding: .1rem 0 .1rem .9rem; color:#444; margin: 1rem 0; }
+  .found { background:#f7f7f7; border-left:3px solid var(--ok); padding:.7rem .9rem;
+           margin:.9rem 0; }
+  .found p:last-child, .found ul:last-child { margin-bottom:0; }
+  figure { margin: 1rem 0; }
+  img { max-width: 100%; border: 1px solid var(--rule); }
+  figcaption { font-size: .8rem; color: var(--mute); margin-top: .3rem; }
+  nav { max-width:52rem; margin:0 auto; padding:1.5rem; font-size:.87rem; }
+  nav ol { padding-left:1.3rem; } nav a { color:#2166ac; }
+</style>
+</head>
+<body>
+
+<section class="slide">
+  <div class="num">Methods and results</div>
+  <h1>Evaluating an LLM agent on soil-moisture data harmonization</h1>
+  <p>Each slide states <em>what we measure and why</em>, then <em>what we found</em>.
+  Metric definitions in full: <code>docs/evaluation_metrics.md</code>.</p>
+  <nav>
+    <ol>
+      <li>What is being compared</li>
+      <li>The primary measurement: output equivalence</li>
+      <li>Reading the ladder — a worked example</li>
+      <li>Automatic diagnosis: why a fold differs</li>
+      <li>Timezone offsets — the single largest effect</li>
+      <li>Schema conformance</li>
+      <li>Sites and coordinates</li>
+      <li>Documentation quality</li>
+      <li>Behaviour and context</li>
+      <li>How to read these statistics</li>
+      <li>What to do next</li>
+    </ol>
+  </nav>
+</section>
+
+<!-- 1 -->
+<section class="slide">
+  <div class="num">1</div>
+  <h2>What is being compared</h2>
+  <p>There are 19 folds. Each hides one dataset from the agent's reference material,
+  hands it that dataset's raw files, and asks it to harmonize them. We compare the
+  result against what a domain expert produced for the same dataset.</p>
+
+  <h3>The reference</h3>
+  <p><code>bervodata.watershed_sfa_soil_moisture.ddt_soil_moisture_observation</code> —
+  6.4M rows covering all 19 datasets. This is the expert's own harmonized output loaded
+  into BERDL, so it is a <em>complete</em> reference rather than the 49-row snippets kept
+  in the repo. Its 19 dataset identifiers map one-to-one onto the 19 fold targets.</p>
+
+  <h3>Three translations applied first</h3>
+  <p>Each would silently corrupt the comparison if skipped:</p>
+  <table>
+    <tr><th>Issue</th><th>Translation</th></tr>
+    <tr><td>Water potential stored in <strong>pascals</strong>, schema says kPa</td><td>divide by 1000</td></tr>
+    <tr><td><code>site_id</code> is not a column — it is embedded as <code>&lt;dataset&gt;__&lt;site&gt;</code></td><td>join to <code>sdt_location.site_identifier</code></td></tr>
+    <tr><td>Dataset IDs use <code>_</code> in the repo, <code>-</code> in the lakehouse</td><td>normalise separators</td></tr>
+  </table>
+
+  <div class="caveat"><strong>What "correct" means here.</strong> The reference is one
+  expert's work, not an independent second opinion. These metrics measure agreement with
+  that expert. Where the two disagree, the expert is treated as right by convention —
+  occasionally the agent may be defensible and the convention merely different.</div>
+
+  <div class="found">
+    <p><strong>Batch:</strong> 19 runs from <code>main@ba049e7</code>, all completed,
+    $101.90 total. Scored 19/19 with no failures.</p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="num">2</div>
+  <h2>The primary measurement: output equivalence</h2>
+  <p>The central question is simple — <strong>did the agent produce the same table the
+  expert did?</strong> The complication is deciding when two rows are "the same row".</p>
+
+  <p>The obvious answer is to match rows agreeing on timestamp, site, depth and
+  replicate. That turns out to be badly misleading: if the agent writes site
+  <code>ER-WML1</code> where the expert writes <code>ER-WML1_HERB</code>, nothing matches
+  and the score is zero even when every number is right. A uniform clock offset does the
+  same thing. So we measure at four levels of strictness and report all four.</p>
+
+  <table>
+    <tr><th>Level</th><th>Rows match when they agree on…</th><th>What it isolates</th></tr>
+    <tr><td><strong>L0</strong></td><td>nothing — distributions only</td><td>unit errors, gross row-count errors</td></tr>
+    <tr><td><strong>L1</strong></td><td>timestamp + depth + replicate</td><td>are the <em>values</em> right, ignoring site naming?</td></tr>
+    <tr><td><strong>L2</strong></td><td>L1 + site, after translating expert names into the agent's vocabulary</td><td>is site identity recoverable?</td></tr>
+    <tr><td><strong>L3</strong></td><td>all four, exactly</td><td>the strict, conservative headline</td></tr>
+  </table>
+
+  <h3>What is reported at each level</h3>
+  <ul>
+    <li><strong>Recall</strong> — of the expert's rows, how many did the agent reproduce?</li>
+    <li><strong>Precision</strong> — of the agent's rows, how many correspond to an expert row?
+        Below 1 usually means rows the expert filtered out were kept.</li>
+    <li><strong>Cell agreement</strong> — among paired rows, what fraction of individual
+        values match? Numbers within a small tolerance; text exactly.</li>
+    <li><strong>Null-mask agreement</strong> — kept separate, because agreement computed only
+        over cells where both sides have a value would hide an agent writing <code>0</code>
+        where the expert recorded "missing".</li>
+    <li><strong>Gap structure</strong> — not how many rows are missing but <em>which</em>. A
+        whole missing site is a different defect from the same count missing at random.</li>
+  </ul>
+  <p class="note">Timestamps repeat across sites, so keys are not unique. Rows are paired
+  by sorting both sides and matching the <em>n</em>-th occurrence to the <em>n</em>-th —
+  which makes row order irrelevant.</p>
+
+  <div class="found">
+    <p><strong>Finding.</strong> By the strict measure alone the median fold scores
+    <span class="bad">0.00</span> — a number close to meaningless. Six of 19 folds exceed
+    0.95; the rest are dominated by site naming and clock offsets rather than wrong data.
+    The gap between L1 and L3 <em>is</em> the result, not a nuisance.</p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <div class="num">3</div>
+  <h2>Reading the ladder — fold 17 worked through</h2>
+  <p>This fold was analysed by hand before the scorer was written, and now serves as the
+  known-answer regression test.</p>
+  <table>
+    <tr><th>Level</th><th class="n">Precision</th><th class="n">Recall</th><th class="n">Cell agreement</th></tr>
+    <tr><td>L1 — site-blind</td><td class="n">0.530</td><td class="n ok">0.9999</td><td class="n">0.620</td></tr>
+    <tr><td>L2 — site crosswalked</td><td class="n">0.398</td><td class="n">0.751</td><td class="n ok">0.951</td></tr>
+    <tr><td>L3 — strict</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n">—</td></tr>
+  </table>
+  <p>Read together: the agent got essentially <em>every</em> timestamp, depth and
+  replicate right (L1 recall 0.9999), and once site names are reconciled
+  <strong>95% of all values agree</strong>. The strict zero decomposes into three
+  separately fixable problems:</p>
+  <ul>
+    <li><strong>Site vocabulary collapsed.</strong> Expert uses <code>ER-WML1_HERB</code> and
+        <code>ER-WML1_SHRUB</code>; the agent emits only <code>ER-WML1</code>.</li>
+    <li><strong>A row filter was missed.</strong> 1.89× the expert's row count and 10 extra
+        sites — the even-numbered plots the expert excludes as warming treatments.</li>
+    <li><strong>Coordinates not resolved.</strong> Every site blank and flagged <code>g2</code>
+        ("unavailable") while the expert resolves 10 of them from a registry the agent's own
+        instructions list.</li>
+  </ul>
+  <p>A single strict score reports "0" for all three indistinguishably. This is the whole
+  argument for the ladder.</p>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <div class="num">4</div>
+  <h2>Automatic diagnosis: why a fold differs</h2>
+  <p>A score says a fold is wrong; a diagnosis says <em>how</em>. Each fold gets findings
+  carrying the evidence that triggered them. Findings state evidence, not conclusions —
+  "ten sites appear that the expert lacks" is an observation; "the agent forgot a filter"
+  is a hypothesis to be checked against the expert's documented steps.</p>
+
+  <table>
+    <tr><th>Finding</th><th>Triggered when</th><th class="n">Folds</th></tr>
+    <tr><td><code>SITE_SUPERSET</code></td><td>agent has sites the expert lacks — kept excluded rows</td><td class="n">8</td></tr>
+    <tr><td><code>COORD_UNRESOLVED</code></td><td>no coordinates where the expert resolves some</td><td class="n">5</td></tr>
+    <tr><td><code>SITE_MISSING</code></td><td>expert has sites the agent lacks — data dropped</td><td class="n">5</td></tr>
+    <tr><td><code>TZ_SHIFT</code></td><td>every timestamp off by the same whole hours</td><td class="n">5</td></tr>
+    <tr><td><code>QC_FLAG_MISMATCH</code></td><td>coordinate provenance misreported</td><td class="n">5</td></tr>
+    <tr><td><code>DUPLICATE_KEYS</code></td><td>a key repeated that the expert treats as unique</td><td class="n">5</td></tr>
+    <tr><td><code>SYSTEMATIC_GAP</code></td><td>&gt;80% of missing rows fall in one site</td><td class="n">4</td></tr>
+    <tr><td><code>ROW_INFLATION</code> / <code>ROW_DEFICIT</code></td><td>row count off by &gt;5%</td><td class="n">7</td></tr>
+    <tr><td><code>NULL_INFLATION</code> / <code>NULL_DEFICIT</code></td><td>missingness differs by &gt;10 points</td><td class="n">5</td></tr>
+    <tr><td><code>UNIT_SCALE</code>, <code>SIGN_ERROR</code></td><td>×100/×1000 scale confusion, inverted sign</td><td class="n bad">0</td></tr>
+  </table>
+
+  <div class="found">
+    <p><strong>Finding: the failures are structural, not numerical.</strong> 53 findings
+    across 19 folds, and almost all concern <em>which rows and which sites</em> — filters,
+    naming, coordinates, timezones. Not one fold shows a unit-scale or sign error. Six
+    folds have no critical finding at all.</p>
+    <p>That matters for where to intervene: the arithmetic of unit conversion is solved;
+    the record-selection logic is not.</p>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <div class="num">5</div>
+  <h2>Timezone offsets — the single largest effect</h2>
+  <p>A uniform clock offset drives every keyed score to zero while leaving all values
+  perfectly correct. When one is detected we re-score with it removed and report both
+  numbers, which answers a specific question: <em>how much of this failure is one
+  systematic mistake rather than many scattered ones?</em></p>
+
+  <table>
+    <tr><th class="n">Fold</th><th class="n">Target</th><th class="n">Offset</th><th class="n">L3 F1</th><th class="n">L3 F1 corrected</th></tr>
+    <tr><td class="n">8</td><td class="n">26</td><td class="n">+7 h</td><td class="n bad">0.000</td><td class="n ok">0.839</td></tr>
+    <tr><td class="n">9</td><td class="n">4</td><td class="n">−6 h</td><td class="n bad">0.000</td><td class="n ok">0.645</td></tr>
+    <tr><td class="n">14</td><td class="n">10</td><td class="n">+1 h</td><td class="n bad">0.000</td><td class="n">0.000</td></tr>
+    <tr><td class="n">16</td><td class="n">18</td><td class="n">−7 h</td><td class="n bad">0.000</td><td class="n">0.000</td></tr>
+    <tr><td class="n">18</td><td class="n">24</td><td class="n">+6 h</td><td class="n bad">0.000</td><td class="n ok">0.764</td></tr>
+  </table>
+
+  <p>Fold 18 is the cleanest illustration: 3,204 agent rows against 3,204 expert rows,
+  534 distinct timestamps on each side, <strong>zero overlap</strong> — and identical
+  depths, replicates and values. One mistake, total failure by exact match.</p>
+
+  <div class="found">
+    <p><strong>Finding.</strong> Removing the offset lifts the median strict score from
+    <span class="bad">0.00</span> to <span class="ok">0.84</span>. Folds 14 and 16 stay at
+    zero, so they have problems beyond the clock.</p>
+  </div>
+
+  <div class="caveat">The detector fires only when timestamps genuinely fail to line up
+  <em>and</em> a candidate shift recovers most of them. A looser earlier rule flagged four
+  already-correct folds on a single coincidental match; both conditions are needed.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <div class="num">6</div>
+  <h2>Schema conformance</h2>
+  <p>Does the output have the right shape? Columns present, no extras, correct order,
+  values inside plausible ranges (volumetric water content 0–1, water potential negative,
+  depth 0–100 m), required fields populated.</p>
+
+  <p><strong>What we deliberately do not score: raw pandas dtypes.</strong> A CSV has no
+  types — what pandas infers on read is a property of the reader, not the agent. Scoring
+  it would mark every run wrong for storing a timestamp as text. Instead we score
+  <em>coercibility</em>: does every value parse into its intended type without loss?</p>
+
+  <p class="note">Note also that the repo's <code>TargetSchema.is_valid()</code> ignores
+  range violations, so a volumetric water content of 95 passes it. Ranges are scored here
+  and count toward the verdict.</p>
+
+  <div class="found">
+    <p><strong>Finding.</strong> 14 of 19 folds fully conformant. Zero uncoercible values
+    anywhere in the corpus — every emitted value parses as its intended type. Failures are
+    structural (a missing or extra column, an unpopulated required field), not malformed
+    data.</p>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <div class="num">7</div>
+  <h2>Sites and coordinates</h2>
+  <p>The agent also emits a location table. Against <code>sdt_location</code> we measure
+  site set precision/recall/F1, great-circle coordinate error per matched site, and
+  <code>qc_flag</code> accuracy.</p>
+  <p>The lakehouse has no <code>qc_flag</code> column, but
+  <code>geolocation_resolution_method</code> records <em>how</em> each coordinate was
+  obtained. Mapping that vocabulary onto <code>g1</code> (from the registry) and
+  <code>g2</code> (unavailable) makes coordinate provenance scoreable.</p>
+  <p class="note">The denominator matters: some expert sites have no coordinates at all,
+  so the resolvable count is smaller than the site count and is reported separately.</p>
+
+  <div class="found">
+    <p><strong>Finding: when the agent attempts coordinates it is exact; the problem is
+    not attempting.</strong></p>
+    <ul>
+      <li>Site set F1: median <strong>1.000</strong> across 19 folds — site discovery is solid.</li>
+      <li>Coordinates comparable on 10 folds: median error <strong>0.0 m</strong>, all within 100 m.</li>
+      <li><code>qc_flag</code> accuracy: median <strong>1.000</strong> (15 folds).</li>
+      <li>But <strong>5 folds report coordinates as unavailable</strong> that the registry resolves.</li>
+    </ul>
+    <p>So <code>COORD_UNRESOLVED</code> is a lookup-not-performed failure, not an accuracy
+    failure — a materially different fix.</p>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <div class="num">8</div>
+  <h2>Documentation quality</h2>
+  <p>The agent documents its transformations in prose. Exact text matching is worthless
+  here — the earlier pilot found 0/8 agreement on wording while the executed outputs were
+  identical. But "does the text describe the same <em>operations</em>?" is answerable.</p>
+
+  <h3>Two different fields</h3>
+  <ul>
+    <li><strong><code>unit_conversion</code> is not prose.</strong> Its 153 expert values
+    collapse to 9 templates once numerals are masked, so it is parsed deterministically
+    into (factor, from-unit, to-unit) and scored exactly.</li>
+    <li><strong><code>transformation</code> is reduced to the operations it names</strong>
+    from a controlled vocabulary — <code>JOIN</code>, <code>FILTER</code>,
+    <code>RENAME</code>, <code>TIMEZONE</code>, <code>PARSE_DATETIME</code> and so on. We
+    then ask which expert operations are missing from the agent's account.</li>
+  </ul>
+
+  <p>Three choices worth stating in Methods: steps are pooled <strong>per dataset, not per
+  variable group</strong> (a filter governing every column is recorded inside the
+  <code>depth</code> group); results are reported <strong>stratified and unweighted</strong>
+  because <code>FILTER</code> appears twice in 153 patterns yet drives the largest errors;
+  and recall <strong>pools the mapping text with <code>notes.md</code></strong> while
+  precision stays attributed per artifact.</p>
+
+  <div class="found">
+    <p><strong>Finding: 72 of 83 expert operations are documented</strong>, and source-file
+    identification is perfect (median F1 1.000 for payload and location files).</p>
+    <table>
+      <tr><th>Operation</th><th class="n">Stated / folds requiring it</th></tr>
+      <tr><td><code>TIMEZONE</code></td><td class="n">18 / 19</td></tr>
+      <tr><td><code>ASSIGN_CONSTANT</code></td><td class="n">14 / 15</td></tr>
+      <tr><td><code>PARSE_DATETIME</code></td><td class="n">14 / 16</td></tr>
+      <tr><td><code>PARSE_FROM_COLNAME</code></td><td class="n">11 / 12</td></tr>
+      <tr><td><code>RENAME</code></td><td class="n bad">4 / 9</td></tr>
+      <tr><td><code>FILTER</code> · <code>JOIN</code> · <code>METADATA_LOOKUP</code></td><td class="n">1/1 · 1/1 · 5/5</td></tr>
+      <tr><td><code>AGGREGATE</code></td><td class="n bad">0 / 1</td></tr>
+    </table>
+    <p><strong>The sharpest observation: the agent states timezone handling in 18 of 19
+    folds, and still gets the timezone wrong in 5.</strong> Saying it is not doing it —
+    these are not knowledge failures but execution failures, which points the fix at the
+    code path rather than the instructions.</p>
+  </div>
+  <p class="note">Counts, not percentages, for small cells: <code>FILTER</code> occurs once
+  in this corpus, so "1/1" is a case report rather than a rate.</p>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="num">9</div>
+  <h2>Behaviour and context — not quality metrics</h2>
+  <p>These describe <em>how</em> a run happened. They are covariates and must not be read
+  as quality: a cheap run that silently skips a filter would otherwise look efficient.</p>
+  <ul>
+    <li><strong>Exemplar substitution</strong> — which expert implementations the agent
+    actually opened, from the access traces. This observes the ablation mechanism directly
+    rather than inferring it from score differences.</li>
+    <li><strong>Cost, turns, tokens, tool mix</strong> — context only.</li>
+    <li><strong>Process integrity</strong> — a <em>gate</em>, not a score.</li>
+    <li><strong>Difficulty covariates</strong> — row count, sites, source files, unit
+    conversions, exemplar pool size. These separate "the agent did well" from "the dataset
+    was easy".</li>
+  </ul>
+
+  <div class="found">
+    <p><strong>Findings.</strong> Cost median $4.69 (range $3.56–13.57), 80 turns median,
+    3 exemplars read median. Process integrity: <strong>19/19 clean</strong> — which is
+    precisely why it is a gate: it has no power to discriminate between runs.</p>
+    <p>The agent does visibly compensate for ablation: with all six cluster-mates
+    withheld, fold 1 opened four out-of-cluster examples instead.</p>
+  </div>
+
+  <h3>Ablation: no usable outcome signal yet</h3>
+  <table>
+    <tr><th>Cluster</th><th class="n">Exemplars available</th><th class="n">Folds</th><th class="n">Median L3 F1</th><th class="n">Median cost</th></tr>
+    <tr><td><code>sg_ph_micromet</code></td><td class="n">13</td><td class="n">6</td><td class="n">0.983</td><td class="n">$4.85</td></tr>
+    <tr><td><code>neon_point</code></td><td class="n">17</td><td class="n">2</td><td class="n">0.000</td><td class="n">$9.43</td></tr>
+    <tr><td><code>independent</code></td><td class="n">18</td><td class="n">11</td><td class="n">0.000</td><td class="n">$4.55</td></tr>
+  </table>
+  <p>The most-ablated group scores <em>highest</em> — the opposite of the expected
+  direction, and almost certainly not about ablation. Those six folds are one instrument
+  cluster with consistent formatting, so the comparison confounds ablation with how hard
+  the datasets are.</p>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <div class="num">10</div>
+  <h2>How to read these statistics</h2>
+  <ul>
+    <li><strong>The folds are not independent.</strong> Six of 19 are the same
+    micrometeorology cluster. Treating n=19 as nineteen independent observations overstates
+    the evidence, and the pre-registered cluster bootstrap resamples only three clusters.</li>
+    <li><strong>There are no error bars.</strong> Every fold is a single run. Two accidental
+    repeat runs differed by <strong>3.9% of rows</strong> between identical invocations, so
+    run-to-run noise is a real fraction of what is being measured. Per-fold scores are point
+    estimates of unknown precision until a repeat batch exists.</li>
+    <li><strong>The ablation contrast is confounded</strong> with dataset type and intrinsic
+    difficulty. Any ablation result here is exploratory.</li>
+    <li><strong>One expert, not ground truth.</strong> Disagreement means the agent differs
+    from that expert's conventions.</li>
+    <li><strong>Prose scoring is lexical.</strong> Transformation text is matched against a
+    controlled vocabulary by regular expression, applied identically to both sides. An LLM
+    reader would recall more but needs blind, symmetric validation against human annotation
+    first — an LLM judging LLM-written text has a self-preference bias.</li>
+  </ul>
+  <p>For these reasons the results report per-fold detail and effect sizes rather than
+  p-values, and any composite is shown beside its components, never instead of them.</p>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <div class="num">11</div>
+  <h2>What to do next</h2>
+  <ul>
+    <li><strong>Fix timezone handling.</strong> Five folds fail outright on it and the
+    documentation shows the agent knows it should — the highest-yield correction available.</li>
+    <li><strong>Make filtering explicit in the skill.</strong> Eight folds retain rows the
+    expert excludes. The instructions cover schema and units well but say little about
+    exclusion criteria.</li>
+    <li><strong>Make the location-registry lookup mandatory.</strong> Five folds report
+    coordinates unavailable that the registry resolves — and where the agent does look, it
+    is exact.</li>
+    <li><strong>State a site-naming convention.</strong> Several folds differ only in how
+    sites are labelled; cheap to specify, currently costs full credit.</li>
+    <li><strong>Run a repeat batch</strong> so per-fold scores acquire error bars.</li>
+  </ul>
+  <p class="note">Reproduce: <code>python -m src.metrics.run_all</code>, then
+  <code>python -m src.metrics.report</code>.</p>
+</section>
+
+<!-- appendix -->
+<section class="slide">
+  <div class="num">Appendix</div>
+  <h2>All 19 folds</h2>
+  <table>
+    <tr><th class="n">Fold</th><th class="n">Target</th><th>Cluster</th><th class="n">Row ratio</th>
+        <th class="n">TZ</th><th class="n">L1 recall</th><th class="n">L3 F1</th>
+        <th class="n">L3 corrected</th><th class="n">Critical</th></tr>
+    <tr><td class="n">1</td><td class="n">1</td><td>sg_ph_micromet</td><td class="n">1.058</td><td class="n">—</td><td class="n">0.999</td><td class="n">0.971</td><td class="n">0.971</td><td class="n">0</td></tr>
+    <tr><td class="n">2</td><td class="n">2</td><td>sg_ph_micromet</td><td class="n">1.000</td><td class="n">—</td><td class="n">1.000</td><td class="n">1.000</td><td class="n">1.000</td><td class="n">0</td></tr>
+    <tr><td class="n">3</td><td class="n">3</td><td>sg_ph_micromet</td><td class="n">0.688</td><td class="n">—</td><td class="n">0.457</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">3</td></tr>
+    <tr><td class="n">4</td><td class="n">6</td><td>sg_ph_micromet</td><td class="n">1.000</td><td class="n">—</td><td class="n">0.999</td><td class="n">0.999</td><td class="n">0.999</td><td class="n">0</td></tr>
+    <tr><td class="n">5</td><td class="n">16</td><td>sg_ph_micromet</td><td class="n">1.152</td><td class="n">—</td><td class="n">0.956</td><td class="n">0.874</td><td class="n">0.874</td><td class="n">0</td></tr>
+    <tr><td class="n">6</td><td class="n">27</td><td>sg_ph_micromet</td><td class="n">1.008</td><td class="n">—</td><td class="n">0.999</td><td class="n">0.995</td><td class="n">0.995</td><td class="n">1</td></tr>
+    <tr><td class="n">7</td><td class="n">15</td><td>neon_point</td><td class="n">0.953</td><td class="n">—</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">1</td></tr>
+    <tr><td class="n">8</td><td class="n">26</td><td>neon_point</td><td class="n">0.725</td><td class="n">+7</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n ok">0.839</td><td class="n">4</td></tr>
+    <tr><td class="n">9</td><td class="n">4</td><td>independent</td><td class="n">1.813</td><td class="n">−6</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n ok">0.645</td><td class="n">3</td></tr>
+    <tr><td class="n">10</td><td class="n">5</td><td>independent</td><td class="n">1.000</td><td class="n">—</td><td class="n">0.897</td><td class="n">0.897</td><td class="n">0.897</td><td class="n">1</td></tr>
+    <tr><td class="n">11</td><td class="n">7</td><td>independent</td><td class="n">1.000</td><td class="n">—</td><td class="n ok">1.000</td><td class="n ok">1.000</td><td class="n">1.000</td><td class="n">0</td></tr>
+    <tr><td class="n">12</td><td class="n">8</td><td>independent</td><td class="n">1.000</td><td class="n">—</td><td class="n">1.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">2</td></tr>
+    <tr><td class="n">13</td><td class="n">9</td><td>independent</td><td class="n">1.116</td><td class="n">—</td><td class="n">1.000</td><td class="n">0.945</td><td class="n">0.945</td><td class="n">1</td></tr>
+    <tr><td class="n">14</td><td class="n">10</td><td>independent</td><td class="n">0.987</td><td class="n">+1</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">2</td></tr>
+    <tr><td class="n">15</td><td class="n">17</td><td>independent</td><td class="n">0.998</td><td class="n">—</td><td class="n">0.998</td><td class="n">0.999</td><td class="n">0.999</td><td class="n">0</td></tr>
+    <tr><td class="n">16</td><td class="n">18</td><td>independent</td><td class="n">0.990</td><td class="n">−7</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">3</td></tr>
+    <tr><td class="n">17</td><td class="n">23</td><td>independent</td><td class="n">1.888</td><td class="n">—</td><td class="n">1.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">3</td></tr>
+    <tr><td class="n">18</td><td class="n">24</td><td>independent</td><td class="n">1.000</td><td class="n">+6</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n ok">0.764</td><td class="n">1</td></tr>
+    <tr><td class="n">19</td><td class="n">25</td><td>independent</td><td class="n">1.005</td><td class="n">—</td><td class="n">1.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">2</td></tr>
+  </table>
+
+  <h3>Per-column agreement among paired rows</h3>
+  <table>
+    <tr><th>Column</th><th class="n">Median</th><th class="n">Worst fold</th><th>Note</th></tr>
+    <tr><td><code>is_timeseries</code></td><td class="n">1.000</td><td class="n">1.000</td><td></td></tr>
+    <tr><td><code>water_potential_kPa</code></td><td class="n">1.000</td><td class="n">0.773</td><td>present in 9.3% of reference rows</td></tr>
+    <tr><td><code>volumetric_water_content_m3_m3</code></td><td class="n">0.991</td><td class="n">0.544</td><td>the main measured variable</td></tr>
+    <tr><td><code>gravimetric_water_content_gH2O_gs</code></td><td class="n">1.000</td><td class="n">1.000</td><td class="bad">see caveat</td></tr>
+  </table>
+  <div class="caveat"><strong>Do not report gravimetric water content as a success.</strong>
+  It is non-null in 416 of 6.4M reference rows (0.0065%). Its perfect score reflects
+  agreement that almost nothing is there, not a demonstrated capability. Null-mask
+  agreement is 1.000 for every column — where the expert recorded missing, so did the
+  agent. No zero-filling anywhere.</div>
+
+  <figure>
+    <img src="../../results/figures/fig1_match_ladder.png" alt="Output equivalence by match level across folds">
+    <figcaption>Figure 1 — output equivalence by match level. The spread between L1 and L3
+    is the gap between correct values and exact correspondence.</figcaption>
+  </figure>
+  <figure>
+    <img src="../../results/figures/fig2_finding_frequency.png" alt="Diagnostic findings across the corpus">
+    <figcaption>Figure 2 — diagnostic findings by number of folds affected.</figcaption>
+  </figure>
+  <figure>
+    <img src="../../results/figures/fig3_column_agreement.png" alt="Per-column agreement">
+    <figcaption>Figure 3 — median per-column cell agreement across folds.</figcaption>
+  </figure>
+</section>
+
+</body>
+</html>
