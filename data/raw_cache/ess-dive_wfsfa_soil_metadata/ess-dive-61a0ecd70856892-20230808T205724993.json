@@ -1,0 +1,221 @@
+{
+  "id": "ess-dive-61a0ecd70856892-20230808T205724993",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/1958210",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-61a0ecd70856892-20230808T205724993",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-5ed5cafae00595f-20230407T144441039255",
+  "dateUploaded": "2023-08-08T20:57:28.710Z",
+  "dateModified": "2023-08-08T20:57:29.916Z",
+  "isPublic": true,
+  "citation": "Perzan Z; Maher K; Boye K; Bargar J (2023): Soil water content, matric potential, carbon dioxide and oxygen concentrations, Oct 2018-Dec 2021, Slate River Floodplain, Crested Butte, Colorado. Groundwater Quality SFA. Dataset. doi:10.15485/1958210",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/1958210",
+    "name": "Soil water content, matric potential, carbon dioxide and oxygen concentrations, Oct 2018-Dec 2021, Slate River Floodplain, Crested Butte, Colorado",
+    "description": [
+      "This data package includes a time series of soil sensor data (temperature, water content, bulk electrical conductivity, porewater dissolved oxygen and porewater dissolved carbon dioxide) in a vertical profile from the Slate River floodplain outside Crested Butte, Colorado, a focus field site for the SLAC Floodplain Hydro-Biogeochemistry SFA. The data was generated as part of the work targeting the overarching research question for the SLAC SFA: How do ubiquitous subsurface interfaces mediate molecular-scale biogeochemical processes and groundwater quality in floodplains and watersheds?",
+      "The package includes: (1) soil temperature, volumetric water content and electrical conductivity at 40, 60 and 82.5 cm depth; (2) soil matric potential at 40, 60, 79 and 100 cm depth; (3) soil CO2 concentrations at 40, 60 and 82.5 cm depth; and (4) soil oxygen concentrations at 60, 82.5, 100, 135, 170 and 182 cm depth. Both the carbon dioxide and oxygen sensors are optical sensors that can measure the partial pressure of oxygen in both saturated and unsaturated conditions. Unfortunately, soil CO2 in the profile is unexpectedly high and above the sensor calibration range (0-25,000 ppm). In addition, soil CO2 sensors failed within a year of deployment, so we only report CO2 data from 2019-2020.",
+      "Within the data package, \"FLMD.csv\" describes file-level metadata and \"dd.csv\" defines column headers and universal terms across the dataset. The data package includes 4 \"*data.csv\" files, one for each calendar year in the dataset. Each \"*data.csv\" file has a corresponding \"*_InstallationMethods.csv\" file that describes the location, sensor model, sensor serial number and other metadata corresponding for each measured parameter. Because sensors have been added over time, not every sensor has data dating back to Oct 2018. Note that there is a data gap over winter 2019-2020 due to a power outage. While this repository currently only contains data through December 2021, the dataset will be updated as additional years are collected and processed."
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-2676-2452",
+        "givenName": "Zach",
+        "familyName": "Perzan",
+        "affiliation": "Stanford University",
+        "email": "zperzan@stanford.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-5982-6064",
+        "givenName": "Kate",
+        "familyName": "Maher",
+        "affiliation": "Stanford University",
+        "email": "kmaher@stanford.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-2087-607X",
+        "givenName": "Kristin",
+        "familyName": "Boye",
+        "affiliation": "Stanford Linear Accelerator Center - National Accelerator Laboratory",
+        "email": "kboye@slac.stanford.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9303-4901",
+        "givenName": "John",
+        "familyName": "Bargar",
+        "affiliation": "Pacific Northwest National Laboratory (PNNL)",
+        "email": "john.bargar@pnnl.gov"
+      }
+    ],
+    "contributor": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-7614-0227",
+        "givenName": "Sam",
+        "familyName": "Pierce",
+        "affiliation": "Stanford Linear Accelerator Center - National Accelerator Laboratory",
+        "email": "swpierce@slac.stanford.edu"
+      }
+    ],
+    "datePublished": "2023-02-18",
+    "keywords": [
+      "CO2 concentration",
+      "oxygen concentration",
+      "ESS-DIVE Hydrologic Monitoring Reporting Format",
+      "ESS-DIVE CSV File Formatting Guidelines Reporting Format",
+      "ESS-DIVE File Level Metadata Reporting Format",
+      "EARTH SCIENCE > LAND SURFACE > SOILS",
+      "EARTH SCIENCE > AGRICULTURE > SOILS"
+    ],
+    "variableMeasured": [
+      "Soil carbon dioxide",
+      "Soil oxygen",
+      "Soil matric potential",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > ELECTRICAL CONDUCTIVITY",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL TEMPERATURE",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > CARBON",
+      "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > WATER QUALITY/WATER CHEMISTRY > GASES > DISSOLVED CARBON DIOXIDE",
+      "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > WATER QUALITY/WATER CHEMISTRY > GASES > DISSOLVED OXYGEN"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "Site OBJ2, Slate River Floodplain, Crested Butte, Colorado. The Slate River is a snow-dominated, headwater catchment within the Upper Colorado River Basin and a key testbed for the Floodplain Hydro-Biogeochemistry Science Focus Area at SLAC National Accelerator Laboratory. This portion of the floodplain (~2,700 m elevation) sits downstream of the confluence of Oh Be Joyful (OBJ) Creek and upstream of Gunsight Bridge, on a portion of the river with heavy beaver activity. All of these data are from location OBJ2, which hosts an array of soil, meteorological and water level sensors.",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.90943,
+            "longitude": -107.028242
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.90943,
+            "longitude": -107.028242
+          }
+        ]
+      }
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2018-10-05",
+      "endDate": "2021-12-31",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0003-2676-2452",
+      "givenName": "Zach",
+      "familyName": "Perzan",
+      "affiliation": "Stanford University",
+      "email": "zperzan@stanford.edu"
+    },
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "14a7e1cf-5a60-4ac3-9527-ec20fed6815f"
+      },
+      "name": "Groundwater Quality SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "John",
+        "familyName": "Bargar",
+        "jobTitle": "Principal Investigator",
+        "affiliation": "Stanford Linear Accelerator Center",
+        "email": "bargar@slac.stanford.edu"
+      }
+    },
+    "measurementTechnique": [
+      "Soil temperature, volumetric water content and electrical conductivity are recorded values from soil moisture and temperature probes (Cambell Scientific CS655) installed in the side of a soil pit dug in October 2018. Soil matric potential was measured using soil water potential sensors (Meter TEROS21) installed via soil auger. Soil carbon dioxide concentrations are measured via non-dispersive infrared sensors (Eosense eosGP) installed via soil auger that record the partial pressure of CO2 in the soil. Similarly, oxygen concentrations are measured via optical sensors (PreSens OXYBase WR-RS232) that were installed in an auger hole and record the partial pressure of oxygen in the soil. Partial pressure of both CO2 and O2 were converted to absolute concentrations by correcting for variations in atmospheric pressure, as recorded at 2 m above the ground surface with a pressure transducer (Setra 278).",
+      "For all sensors installed via soil auger, during digging, each soil horizon was separated and carefully placed in corresponding order. Soil was then lightly packed around the sensor head, the sensor was lowered to the bottom of the hole and the auger hole was refilled, keeping the order of soil horizons intact. Sensors are connected to one central datalogger (Campbell Scientific CR1000X) via a multiplexer (Campbell Scientific AM16/32B) and serial expansion peripheral (Campbell Scientific SDM-SIO4A). All sensors were sampled at variable frequency depending on the time period (high power vs low power mode) and reported values are averages of multiple individual scans according to the \"ScansPerRec\" column in each data file."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-dd9655ff407b49f-20230218T232809661",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-dd9655ff407b49f-20230218T232809661",
+        "name": "SLT_OBJ2_SoilSensors_2020_InstallationMethods.csv",
+        "contentSize": 15.74609375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-4a531af39cb8ed9-20230218T232809611",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-4a531af39cb8ed9-20230218T232809611",
+        "name": "dd.csv",
+        "contentSize": 3.677734375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-3434d13dcdba392-20230218T232809643",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-3434d13dcdba392-20230218T232809643",
+        "name": "SLT_OBJ2_SoilSensors_2019_data.csv",
+        "contentSize": 2836.6982421875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-ceed5bda77873fa-20230218T232809669",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-ceed5bda77873fa-20230218T232809669",
+        "name": "SLT_OBJ2_SoilSensors_2021_data.csv",
+        "contentSize": 1692.140625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-4883114039fa1d8-20230218T232809676",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-4883114039fa1d8-20230218T232809676",
+        "name": "SLT_OBJ2_SoilSensors_2021_InstallationMethods.csv",
+        "contentSize": 15.74609375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-12d9b712a14a9e1-20230218T232809648",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-12d9b712a14a9e1-20230218T232809648",
+        "name": "SLT_OBJ2_SoilSensors_2019_InstallationMethods.csv",
+        "contentSize": 15.734375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-57d0ff22b5c5802-20230218T232809635",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-57d0ff22b5c5802-20230218T232809635",
+        "name": "SLT_OBJ2_SoilSensors_2018_InstallationMethods.csv",
+        "contentSize": 5.595703125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-3df8bd795fc9cf5-20230218T232809622",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-3df8bd795fc9cf5-20230218T232809622",
+        "name": "FLMD.csv",
+        "contentSize": 2.5009765625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-dd51cb6ef056b5c-20230218T232809629",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-dd51cb6ef056b5c-20230218T232809629",
+        "name": "SLT_OBJ2_SoilSensors_2018_data.csv",
+        "contentSize": 296.55078125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-1aad8b3313d7a60-20230218T232809655",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-1aad8b3313d7a60-20230218T232809655",
+        "name": "SLT_OBJ2_SoilSensors_2020_data.csv",
+        "contentSize": 2327.4609375
+      }
+    ]
+  }
+}
