@@ -1,0 +1,56 @@
+{
+  "index": 4,
+  "dataset_identifier": "ess-dive-6c7085e9c544cc6-20250424T164534831",
+  "doi": "doi:10.15485/2561511",
+  "archive_repository": "ESS-DIVE",
+  "data_payload_files": ["df_data.csv"],
+  "location_metadata_files": ["df_meta.csv"],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "datetime",
+        "source_files": ["df_meta.csv"],
+        "destination_variable": "datetime_UTC",
+        "transformation": "df_meta.csv is row-aligned (positional index) with df_data.csv; the per-row site and calendar date are taken from df_meta.csv. The 'datetime' column is a calendar date only (daily aggregated statistics), localized to midnight UTC. Note: rows were shuffled chronologically by the data provider for ML training; harmonized output is re-sorted by datetime_UTC, site_id, depth_m, replicate.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "site",
+        "source_files": ["df_meta.csv"],
+        "destination_variable": "site_id",
+        "transformation": "Direct column mapping (values ph1, ph2, sg5, tb).",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": ["df_data.csv"],
+        "destination_variable": "depth_m",
+        "transformation": "No single depth is assignable: swc/swp are depth-weighted averages integrated across four sensor depths (ph1/ph2/sg5: -0.1, -0.3, -0.6, -1.15 m; tb: -0.1, -0.3, -0.5, -0.7 m). depth_m is set to NaN.",
+        "unit_conversion": null
+      }
+    },
+    "volumetric_water_content": {
+      "pattern_1": {
+        "source_pattern": "swc",
+        "source_files": ["df_data.csv"],
+        "destination_variable": "volumetric_water_content_m3_m3",
+        "transformation": "Soil water content, depth-weighted average across four TEROS12 sensors. Observed range 0.104-0.395, consistent with m3 m-3; mapped directly.",
+        "unit_conversion": null
+      }
+    },
+    "water_potential": {
+      "pattern_1": {
+        "source_pattern": "swp",
+        "source_files": ["df_data.csv"],
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Soil water potential derived from depth-weighted soil water content via a water-retention relationship (TEROS12/TEROS21 pair at -0.3 m). All values negative (range -8386.02 to -3.45), consistent with kPa; mapped directly.",
+        "unit_conversion": null
+      }
+    }
+  }
+}
