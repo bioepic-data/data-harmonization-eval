@@ -1,0 +1,150 @@
+{
+  "id": "ess-dive-e67ab1151ebc525-20230929T190307767",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.6084/M9.FIGSHARE.7834406.V2",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-e67ab1151ebc525-20230929T190307767",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-c300f48a07ee725-20230825T175945603",
+  "dateUploaded": "2023-09-29T19:03:09.311Z",
+  "dateModified": "2023-10-11T07:42:55.175Z",
+  "isPublic": true,
+  "citation": "Carbone M (2023): Raw soil carbon dioxide, moisture, and temperature data from a mixed conifer and aspen forest stands in the East River Watershed of Colorado June 2011-December 2021.. Soil CO2 concentrations in aspen and mixed conifer forests at the Rocky Mountain Biological Laboratory in Colorado. Dataset. doi:10.6084/M9.FIGSHARE.7834406.V2",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.6084/M9.FIGSHARE.7834406.V2",
+    "name": "Raw soil carbon dioxide, moisture, and temperature data from a mixed conifer and aspen forest stands in the East River Watershed of Colorado June 2011-December 2021.",
+    "description": [
+      "These datasets contain raw data from adjacent mixed-conifer (Abies lasiocarpa and Picea engelmannii) and deciduous (Populus tremuloides) forest stands in the Elk Mountains at the Rocky Mountain Biological Laboratory in Gothic, Colorado (38.9592\u25e6 N, longitude: 106.9898\u25e6 W and elevation of 2880 m). Each site contains five soil carbon dioxide (CO2) gas probes and three soil temperature/moisture sensors connected to a data logger. Soil temperature, moisture, and CO2 (ppm) concentrations were recorded each hour. There are three attached CSV files; two CSV files are of the raw data collected in the respective forest types, conifer: \"Carbone_conifer.csv\" and deciduous: \"Carbone_aspen.csv\". The third file \"Carbone_Headers.csv\" is a shared headers file for both datasets. Basic data processing and QA/QC was done on the raw data sets. This research was performed to investigate the response of the soil CO2 to inter-annual and seasonal variability of moisture inputs in mountainous ecosystems."
+    ],
+    "alternateName": [
+      "https://doi.org/10.6084/m9.figshare.7834406.v2"
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-7832-7009",
+        "givenName": "Mariah",
+        "familyName": "Carbone",
+        "affiliation": "Northern Arizona University",
+        "email": "mariah.carbone@nau.edu"
+      }
+    ],
+    "contributor": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-8295-4494",
+        "givenName": "Christopher",
+        "familyName": "Still",
+        "affiliation": "Oregon State University",
+        "email": "chris.still@oregonstate.edu"
+      }
+    ],
+    "datePublished": "2023",
+    "keywords": [
+      "EARTH SCIENCE > LAND SURFACE > SOILS",
+      "Soil Moisture",
+      "Soil Temperature",
+      "aspen",
+      "mixed-conifer",
+      "soil respiraiton"
+    ],
+    "variableMeasured": [
+      "EARTH SCIENCE > AGRICULTURE > SOILS > SOIL MOISTURE/WATER CONTENT",
+      "EARTH SCIENCE > AGRICULTURE > SOILS > SOIL TEMPERATURE",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL RESPIRATION",
+      "Soil CO2",
+      "aspen",
+      "mixed-conifer"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "The forest stands are located in the Research Meadow at the Rocky Mountain Biological Laboratory in Gothic, Colorado (38.9592\u25e6 N, longitude: 106.9898\u25e6 W and elevation of 2880 m). The soil pits are within 15 meters of each other.",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.9592,
+            "longitude": -106.9898
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.9592,
+            "longitude": -106.9898
+          }
+        ]
+      }
+    ],
+    "award": [
+      "Instrumentation was supported by NSF Division of Biological Infrastructure"
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100000001",
+        "name": "National Science Foundation (NSF)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2011-06-04",
+      "endDate": "2021-12-31",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-7832-7009",
+      "givenName": "Mariah",
+      "familyName": "Carbone",
+      "affiliation": "Northern Arizona University",
+      "email": "mariah.carbone@nau.edu"
+    },
+    "citation": [
+      "Simonpietri A ; Carbone M (2023): Raw soil carbon dioxide, moisture, temperature and micrometeorological data in the East River Watershed, Colorado June 2021-October 2022. (DE-SC0021139). Ecohydrological controls on root and microbial respiration in the East River watershed of Colorado, ESS-DIVE repository. Dataset. doi:10.15485/1909712 accessed via https://data.ess-dive.lbl.gov/datasets/doi:10.15485/1909712 on 2023-06-13"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "96c8a8f7-8a8d-4e14-bb9e-70eceff3cf0f"
+      },
+      "name": "Soil CO2 concentrations in aspen and mixed conifer forests at the Rocky Mountain Biological Laboratory in Colorado",
+      "member": {
+        "@type": "Person",
+        "givenName": "Mariah",
+        "familyName": "Carbone",
+        "jobTitle": "principalInvestigator",
+        "affiliation": "Northern Arizona University, Flagstaff, AZ",
+        "email": "mariah.carbone@nau.edu"
+      }
+    },
+    "measurementTechnique": [
+      "In 2009, two instrumented soil pits were established in adjacent stands of conifer (Abies lasiocarpa and Picea engelmannii) and deciduous (Populus tremuloides) forests in the Elk Mountains at the Rocky Mountain Biological Laboratory in Gothic, Colorado (38.9592\u25e6 N, longitude: 106.9898\u25e6 W and elevation of 2880 m). Soils are well-drained sandy loam superactive Ustic Haplocryolls. The mean annual temperature is 0.1oC, and the mean annual precipitation is 626 mm.\nIn each forest type, a soil pit was excavated with a shovel to 50 cm. At depths 50, 15, and 5 cm below the surface, soil moisture, and temperature probes (Decagon Devices 5TE, Pullman, WA, USA) were inserted horizontally in the pit sidewall. After augering holes to 50, 15, 5, and 0.5 cm depths, vertical 1\u201d PVC pipes were inserted in the soil next to each pit and secured with metal stakes. One solid state CO2 concentration probe (Vaisala GMP222/GMM220, Vantaa Finland) and temperature sensor (thermistor, Thermometrics EC95H303W) were placed in each of the PVC pipes, as well as on a metal t-post 1.5 m above the soil surface to measure above-surface conditions. Free space in each PVC pipe was filled with closed cell foam, and the top was sealed with an elbow fitting and putty. Soil temperature, moisture, and CO2 (ppm) concentrations were recorded each hour. To eliminate heating of the soil by the soil CO2 probes and to minimize power consumption, each hour, the soil CO2 sensors were powered on for seven minutes to warm up and stabilize, then sampled every second for the next two minutes, with the average of 120 measurements recorded on the datalogger.\nAll CO2 concentration measurements were corrected for soil temperature and pressure according the manufacturer. Probes were calibrated annually in the field with CO2 standards, and returned to the manufacturer for factory calibration three times during the study period. For factory and field calibrations, data were corrected assuming constant linear drift over the time period between calibrations."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-3cf8d9085b0924f-20230825T175919878",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-3cf8d9085b0924f-20230825T175919878",
+        "name": "Carbone_aspen.csv",
+        "contentSize": 9800.1494140625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-3a760880f95587e-20230825T175928509",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-3a760880f95587e-20230825T175928509",
+        "name": "Carbone_conifer.csv",
+        "contentSize": 9718.625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-a0937c21110a9d6-20230825T175919887",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-a0937c21110a9d6-20230825T175919887",
+        "name": "Carbone_headers.csv",
+        "contentSize": 0.1982421875
+      }
+    ]
+  }
+}

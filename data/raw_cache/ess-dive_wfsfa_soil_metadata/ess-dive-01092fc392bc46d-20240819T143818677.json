@@ -1,0 +1,419 @@
+{
+  "id": "ess-dive-01092fc392bc46d-20240819T143818677",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/2322567",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-01092fc392bc46d-20240819T143818677",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-01092fc392bc46d-20240817T021725800",
+  "dateUploaded": "2024-08-19T14:38:20.416Z",
+  "dateModified": "2024-08-31T00:01:30.333Z",
+  "isPublic": true,
+  "citation": "Wan J; Tokunaga T; Beutler C; Newman A; Dong W; Bill M; Brown W; Henderson A; Tran A; Williams K (2024): Hydrological control of chemical weathering and rock-carbon fluxes: East River, Colorado. Watershed Function SFA. Dataset. doi:10.15485/2322567",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/2322567",
+    "name": "Hydrological control of chemical weathering and rock-carbon fluxes: East River, Colorado",
+    "description": [
+      "This data package is used in the manuscript entitled \u201cHydrological control of chemical weathering and rock-carbon fluxes\u201d. The field study was conducted in a lower montane hillslope of the East River watershed, underlain by Mancos Shale, within the lower 140 m section of a transect that extends nearly 1 km to its local peak. The data in this package, in CSV file format, were collected from Fall 2016 to fall 2021, including depth-resolved dynamic water table depths, subsurface water fluxes, solid phase (soil to bedrock) chemical compositions, geochemical properties of porewater and pore-gas, including radio carbon concentrations. The detailed methods of field studies, laboratory chemical analyses, and calculations are described in the Methods section and in the dataset file: Wan_et_al_Methods.pdf. The dataset additionally includes a file-level metadata (flmd.csv) file that lists each file contained in the dataset with associated metadata; and a data dictionary (dd.csv) file that contains column/row headers used throughout the files along with a definition, units, and data type."
+    ],
+    "alternateName": [
+      "paf_306_956"
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-4847-5577",
+        "givenName": "Jiamin",
+        "familyName": "Wan",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "jmwan@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-0861-6128",
+        "givenName": "Tetsu",
+        "familyName": "Tokunaga",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "tktokunaga@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Curtis",
+        "familyName": "Beutler",
+        "email": "curtis.beutler@colorado.edu"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Alexander",
+        "familyName": "Newman",
+        "email": "alexnewman760@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-2074-8887",
+        "givenName": "Wenming",
+        "familyName": "Dong",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "wenmingdong@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-7002-2174",
+        "givenName": "Markus",
+        "familyName": "Bill",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "mbill@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Wendy",
+        "familyName": "Brown",
+        "email": "bugsunlimitedllc@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9613-5003",
+        "givenName": "Amanda",
+        "familyName": "Henderson",
+        "email": "amanda.henderson3@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Anh",
+        "familyName": "Tran",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "aptran@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-3568-1155",
+        "givenName": "Kenneth",
+        "familyName": "Williams",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "khwilliams@lbl.gov"
+      }
+    ],
+    "datePublished": "2024",
+    "keywords": [
+      "weathering rates",
+      "water fluxes",
+      "CO2 fluxes",
+      "ESS-DIVE File Level Metadata Reporting Format",
+      "ESS-DIVE CSV File Formatting Guidelines Reporting Format"
+    ],
+    "variableMeasured": [
+      "Groundwater Flux",
+      "Groundwater Level",
+      "sensor depth",
+      "Anions",
+      "Cations",
+      "Isotopes",
+      "Mineralogy",
+      "Patriculate/Dissolved Inorganic Carbon",
+      "Patriculate/Dissolved Organic Carbon",
+      "Total Inorganic Carbon",
+      "Total Organic Carbon"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry. The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C. et al. (2022) doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.05
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.88,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "award": [
+      "DEAC0205CH11231 (Lawrence Berkeley National Laboratory)"
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2016-10-01",
+      "endDate": "2021-10-01",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0003-4847-5577",
+      "givenName": "Jiamin",
+      "familyName": "Wan",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "email": "jmwan@lbl.gov"
+    },
+    "citation": [
+      "Additional metadata on specific locations within the watershed are provided in the following related data package:",
+      "Varadharajan C ; Kakalia Z ; Burrus M ; O'Ryan D ; Alper E ; Banfield J ; Berkelhammer M ; Beutler C ; Brodie E ; Brown W ; Carbone M S ; Carroll R ; Christianson D ; Chou C ; Crystal-Ornelas R ; Chadwick K D ; Christensen J ; Dafflon B ; Elbashandy H ; Enquist B J ; Fox P ; Gochis D ; Henderson M ; Johnson D ; Kueppers L ; Matheus Carnevali P ; Newman A ; Powell T ; Singha K ; Sorensen P ; Sprenger M ; Tokunaga T ; Versteeg R ; Wilkins M ; Williams K ; Worsham M ; Wong C ; Wu Y ; Agarwal D (2022): Location Identifiers, Metadata, and Map for Field Measurements at the East River Watershed, Colorado, USA (Version 3.0). Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1660962"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "principalInvestigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "A detailed methods section is attached to the dataset (Wan et. al. Methods.pdf) describing: the study site; borehole drilling and instrumentation; sampling of different phases; sample analyses; radiocarbon sampling and analyses; water mass balance, subsurface flow, and solute export; quantifying Crock release rates; quantifying CO2 diffusion rates; pyrite relative concentrations; Fm (DOC and DIC) to calculate Crock in groundwater discharge."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-cc5e9891cede7ed-20240816T194514652",
+        "encodingFormat": "application/pdf",
+        "identifier": "ess-dive-cc5e9891cede7ed-20240816T194514652",
+        "name": "Wan_et_al_Methods.pdf",
+        "contentSize": 402.392578125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-7a66e9af5a0b620-20240816T194514640",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-7a66e9af5a0b620-20240816T194514640",
+        "name": "Sulfate_fluxes_Fig3b.csv",
+        "contentSize": 63.55078125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-5aa21c369d8400a-20240816T194514574",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-5aa21c369d8400a-20240816T194514574",
+        "name": "OCrock_profiles_Fig3g.csv",
+        "contentSize": 0.7900390625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-f9b9dbc90e151a6-20240816T194514539",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-f9b9dbc90e151a6-20240816T194514539",
+        "name": "CO2_Effluxes_Fig4j.csv",
+        "contentSize": 4.9072265625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-35a121da51df482-20240816T194514511",
+        "encodingFormat": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "identifier": "ess-dive-35a121da51df482-20240816T194514511",
+        "name": "4_15_23_C_MS_Complete_Data.xlsx",
+        "contentSize": 1263.3701171875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-cf360470315f679-20240816T194514608",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-cf360470315f679-20240816T194514608",
+        "name": "Soil_CO2_concentrations_Fig4h.csv",
+        "contentSize": 3.3720703125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-60fe500f7f17158-20240816T194514548",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-60fe500f7f17158-20240816T194514548",
+        "name": "Dynamic_water_table__depthsFig2b.csv",
+        "contentSize": 47.439453125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-deab3ae358c0abe-20240816T194514531",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-deab3ae358c0abe-20240816T194514531",
+        "name": "Base__ation_effluxes_Fig3d.csv",
+        "contentSize": 47.595703125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-6ec6bace1ff7af9-20240817T021722483",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-6ec6bace1ff7af9-20240817T021722483",
+        "name": "Pore_water_DIC_Fig4a.csv",
+        "contentSize": 8.626953125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-6f72dcce163438f-20240816T194514543",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-6f72dcce163438f-20240816T194514543",
+        "name": "DOC_Effluxes_Fig4d.csv",
+        "contentSize": 79.6298828125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-1893950580dd6f9-20240816T194514527",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-1893950580dd6f9-20240816T194514527",
+        "name": "14C_solid_OC_Fig5a.csv",
+        "contentSize": 2.609375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-1ec5da9a7db047a-20240816T194514523",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-1ec5da9a7db047a-20240816T194514523",
+        "name": "14C_DOC_Fig5b.csv",
+        "contentSize": 2.814453125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-5bea45bb04da05a-20240816T194514520",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-5bea45bb04da05a-20240816T194514520",
+        "name": "14C_DIC_Fig5c.csv",
+        "contentSize": 1.3037109375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-6f7b4fe9c6a37d2-20240817T021722478",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-6f7b4fe9c6a37d2-20240817T021722478",
+        "name": "Fm_DOC_in_Effluent_Fig5e.csv",
+        "contentSize": 63.4482421875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-97482e416085c96-20240816T194514515",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-97482e416085c96-20240816T194514515",
+        "name": "14C_CO2_Fig5d.csv",
+        "contentSize": 1.6904296875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-404f2fb279e8258-20240817T021722460",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-404f2fb279e8258-20240817T021722460",
+        "name": "dd.csv",
+        "contentSize": 17.900390625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-6b0fe2f45215569-20240816T194514646",
+        "encodingFormat": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "identifier": "ess-dive-6b0fe2f45215569-20240816T194514646",
+        "name": "Wan_et_al_Methods.docx",
+        "contentSize": 117.23828125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-d72d79bb225835a-20240816T194514584",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-d72d79bb225835a-20240816T194514584",
+        "name": "Porewater_basecation_concentrations_Fig3c.csv",
+        "contentSize": 7.44140625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-907b59396b18520-20240816T194514570",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-907b59396b18520-20240816T194514570",
+        "name": "ICrock_profiles_Fig3f.csv",
+        "contentSize": 1.173828125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-51c0ade225e1355-20240819T143815662",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-51c0ade225e1355-20240819T143815662",
+        "name": "flmd.csv",
+        "contentSize": 6.2275390625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-ce01d18b27bf932-20240817T021722473",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-ce01d18b27bf932-20240817T021722473",
+        "name": "Fm_DIC_in_Effluent_Fig5f.csv",
+        "contentSize": 63.28515625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-90074c0bb9e48c9-20240816T194514552",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-90074c0bb9e48c9-20240816T194514552",
+        "name": "Dynamic_watertable_depths_Fig_5h_.csv",
+        "contentSize": 51.9619140625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-b6c1cca3c6f57c0-20240816T194514556",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-b6c1cca3c6f57c0-20240816T194514556",
+        "name": "ETtrends_Fig2a2.csv",
+        "contentSize": 10.7060546875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-07c5ce86ff0df54-20240816T194514589",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-07c5ce86ff0df54-20240816T194514589",
+        "name": "Porewater_DIC_Effluxes_Fig4b.csv",
+        "contentSize": 79.611328125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-f639e845202cb8d-20240816T194514598",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-f639e845202cb8d-20240816T194514598",
+        "name": "Precipitation_trends_Fig2a1.csv",
+        "contentSize": 22.92578125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-e558c526d4f7207-20240816T194514628",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-e558c526d4f7207-20240816T194514628",
+        "name": "Solid_phase_sulfur_Fig3e.csv",
+        "contentSize": 1.1044921875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-bcacefeac87775e-20240816T194514618",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-bcacefeac87775e-20240816T194514618",
+        "name": "Soil_temperature_Fig4f.csv",
+        "contentSize": 2.5693359375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-2e0d69a4416f92e-20240816T194514613",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-2e0d69a4416f92e-20240816T194514613",
+        "name": "Soil_CO2_diffusivity_Fig4g.csv",
+        "contentSize": 4.0263671875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-1af86c3a8e89c1f-20240816T194514603",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-1af86c3a8e89c1f-20240816T194514603",
+        "name": "S_pyrite_relative_concentration_Fig5g.csv",
+        "contentSize": 2.4228515625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-a814ad52d817ace-20240816T194514623",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-a814ad52d817ace-20240816T194514623",
+        "name": "Soil_water_content_Fig4e.csv",
+        "contentSize": 3.10546875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-69be4155727b278-20240816T194514633",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-69be4155727b278-20240816T194514633",
+        "name": "Subsurface_flow_Fig2c.csv",
+        "contentSize": 55.53125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-5c44bd887653cf3-20240816T194514593",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-5c44bd887653cf3-20240816T194514593",
+        "name": "Porewater_DOC_Fig4c.csv",
+        "contentSize": 8.193359375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-4d463e157efe066-20240816T194514535",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-4d463e157efe066-20240816T194514535",
+        "name": "CO2_concentration_gradients_Fig4i.csv",
+        "contentSize": 3.048828125
+      }
+    ]
+  }
+}

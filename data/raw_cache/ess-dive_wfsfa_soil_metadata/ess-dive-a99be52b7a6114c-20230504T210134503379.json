@@ -1,0 +1,162 @@
+{
+  "id": "ess-dive-a99be52b7a6114c-20230504T210134503379",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/1842908",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-a99be52b7a6114c-20230504T210134503379",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-1942cc346d32632-20230407T153831004239",
+  "dateUploaded": "2023-05-04T21:01:36.381Z",
+  "dateModified": "2024-02-08T19:35:35.806Z",
+  "isPublic": true,
+  "citation": "Steltzer H; Henderson A; Wilmer C; Williams K (2021): Surface soil temperature and water content from warming experiment located at the Rocky Mountain Biological Laboratory, Colorado, 2015 to 2019. Watershed Function SFA. Dataset. doi:10.15485/1842908",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/1842908",
+    "name": "Surface soil temperature and water content from warming experiment located at the Rocky Mountain Biological Laboratory, Colorado, 2015 to 2019",
+    "description": [
+      "This data package consists of soil temperature and soil water content sensor data from the warming experiment near the Rocky Mountain Biological Laboratory. Data range is from summer 2015 to summer 2019, when the warming manipulation was terminated. The location of the warming experiment is in the upper montane life zone and consists of meadow vegetation with a mixture of sagebrush (Artemisia tridentata), forb species (Erigeron speciosus, Helianthella quinquenervis, Lathyrus lanszwertii), and graminoid species (Festuca thurberi, Carex spps). Early studies showed that the heating treatment led to earlier snowmelt as well as warmer and drier surface soils, and changes in the functional composition of aboveground biomass favoring sagebrush over forb species (Harte and Shaw, 1995). These changes were mainly observed in the upper, naturally drier zone for the experimental plots. More recent observations of aboveground biomass, soil carbon, and microbial composition require concurrent information about the abiotic environment for interpretation and extrapolation to process-based models. This data package provides the plot- and zone-level abiotic context for the final years of the experiment and consists of csv files with hourly soil temperature (WM_ST.csv) and soil water content (WM_SWC.csv)."
+    ],
+    "alternateName": [
+      "paf_718_761"
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-5199-9932",
+        "givenName": "Heidi",
+        "familyName": "Steltzer",
+        "affiliation": "Fort Lewis College",
+        "email": "steltzer_h@fortlewis.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-9613-5003",
+        "givenName": "Amanda",
+        "familyName": "Henderson",
+        "affiliation": "Rocky Mountain Biological Laboratory",
+        "email": "amanda.henderson3@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-5244-4824",
+        "givenName": "Chelsea",
+        "familyName": "Wilmer",
+        "affiliation": "Colorado State University",
+        "email": "chelsea.f.wilmer@gmail.com"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-3568-1155",
+        "givenName": "Kenneth",
+        "familyName": "Williams",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "khwilliams@lbl.gov"
+      }
+    ],
+    "datePublished": "2021",
+    "keywords": [
+      "global change experiment",
+      "microclimate",
+      "climate change"
+    ],
+    "variableMeasured": [
+      "Soil Moisture",
+      "Soil Temperature"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry. The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C. et al. (2020) doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.05
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.88,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2015-06-25",
+      "endDate": "2019-07-17",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0001-5199-9932",
+      "givenName": "Heidi",
+      "familyName": "Steltzer",
+      "affiliation": "Fort Lewis College",
+      "email": "steltzer_h@fortlewis.edu"
+    },
+    "citation": [
+      "Additional metadata on specific locations within the watershed are provided in the following related data package:",
+      "Varadharajan C ; Kakalia Z ; Banfield J ; Berkelhammer M ; Brodie E ; Christianson D ; Dafflon B ; Carbone M S ; Carroll R ; Chadwick K D ; Christensen J ; Enquist B J ; Fox P ; Henderson M ; Gochis D ; Kueppers L ; Powell T ; Matheus Carnevali P ; Singha K ; Sorensen P ; Tokunaga T ; Versteeg R ; Wilkins M ; Williams K ; Worsham M ; Wu Y ; Agarwal D (2020): Location Identifiers, Metadata, and Map for Field Measurements at the East River Watershed, Colorado, USA. Watershed Function SFA. doi:10.15485/1660962"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "Principal Investigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "The warming experiment started in 1991 consisting of ten plots (10 x 3m), with alternating control and treatment plots. Treatment plots had infrared heaters suspended overhead, with continuous output of 22 W/m2 incident at the soil surface. Microclimate was originally measured via thermocouples and gypsum resistance blocks at 5, 12 and 25cm depth, but that infrastructure became defunct in the mid-2000s due to inconsistent funding (Harte and Shaw 1995).\nMicroclimate sensors were installed in 2015 to ~10cm below ground surface and logged continuously (Onset Hobo U30) until removal during the summer of 2019. Soil temperature and soil water content sensors were placed in the upper and lower zones of each plot, with individual sensors associated with both shrub and forb environments, where possible. Data gaps represent sensor failure, removal, and replacement in most cases. One exception is plot 8, where the overhead heater collapsed during the 2016-17 winter."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-52e56502d2020bc-20211207T204055037002",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-52e56502d2020bc-20211207T204055037002",
+        "name": "plot_metadata.csv",
+        "contentSize": 0.1767578125
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-1f84f5b2f549bf7-20211207T203912724118",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-1f84f5b2f549bf7-20211207T203912724118",
+        "name": "sensor_metadata.csv",
+        "contentSize": 7.853515625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-c1c598c4a02d648-20211207T204049749804",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-c1c598c4a02d648-20211207T204049749804",
+        "name": "WM_SWC.csv",
+        "contentSize": 115966.134765625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-851ae468c9894ff-20211207T203911228888",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-851ae468c9894ff-20211207T203911228888",
+        "name": "WM_ST.csv",
+        "contentSize": 59450.310546875
+      }
+    ]
+  }
+}

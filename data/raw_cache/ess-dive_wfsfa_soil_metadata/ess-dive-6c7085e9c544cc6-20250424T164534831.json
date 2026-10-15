@@ -1,0 +1,259 @@
+{
+  "id": "ess-dive-6c7085e9c544cc6-20250424T164534831",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/2561511",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-6c7085e9c544cc6-20250424T164534831",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-6c7085e9c544cc6-20250424T154443092",
+  "dateUploaded": "2025-04-24T16:45:36.389Z",
+  "dateModified": "2025-08-25T17:21:18.724Z",
+  "isPublic": true,
+  "citation": "Johnsen T; Bi X; Chou C; Varadharajan C; Wu Y; Skone J; Ramakrishnan L (2025): Data and scripts from: \u201cDenoising autoencoder for reconstructing sensor observation data and predicting evapotranspiration: noisy and missing values repair and uncertainty quantification\u201d. Watershed Function SFA. Dataset. doi:10.15485/2561511",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/2561511",
+    "name": "Data and scripts from: \u201cDenoising autoencoder for reconstructing sensor observation data and predicting evapotranspiration: noisy and missing values repair and uncertainty quantification\u201d",
+    "description": [
+      "This data package includes data and scripts from the manuscript \u201cDenoising autoencoder for reconstructing sensor observation data and predicting evapotranspiration: noisy and missing values repair and uncertainty quantification\u201d.",
+      "The study addressed common challenges faced in environmental sensing and modeling, including uncertain input data, missing sensor observations, and high-dimensional datasets with interrelated but redundant variables. Point-scaled meteorological and soil sensor observations were perturbed with noises and missing values, and denoising autoencoder (DAE) neural networks were developed to reconstruct the perturbed data and further predict evapotranspiration. This study concluded that (1) the reconstruction quality of each variable depends on its cross-correlation and alignment to the underlying data structure, (2) uncertainties from the models were overall stronger than those from the data corruption, and (3) there was a tradeoff between reducing bias and reducing variance when evaluating the uncertainty of the machine learning models.",
+      "This package includes:",
+      "(1) Four ipython scripts (.ipynb): \u201cDAE_train.ipynb\u201d trains and evaluates DAE neural networks, \u201cDAE_predict.ipynb\u201d makes predictions from the trained DAE models, \u201cET_train.ipynb\u201d trains and evaluates ET prediction neural networks, and \u201cET_predict.ipynb\u201d makes predictions from trained ET models.",
+      "(2) One python file (.py): \u201cmethods.py\u201d includes all user-defined functions and python codes used in the ipython scripts.",
+      "(3) A \u201csub_models\u201d folder that includes five trained DAE neural networks (in pytorch format, .pt), which could be used to ingest input data before being fed to the downstream ET models in \u2018ET_train.ipynb\u201d or \u2018ET_predict.ipynb\u2019.",
+      "(4) Two data files (.csv). Daily meteorological, vegetation, and soil data is in \u201cdf_data.csv\u201d, where \u201cdf_meta.csv\u201d contains the location and time information of \u201cdf_data.csv\u201d. Each row (index) in \u201cdf_meta.csv\u201d corresponds to each row in \u201cdf_data.csv\u201d. These data files are formatted to follow the data structure requirements and be directly used in the ipython scripts, and they have been shuffled chronologically to train machine learning models. The meteorological and soil data was collected using point sensors between 2019-2023 at",
+      "(4.a) Three shrub-dominated field sites in East River, Colorado (named \u201cph1\u201d, \u201cph2\u201d and \u201csg5\u201d in \u201cdf_meta.csv\u201d, where \u201cph1\u201d and \u201cph2\u201d were located at PumpHouse Hillslopes, and \u201csg5\u201d was at Snodgrass Mountain meadow) and",
+      "(4.b) One outdoor, mesoscale, and herbaceous-dominated experiment in Berkeley, California (named \u201ctb\u201d in \u201cdf_meta.csv\u201d, short for Smartsoils Testbed at Lawrence Berkeley National Lab).",
+      "- See \"df_data_dd.csv\" and \"df_meta_dd.csv\" for variable descriptions and the Methods section for additional data processing steps. See \"flmd.csv\" and \"README.txt\" for brief file descriptions.",
+      "- All ipython scripts and python files are written in and require PYTHON language software."
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "givenName": "Timothy",
+        "familyName": "Johnsen",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "tjohnsen@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Xiangyu",
+        "familyName": "Bi",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "xbi@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-9600-4270",
+        "givenName": "Chunwei",
+        "familyName": "Chou",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "chunweichou@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-4142-3224",
+        "givenName": "Charuleka",
+        "familyName": "Varadharajan",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "cvaradharajan@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-6953-0179",
+        "givenName": "Yuxin",
+        "familyName": "Wu",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "ywu3@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Jonathan",
+        "familyName": "Skone",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "jhskone@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Lavanya",
+        "familyName": "Ramakrishnan",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "lramakrishnan@lbl.gov"
+      }
+    ],
+    "datePublished": "2025",
+    "keywords": [
+      "Machine learning",
+      "Data and model uncertainty",
+      "Evapotranspiration",
+      "ESS-DIVE File Level Metadata Reporting Format",
+      "ESS-DIVE CSV File Formatting Guidelines Reporting Format"
+    ],
+    "variableMeasured": [
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > SURFACE TEMPERATURE > AIR TEMPERATURE",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > SURFACE TEMPERATURE > SKIN TEMPERATURE",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > SURFACE WINDS > WIND SPEED",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR INDICATORS > VAPOR PRESSURE",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC PRESSURE > ATMOSPHERIC PRESSURE MEASUREMENTS",
+      "EARTH SCIENCE > ATMOSPHERE > PRECIPITATION > PRECIPITATION AMOUNT > 24 HOUR PRECIPITATION AMOUNT",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > SHORTWAVE RADIATION",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > LONGWAVE RADIATION",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > NET RADIATION",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL HEAT BUDGET",
+      "EARTH SCIENCE > BIOSPHERE > VEGETATION > VEGETATION INDEX > LEAF AREA INDEX (LAI)",
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR PROCESSES > EVAPOTRANSPIRATION"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "ER-PHS1, ph1, Ecohydrology Sensor Monitoring Station at PumpHouse northeast facing hillslope, East River, Colorado. Shrubland.",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.92,
+            "longitude": -106.95
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.92,
+            "longitude": -106.95
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "ER-PHS2, ph2, Ecohydrology Sensor Monitoring Station at PumpHouse southwest facing hillslope East River, Colorado. Shrubland.",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.922583,
+            "longitude": -106.947288
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.922583,
+            "longitude": -106.947288
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "SG-EHS5, sg5, Ecohydrology Sensor Monitoring Station at Snodgrass Mountain meadow, East River, Colorado. Shrubland.",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.92625,
+            "longitude": -106.98
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.92625,
+            "longitude": -106.98
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "Smartsoils Testbed, tb, Berkeley, California. Herbaceous.",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 37.878607,
+            "longitude": -122.241423
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 37.878607,
+            "longitude": -122.241423
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory and SLAC Accelerator Laboratory's Watershed Function Scientific Focus Area (WFSFA). This portion of the ER watershed contains the project-defined boundaries of East River, Washington Gulch, Slate River, and Coal Creek, as described in the location metadata. Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry. The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. This data package contains geographic metadata for specific observation points throughout the watershed. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C. et al. (2025) doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.033,
+            "longitude": -107.12
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.82,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2019-10-12",
+      "endDate": "2023-04-11",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-9600-4270",
+      "givenName": "Chunwei",
+      "familyName": "Chou",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "email": "chunweichou@lbl.gov"
+    },
+    "citation": [
+      "Johnsen, T., Bi, X., Chou, C., Varadharajan, C., Wu, Y., Skone, J., & Ramakrishnan, L. (2025). Denoising autoencoder for reconstructing sensor observation data and predicting evapotranspiration: noisy and missing values repair and uncertainty quantification. [Manuscript submitted for publication].",
+      "Peruzzo, L., Chou, C., Hubbard, S.S., Brodie, E., Uhlemann, S., Dafflon, B., Wielandt, S., Mary, B., Cassiani, G., Morales, A., & Wu, Y. (2024). Outdoor mesoscale fabricated ecosystems: Rationale, design, and application to evapotranspiration. Science of The Total Environment, 957. https://doi.org/10.1016/j.scitotenv.2024.177565.",
+      "Wu, Y., Chou, C., Dafflon, B., & Peruzzo, L. (2021). Continuous sensor suite measurements of weather, energy, soil and flux at four PumpHouse sites at the East River, Colorado. Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1788230",
+      "Uhlemann, S., Dafflon, B., Chou, C., Wielandt, S., Wu, Y., & Williams, K. (2024). Geophysical and Environmental Monitoring Data, and Subsurface Flow Modelling Results for Chicken Bone Meadow, Mt. Snodgrass, Crested Butte, CO. Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/2283406",
+      "Additional metadata on specific locations within the watershed are provided in the following related data package:",
+      "Varadharajan C ; Burrus M ; O'Ryan D ; Kakalia Z ; Alper E ; Banfield J ; Berkelhammer M ; Beutler C ; Boye K ; Brodie E ; Brown W ; Carbone M S ; Carroll R ; Christianson D ; Chou C ; Crystal-Ornelas R ; Chadwick K D ; Christensen J ; Dafflon B ; de Boer G ; Elbashandy H ; Enquist B J ; Feldman D ; Fox P ; Gilbert B ; Gochis D ; Henderson M ; Johnson D ; Kueppers L ; Li L ; Matheus Carnevali P ; Newman A ; Perzan Z ; Pierce S ; Powell T ; Singha K ; Sorensen P ; Sprenger M ; Thibaut R ; Tokunaga T ; Versteeg R ; Wielandt S ; Wilkins M ; Williams K ; Worsham M ; Wong C ; Wu Y ; Zhang D ; Agarwal D (2025): Location Identifiers, Metadata, and Map for Field Measurements at the East-Taylor Watershed Community Observatory, Colorado, USA (Version 3.2). Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1660962"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "principalInvestigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "(1) Variables from point meteorological and soil sensors:\n(1.a) Sensors output hourly average values:\n- Air temperature (tx), windspeed (u), vapor pressure deficit (vpd), atmospheric pressure (pa), and precipitation (precip, hourly sum) were measured by a weather station (ATMOS41, METER Group).\n- Skin temperature (to) was measured by an infrared radiometer (SI-411, Apogee Instruments).\n- Shortwave radiation (srad), net shortwave radiation (nsrad), net longwave radiation (nlrad), and net radiation (rn) were measured by a four-component net radiometer (SN-500, Apogee Instruments).\n- Soil heat flux (g) was measured by a heat flux sensor (HFP01, Hukseflux).\n- Soil water content (swc) was measured by soil sensors at four depths (TEROS12, METER group) and taken as the depth-weighted average depending on the vertical spacing of the sensors.\n(1.b) Measurement heights above the surface, sensor name (\u201csite as appeared in df_meta.csv\u201d: height [m]; \u2026):\n- ATMOS41 (\u201cph1\u201d: 2.9m; \u201cph2\u201d: 2.85m; \u201csg5\u201d: 3.75m; \u201ctb\u201d: 2.9m)\n- SI-411 & SN-500 (all: above canopy)\n- HFP01 (all: -0.05m)\n- TEROS12 (\u201cph1\u201d, \u201cph2\u201d, \u201csg5\u201d: -0.1m, -0.3m, -0.6m, -1.15m; \u201ctb\u201d: -0.1m, -0.3m, -0.5m, -0.7m)\n(1.c) Hourly measurements were downsampled into daily statistics (i.e. daily min, max, mean or sum, see the FLMD file for each variable).",
+      "(2) Variables not directly from point sensors:\n- Leaf area index (lai) was from extracted from MODIS (MCD15A3H, 4-day, 500m) using a 17-day window moving average.\n- Soil water potential (swp) was converted from depth-weighted soil water content based on water retention relationship, which was derived from a pair of soil sensors at -0.3m (one TERO12 measuring soil water content and one TEROS21 (METER Group) measuring soil water potential).\n- Plant height (h) was calculated from sonic distance sensor at \u201cph1\u201d, \u201cph2\u201d, \u201csg5\u201d (SR50A-L, Campbell Scientific) or estimated from log wind profile at \u201ctb\u201d (using anemometers at two heights).\n- Evapotranspiration (ET) was calculated as daily decrease in depth-averaged soil water content.",
+      "(3) This study and dataset excluded days without complete timesteps (24 hourly sensor observations), with snow-cover, with hourly precipitation > 0.02 mm/hr, and with ET < 0 (increase in swc)."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-fbe915d6d346c81-20250424T164526946",
+        "encodingFormat": "application/zip",
+        "identifier": "ess-dive-fbe915d6d346c81-20250424T164526946",
+        "name": "Johnsen_Bi_2025_DAE_Manuscript_Data_Package.zip",
+        "contentSize": 1693.873046875
+      }
+    ]
+  }
+}

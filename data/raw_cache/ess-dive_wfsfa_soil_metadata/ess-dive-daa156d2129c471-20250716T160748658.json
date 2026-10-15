@@ -1,0 +1,233 @@
+{
+  "id": "ess-dive-daa156d2129c471-20250716T160748658",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/2462766",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-daa156d2129c471-20250716T160748658",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-daa156d2129c471-20241025T132913448",
+  "dateUploaded": "2025-07-16T16:07:49.737Z",
+  "dateModified": "2025-07-16T16:07:50.139Z",
+  "isPublic": true,
+  "citation": "Sprenger M; Seeger S; Berkelhammer M (2024): Daily water stable isotopes, transpiration, and matrix potential data for an aspen and engelmann stand in the East River Watershed (version 2). Watershed Function SFA. Dataset. doi:10.15485/2462766",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/2462766",
+    "name": "Daily water stable isotopes, transpiration, and matrix potential data for an aspen and engelmann stand in the East River Watershed (version 2)",
+    "description": [
+      "We provide daily stable isotope (2H & 18O) ratios in soil water and xylem (plant stem) water, as well as the sap flow (transpiration) and the soil's matric potential at a forested site near Gothic, Colorado, in the East River catchment. We measured the stable isotopic composition of the transpiration and the daily transpiration flux sum of three aspen and three engelmann spruce. In both forest stands, we installed a soil profile and measured the soil matric potential at 15, 30, and 60 cm depth as well as the stable isotopes of soil pore water at 5, 10, 30, 60, and 90 cm depths. All isotope measurements were done in situ via vapor probes connected to a cavity ring down spectrometer (Picarro L1240i).",
+      "We further report the daily meteorological data observed at billy barr near our study site. We also provide for each tree the relative share of root water uptake derived from the isotope measurements via a Bayesian mixing model (MixSIAR).",
+      "The daily data is provided as a time series in \"Iso_MP_Sap_DataDaily_ESSDiveUpload.csv\" and the units are provided in \"dd.csv\"; the location of the instrumented trees and soil profiles are given as latitude and longitude coordinates saved as CSV and KMZ files; and a file-level metadata (flmd.csv) file that lists each file contained in the dataset with associated metadata.",
+      "The data was gathered to investigate the short-term changes of the water sources (i.e., variation of root water uptake from different soil depths) of the studied subalpine trees.",
+      "Update 07/16/2025: The relative and absolute plant water uptake depths were grouped to ensure that the MixSIAR model was applied with endmembers that differed in their d2H value by at least 3 permill and at least 1 permill for d18O. Whenever the difference between observed d2H values for two or more probes at neighboring depths was less than 3 permill, we used the average value for the source water endmember. For days at which probes that were not next to each other measurements did not differ at least 3 permill, the average of all probes between these two depths was used as the water source endmember representing the depth range between these two probes."
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-1221-2767",
+        "givenName": "Matthias",
+        "familyName": "Sprenger",
+        "affiliation": "Lawrence Berkeley Lab",
+        "email": "msprenger@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-2496-6948",
+        "givenName": "Stefan",
+        "familyName": "Seeger",
+        "affiliation": "Chair of Soil Physics, Department of Crop Sciences, University of G\u00f6ttingen",
+        "email": "stefan.seeger@hydrology.uni-freiburg.de"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-8924-716X",
+        "givenName": "Max",
+        "familyName": "Berkelhammer",
+        "affiliation": "Department of Earth and Environmental Sciences, University of Illinois Chicago",
+        "email": "berkelha@uic.edu"
+      }
+    ],
+    "contributor": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0001-6069-4065",
+        "givenName": "Nathaniel A.",
+        "familyName": "Bogie",
+        "affiliation": "Department of Geology, San Jos\u00e9 State University",
+        "email": "nathaniel.bogie@sjsu.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-1392-8767",
+        "givenName": "Raymond J.",
+        "familyName": "Hess",
+        "affiliation": "Department of Earth & Environmental Sciences, Rutgers University",
+        "email": "raymond.hess@rutgers.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-4162-996X",
+        "givenName": "James",
+        "familyName": "Knighton",
+        "affiliation": "Department of Natural Resources and the Environment, University of Connecticut",
+        "email": "james.knighton@uconn.edu"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-7237-1797",
+        "givenName": "Wendy S.",
+        "familyName": "Brown",
+        "affiliation": "The Rocky Mountain Biological Laboratory",
+        "email": "wshbrown@icloud.com"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0003-3632-2100",
+        "givenName": "Sylvain",
+        "familyName": "Kuppel",
+        "affiliation": "G\u00e9osciences Environnement Toulouse, CNRS - IRD - UT3 - CNES, Toulouse, France",
+        "email": "sylvain.kuppel@ird.fr"
+      }
+    ],
+    "datePublished": "2024-10-11",
+    "keywords": [
+      "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > SURFACE WATER",
+      "EARTH SCIENCE > BIOSPHERE > VEGETATION",
+      "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE",
+      "EARTH SCIENCE > LAND SURFACE > SOILS",
+      "ESS-DIVE File Level Metadata Reporting Format",
+      "ESS-DIVE CSV File Formatting Guidelines Reporting Format"
+    ],
+    "variableMeasured": [
+      "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR PROCESSES > EVAPOTRANSPIRATION",
+      "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > WATER QUALITY/WATER CHEMISTRY > ISOTOPES > STABLE ISOTOPES"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "The study site was near Gothic, Colorado (38\u00b057'37.9\"N 106\u00b059'27.3\"W; ), where the Rocky Mountain Biological Laboratory is located at about 2917 m elevation. A KMZ filed provides the detailed location of each studied tree and soil profile",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.960528,
+            "longitude": -106.990917
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.960528,
+            "longitude": -106.990917
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry. The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C. et al. (2023) doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.05
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.88,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "award": [
+      "DEAC0205CH11231"
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      },
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006235",
+        "name": "U.S. DOE > Laboratory Directed Research and Development (LDRD) > Lawrence Berkeley National Laboratory"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2022-06-15",
+      "endDate": "2024-07-14",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0003-1221-2767",
+      "givenName": "Matthias",
+      "familyName": "Sprenger",
+      "email": "msprenger@lbl.gov"
+    },
+    "citation": [
+      "Additional metadata on specific locations within the watershed are provided in the following related data package: Locations.csv and Locations_LDRD.kmz",
+      "Varadharajan C ; Burrus M ; O'Ryan D ; Kakalia Z ; Alper E ; Banfield J ; Berkelhammer M ; Beutler C ; Brodie E ; Brown W ; Carbone M S ; Carroll R ; Christianson D ; Chou C ; Crystal-Ornelas R ; Chadwick K D ; Christensen J ; Dafflon B ; de Boer G ; Elbashandy H ; Enquist B J ; Feldman D ; Fox P ; Gilbert B ; Gochis D ; Henderson M ; Johnson D ; Kueppers L ; Li L ; Matheus Carnevali P ; Newman A ; Powell T ; Singha K ; Sorensen P ; Sprenger M ; Tokunaga T ; Versteeg R ; Wilkins M ; Williams K ; Worsham M ; Wong C ; Wu Y ; Zhang D ; Agarwal D (2023): Location Identifiers, Metadata, and Map for Field Measurements at the East River Watershed, Colorado, USA (Version 3.1). Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1660962"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "principalInvestigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "We measured the matric potential with sensors (Teros 21, METER, accuracy \u00b1(10% of reading + 2 kPa) from \u2212100 to \u22125 kPa) installed along two soil profiles at 15, 30, and 60 cm depths, respectively. One soil profile (P1) was located beneath aspen trees and the second one (P2) was in the spruce stand. During installation of the matric potential sensors, a tight connection of the sensor and the surrounding soil was ensured. Three aspen and three Engelmann spruce trees, respectively, were instrumented with heat pulse sap flow sensors (Implexx Sap Flow Sensor, Implexx Sense). The sensors were installed at breast height on the south side of the trees and they were covered with aluminum foil to prevent heat impact from the sun. We calculated based on the sensor measured sap velocity (cm/day) the sap flux volumes (kg/day) based on the sap wood length that we determined from tree cores. We determined the transpiration rate (mm/day) by relating the sap flux to the crown area based on the measured canopy widths (Table 1). Matric potential and sap flow measurements started in Mid-June 2022 and were taken every 10 minutes. Sap flow sensors in 2023 were installed into freshly drilled holes. Daily meteorological data on air temperature, relative humidity, barometric pressure, wind direction and speed, solar radiation, and precipitation were provided by the nearby (ca. 300 m away) billy barr weather station (38.96021739, -106.9911594, 2917 m elevation) (Western Regional Climate Center, 2024).\nFor the isotopic measurements of soil and plant water, we used an in situ system that is based on the isotopic equilibration method as described by Seeger and Weiler (2021). The applied method is based on the isotopic equilibrium between a liquid water pool and the surrounding vapor in a closed system (Wassenaar et al., 2008). At 100% humidity, the phase change from the liquid water to the vapor results in an equilibrium fractionation, which means that the associated change of the isotope ratio is solely a function of the temperature. Therefore, polyethylene vapor permeable probes were shown to allow for continuous isotopic sampling of soil (Volkmann & Weiler, 2014) and plant water (Volkmann et al., 2016) connecting the probes to a cavity ring-down spectroscope (L2140-i, Picarro Inc.). We installed vapor probes along three soil profiles: One beneath an aspen tree (P1) and one beneath a spruce tree (P2). The vapor probes measurement depths were 5, 10, 30, and 60 cm in all profiles and an additional probe at 90 cm beneath Aspen and 85 cm beneath the spruce. The P1 and P2 profiles were within 30 cm from where the matric potentials were installed, which is why these two measurement locations are called P1 and P2, respectively. We further installed in each of the six trees a vapor probe at the bottom of the stem and sealed off the surrounding of the probes with silicone to prevent water and vapor from going into the drilled holes after the probes were inserted. In 2023, new vapor probes were installed in new boreholes. For calibration purposes, we placed into the soil three standard water bottles containing each 600 ml of water of known isotopic composition (tap water, snowmelt, ocean water) and measured the vapor isotopic composition of their headspace at least every four hours with the same vapor probes as the soil and xylem water. We followed the calibration procedure as outlined in detail by Seeger and Weiler (2021). The isotope measurements of the three standards that were closest in time before and after a measurement with the soil and xylem water vapor probe measurements were used to calculate a calibration equation between the water vapor concentration (ppm H2O) in the cavity of the laser spectrometer and the isotope measurements. This way, any impact of temperature dependent water vapor concentration that impacts the laser absorption in the cavity and also potential drift of the spectrometer was accounted for and we could infer from vapor measurements the liquid water isotope ratios in \u2030 relative to the Vienna Standard Mean Ocean Water. As a last step, we calculated daily averages of \u03b42H, while we did not include \u03b418O in our analyses due to larger uncertainty related to 18O measurements (Seeger & Weiler, 2021). Rainfall and snow water were sampled for isotope analyses on an event basis at a sampling location at 29 m lower elevation and 3 km south (Williams et al., 2023) and we accounted for a lapse rate (\u03b42H of -0.24 \u2030/100m), which was derived from 33 precipitation events over two years sampled at 2513.6, 2885.5, 3181.5 m elevation, respectively.\nReferences\nSeeger, S., & Weiler, M. (2021). Temporal dynamics of tree xylem water isotopes\u202f: in situ monitoring and modeling. Biogeosciences, 18, 4603\u20134627. https://doi.org/10.5194/bg-18-4603-2021\nVolkmann, T. H. M., & Weiler, M. (2014). Continual in-situ monitoring of pore water stable isotopes in the subsurface. Hydrology and Earth System Sciences, 18(5), 1819\u20131833. https://doi.org/10.5194/hess-18-1819-2014\nVolkmann, T. H. M., Kuhnhammer, K., Herbstritt, B., Gessler, A., & Weiler, M. (2016). A method for in situ monitoring of the isotope composition of tree xylem water using laser spectroscopy. Plant, Cell & Environment, 39(9), 2055\u20132063. https://doi.org/10.1111/pce.12725\nWassenaar, L. I., Hendry, M. J., Chostner, V. L., & Lis, G. P. (2008). High Resolution Pore Water \u03b42H and \u03b418O Measurements by H 2 O (liquid) \u2212H 2 O (vapor) Equilibration Laser Spectroscopy. Environmental Science & Technology, 42(24), 9262\u20139267. https://doi.org/10.1021/es802065s\nWestern Regional Climate Center. (2024). billy barr, Rocky Mountain Biological lab, Colorado Weather Station [Data set]. Retrieved from https://wrcc.dri.edu/weather/rbil.html"
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-206bb5e960fe597-20241017T162752020",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-206bb5e960fe597-20241017T162752020",
+        "name": "Locations.csv",
+        "contentSize": 1.4296875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-b1556b97c476f32-20241017T175214383",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-b1556b97c476f32-20241017T175214383",
+        "name": "flmd.csv",
+        "contentSize": 0.8115234375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-c869c1a3fd3759d-20250716T160717816",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-c869c1a3fd3759d-20250716T160717816",
+        "name": "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv",
+        "contentSize": 635.6904296875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-ba1667b5530ca46-20250716T160727890",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-ba1667b5530ca46-20250716T160727890",
+        "name": "dd_R1.csv",
+        "contentSize": 42.416015625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-8843bb53f0d9418-20241011T180410592",
+        "encodingFormat": "application/vnd.google-earth.kmz",
+        "identifier": "ess-dive-8843bb53f0d9418-20241011T180410592",
+        "name": "Locations_LDRD.kmz",
+        "contentSize": 2.5546875
+      }
+    ]
+  }
+}

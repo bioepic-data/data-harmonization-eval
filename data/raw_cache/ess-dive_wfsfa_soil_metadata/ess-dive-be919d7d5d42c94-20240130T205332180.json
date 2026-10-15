@@ -1,0 +1,229 @@
+{
+  "id": "ess-dive-be919d7d5d42c94-20240130T205332180",
+  "viewUrl": "https://data.ess-dive.lbl.gov/view/doi:10.15485/2283406",
+  "url": "https://api.ess-dive.lbl.gov/packages/ess-dive-be919d7d5d42c94-20240130T205332180",
+  "next": null,
+  "previous": "https://api.ess-dive.lbl.gov/packages/ess-dive-db8e9b3aa9d55d8-20240109T202354476",
+  "dateUploaded": "2024-01-30T20:53:32.414Z",
+  "dateModified": "2024-02-01T00:00:18.746Z",
+  "isPublic": true,
+  "citation": "Uhlemann S; Dafflon B; Chou C; Wielandt S; Wu Y; Williams K (2024): Geophysical and Environmental Monitoring Data, and Subsurface Flow Modelling Results for Chicken Bone Meadow, Mt. Snodgrass, Crested Butte, CO. Watershed Function SFA. Dataset. doi:10.15485/2283406",
+  "dataset": {
+    "@context": "http://schema.org/",
+    "@type": "Dataset",
+    "@id": "doi:10.15485/2283406",
+    "name": "Geophysical and Environmental Monitoring Data, and Subsurface Flow Modelling Results for Chicken Bone Meadow, Mt. Snodgrass, Crested Butte, CO",
+    "description": [
+      "This dataset includes geoelectrical monitoring data acquired between October 2021 and November 2022, soil moisture and temperature data, groundwater data obtained from borehole SNIB covering the period from June 2021 to September 2022, and hydrological modelling results. The data were acquired to investigate how variations in bedrock type and topography, and vegetation cover control subsurface flow dynamics. To provide insights into the subsurface flow dynamics and their controls, a monitoring transect was installed at the Chicken Bone Meadow, Mt. Snodgrass, Crested Butte, CO, measuring the spatio-temporal variations of soil moisture, soil and snow temperature, subsurface electrical resistivity variations, and groundwater dynamics.",
+      "Field data are organized in a folder structure, with Electrical Resistivity Tomography (ERT) data being provided as one file per measurement, and data of the soil moisture and temperature sensors being provided as text files covering the entire monitoring period. The \u2018Locations.csv\u2019 file contains the location of all sensors, given in NAD83 \u2013 UTM Zone 13N. ERT monitoring data has been processed to filter data based on reciprocal errors (data with errors > 30% were removed), a linear error model was fitted to each survey, and to ensure a constant set of measurements for time-lapse inversion, filtered data were interpolated and assigned a 100% measurement error.",
+      "Soil moisture and temperature data were acquired at 15 min intervals, and averaged to provide 1h data. Weather data and borehole data (groundwater depth, conductivity and temperature) were acquired at 30 min intervals, and are provided as daily measurements; all measurements are averaged, except of precipitation values, which are given as daily accumulation.",
+      "The hydrological model was set up along the ERT monitoring transect, and net infiltration was used as surface boundary condition and derived from the weather data. Four different results are provided, (1) results for a parameterization using hydraulic permeability and porosity as derived from the ERT data through petrophysical relationships, and (2) three simplified model results, using 1 to 3 geological layers above the bedrock. Modelling was performed using PFLOTRAN, and for each model the PFLOTRAN input files are provided. The result files include weekly hydrological modelling results (e.g., saturation, velocities, pressures), as well as the model parameterization.",
+      "The dataset additionally includes a file-level metadata (flmd.csv) file that lists each file contained in the dataset with associated metadata; and a data dictionary (dd.csv) file that contains column/row headers used throughout the files along with a definition, units, and data type."
+    ],
+    "creator": [
+      {
+        "@type": "Person",
+        "@id": "https://orcid.org/0000-0002-7673-7346",
+        "givenName": "Sebastian",
+        "familyName": "Uhlemann",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "suhlemann@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Baptiste",
+        "familyName": "Dafflon",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "bdafflon@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Chunwei",
+        "familyName": "Chou",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "cchou@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Stijn",
+        "familyName": "Wielandt",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "swielandt@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Yuxin",
+        "familyName": "Wu",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "ywu3@lbl.gov"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Kenneth",
+        "familyName": "Williams",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "khwilliams@lbl.gov"
+      }
+    ],
+    "datePublished": "2024",
+    "keywords": [
+      "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > GROUND WATER",
+      "EARTH SCIENCE > AGRICULTURE > SOILS",
+      "ESS-DIVE CSV File Formatting Guidelines Reporting Format",
+      "ESS-DIVE File Level Metadata Reporting Format"
+    ],
+    "variableMeasured": [
+      "EARTH SCIENCE > AGRICULTURE > SOILS > SOIL MOISTURE/WATER CONTENT",
+      "EARTH SCIENCE > AGRICULTURE > SOILS > SOIL TEMPERATURE",
+      "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > SURFACE TEMPERATURE > AIR TEMPERATURE",
+      "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > GROUND WATER > GROUND WATER FEATURES > WATER TABLE > WATER TABLE DEPTH",
+      "EARTH SCIENCE > AGRICULTURE > SOILS > ELECTRICAL CONDUCTIVITY",
+      "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > WATER QUALITY/WATER CHEMISTRY > WATER CHARACTERISTICS > CONDUCTIVITY"
+    ],
+    "license": "http://creativecommons.org/licenses/by/4.0/",
+    "spatialCoverage": [
+      {
+        "@type": "Place",
+        "description": "ERT Monitoring transect established in 2021 at Chicken Bone Meadow, Mt. Snodgrass, Crested Butte, CO",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 38.926497,
+            "longitude": -106.981785
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.92556,
+            "longitude": -106.979327
+          }
+        ]
+      },
+      {
+        "@type": "Place",
+        "description": "The East River (ER) is a snow\u2010dominated, headwater basin of the Upper Colorado River Basin (UCRB) located in the western United States. The ER is the designated testbed of Lawrence Berkeley National Laboratory's Watershed Function Scientific Focus Area (WFSFA). Through WFSFA, observational networks have been established to measure stream discharge and precipitation chemistry. The ER is considered representative of many snow\u2010dominated headwaters of the Rocky Mountains. The study domain encompasses nearly 85 square km, a 1.4\u2010km vertical drop in elevation (4,120 to 2,760 m) and pristine alpine, subalpine, montane, and riparian ecosystems. The ER contains high\u2010energy mountain streams to low\u2010energy meandering floodplains and is eroding primarily into the Cretaceous, carbon\u2010rich, marine shale of the Mancos Formation. Additional metadata on specific locations within the watershed are provided in the following related data package: Varadharajan C. et al. (2023) doi:10.15485/1660962",
+        "geo": [
+          {
+            "@type": "GeoCoordinates",
+            "name": "Northwest",
+            "latitude": 39.034,
+            "longitude": -107.05
+          },
+          {
+            "@type": "GeoCoordinates",
+            "name": "Southeast",
+            "latitude": 38.88,
+            "longitude": -106.88
+          }
+        ]
+      }
+    ],
+    "award": [
+      "DEAC0205CH11231"
+    ],
+    "funder": [
+      {
+        "@type": "Organization",
+        "@id": "http://dx.doi.org/10.13039/100006206",
+        "name": "U.S. DOE > Office of Science > Biological and Environmental Research (BER)"
+      }
+    ],
+    "temporalCoverage": {
+      "startDate": "2021-06-11",
+      "endDate": "2022-10-31",
+      "@type": "DateTime"
+    },
+    "editor": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-7673-7346",
+      "givenName": "Sebastian",
+      "familyName": "Uhlemann",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "email": "suhlemann@lbl.gov"
+    },
+    "citation": [
+      "Uhlemann et al. (2024), Variations in bedrock and vegetation cover modulate subsurface water flow dynamics of a mountainous hillslope, submitted to WRR.",
+      "Additional metadata on specific locations within the watershed are provided in the following related data package:",
+      "Varadharajan C ; Burrus M ; O'Ryan D ; Kakalia Z ; Alper E ; Banfield J ; Berkelhammer M ; Beutler C ; Brodie E ; Brown W ; Carbone M S ; Carroll R ; Christianson D ; Chou C ; Crystal-Ornelas R ; Chadwick K D ; Christensen J ; Dafflon B ; de Boer G ; Elbashandy H ; Enquist B J ; Feldman D ; Fox P ; Gilbert B ; Gochis D ; Henderson M ; Johnson D ; Kueppers L ; Li L ; Matheus Carnevali P ; Newman A ; Powell T ; Singha K ; Sorensen P ; Sprenger M ; Tokunaga T ; Versteeg R ; Wilkins M ; Williams K ; Worsham M ; Wong C ; Wu Y ; Zhang D ; Agarwal D (2023): Location Identifiers, Metadata, and Map for Field Measurements at the East River Watershed, Colorado, USA (Version 3.1). Watershed Function SFA, ESS-DIVE repository. Dataset. doi:10.15485/1660962"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ess-dive",
+        "value": "024b867d-25e3-4025-b68c-6598aded7aa2"
+      },
+      "name": "Watershed Function SFA",
+      "member": {
+        "@type": "Person",
+        "givenName": "Eoin",
+        "familyName": "Brodie",
+        "jobTitle": "principalInvestigator",
+        "affiliation": "Lawrence Berkeley National Laboratory",
+        "email": "elbrodie@lbl.gov"
+      }
+    },
+    "measurementTechnique": [
+      "ERT DATA:\nERT Data were acquired using a BGS PRIME resistivity system employing 128 electrodes. Electrode spacing was 3 m for electrodes 1 to 49, and 1.5 m between electrodes 50 and 128. At each survey, dipole-dipole measurements with dipole lengths n of 1 to 7 electrode spacings, and dipole spacings a of 1 to 7n were acquired. The survey protocol comprised a total of 4446 electrical resistance measurements with a full set of reciprocal measurements to estimate the measurements errors. Data processing included filtering of measurements with reciprocal errors of > 30%, fitting of a linear error model, and interpolation of missing data points to create a consistent timelapse data set. Data are given in a standard E4D data set, where the first lines describe the electrode locations, followed by the measured data, indicating the used electrodes and the measured transfer resistance and measurement error. A detailed description of the file format can be found here: https://e4d-userguide.pnnl.gov/e4d_guide/elec/e4d_e4d-survey.html\nSoil Moisture Data:\nSoil moisture sensors were installed in June 2021 at depths of 10, 30, 60 and 80 cms. The sensors are Teros 12 manufactured by Meter. Soil and snow temperature data were acquired using custom build sensor arrays with a sensor spacing of 5 cm, and a sensor accuracy of 0.07degC. Data were acquired at 15 min intervals and averaged to provide hourly data.\nWeather and groundwater data:\nA weather station located onsite measured weather variables at 30 min intervals, and averaged to provide daily data. For the precipitation data, daily accumulations are given. Air temperature and the snow depth sensor were mounted 1.9 m above the ground. A borehole was drilled to 30 m depth, and screened between 30 and 28.5 m. An In-Situ Inc. Aqua TROLL 200 data logger was installed on November 12, 2021 and recorded water level, temperature, and conductivity at 30 min intervals. Those measurements were averaged to provide daily data."
+    ],
+    "distribution": [
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-d4df0f41f7bbffb-20240108T152147466",
+        "encodingFormat": "application/zip",
+        "identifier": "ess-dive-d4df0f41f7bbffb-20240108T152147466",
+        "name": "ModellingResults_ResistivityParameter.zip",
+        "contentSize": 860280.5576171875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-60407adbc396aa1-20240108T152428756",
+        "encodingFormat": "application/zip",
+        "identifier": "ess-dive-60407adbc396aa1-20240108T152428756",
+        "name": "ModellingResults_1Layer.zip",
+        "contentSize": 696248.78515625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-70016fed3681d7b-20240130T205245831",
+        "encodingFormat": "application/zip",
+        "identifier": "ess-dive-70016fed3681d7b-20240130T205245831",
+        "name": "FieldData.zip",
+        "contentSize": 70959.09765625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-7cda639d0ea8bd9-20240108T152546232",
+        "encodingFormat": "application/zip",
+        "identifier": "ess-dive-7cda639d0ea8bd9-20240108T152546232",
+        "name": "ModellingResults_2Layer.zip",
+        "contentSize": 736400.84765625
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-b64aa9f7c12c76e-20240105T153556057",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-b64aa9f7c12c76e-20240105T153556057",
+        "name": "Locations.csv",
+        "contentSize": 0.5927734375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-07f3d420b5be127-20240109T185544780",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-07f3d420b5be127-20240109T185544780",
+        "name": "dd.csv",
+        "contentSize": 13.5263671875
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-077416a10e35ea3-20240130T205245841",
+        "encodingFormat": "text/csv",
+        "identifier": "ess-dive-077416a10e35ea3-20240130T205245841",
+        "name": "flmd.csv",
+        "contentSize": 5.77734375
+      },
+      {
+        "contentUrl": "https://data.ess-dive.lbl.gov/catalog/d1/mn/v2/object/ess-dive-51c1726ce51ff47-20240108T152638057",
+        "encodingFormat": "application/zip",
+        "identifier": "ess-dive-51c1726ce51ff47-20240108T152638057",
+        "name": "ModellingResults_3Layer.zip",
+        "contentSize": 722003.52734375
+      }
+    ]
+  }
+}
