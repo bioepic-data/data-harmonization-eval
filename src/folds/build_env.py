@@ -54,7 +54,7 @@ DEFAULT_ENV_ROOT = Path(tempfile.gettempdir()) / "data-harmonization-eval-runs"
 # Where each artifact lands inside the env, matching the skills' read paths.
 HARMONIZER_REL = Path("data/gold/expert_code")
 MAPPING_REL = Path("data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json")
-METADATA_REL = Path("data/external/ess-dive_meta")
+METADATA_REL = Path("data/raw_cache/ess-dive_wfsfa_soil_metadata")
 RAW_DATA_REL = Path("inputs/raw")
 CLAUDE_SETTINGS_REL = Path(".claude/settings.local.json")
 
@@ -216,7 +216,7 @@ def _instructions(target_ids: list) -> str:
         "`data/gold/expert_code/`,\n"
         "- raw inputs staged under `inputs/raw/<dataset_identifier>/`, and\n"
         "- the target dataset's ESS-DIVE package metadata under "
-        "`data/external/ess-dive_meta/<dataset_identifier>.json`, if present "
+        "`data/raw_cache/ess-dive_wfsfa_soil_metadata/<dataset_identifier>.json`, if present "
         "(only the target's record is supplied; other datasets' records are "
         "deliberately withheld).\n\n"
         "Do not access parent directories, absolute paths outside this workspace, "

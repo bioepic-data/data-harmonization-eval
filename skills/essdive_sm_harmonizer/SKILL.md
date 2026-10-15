@@ -13,7 +13,7 @@ metadata:
     - inputs/raw/<dataset_identifier>/  # staged package files in a fold evaluation
     - data/processed/ess-dive_wfsfa_soil_datasets/sm_data_harmonization_mapping.json  # held-out-free schema examples
     - data/gold/expert_code/  # modular expert harmonizer (common.py + dataset_NN.py) for code pattern reference
-    - data/external/ess-dive_meta/*.json  # cached package metadata, if supplied
+    - data/raw_cache/ess-dive_wfsfa_soil_metadata/*.json  # cached package metadata, if supplied
   usage: >
     Invoke this skill when adding a new ESS-DIVE soil moisture dataset to the
     harmonization pipeline. The skill will guide you through evaluation,

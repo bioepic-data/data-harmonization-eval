@@ -60,7 +60,7 @@ def test_clean_run(tmp_path):
         ("Read", {"file_path": str(env / "skills" / "curator.md")}),
         ("Read", {"file_path": str(raw / "ess-dive-HELD" / "payload.csv")}),  # held-out RAW input = ok
         ("Bash", {"command": f"cd {env} && python3 -c \"open('data/processed/m.json')\""}),
-        ("Bash", {"command": f"cd {env} && cat data/external/ess-dive_meta/x.json"}),  # via env symlink path
+        ("Bash", {"command": f"cd {env} && cat data/raw_cache/ess-dive_wfsfa_soil_metadata/x.json"}),  # via env symlink path
     ])
     assert r.clean, [v.reason for v in r.violations]
     assert r.reads_in_bounds == 2
@@ -112,7 +112,7 @@ def test_holdout_identifier_annotated(tmp_path):
 def test_ignores_dev_null_redirects(tmp_path):
     repo, env, raw = make_repo(tmp_path)
     r = run_audit(tmp_path, repo, env, raw, [
-        ("Bash", {"command": f"cd {env} && grep -rl pat data/external/ess-dive_meta/ 2>/dev/null"}),
+        ("Bash", {"command": f"cd {env} && grep -rl pat data/raw_cache/ess-dive_wfsfa_soil_metadata/ 2>/dev/null"}),
         ("Bash", {"command": f"ls -d {raw}/HELD/ 2>/dev/null"}),
     ])
     assert r.clean, [v.reason for v in r.violations]
@@ -147,7 +147,7 @@ def test_claude_transcript_and_external_repo_inputs_warn_not_fail(tmp_path):
     repo, env, raw = make_repo(tmp_path)
     skills = repo / "skills" / "essdive_sm_harmonizer" / "SKILL.md"
     skills.parent.mkdir(parents=True)
-    metadata = repo / "data" / "external" / "ess-dive_meta" / "record.json"
+    metadata = repo / "data" / "raw_cache" / "ess-dive_wfsfa_soil_metadata" / "record.json"
     metadata.parent.mkdir(parents=True)
     transcript = Path.home() / ".claude" / "projects" / "p" / "tool-results" / "result.txt"
     r = run_audit(tmp_path, repo, env, raw, [

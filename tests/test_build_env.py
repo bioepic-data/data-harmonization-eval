@@ -114,7 +114,7 @@ def test_build_env_metadata_is_copied(tmp_path, sources):
         (meta / f"{dsid}.json").write_text(json.dumps({"id": dsid}))
     env = build_env({1}, env_root=tmp_path / ".runs", package_dir=pkg,
                     mapping_path=mapping, skills_dir=skills, metadata_dir=meta)
-    mdir = env / "data" / "external" / "ess-dive_meta"
+    mdir = env / "data" / "raw_cache" / "ess-dive_wfsfa_soil_metadata"
     assert not mdir.is_symlink()
     assert sorted(p.name for p in mdir.iterdir()) == ["ess-dive_a.json"]
 
@@ -128,7 +128,7 @@ def test_build_env_metadata_ablates_reference_holdout_mates(tmp_path, sources):
         (meta / f"{dsid}.json").write_text(json.dumps({"id": dsid}))
     env = build_env({1, 2}, target={1}, env_root=tmp_path / ".runs", package_dir=pkg,
                     mapping_path=mapping, skills_dir=skills, metadata_dir=meta)
-    present = sorted(p.name for p in (env / "data" / "external" / "ess-dive_meta").iterdir())
+    present = sorted(p.name for p in (env / "data" / "raw_cache" / "ess-dive_wfsfa_soil_metadata").iterdir())
     assert present == ["ess-dive_a.json"], present
 
 
@@ -139,7 +139,7 @@ def test_build_env_metadata_absent_record_is_not_fatal(tmp_path, sources):
     meta.mkdir()
     env = build_env({1}, env_root=tmp_path / ".runs", package_dir=pkg,
                     mapping_path=mapping, skills_dir=skills, metadata_dir=meta)
-    assert list((env / "data" / "external" / "ess-dive_meta").iterdir()) == []
+    assert list((env / "data" / "raw_cache" / "ess-dive_wfsfa_soil_metadata").iterdir()) == []
 
 
 def test_instructions_require_a_location_file(tmp_path, sources):

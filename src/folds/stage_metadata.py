@@ -3,7 +3,7 @@
 The raw payload files staged by :mod:`src.folds.stage_raw_data` are the data a
 dataset publishes; they frequently omit things the published *package record*
 carries — most importantly spatial coverage. Agents have repeatedly reached for
-``data/external/ess-dive_meta/`` and found nothing there, then recorded
+``data/raw_cache/ess-dive_wfsfa_soil_metadata/`` and found nothing there, then recorded
 coordinates as unresolvable.
 
 This module fetches the package record for each dataset from the ESS-DIVE

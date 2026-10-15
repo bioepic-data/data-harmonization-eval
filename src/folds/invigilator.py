@@ -164,7 +164,7 @@ _ENV_ZONES: list[tuple[str, str]] = [
     ("raw_input", "inputs/raw"),
     ("exemplar_code", "data/gold/expert_code"),
     ("filtered_mapping", "data/processed"),
-    ("essdive_metadata", "data/external/ess-dive_meta"),
+    ("essdive_metadata", "data/raw_cache/ess-dive_wfsfa_soil_metadata"),
     ("skills", "skills"),
     ("audit", "audit"),
     ("agent_settings", ".claude"),
@@ -246,7 +246,7 @@ def _benign_external_input(p: Path, repo_root: Path) -> Optional[str]:
     """Return a warning reason for an approved input reached outside its env copy."""
     if under(p, repo_root / "skills"):
         return "external repo input (skills; use the environment copy)"
-    if under(p, repo_root / "data" / "external" / "ess-dive_meta"):
+    if under(p, repo_root / "data" / "raw_cache" / "ess-dive_wfsfa_soil_metadata"):
         return "external repo input (ESS-DIVE metadata; use the environment copy)"
     parts = p.parts
     if ".claude" in parts and "projects" in parts and "tool-results" in parts:
