@@ -1,0 +1,92 @@
+{
+  "index": 24,
+  "dataset_identifier": "ess-dive-daa156d2129c471-20250716T160748658",
+  "doi": "doi:10.15485/2462766",
+  "archive_repository": "ESS-DIVE",
+  "inclusion_decision": "include",
+  "exclusion_reason": null,
+  "data_payload_files": [
+    "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+  ],
+  "location_metadata_files": [
+    "Locations.csv"
+  ],
+  "sensor_metadata_files": null,
+  "harmonization_mappings": {
+    "datetime": {
+      "pattern_1": {
+        "source_pattern": "Timestamp",
+        "source_files": [
+          "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+        ],
+        "destination_variable": "datetime_UTC",
+        "transformation": "Parse daily date (format %Y-%m-%d), localize to America/Denver, and convert to ISO 8601 UTC.",
+        "unit_conversion": null
+      }
+    },
+    "site_id": {
+      "pattern_1": {
+        "source_pattern": "P\\d+_MP_\\d+",
+        "source_files": [
+          "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+        ],
+        "destination_variable": "site_id",
+        "transformation": "Parse the soil-profile identifier (e.g., 'P1') from the matric-potential column name prefix.",
+        "unit_conversion": null
+      }
+    },
+    "depth": {
+      "pattern_1": {
+        "source_pattern": "P\\d+_MP_(\\d+)",
+        "source_files": [
+          "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+        ],
+        "destination_variable": "depth_m",
+        "transformation": "Extract the depth (cm) embedded in each matric-potential column name while reshaping from wide to long format.",
+        "unit_conversion": "Divide by 100 to convert from cm to m."
+      }
+    },
+    "replicate": {
+      "pattern_1": {
+        "source_pattern": null,
+        "source_files": null,
+        "destination_variable": "replicate",
+        "transformation": "Single sensor per profile/depth; replicate set to 1.",
+        "unit_conversion": null
+      }
+    },
+    "water_potential": {
+      "pattern_1": {
+        "source_pattern": "P\\d+_MP_\\d+",
+        "source_files": [
+          "Iso_MP_Sap_DataDaily_ESSDiveUpload_R1.csv"
+        ],
+        "destination_variable": "water_potential_kPa",
+        "transformation": "Reshape the wide matric-potential columns (P1/P2 profiles at 15/30/60 cm, measured with Teros 21 sensors) from wide to long format. Isotope, sap-flow, and meteorological columns are not part of the soil-moisture target schema and are dropped.",
+        "unit_conversion": null
+      }
+    },
+    "latitude": {
+      "pattern_1": {
+        "source_pattern": "Latitude",
+        "source_files": [
+          "Locations.csv"
+        ],
+        "destination_variable": "latitude",
+        "transformation": "Look up 'Latitude' for the profile 'ID' (P1, P2) in the location metadata file.",
+        "unit_conversion": null
+      }
+    },
+    "longitude": {
+      "pattern_1": {
+        "source_pattern": "Longitude",
+        "source_files": [
+          "Locations.csv"
+        ],
+        "destination_variable": "longitude",
+        "transformation": "Look up 'Longitude' for the profile 'ID' (P1, P2) in the location metadata file.",
+        "unit_conversion": null
+      }
+    }
+  }
+}
