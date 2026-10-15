@@ -1,488 +1,726 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Harmonization agent evaluation — methods and results</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Harmonization Agent Evaluation — Metrics and Results</title>
+<link rel="stylesheet" href="../vendor/reveal/reset.css"/>
+<link rel="stylesheet" href="../vendor/reveal/reveal.css"/>
+<link rel="stylesheet" href="../vendor/reveal/theme/white.css"/>
 <style>
-  :root { --ink:#1a1a1a; --mute:#666; --rule:#d8d8d8; --bad:#b2182b; --ok:#2166ac; }
-  html,body { margin:0; padding:0; }
-  body { font: 16px/1.55 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-         color: var(--ink); background:#fff; }
-  .slide { max-width: 52rem; margin: 0 auto; padding: 2.8rem 1.5rem 2.4rem;
-           border-bottom: 1px solid var(--rule); }
-  .slide:last-child { border-bottom: none; }
-  h1 { font-size: 1.6rem; margin: 0 0 .4rem; font-weight: 650; }
-  h2 { font-size: 1.2rem; margin: 0 0 .9rem; font-weight: 650; }
-  h3 { font-size: .95rem; margin: 1.3rem 0 .4rem; font-weight: 650;
-       text-transform: uppercase; letter-spacing: .04em; color:#444; }
-  .num { color: var(--mute); font-size: .78rem; letter-spacing: .07em;
-         text-transform: uppercase; margin-bottom: .45rem; }
-  p { margin: 0 0 .8rem; }
-  ul { margin: 0 0 .8rem; padding-left: 1.2rem; }
-  li { margin-bottom: .3rem; }
-  table { border-collapse: collapse; width: 100%; font-size: .85rem; margin: .5rem 0 1rem; }
-  th, td { text-align: left; padding: .33rem .5rem; border-bottom: 1px solid var(--rule);
-           vertical-align: top; }
-  th { font-weight: 650; border-bottom: 2px solid #bbb; }
-  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
-  code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .88em;
-         background:#f4f4f4; padding: .05em .3em; border-radius: 2px; }
-  .bad { color: var(--bad); font-weight: 600; }
-  .ok  { color: var(--ok); font-weight: 600; }
-  .note { color: var(--mute); font-size: .87rem; }
-  .caveat { border-left: 3px solid #bbb; padding: .1rem 0 .1rem .9rem; color:#444; margin: 1rem 0; }
-  .found { background:#f7f7f7; border-left:3px solid var(--ok); padding:.7rem .9rem;
-           margin:.9rem 0; }
-  .found p:last-child, .found ul:last-child { margin-bottom:0; }
-  figure { margin: 1rem 0; }
-  img { max-width: 100%; border: 1px solid var(--rule); }
-  figcaption { font-size: .8rem; color: var(--mute); margin-top: .3rem; }
-  nav { max-width:52rem; margin:0 auto; padding:1.5rem; font-size:.87rem; }
-  nav ol { padding-left:1.3rem; } nav a { color:#2166ac; }
+  :root{
+    --teal:#0e7c7b; --teal-d:#0a5a59; --gold:#c9962f; --gold-d:#9c7421;
+    --blue:#3b5b8c; --blue-d:#28406a; --ink:#23303a; --muted:#6b7785;
+    --cream:#fbfaf7; --panel:#f3efe6; --line:#e6dfce; --bad:#a3283a;
+  }
+  .reveal{ font-family: ui-sans-serif, system-ui, "Inter","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); font-size:30px; }
+  .reveal .slides{ text-align:left; }
+  .reveal h1,.reveal h2,.reveal h3{ font-weight:680; letter-spacing:-.01em; color:var(--ink);
+    text-transform:none; text-shadow:none; line-height:1.12; }
+  .reveal h1{ font-size:1.9em; } .reveal h2{ font-size:1.32em; } .reveal h3{ font-size:.86em;
+    text-transform:uppercase; letter-spacing:.09em; color:var(--teal-d); margin:.5em 0 .25em; }
+  .reveal p,.reveal li{ line-height:1.38; }
+  .reveal section{ top:0 !important; }
+  .reveal strong{ color:var(--teal-d); }
+  .reveal a{ color:var(--teal); }
+  .reveal ul{ margin-left:1em; } .reveal li{ margin:.22em 0; }
+  .reveal .slide-number{ background:transparent; color:var(--muted); font-size:14px;
+    right:auto; left:50%; transform:translateX(-50%); bottom:8px; }
+
+  .eyebrow{ text-transform:uppercase; letter-spacing:.14em; font-size:.52em; font-weight:700;
+    color:var(--teal); margin:0 0 .3em; }
+  .rule{ height:4px; width:74px; border-radius:3px;
+    background:linear-gradient(90deg,var(--teal),var(--gold)); margin:.15em 0 .55em; }
+  .muted{ color:var(--muted); } .small{ font-size:.72em; } .tiny{ font-size:.54em; }
+  .bad{ color:var(--bad); font-weight:650; } .ok{ color:var(--teal-d); font-weight:650; }
+
+  #title{ background:radial-gradient(120% 120% at 0% 0%, #11514f 0%, #0e3b3a 42%, #0a2b2a 100%);
+    color:#f4f1e9; padding:0; }
+  #title h1{ color:#ffffff; font-size:1.85em; }
+  #title .eyebrow{ color:var(--gold); }
+  #title p{ color:#cfe0de; }
+  .divider{ color:#eef2f8; } .divider h2{ color:#fff; font-size:1.7em; }
+  .divider .eyebrow{ color:var(--gold); }
+
+  table.t{ border-collapse:collapse; width:100%; font-size:.5em; margin:.25em 0 .4em; }
+  table.t th, table.t td{ padding:.3em .45em; border-bottom:1px solid var(--line);
+    text-align:left; vertical-align:top; }
+  table.t th{ background:var(--panel); font-weight:700; border-bottom:2px solid var(--gold); }
+  table.t td.n, table.t th.n{ text-align:right; font-variant-numeric:tabular-nums; }
+  table.t tr:nth-child(even) td{ background:#fcfbf8; }
+  table.t.xs{ font-size:.4em; }
+
+  .spec{ background:var(--cream); border:1px solid var(--line); border-left:4px solid var(--teal);
+    border-radius:4px; padding:.5em .7em; margin:.35em 0; font-size:.62em; }
+  .spec dt{ font-weight:700; color:var(--teal-d); text-transform:uppercase;
+    letter-spacing:.07em; font-size:.8em; margin-top:.4em; }
+  .spec dt:first-child{ margin-top:0; }
+  .spec dd{ margin:.1em 0 0 0; }
+  .caveat{ border-left:4px solid var(--gold); background:#fdf8ec; padding:.45em .7em;
+    font-size:.62em; margin:.4em 0; }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:.8em; }
+  .cols3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:.6em; }
+  .card{ background:var(--cream); border:1px solid var(--line); border-radius:5px;
+    padding:.5em .6em; }
+  .card.teal{ border-top:3px solid var(--teal); }
+  .card.gold{ border-top:3px solid var(--gold); }
+  .stat{ font-size:1.5em; font-weight:700; color:var(--teal-d); line-height:1.05; }
+  .stat .unit{ font-size:.5em; color:var(--muted); font-weight:600; }
+  code{ font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.9em;
+    background:#f1efe9; padding:.03em .25em; border-radius:2px; }
+  .reveal pre code{ font-size:.5em; line-height:1.3; }
+  .scroll{ max-height:560px; overflow-y:auto; }
 </style>
 </head>
 <body>
+<div class="reveal"><div class="slides">
 
-<section class="slide">
-  <div class="num">Methods and results</div>
+<!-- ================= TITLE ================= -->
+<section id="title" data-background-color="#0a2b2a">
+  <p class="eyebrow">Methods and results</p>
   <h1>Evaluating an LLM agent on soil-moisture data harmonization</h1>
-  <p>Each slide states <em>what we measure and why</em>, then <em>what we found</em>.
-  Metric definitions in full: <code>docs/evaluation_metrics.md</code>.</p>
-  <nav>
-    <ol>
-      <li>What is being compared</li>
-      <li>The primary measurement: output equivalence</li>
-      <li>Reading the ladder — a worked example</li>
-      <li>Automatic diagnosis: why a fold differs</li>
-      <li>Timezone offsets — the single largest effect</li>
-      <li>Schema conformance</li>
-      <li>Sites and coordinates</li>
-      <li>Documentation quality</li>
-      <li>Behaviour and context</li>
-      <li>How to read these statistics</li>
-      <li>What to do next</li>
-    </ol>
-  </nav>
+  <p class="small">19 leave-one-out folds scored against the BERDL lakehouse reference.<br/>
+  Every metric specified, then reported.</p>
+  <p class="tiny muted">Definitions: <code>docs/evaluation_metrics.md</code> ·
+  Code: <code>src/metrics/</code> · Data: <code>results/</code></p>
 </section>
 
-<!-- 1 -->
-<section class="slide">
-  <div class="num">1</div>
+<!-- ================= SETUP ================= -->
+<section>
+  <p class="eyebrow">1 · Design</p>
   <h2>What is being compared</h2>
-  <p>There are 19 folds. Each hides one dataset from the agent's reference material,
-  hands it that dataset's raw files, and asks it to harmonize them. We compare the
-  result against what a domain expert produced for the same dataset.</p>
-
-  <h3>The reference</h3>
-  <p><code>bervodata.watershed_sfa_soil_moisture.ddt_soil_moisture_observation</code> —
-  6.4M rows covering all 19 datasets. This is the expert's own harmonized output loaded
-  into BERDL, so it is a <em>complete</em> reference rather than the 49-row snippets kept
-  in the repo. Its 19 dataset identifiers map one-to-one onto the 19 fold targets.</p>
-
-  <h3>Three translations applied first</h3>
-  <p>Each would silently corrupt the comparison if skipped:</p>
-  <table>
-    <tr><th>Issue</th><th>Translation</th></tr>
-    <tr><td>Water potential stored in <strong>pascals</strong>, schema says kPa</td><td>divide by 1000</td></tr>
-    <tr><td><code>site_id</code> is not a column — it is embedded as <code>&lt;dataset&gt;__&lt;site&gt;</code></td><td>join to <code>sdt_location.site_identifier</code></td></tr>
-    <tr><td>Dataset IDs use <code>_</code> in the repo, <code>-</code> in the lakehouse</td><td>normalise separators</td></tr>
+  <div class="rule"></div>
+  <p class="small">Each fold hides one dataset from the agent's reference material, gives it
+  that dataset's raw files, and asks it to harmonize them. We compare the output against the
+  expert's harmonized version of the same dataset.</p>
+  <div class="cols2">
+    <div>
+      <h3>Reference</h3>
+      <table class="t">
+        <tr><td>Table</td><td><code>bervodata.watershed_sfa_<br/>soil_moisture.ddt_soil_<br/>moisture_observation</code></td></tr>
+        <tr><td>Rows</td><td class="n">6,424,075</td></tr>
+        <tr><td>Datasets</td><td class="n">19 (1:1 with fold targets)</td></tr>
+        <tr><td>Schema</td><td>8 harmonized columns</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Batch under test</h3>
+      <table class="t">
+        <tr><td>Runs</td><td class="n">19, all completed</td></tr>
+        <tr><td>Source</td><td><code>main@ba049e7</code></td></tr>
+        <tr><td>Scored</td><td class="n">19 / 19, 0 failures</td></tr>
+        <tr><td>Cost</td><td class="n">$101.90 total</td></tr>
+      </table>
+    </div>
+  </div>
+  <h3>Three translations applied before any comparison</h3>
+  <table class="t">
+    <tr><th>Issue</th><th>Translation</th><th>If skipped</th></tr>
+    <tr><td>Water potential stored in <strong>pascals</strong>; schema is kPa</td><td><code>/ 1000</code></td><td>silent 1000× error</td></tr>
+    <tr><td><code>site_id</code> is not a column — embedded as <code>&lt;dataset&gt;__&lt;site&gt;</code></td><td>join <code>sdt_location.site_identifier</code></td><td>no site comparison at all</td></tr>
+    <tr><td>Dataset IDs use <code>_</code> in repo, <code>-</code> in lakehouse</td><td>normalise separators</td><td>0 of 19 datasets match</td></tr>
   </table>
-
-  <div class="caveat"><strong>What "correct" means here.</strong> The reference is one
-  expert's work, not an independent second opinion. These metrics measure agreement with
-  that expert. Where the two disagree, the expert is treated as right by convention —
-  occasionally the agent may be defensible and the convention merely different.</div>
-
-  <div class="found">
-    <p><strong>Batch:</strong> 19 runs from <code>main@ba049e7</code>, all completed,
-    $101.90 total. Scored 19/19 with no failures.</p>
-  </div>
+  <div class="caveat"><strong>What "correct" means.</strong> The reference is one expert's
+  work, not an independent second opinion. These metrics measure <em>agreement with that
+  expert</em>. Where the two differ, the expert is treated as right by convention.</div>
 </section>
 
-<!-- 2 -->
-<section class="slide">
-  <div class="num">2</div>
-  <h2>The primary measurement: output equivalence</h2>
-  <p>The central question is simple — <strong>did the agent produce the same table the
-  expert did?</strong> The complication is deciding when two rows are "the same row".</p>
-
-  <p>The obvious answer is to match rows agreeing on timestamp, site, depth and
-  replicate. That turns out to be badly misleading: if the agent writes site
-  <code>ER-WML1</code> where the expert writes <code>ER-WML1_HERB</code>, nothing matches
-  and the score is zero even when every number is right. A uniform clock offset does the
-  same thing. So we measure at four levels of strictness and report all four.</p>
-
-  <table>
-    <tr><th>Level</th><th>Rows match when they agree on…</th><th>What it isolates</th></tr>
-    <tr><td><strong>L0</strong></td><td>nothing — distributions only</td><td>unit errors, gross row-count errors</td></tr>
-    <tr><td><strong>L1</strong></td><td>timestamp + depth + replicate</td><td>are the <em>values</em> right, ignoring site naming?</td></tr>
-    <tr><td><strong>L2</strong></td><td>L1 + site, after translating expert names into the agent's vocabulary</td><td>is site identity recoverable?</td></tr>
-    <tr><td><strong>L3</strong></td><td>all four, exactly</td><td>the strict, conservative headline</td></tr>
+<!-- ================= LADDER SPEC ================= -->
+<section>
+  <p class="eyebrow">2 · Primary metric</p>
+  <h2>Output equivalence — specification</h2>
+  <div class="rule"></div>
+  <p class="small">Matching rows on <code>(timestamp, site, depth, replicate)</code> alone is
+  misleading: a site-naming difference or a uniform clock offset sends the score to zero while
+  every value is correct. Four levels are computed and all four reported.</p>
+  <table class="t">
+    <tr><th>Level</th><th>Join key</th><th>Isolates</th><th>Degenerate when</th></tr>
+    <tr><td><strong>L0</strong></td><td>none — distributions only</td><td>unit errors, row-count errors</td><td>never</td></tr>
+    <tr><td><strong>L1</strong></td><td><code>datetime + depth + replicate</code></td><td>value accuracy, site naming set aside</td><td>clock offset</td></tr>
+    <tr><td><strong>L2</strong></td><td>L1 + site, after reference→agent name crosswalk</td><td>site identity modulo vocabulary</td><td>crosswalk fails</td></tr>
+    <tr><td><strong>L3</strong></td><td><code>datetime + site + depth + replicate</code></td><td>strict headline</td><td>any naming or clock difference</td></tr>
   </table>
-
-  <h3>What is reported at each level</h3>
-  <ul>
-    <li><strong>Recall</strong> — of the expert's rows, how many did the agent reproduce?</li>
-    <li><strong>Precision</strong> — of the agent's rows, how many correspond to an expert row?
-        Below 1 usually means rows the expert filtered out were kept.</li>
-    <li><strong>Cell agreement</strong> — among paired rows, what fraction of individual
-        values match? Numbers within a small tolerance; text exactly.</li>
-    <li><strong>Null-mask agreement</strong> — kept separate, because agreement computed only
-        over cells where both sides have a value would hide an agent writing <code>0</code>
-        where the expert recorded "missing".</li>
-    <li><strong>Gap structure</strong> — not how many rows are missing but <em>which</em>. A
-        whole missing site is a different defect from the same count missing at random.</li>
-  </ul>
-  <p class="note">Timestamps repeat across sites, so keys are not unique. Rows are paired
-  by sorting both sides and matching the <em>n</em>-th occurrence to the <em>n</em>-th —
-  which makes row order irrelevant.</p>
-
-  <div class="found">
-    <p><strong>Finding.</strong> By the strict measure alone the median fold scores
-    <span class="bad">0.00</span> — a number close to meaningless. Six of 19 folds exceed
-    0.95; the rest are dominated by site naming and clock offsets rather than wrong data.
-    The gap between L1 and L3 <em>is</em> the result, not a nuisance.</p>
+  <div class="spec">
+    <dl>
+      <dt>Inputs</dt><dd>Agent harmonized CSV; reference slice for the same dataset.</dd>
+      <dt>Row pairing</dt><dd>Keys are <em>not</em> unique (many sites share a timestamp). Both
+      sides are sorted deterministically and the <em>n</em>-th occurrence within a key is paired
+      with the <em>n</em>-th. Multiset semantics; row order is irrelevant.</dd>
+      <dt>Outputs</dt><dd><code>precision = matched / n_agent</code>,
+      <code>recall = matched / n_gold</code>, <code>F1</code>, and cell agreement over paired rows
+      (numeric within <code>rtol 1e-5 / atol 1e-8</code>; text exact).</dd>
+      <dt>Interpretation</dt><dd>High L1 with zero L3 ⇒ correct data under different labels.
+      Low L1 ⇒ genuinely wrong values. The <em>gap</em> is the diagnostic.</dd>
+    </dl>
   </div>
 </section>
 
-<!-- 3 -->
-<section class="slide">
-  <div class="num">3</div>
-  <h2>Reading the ladder — fold 17 worked through</h2>
-  <p>This fold was analysed by hand before the scorer was written, and now serves as the
-  known-answer regression test.</p>
-  <table>
-    <tr><th>Level</th><th class="n">Precision</th><th class="n">Recall</th><th class="n">Cell agreement</th></tr>
-    <tr><td>L1 — site-blind</td><td class="n">0.530</td><td class="n ok">0.9999</td><td class="n">0.620</td></tr>
-    <tr><td>L2 — site crosswalked</td><td class="n">0.398</td><td class="n">0.751</td><td class="n ok">0.951</td></tr>
-    <tr><td>L3 — strict</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n">—</td></tr>
+<!-- ================= LADDER RESULTS ================= -->
+<section>
+  <p class="eyebrow">2 · Primary metric</p>
+  <h2>Output equivalence — results</h2>
+  <div class="rule"></div>
+  <h3>Aggregate across 19 folds — median [IQR]</h3>
+  <table class="t">
+    <tr><th>Level</th><th class="n">Precision</th><th class="n">Recall</th><th class="n">F1</th><th class="n">Cell agreement</th><th class="n">n folds w/ cells</th></tr>
+    <tr><td><strong>L1</strong></td><td class="n">0.896 [0.000–0.997]</td><td class="n">0.998 [0.000–1.000]</td><td class="n">0.897 [0.000–0.998]</td><td class="n">0.847 [0.800–0.992]</td><td class="n">13</td></tr>
+    <tr><td><strong>L2</strong></td><td class="n">0.398 [0.000–0.968]</td><td class="n">0.751 [0.000–0.999]</td><td class="n">0.520 [0.000–0.983]</td><td class="n ok">0.990 [0.959–1.000]</td><td class="n">10</td></tr>
+    <tr><td><strong>L3</strong></td><td class="n bad">0.000 [0.000–0.968]</td><td class="n bad">0.000 [0.000–0.999]</td><td class="n bad">0.000 [0.000–0.983]</td><td class="n ok">0.994 [0.985–1.000]</td><td class="n">9</td></tr>
   </table>
-  <p>Read together: the agent got essentially <em>every</em> timestamp, depth and
-  replicate right (L1 recall 0.9999), and once site names are reconciled
-  <strong>95% of all values agree</strong>. The strict zero decomposes into three
-  separately fixable problems:</p>
-  <ul>
-    <li><strong>Site vocabulary collapsed.</strong> Expert uses <code>ER-WML1_HERB</code> and
-        <code>ER-WML1_SHRUB</code>; the agent emits only <code>ER-WML1</code>.</li>
-    <li><strong>A row filter was missed.</strong> 1.89× the expert's row count and 10 extra
-        sites — the even-numbered plots the expert excludes as warming treatments.</li>
-    <li><strong>Coordinates not resolved.</strong> Every site blank and flagged <code>g2</code>
-        ("unavailable") while the expert resolves 10 of them from a registry the agent's own
-        instructions list.</li>
-  </ul>
-  <p>A single strict score reports "0" for all three indistinguishably. This is the whole
-  argument for the ladder.</p>
+  <div class="cols2">
+    <div>
+      <h3>L3 F1 distribution</h3>
+      <table class="t">
+        <tr><th>Band</th><th class="n">Folds</th></tr>
+        <tr><td>exactly 1.000</td><td class="n">3</td></tr>
+        <tr><td>0.95 – 0.999</td><td class="n">3</td></tr>
+        <tr><td>0.50 – 0.95</td><td class="n">3</td></tr>
+        <tr><td>0 – 0.50</td><td class="n">0</td></tr>
+        <tr><td class="bad">exactly 0</td><td class="n bad">10</td></tr>
+      </table>
+      <p class="tiny muted">Bimodal: folds either match well or fail completely. Nothing lands
+      between 0 and 0.5 — consistent with single systematic defects rather than diffuse error.</p>
+    </div>
+    <div>
+      <h3>L0 row-count ratio</h3>
+      <table class="t">
+        <tr><th>Band</th><th class="n">Folds</th></tr>
+        <tr><td>exactly 1.000</td><td class="n">6</td></tr>
+        <tr><td>within ±5%</td><td class="n">12</td></tr>
+        <tr><td>&gt;1.05 (inflated)</td><td class="n">5</td></tr>
+        <tr><td>&lt;0.95 (deficit)</td><td class="n">2</td></tr>
+      </table>
+      <h3>Site crosswalk required</h3>
+      <table class="t">
+        <tr><td>identity (names already equal)</td><td class="n">10</td></tr>
+        <tr><td>exact subset match</td><td class="n">4</td></tr>
+        <tr><td>suffix stripped</td><td class="n">1</td></tr>
+        <tr><td>no correspondence found</td><td class="n bad">4</td></tr>
+      </table>
+    </div>
+  </div>
+  <p class="small"><strong>Reading:</strong> cell agreement <em>rises</em> as the join tightens
+  (0.847 → 0.990 → 0.994) because stricter keys pair genuinely corresponding rows. The rows that
+  do pair are nearly always right; the difficulty is getting rows to pair at all.</p>
 </section>
 
-<!-- 4 -->
-<section class="slide">
-  <div class="num">4</div>
-  <h2>Automatic diagnosis: why a fold differs</h2>
-  <p>A score says a fold is wrong; a diagnosis says <em>how</em>. Each fold gets findings
-  carrying the evidence that triggered them. Findings state evidence, not conclusions —
-  "ten sites appear that the expert lacks" is an observation; "the agent forgot a filter"
-  is a hypothesis to be checked against the expert's documented steps.</p>
-
-  <table>
-    <tr><th>Finding</th><th>Triggered when</th><th class="n">Folds</th></tr>
-    <tr><td><code>SITE_SUPERSET</code></td><td>agent has sites the expert lacks — kept excluded rows</td><td class="n">8</td></tr>
-    <tr><td><code>COORD_UNRESOLVED</code></td><td>no coordinates where the expert resolves some</td><td class="n">5</td></tr>
-    <tr><td><code>SITE_MISSING</code></td><td>expert has sites the agent lacks — data dropped</td><td class="n">5</td></tr>
-    <tr><td><code>TZ_SHIFT</code></td><td>every timestamp off by the same whole hours</td><td class="n">5</td></tr>
-    <tr><td><code>QC_FLAG_MISMATCH</code></td><td>coordinate provenance misreported</td><td class="n">5</td></tr>
-    <tr><td><code>DUPLICATE_KEYS</code></td><td>a key repeated that the expert treats as unique</td><td class="n">5</td></tr>
-    <tr><td><code>SYSTEMATIC_GAP</code></td><td>&gt;80% of missing rows fall in one site</td><td class="n">4</td></tr>
-    <tr><td><code>ROW_INFLATION</code> / <code>ROW_DEFICIT</code></td><td>row count off by &gt;5%</td><td class="n">7</td></tr>
-    <tr><td><code>NULL_INFLATION</code> / <code>NULL_DEFICIT</code></td><td>missingness differs by &gt;10 points</td><td class="n">5</td></tr>
-    <tr><td><code>UNIT_SCALE</code>, <code>SIGN_ERROR</code></td><td>×100/×1000 scale confusion, inverted sign</td><td class="n bad">0</td></tr>
+<!-- ================= WORKED EXAMPLE ================= -->
+<section>
+  <p class="eyebrow">2 · Primary metric</p>
+  <h2>Worked example — fold 17 (target 23)</h2>
+  <div class="rule"></div>
+  <p class="small">Analysed by hand before the scorer existed; now the known-answer regression test.</p>
+  <table class="t">
+    <tr><th>Level</th><th class="n">Matched rows</th><th class="n">Precision</th><th class="n">Recall</th><th class="n">F1</th><th class="n">Cell agreement</th></tr>
+    <tr><td>L1 — site-blind</td><td class="n">912,371</td><td class="n">0.530</td><td class="n ok">0.9999</td><td class="n">0.693</td><td class="n">0.620</td></tr>
+    <tr><td>L2 — crosswalked</td><td class="n">684,908</td><td class="n">0.398</td><td class="n">0.751</td><td class="n">0.520</td><td class="n ok">0.951</td></tr>
+    <tr><td>L3 — strict</td><td class="n bad">0</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n">—</td></tr>
   </table>
-
-  <div class="found">
-    <p><strong>Finding: the failures are structural, not numerical.</strong> 53 findings
-    across 19 folds, and almost all concern <em>which rows and which sites</em> — filters,
-    naming, coordinates, timezones. Not one fold shows a unit-scale or sign error. Six
-    folds have no critical finding at all.</p>
-    <p>That matters for where to intervene: the arithmetic of unit conversion is solved;
-    the record-selection logic is not.</p>
-  </div>
-</section>
-
-<!-- 5 -->
-<section class="slide">
-  <div class="num">5</div>
-  <h2>Timezone offsets — the single largest effect</h2>
-  <p>A uniform clock offset drives every keyed score to zero while leaving all values
-  perfectly correct. When one is detected we re-score with it removed and report both
-  numbers, which answers a specific question: <em>how much of this failure is one
-  systematic mistake rather than many scattered ones?</em></p>
-
-  <table>
-    <tr><th class="n">Fold</th><th class="n">Target</th><th class="n">Offset</th><th class="n">L3 F1</th><th class="n">L3 F1 corrected</th></tr>
-    <tr><td class="n">8</td><td class="n">26</td><td class="n">+7 h</td><td class="n bad">0.000</td><td class="n ok">0.839</td></tr>
-    <tr><td class="n">9</td><td class="n">4</td><td class="n">−6 h</td><td class="n bad">0.000</td><td class="n ok">0.645</td></tr>
-    <tr><td class="n">14</td><td class="n">10</td><td class="n">+1 h</td><td class="n bad">0.000</td><td class="n">0.000</td></tr>
-    <tr><td class="n">16</td><td class="n">18</td><td class="n">−7 h</td><td class="n bad">0.000</td><td class="n">0.000</td></tr>
-    <tr><td class="n">18</td><td class="n">24</td><td class="n">+6 h</td><td class="n bad">0.000</td><td class="n ok">0.764</td></tr>
+  <p class="small">Agent emitted <strong>1,722,752</strong> rows against the reference's
+  <strong>912,417</strong> (1.888×), with <strong>20</strong> sites against <strong>15</strong>.</p>
+  <h3>Three separable defects behind one zero</h3>
+  <table class="t">
+    <tr><th>Defect</th><th>Evidence</th><th>Effect on ladder</th></tr>
+    <tr><td>Site vocabulary collapsed</td><td>reference <code>ER-WML1_HERB</code> / <code>_SHRUB</code>; agent <code>ER-WML1</code></td><td>L3 → 0, L2 recovers</td></tr>
+    <tr><td>Row filter missed</td><td>10 extra sites = even-numbered warming plots; 1.89× rows</td><td>L1 precision 0.530 ≈ 1/1.888</td></tr>
+    <tr><td>Coordinates not resolved</td><td>all sites blank, flagged <code>g2</code>; reference resolves 10</td><td>location metrics only</td></tr>
   </table>
-
-  <p>Fold 18 is the cleanest illustration: 3,204 agent rows against 3,204 expert rows,
-  534 distinct timestamps on each side, <strong>zero overlap</strong> — and identical
-  depths, replicates and values. One mistake, total failure by exact match.</p>
-
-  <div class="found">
-    <p><strong>Finding.</strong> Removing the offset lifts the median strict score from
-    <span class="bad">0.00</span> to <span class="ok">0.84</span>. Folds 14 and 16 stay at
-    zero, so they have problems beyond the clock.</p>
-  </div>
-
-  <div class="caveat">The detector fires only when timestamps genuinely fail to line up
-  <em>and</em> a candidate shift recovers most of them. A looser earlier rule flagged four
-  already-correct folds on a single coincidental match; both conditions are needed.</div>
+  <p class="small">L1 recall 0.9999 says the agent got essentially <em>every</em> timestamp,
+  depth and replicate right; post-crosswalk <strong>95.1% of values agree</strong>. A single
+  strict score reports "0" for all three indistinguishably.</p>
 </section>
 
-<!-- 6 -->
-<section class="slide">
-  <div class="num">6</div>
-  <h2>Schema conformance</h2>
-  <p>Does the output have the right shape? Columns present, no extras, correct order,
-  values inside plausible ranges (volumetric water content 0–1, water potential negative,
-  depth 0–100 m), required fields populated.</p>
-
-  <p><strong>What we deliberately do not score: raw pandas dtypes.</strong> A CSV has no
-  types — what pandas infers on read is a property of the reader, not the agent. Scoring
-  it would mark every run wrong for storing a timestamp as text. Instead we score
-  <em>coercibility</em>: does every value parse into its intended type without loss?</p>
-
-  <p class="note">Note also that the repo's <code>TargetSchema.is_valid()</code> ignores
-  range violations, so a volumetric water content of 95 passes it. Ranges are scored here
-  and count toward the verdict.</p>
-
-  <div class="found">
-    <p><strong>Finding.</strong> 14 of 19 folds fully conformant. Zero uncoercible values
-    anywhere in the corpus — every emitted value parses as its intended type. Failures are
-    structural (a missing or extra column, an unpopulated required field), not malformed
-    data.</p>
-  </div>
+<!-- ================= DIVIDER ================= -->
+<section class="divider" data-background-color="#1c2c49">
+  <p class="eyebrow">Part 3</p>
+  <h2>Diagnosis: why each fold differs</h2>
+  <p class="small">A score says a fold is wrong. A diagnosis says how.</p>
 </section>
 
-<!-- 7 -->
-<section class="slide">
-  <div class="num">7</div>
-  <h2>Sites and coordinates</h2>
-  <p>The agent also emits a location table. Against <code>sdt_location</code> we measure
-  site set precision/recall/F1, great-circle coordinate error per matched site, and
-  <code>qc_flag</code> accuracy.</p>
-  <p>The lakehouse has no <code>qc_flag</code> column, but
-  <code>geolocation_resolution_method</code> records <em>how</em> each coordinate was
-  obtained. Mapping that vocabulary onto <code>g1</code> (from the registry) and
-  <code>g2</code> (unavailable) makes coordinate provenance scoreable.</p>
-  <p class="note">The denominator matters: some expert sites have no coordinates at all,
-  so the resolvable count is smaller than the site count and is reported separately.</p>
-
-  <div class="found">
-    <p><strong>Finding: when the agent attempts coordinates it is exact; the problem is
-    not attempting.</strong></p>
-    <ul>
-      <li>Site set F1: median <strong>1.000</strong> across 19 folds — site discovery is solid.</li>
-      <li>Coordinates comparable on 10 folds: median error <strong>0.0 m</strong>, all within 100 m.</li>
-      <li><code>qc_flag</code> accuracy: median <strong>1.000</strong> (15 folds).</li>
-      <li>But <strong>5 folds report coordinates as unavailable</strong> that the registry resolves.</li>
-    </ul>
-    <p>So <code>COORD_UNRESOLVED</code> is a lookup-not-performed failure, not an accuracy
-    failure — a materially different fix.</p>
-  </div>
-</section>
-
-<!-- 8 -->
-<section class="slide">
-  <div class="num">8</div>
-  <h2>Documentation quality</h2>
-  <p>The agent documents its transformations in prose. Exact text matching is worthless
-  here — the earlier pilot found 0/8 agreement on wording while the executed outputs were
-  identical. But "does the text describe the same <em>operations</em>?" is answerable.</p>
-
-  <h3>Two different fields</h3>
-  <ul>
-    <li><strong><code>unit_conversion</code> is not prose.</strong> Its 153 expert values
-    collapse to 9 templates once numerals are masked, so it is parsed deterministically
-    into (factor, from-unit, to-unit) and scored exactly.</li>
-    <li><strong><code>transformation</code> is reduced to the operations it names</strong>
-    from a controlled vocabulary — <code>JOIN</code>, <code>FILTER</code>,
-    <code>RENAME</code>, <code>TIMEZONE</code>, <code>PARSE_DATETIME</code> and so on. We
-    then ask which expert operations are missing from the agent's account.</li>
-  </ul>
-
-  <p>Three choices worth stating in Methods: steps are pooled <strong>per dataset, not per
-  variable group</strong> (a filter governing every column is recorded inside the
-  <code>depth</code> group); results are reported <strong>stratified and unweighted</strong>
-  because <code>FILTER</code> appears twice in 153 patterns yet drives the largest errors;
-  and recall <strong>pools the mapping text with <code>notes.md</code></strong> while
-  precision stays attributed per artifact.</p>
-
-  <div class="found">
-    <p><strong>Finding: 72 of 83 expert operations are documented</strong>, and source-file
-    identification is perfect (median F1 1.000 for payload and location files).</p>
-    <table>
-      <tr><th>Operation</th><th class="n">Stated / folds requiring it</th></tr>
-      <tr><td><code>TIMEZONE</code></td><td class="n">18 / 19</td></tr>
-      <tr><td><code>ASSIGN_CONSTANT</code></td><td class="n">14 / 15</td></tr>
-      <tr><td><code>PARSE_DATETIME</code></td><td class="n">14 / 16</td></tr>
-      <tr><td><code>PARSE_FROM_COLNAME</code></td><td class="n">11 / 12</td></tr>
-      <tr><td><code>RENAME</code></td><td class="n bad">4 / 9</td></tr>
-      <tr><td><code>FILTER</code> · <code>JOIN</code> · <code>METADATA_LOOKUP</code></td><td class="n">1/1 · 1/1 · 5/5</td></tr>
-      <tr><td><code>AGGREGATE</code></td><td class="n bad">0 / 1</td></tr>
-    </table>
-    <p><strong>The sharpest observation: the agent states timezone handling in 18 of 19
-    folds, and still gets the timezone wrong in 5.</strong> Saying it is not doing it —
-    these are not knowledge failures but execution failures, which points the fix at the
-    code path rather than the instructions.</p>
-  </div>
-  <p class="note">Counts, not percentages, for small cells: <code>FILTER</code> occurs once
-  in this corpus, so "1/1" is a case report rather than a rate.</p>
-</section>
-
-<!-- 9 -->
-<section class="slide">
-  <div class="num">9</div>
-  <h2>Behaviour and context — not quality metrics</h2>
-  <p>These describe <em>how</em> a run happened. They are covariates and must not be read
-  as quality: a cheap run that silently skips a filter would otherwise look efficient.</p>
-  <ul>
-    <li><strong>Exemplar substitution</strong> — which expert implementations the agent
-    actually opened, from the access traces. This observes the ablation mechanism directly
-    rather than inferring it from score differences.</li>
-    <li><strong>Cost, turns, tokens, tool mix</strong> — context only.</li>
-    <li><strong>Process integrity</strong> — a <em>gate</em>, not a score.</li>
-    <li><strong>Difficulty covariates</strong> — row count, sites, source files, unit
-    conversions, exemplar pool size. These separate "the agent did well" from "the dataset
-    was easy".</li>
-  </ul>
-
-  <div class="found">
-    <p><strong>Findings.</strong> Cost median $4.69 (range $3.56–13.57), 80 turns median,
-    3 exemplars read median. Process integrity: <strong>19/19 clean</strong> — which is
-    precisely why it is a gate: it has no power to discriminate between runs.</p>
-    <p>The agent does visibly compensate for ablation: with all six cluster-mates
-    withheld, fold 1 opened four out-of-cluster examples instead.</p>
-  </div>
-
-  <h3>Ablation: no usable outcome signal yet</h3>
-  <table>
-    <tr><th>Cluster</th><th class="n">Exemplars available</th><th class="n">Folds</th><th class="n">Median L3 F1</th><th class="n">Median cost</th></tr>
-    <tr><td><code>sg_ph_micromet</code></td><td class="n">13</td><td class="n">6</td><td class="n">0.983</td><td class="n">$4.85</td></tr>
-    <tr><td><code>neon_point</code></td><td class="n">17</td><td class="n">2</td><td class="n">0.000</td><td class="n">$9.43</td></tr>
-    <tr><td><code>independent</code></td><td class="n">18</td><td class="n">11</td><td class="n">0.000</td><td class="n">$4.55</td></tr>
+<!-- ================= DIAGNOSTIC SPEC ================= -->
+<section>
+  <p class="eyebrow">3 · Diagnostics</p>
+  <h2>Detector specifications</h2>
+  <div class="rule"></div>
+  <p class="small">Each detector emits <code>{code, severity, evidence, message}</code>.
+  Findings state <strong>evidence, not conclusions</strong> — "ten sites appear that the
+  reference lacks" is an observation; "the agent forgot a filter" is a hypothesis to be
+  checked against the expert's documented steps.</p>
+  <table class="t">
+    <tr><th>Code</th><th>Trigger condition</th><th>Severity</th></tr>
+    <tr><td><code>TZ_SHIFT</code></td><td>uniform whole-hour offset recovering &gt;50% of timestamps, from a baseline &lt;50%</td><td>critical</td></tr>
+    <tr><td><code>ROW_INFLATION</code> / <code>ROW_DEFICIT</code></td><td><code>|log(ratio)|</code> beyond ±5%; critical past ±25%</td><td>critical / major</td></tr>
+    <tr><td><code>SITE_SUPERSET</code></td><td>agent sites with no reference counterpart</td><td>critical</td></tr>
+    <tr><td><code>SITE_MISSING</code></td><td>reference sites absent from agent output</td><td>critical</td></tr>
+    <tr><td><code>SITE_VOCAB_COLLAPSE</code></td><td>reference names extend agent names by a separator + qualifier</td><td>major</td></tr>
+    <tr><td><code>COORD_UNRESOLVED</code></td><td>agent emits 0 coordinates where reference resolves ≥1</td><td>critical</td></tr>
+    <tr><td><code>QC_FLAG_MISMATCH</code></td><td>provenance flag accuracy &lt; 0.5</td><td>major</td></tr>
+    <tr><td><code>UNIT_SCALE</code></td><td>median ratio within 5% of 100, 1000, 101.325 or reciprocals</td><td>critical</td></tr>
+    <tr><td><code>SIGN_ERROR</code></td><td>water potential &gt;0 where reference ≤0</td><td>critical</td></tr>
+    <tr><td><code>NULL_INFLATION</code> / <code>NULL_DEFICIT</code></td><td>null-rate difference &gt;10 percentage points</td><td>major</td></tr>
+    <tr><td><code>NULL_PATTERN_MISMATCH</code></td><td>null-mask agreement &lt;0.95 on paired rows</td><td>major</td></tr>
+    <tr><td><code>DUPLICATE_KEYS</code></td><td>agent duplicates a natural key more than the reference does</td><td>major</td></tr>
+    <tr><td><code>EMPTY_SITE_ID</code></td><td>any row with blank <code>site_id</code></td><td>major</td></tr>
+    <tr><td><code>SYSTEMATIC_GAP</code></td><td>&gt;80% of unmatched reference rows in one site</td><td>major</td></tr>
   </table>
-  <p>The most-ablated group scores <em>highest</em> — the opposite of the expected
-  direction, and almost certainly not about ablation. Those six folds are one instrument
-  cluster with consistent formatting, so the comparison confounds ablation with how hard
-  the datasets are.</p>
 </section>
 
-<!-- 10 -->
-<section class="slide">
-  <div class="num">10</div>
+<!-- ================= DIAGNOSTIC RESULTS ================= -->
+<section>
+  <p class="eyebrow">3 · Diagnostics</p>
+  <h2>Findings across the corpus</h2>
+  <div class="rule"></div>
+  <div class="cols2">
+    <div>
+      <table class="t">
+        <tr><th>Code</th><th>Sev.</th><th class="n">Folds</th></tr>
+        <tr><td><code>SITE_SUPERSET</code></td><td>crit</td><td class="n">8</td></tr>
+        <tr><td><code>COORD_UNRESOLVED</code></td><td>crit</td><td class="n">5</td></tr>
+        <tr><td><code>SITE_MISSING</code></td><td>crit</td><td class="n">5</td></tr>
+        <tr><td><code>TZ_SHIFT</code></td><td>crit</td><td class="n">5</td></tr>
+        <tr><td><code>QC_FLAG_MISMATCH</code></td><td>maj</td><td class="n">5</td></tr>
+        <tr><td><code>DUPLICATE_KEYS</code></td><td>maj</td><td class="n">5</td></tr>
+        <tr><td><code>SYSTEMATIC_GAP</code></td><td>maj</td><td class="n">4</td></tr>
+        <tr><td><code>ROW_INFLATION</code></td><td>crit/maj</td><td class="n">5</td></tr>
+        <tr><td><code>ROW_DEFICIT</code></td><td>crit</td><td class="n">2</td></tr>
+        <tr><td><code>NULL_INFLATION</code></td><td>maj</td><td class="n">3</td></tr>
+        <tr><td><code>NULL_DEFICIT</code></td><td>maj</td><td class="n">2</td></tr>
+        <tr><td><code>NULL_PATTERN_MISMATCH</code></td><td>maj</td><td class="n">2</td></tr>
+        <tr><td><code>EMPTY_SITE_ID</code></td><td>maj</td><td class="n">1</td></tr>
+        <tr><td><code>SITE_VOCAB_COLLAPSE</code></td><td>maj</td><td class="n">1</td></tr>
+        <tr><td class="ok"><code>UNIT_SCALE</code></td><td>crit</td><td class="n ok">0</td></tr>
+        <tr><td class="ok"><code>SIGN_ERROR</code></td><td>crit</td><td class="n ok">0</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="cols2" style="grid-template-columns:1fr 1fr;">
+        <div class="card teal"><div class="stat">53</div><p class="tiny muted">findings total</p></div>
+        <div class="card teal"><div class="stat">6<span class="unit">/19</span></div><p class="tiny muted">folds with no critical finding</p></div>
+        <div class="card gold"><div class="stat">0</div><p class="tiny muted">unit-scale errors</p></div>
+        <div class="card gold"><div class="stat">0</div><p class="tiny muted">sign errors</p></div>
+      </div>
+      <p class="small" style="margin-top:.6em;"><strong>The failures are structural, not
+      numerical.</strong> Almost every finding concerns <em>which rows and which sites</em> —
+      filters, naming, coordinates, timezones. The arithmetic of unit conversion is solved;
+      record-selection logic is not.</p>
+      <p class="small">That determines where to intervene: the skill's unit guidance is working,
+      its exclusion-criteria guidance is not.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TZ ================= -->
+<section>
+  <p class="eyebrow">3 · Diagnostics</p>
+  <h2>Timezone offsets — the largest single effect</h2>
+  <div class="rule"></div>
+  <div class="spec">
+    <dl>
+      <dt>Method</dt><dd>Candidate shifts −14…+14 h scored by how much of the reference
+      timestamp set each recovers. Flagged only when baseline overlap &lt;50% <em>and</em> the
+      best shift recovers ≥50%. Both conditions are required: a looser rule flagged four
+      already-correct folds on a single coincidental match.</dd>
+      <dt>Reported</dt><dd>Score as measured, and re-scored with the shift removed — isolating
+      "one systematic mistake" from "many scattered ones".</dd>
+    </dl>
+  </div>
+  <table class="t">
+    <tr><th class="n">Fold</th><th class="n">Target</th><th class="n">Offset</th><th class="n">L1 recall</th><th class="n">L3 F1</th><th class="n">L3 F1 corrected</th><th class="n">Δ</th></tr>
+    <tr><td class="n">8</td><td class="n">26</td><td class="n">+7 h</td><td class="n">0.000</td><td class="n bad">0.000</td><td class="n ok">0.839</td><td class="n">+0.839</td></tr>
+    <tr><td class="n">9</td><td class="n">4</td><td class="n">−6 h</td><td class="n">0.000</td><td class="n bad">0.000</td><td class="n ok">0.645</td><td class="n">+0.645</td></tr>
+    <tr><td class="n">18</td><td class="n">24</td><td class="n">+6 h</td><td class="n">0.000</td><td class="n bad">0.000</td><td class="n ok">0.764</td><td class="n">+0.764</td></tr>
+    <tr><td class="n">14</td><td class="n">10</td><td class="n">+1 h</td><td class="n">0.000</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n">0</td></tr>
+    <tr><td class="n">16</td><td class="n">18</td><td class="n">−7 h</td><td class="n">0.000</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n">0</td></tr>
+  </table>
+  <div class="cols2">
+    <div>
+      <h3>Fold 18 — the clean case</h3>
+      <table class="t">
+        <tr><th></th><th class="n">Agent</th><th class="n">Reference</th></tr>
+        <tr><td>Rows</td><td class="n">3,204</td><td class="n">3,204</td></tr>
+        <tr><td>Distinct timestamps</td><td class="n">534</td><td class="n">534</td></tr>
+        <tr><td>Timestamp overlap</td><td class="n bad" colspan="2">0</td></tr>
+        <tr><td>Depths, replicates, values</td><td class="n ok" colspan="2">identical</td></tr>
+      </table>
+      <p class="tiny muted">Agent <code>2022-06-16 06:00:00+00:00</code> ·
+      reference <code>2022-06-16 00:00:00+00:00</code></p>
+    </div>
+    <div>
+      <h3>Effect on the headline</h3>
+      <div class="card teal"><p class="small" style="margin:0;">Median L3 F1</p>
+        <div class="stat"><span class="bad">0.00</span> → <span class="ok">0.84</span></div>
+        <p class="tiny muted" style="margin:.2em 0 0;">after removing detected offsets</p></div>
+      <p class="small" style="margin-top:.5em;">Folds 14 and 16 stay at zero, so their problems
+      extend beyond the clock — the correction identifies which failures are <em>only</em>
+      a timezone and which are not.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SCHEMA ================= -->
+<section>
+  <p class="eyebrow">4 · Schema conformance</p>
+  <h2>Specification and results</h2>
+  <div class="rule"></div>
+  <div class="spec">
+    <dl>
+      <dt>Checks</dt><dd>All 8 columns present · no extras · correct order · required fields
+      populated · values within range (VWC 0–1, water potential ≤0, depth 0–100 m).</dd>
+      <dt>Deliberately not scored</dt><dd><strong>Raw pandas dtypes.</strong> A CSV has no types;
+      what pandas infers on read is a property of the reader, not the agent. Scoring it would
+      mark every run wrong for storing a timestamp as text. <em>Coercibility</em> is scored
+      instead: does every value parse into its intended type without loss?</dd>
+      <dt>Deviation from the repo helper</dt><dd><code>TargetSchema.is_valid()</code> ignores
+      range violations — a VWC of 95 passes it. Ranges count toward the verdict here.</dd>
+    </dl>
+  </div>
+  <div class="cols3">
+    <div class="card teal"><div class="stat">14<span class="unit">/19</span></div><p class="tiny muted">fully conformant</p></div>
+    <div class="card teal"><div class="stat">0</div><p class="tiny muted">uncoercible values, whole corpus</p></div>
+    <div class="card teal"><div class="stat">0</div><p class="tiny muted">range violations</p></div>
+  </div>
+  <p class="small" style="margin-top:.5em;">Every emitted value parses as its intended type and
+  sits in range. The five non-conformant folds fail structurally — a missing or extra column, or
+  an unpopulated required field — not through malformed data.</p>
+</section>
+
+<!-- ================= LOCATION ================= -->
+<section>
+  <p class="eyebrow">5 · Sites and coordinates</p>
+  <h2>Specification and results</h2>
+  <div class="rule"></div>
+  <div class="spec">
+    <dl>
+      <dt>Metrics</dt><dd>Site-set precision / recall / F1 · great-circle (haversine) coordinate
+      error per matched site · <code>qc_flag</code> accuracy.</dd>
+      <dt>qc_flag ground truth</dt><dd>The lakehouse has no <code>qc_flag</code> column, but
+      <code>sdt_location.geolocation_resolution_method</code> records <em>how</em> each coordinate
+      was obtained. Mapping that 10-value vocabulary onto <code>g1</code> (from registry) and
+      <code>g2</code> (unavailable) makes provenance scoreable.</dd>
+      <dt>Denominator</dt><dd>Some reference sites have no coordinates at all, so the resolvable
+      count is smaller than the site count and is reported separately.</dd>
+    </dl>
+  </div>
+  <table class="t xs">
+    <tr><th class="n">Fold</th><th class="n">Site F1</th><th class="n">Ref sites w/ coords</th><th class="n">Agent rows w/ coords</th><th class="n">Median coord error (m)</th><th class="n">qc_flag acc.</th></tr>
+    <tr><td class="n">1</td><td class="n">1.000</td><td class="n">9</td><td class="n">9</td><td class="n ok">0.0</td><td class="n">1.000</td></tr>
+    <tr><td class="n">2</td><td class="n">1.000</td><td class="n">4</td><td class="n">4</td><td class="n ok">0.0</td><td class="n">1.000</td></tr>
+    <tr><td class="n">3</td><td class="n bad">0.000</td><td class="n">1</td><td class="n">2</td><td class="n">—</td><td class="n">—</td></tr>
+    <tr><td class="n">4</td><td class="n">1.000</td><td class="n">4</td><td class="n">4</td><td class="n ok">0.0</td><td class="n">1.000</td></tr>
+    <tr><td class="n">5</td><td class="n">1.000</td><td class="n">8</td><td class="n">8</td><td class="n ok">0.0</td><td class="n">1.000</td></tr>
+    <tr><td class="n">6</td><td class="n">1.000</td><td class="n">4</td><td class="n bad">0</td><td class="n">—</td><td class="n bad">0.000</td></tr>
+    <tr><td class="n">7</td><td class="n">1.000</td><td class="n">101</td><td class="n">101</td><td class="n ok">0.0</td><td class="n">1.000</td></tr>
+    <tr><td class="n">8</td><td class="n">0.996</td><td class="n">416</td><td class="n bad">0</td><td class="n">—</td><td class="n bad">0.000</td></tr>
+    <tr><td class="n">9</td><td class="n">0.857</td><td class="n">3</td><td class="n">4</td><td class="n ok">0.0</td><td class="n">1.000</td></tr>
+    <tr><td class="n">10</td><td class="n">1.000</td><td class="n">26</td><td class="n bad">0</td><td class="n">—</td><td class="n bad">0.212</td></tr>
+    <tr><td class="n">11</td><td class="n">1.000</td><td class="n">1</td><td class="n">1</td><td class="n ok">0.0</td><td class="n">1.000</td></tr>
+    <tr><td class="n">12</td><td class="n bad">0.000</td><td class="n">1</td><td class="n">1</td><td class="n">—</td><td class="n">—</td></tr>
+    <tr><td class="n">13</td><td class="n">1.000</td><td class="n">375</td><td class="n">375</td><td class="n ok">0.0</td><td class="n">1.000</td></tr>
+    <tr><td class="n">14</td><td class="n">1.000</td><td class="n">3</td><td class="n bad">0</td><td class="n">—</td><td class="n bad">0.000</td></tr>
+    <tr><td class="n">15</td><td class="n">0.909</td><td class="n">6</td><td class="n">5</td><td class="n ok">0.0</td><td class="n">1.000</td></tr>
+    <tr><td class="n">16</td><td class="n bad">0.000</td><td class="n">23</td><td class="n">46</td><td class="n">—</td><td class="n">—</td></tr>
+    <tr><td class="n">17</td><td class="n">0.444</td><td class="n">10</td><td class="n bad">0</td><td class="n">—</td><td class="n bad">0.000</td></tr>
+    <tr><td class="n">18</td><td class="n">1.000</td><td class="n">2</td><td class="n">2</td><td class="n ok">0.0</td><td class="n">1.000</td></tr>
+    <tr><td class="n">19</td><td class="n bad">0.000</td><td class="n">2</td><td class="n">2</td><td class="n">—</td><td class="n">—</td></tr>
+  </table>
+  <p class="small"><strong>When the agent attempts coordinates it is exact</strong> — 10 folds
+  comparable, median error <strong>0.0 m</strong>, all within 100 m, qc_flag median 1.000. The
+  failure is <em>not attempting</em>: 5 folds report coordinates unavailable that the registry
+  resolves. That is a lookup-not-performed problem, not an accuracy problem.</p>
+</section>
+
+<!-- ================= DOCUMENTATION ================= -->
+<section>
+  <p class="eyebrow">6 · Documentation</p>
+  <h2>Specification</h2>
+  <div class="rule"></div>
+  <p class="small">Exact text matching is worthless here — the earlier pilot found 0/8 agreement
+  on wording while the executed outputs were identical. "Does the text describe the same
+  <em>operations</em>?" is answerable.</p>
+  <div class="spec">
+    <dl>
+      <dt><code>unit_conversion</code> — not prose</dt><dd>153 reference values collapse to
+      <strong>9 templates</strong> once numerals are masked. Parsed deterministically by regex
+      into <code>(factor, from_unit, to_unit)</code> and scored exactly. No judgement.</dd>
+      <dt><code>transformation</code> — step extraction</dt><dd>Reduced to the operations it
+      names from a 13-term controlled vocabulary (<code>JOIN</code>, <code>FILTER</code>,
+      <code>RENAME</code>, <code>TIMEZONE</code>, <code>PARSE_DATETIME</code>,
+      <code>RESHAPE_WIDE_LONG</code>, <code>ASSIGN_CONSTANT</code>, …). Lexical, applied
+      identically to both sides so extraction bias is symmetric.</dd>
+      <dt>Pooling</dt><dd>Steps pooled <strong>per dataset, not per variable group</strong> —
+      a filter governing every column is recorded inside the <code>depth</code> group upstream,
+      so group-wise comparison would miss it.</dd>
+      <dt>Weighting</dt><dd><strong>Unweighted, stratified by operation.</strong>
+      <code>FILTER</code> appears twice in 153 reference patterns yet drives the largest output
+      errors; any frequency-weighted average makes it invisible. Small cells reported as counts,
+      never percentages.</dd>
+      <dt>Sources</dt><dd>Recall pools mapping text with <code>notes.md</code>; precision stays
+      attributed per artifact.</dd>
+    </dl>
+  </div>
+  <div class="caveat">An LLM extractor would recall more but must first be validated — blind to
+  which text is the reference, never shown the output data, k-repeat self-consistency, and human
+  IRR on a subsample. An LLM judging LLM-written text has a self-preference bias.</div>
+</section>
+
+<section>
+  <p class="eyebrow">6 · Documentation</p>
+  <h2>Results</h2>
+  <div class="rule"></div>
+  <div class="cols2">
+    <div>
+      <h3>Step recall by operation</h3>
+      <table class="t">
+        <tr><th>Operation</th><th class="n">Stated / required</th></tr>
+        <tr><td><code>TIMEZONE</code></td><td class="n">18 / 19</td></tr>
+        <tr><td><code>ASSIGN_CONSTANT</code></td><td class="n">14 / 15</td></tr>
+        <tr><td><code>PARSE_DATETIME</code></td><td class="n">14 / 16</td></tr>
+        <tr><td><code>PARSE_FROM_COLNAME</code></td><td class="n">11 / 12</td></tr>
+        <tr><td><code>METADATA_LOOKUP</code></td><td class="n">5 / 5</td></tr>
+        <tr><td><code>RESHAPE_WIDE_LONG</code></td><td class="n">2 / 2</td></tr>
+        <tr><td><code>DERIVE_MIDPOINT</code></td><td class="n">2 / 2</td></tr>
+        <tr><td><code>FILTER</code></td><td class="n">1 / 1</td></tr>
+        <tr><td><code>JOIN</code></td><td class="n">1 / 1</td></tr>
+        <tr><td class="bad"><code>RENAME</code></td><td class="n bad">4 / 9</td></tr>
+        <tr><td class="bad"><code>AGGREGATE</code></td><td class="n bad">0 / 1</td></tr>
+        <tr><th>Total</th><th class="n">72 / 83</th></tr>
+      </table>
+      <p class="tiny muted"><code>FILTER</code> and <code>JOIN</code> are case reports (n=1),
+      not rates.</p>
+    </div>
+    <div>
+      <h3>Structured fields</h3>
+      <table class="t">
+        <tr><th>Field</th><th class="n">Median F1</th><th class="n">n</th></tr>
+        <tr><td><code>data_payload_files</code></td><td class="n ok">1.000</td><td class="n">19</td></tr>
+        <tr><td><code>location_metadata_files</code></td><td class="n ok">1.000</td><td class="n">14</td></tr>
+      </table>
+      <p class="small">Source-file identification is perfect — the agent reliably works out
+      <em>which</em> files to read.</p>
+      <div class="card gold" style="margin-top:.5em;">
+        <p class="small" style="margin:0 0 .2em;"><strong>Saying it is not doing it.</strong></p>
+        <p class="small" style="margin:0;">The agent documents timezone handling in
+        <strong>18 of 19</strong> folds — and still gets the timezone <strong>wrong in 5</strong>.
+        These are execution failures, not knowledge failures, which points the fix at the code
+        path rather than the instructions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BEHAVIOUR ================= -->
+<section>
+  <p class="eyebrow">7 · Context</p>
+  <h2>Behaviour and covariates — not quality metrics</h2>
+  <div class="rule"></div>
+  <p class="small">These describe <em>how</em> a run happened. A cheap run that silently skips a
+  filter would otherwise look efficient, so none of these is scored as quality.</p>
+  <div class="cols2">
+    <div>
+      <h3>Telemetry — median [IQR]</h3>
+      <table class="t">
+        <tr><th>Measure</th><th class="n">Median [IQR]</th><th class="n">Range</th></tr>
+        <tr><td>Cost (USD)</td><td class="n">4.69 [4.38–5.65]</td><td class="n">3.56–13.57</td></tr>
+        <tr><td>Turns</td><td class="n">80 [74–91]</td><td class="n">67–123</td></tr>
+        <tr><td>Exemplars read</td><td class="n">3 [3–4]</td><td class="n">1–5</td></tr>
+        <tr><td>Process integrity</td><td class="n ok" colspan="2">19/19 clean</td></tr>
+      </table>
+      <p class="tiny muted">Integrity is a <em>gate</em>, not a score — at 19/19 it has no power
+      to discriminate between runs.</p>
+    </div>
+    <div>
+      <h3>Ablation by cluster</h3>
+      <table class="t">
+        <tr><th>Cluster</th><th class="n">Pool</th><th class="n">Folds</th><th class="n">Median L3 F1</th></tr>
+        <tr><td><code>sg_ph_micromet</code></td><td class="n">13</td><td class="n">6</td><td class="n">0.983</td></tr>
+        <tr><td><code>neon_point</code></td><td class="n">17</td><td class="n">2</td><td class="n">0.000</td></tr>
+        <tr><td><code>independent</code></td><td class="n">18</td><td class="n">11</td><td class="n">0.000</td></tr>
+      </table>
+      <div class="caveat" style="margin-top:.3em;"><strong>Wrong sign; do not report as a
+      result.</strong> The <em>most</em>-ablated group scores highest. Those six folds are one
+      instrument cluster with consistent formatting, so this confounds ablation with dataset
+      difficulty. Exploratory only.</div>
+    </div>
+  </div>
+  <p class="small">The agent does visibly compensate for ablation: with all six cluster-mates
+  withheld, fold 1 grepped the exemplar directory and opened four <em>out-of-cluster</em>
+  implementations instead. The mechanism is observable even where the outcome contrast is not.</p>
+</section>
+
+<!-- ================= LIMITS ================= -->
+<section>
+  <p class="eyebrow">8 · Interpretation</p>
   <h2>How to read these statistics</h2>
-  <ul>
-    <li><strong>The folds are not independent.</strong> Six of 19 are the same
-    micrometeorology cluster. Treating n=19 as nineteen independent observations overstates
-    the evidence, and the pre-registered cluster bootstrap resamples only three clusters.</li>
-    <li><strong>There are no error bars.</strong> Every fold is a single run. Two accidental
-    repeat runs differed by <strong>3.9% of rows</strong> between identical invocations, so
-    run-to-run noise is a real fraction of what is being measured. Per-fold scores are point
-    estimates of unknown precision until a repeat batch exists.</li>
-    <li><strong>The ablation contrast is confounded</strong> with dataset type and intrinsic
-    difficulty. Any ablation result here is exploratory.</li>
-    <li><strong>One expert, not ground truth.</strong> Disagreement means the agent differs
-    from that expert's conventions.</li>
-    <li><strong>Prose scoring is lexical.</strong> Transformation text is matched against a
-    controlled vocabulary by regular expression, applied identically to both sides. An LLM
-    reader would recall more but needs blind, symmetric validation against human annotation
-    first — an LLM judging LLM-written text has a self-preference bias.</li>
-  </ul>
-  <p>For these reasons the results report per-fold detail and effect sizes rather than
-  p-values, and any composite is shown beside its components, never instead of them.</p>
-</section>
-
-<!-- 11 -->
-<section class="slide">
-  <div class="num">11</div>
-  <h2>What to do next</h2>
-  <ul>
-    <li><strong>Fix timezone handling.</strong> Five folds fail outright on it and the
-    documentation shows the agent knows it should — the highest-yield correction available.</li>
-    <li><strong>Make filtering explicit in the skill.</strong> Eight folds retain rows the
-    expert excludes. The instructions cover schema and units well but say little about
-    exclusion criteria.</li>
-    <li><strong>Make the location-registry lookup mandatory.</strong> Five folds report
-    coordinates unavailable that the registry resolves — and where the agent does look, it
-    is exact.</li>
-    <li><strong>State a site-naming convention.</strong> Several folds differ only in how
-    sites are labelled; cheap to specify, currently costs full credit.</li>
-    <li><strong>Run a repeat batch</strong> so per-fold scores acquire error bars.</li>
-  </ul>
-  <p class="note">Reproduce: <code>python -m src.metrics.run_all</code>, then
-  <code>python -m src.metrics.report</code>.</p>
-</section>
-
-<!-- appendix -->
-<section class="slide">
-  <div class="num">Appendix</div>
-  <h2>All 19 folds</h2>
-  <table>
-    <tr><th class="n">Fold</th><th class="n">Target</th><th>Cluster</th><th class="n">Row ratio</th>
-        <th class="n">TZ</th><th class="n">L1 recall</th><th class="n">L3 F1</th>
-        <th class="n">L3 corrected</th><th class="n">Critical</th></tr>
-    <tr><td class="n">1</td><td class="n">1</td><td>sg_ph_micromet</td><td class="n">1.058</td><td class="n">—</td><td class="n">0.999</td><td class="n">0.971</td><td class="n">0.971</td><td class="n">0</td></tr>
-    <tr><td class="n">2</td><td class="n">2</td><td>sg_ph_micromet</td><td class="n">1.000</td><td class="n">—</td><td class="n">1.000</td><td class="n">1.000</td><td class="n">1.000</td><td class="n">0</td></tr>
-    <tr><td class="n">3</td><td class="n">3</td><td>sg_ph_micromet</td><td class="n">0.688</td><td class="n">—</td><td class="n">0.457</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">3</td></tr>
-    <tr><td class="n">4</td><td class="n">6</td><td>sg_ph_micromet</td><td class="n">1.000</td><td class="n">—</td><td class="n">0.999</td><td class="n">0.999</td><td class="n">0.999</td><td class="n">0</td></tr>
-    <tr><td class="n">5</td><td class="n">16</td><td>sg_ph_micromet</td><td class="n">1.152</td><td class="n">—</td><td class="n">0.956</td><td class="n">0.874</td><td class="n">0.874</td><td class="n">0</td></tr>
-    <tr><td class="n">6</td><td class="n">27</td><td>sg_ph_micromet</td><td class="n">1.008</td><td class="n">—</td><td class="n">0.999</td><td class="n">0.995</td><td class="n">0.995</td><td class="n">1</td></tr>
-    <tr><td class="n">7</td><td class="n">15</td><td>neon_point</td><td class="n">0.953</td><td class="n">—</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">1</td></tr>
-    <tr><td class="n">8</td><td class="n">26</td><td>neon_point</td><td class="n">0.725</td><td class="n">+7</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n ok">0.839</td><td class="n">4</td></tr>
-    <tr><td class="n">9</td><td class="n">4</td><td>independent</td><td class="n">1.813</td><td class="n">−6</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n ok">0.645</td><td class="n">3</td></tr>
-    <tr><td class="n">10</td><td class="n">5</td><td>independent</td><td class="n">1.000</td><td class="n">—</td><td class="n">0.897</td><td class="n">0.897</td><td class="n">0.897</td><td class="n">1</td></tr>
-    <tr><td class="n">11</td><td class="n">7</td><td>independent</td><td class="n">1.000</td><td class="n">—</td><td class="n ok">1.000</td><td class="n ok">1.000</td><td class="n">1.000</td><td class="n">0</td></tr>
-    <tr><td class="n">12</td><td class="n">8</td><td>independent</td><td class="n">1.000</td><td class="n">—</td><td class="n">1.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">2</td></tr>
-    <tr><td class="n">13</td><td class="n">9</td><td>independent</td><td class="n">1.116</td><td class="n">—</td><td class="n">1.000</td><td class="n">0.945</td><td class="n">0.945</td><td class="n">1</td></tr>
-    <tr><td class="n">14</td><td class="n">10</td><td>independent</td><td class="n">0.987</td><td class="n">+1</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">2</td></tr>
-    <tr><td class="n">15</td><td class="n">17</td><td>independent</td><td class="n">0.998</td><td class="n">—</td><td class="n">0.998</td><td class="n">0.999</td><td class="n">0.999</td><td class="n">0</td></tr>
-    <tr><td class="n">16</td><td class="n">18</td><td>independent</td><td class="n">0.990</td><td class="n">−7</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">3</td></tr>
-    <tr><td class="n">17</td><td class="n">23</td><td>independent</td><td class="n">1.888</td><td class="n">—</td><td class="n">1.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">3</td></tr>
-    <tr><td class="n">18</td><td class="n">24</td><td>independent</td><td class="n">1.000</td><td class="n">+6</td><td class="n bad">0.000</td><td class="n bad">0.000</td><td class="n ok">0.764</td><td class="n">1</td></tr>
-    <tr><td class="n">19</td><td class="n">25</td><td>independent</td><td class="n">1.005</td><td class="n">—</td><td class="n">1.000</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="n">2</td></tr>
+  <div class="rule"></div>
+  <table class="t">
+    <tr><th>Limit</th><th>Consequence</th></tr>
+    <tr><td><strong>Folds are not independent.</strong> Six of 19 are the same micrometeorology cluster.</td><td>n=19 overstates the evidence; the pre-registered cluster bootstrap resamples only 3 units.</td></tr>
+    <tr><td><strong>No error bars.</strong> Every fold is a single run; two accidental repeats differed by 3.9% of rows.</td><td>Per-fold scores are point estimates of unknown precision. Fold-to-fold differences below ~4% are not interpretable.</td></tr>
+    <tr><td><strong>Ablation is confounded</strong> with dataset type and difficulty.</td><td>Exploratory only; not a finding.</td></tr>
+    <tr><td><strong>One expert, not ground truth.</strong></td><td>Disagreement means divergence from that expert's conventions.</td></tr>
+    <tr><td><strong>Prose scoring is lexical.</strong></td><td>Recall is a lower bound; an LLM reader would find more, once validated.</td></tr>
+    <tr><td><strong>Coverage is uneven.</strong> Gravimetric water content is non-null in 416 of 6.4M reference rows.</td><td>Its perfect agreement is vacuous and must not be reported as a capability.</td></tr>
   </table>
+  <p class="small">Accordingly: per-fold detail and effect sizes rather than p-values, and any
+  composite shown beside its components rather than instead of them.</p>
+</section>
 
-  <h3>Per-column agreement among paired rows</h3>
-  <table>
-    <tr><th>Column</th><th class="n">Median</th><th class="n">Worst fold</th><th>Note</th></tr>
-    <tr><td><code>is_timeseries</code></td><td class="n">1.000</td><td class="n">1.000</td><td></td></tr>
-    <tr><td><code>water_potential_kPa</code></td><td class="n">1.000</td><td class="n">0.773</td><td>present in 9.3% of reference rows</td></tr>
-    <tr><td><code>volumetric_water_content_m3_m3</code></td><td class="n">0.991</td><td class="n">0.544</td><td>the main measured variable</td></tr>
-    <tr><td><code>gravimetric_water_content_gH2O_gs</code></td><td class="n">1.000</td><td class="n">1.000</td><td class="bad">see caveat</td></tr>
+<!-- ================= NEXT ================= -->
+<section>
+  <p class="eyebrow">9 · Actions</p>
+  <h2>What to do next</h2>
+  <div class="rule"></div>
+  <table class="t">
+    <tr><th>Action</th><th class="n">Folds affected</th><th>Rationale</th></tr>
+    <tr><td><strong>Fix timezone handling</strong></td><td class="n">5</td><td>Highest-yield single fix; median L3 F1 0.00 → 0.84. Documentation shows the agent already knows it should.</td></tr>
+    <tr><td><strong>Make exclusion criteria explicit in the skill</strong></td><td class="n">8</td><td>Rows the expert filters out are retained. Instructions cover schema and units well, exclusion poorly.</td></tr>
+    <tr><td><strong>Make the registry lookup mandatory</strong></td><td class="n">5</td><td>Coordinates reported unavailable that the registry resolves — and where the agent looks, it is exact.</td></tr>
+    <tr><td><strong>State a site-naming convention</strong></td><td class="n">5</td><td>Several folds differ only in site labels; cheap to specify, currently costs full credit.</td></tr>
+    <tr><td><strong>Run a repeat batch</strong></td><td class="n">—</td><td>Until then no score has an error bar and the ablation contrast cannot be read.</td></tr>
+  </table>
+  <p class="tiny muted">Reproduce: <code>python -m src.metrics.run_all</code> then
+  <code>python -m src.metrics.report</code></p>
+</section>
+
+<!-- ================= APPENDIX: PER FOLD ================= -->
+<section class="divider" data-background-color="#1c2c49">
+  <p class="eyebrow">Appendix</p>
+  <h2>Full result tables</h2>
+</section>
+
+<section>
+  <p class="eyebrow">Appendix A</p>
+  <h2>Per-fold results — all 19</h2>
+  <div class="rule"></div>
+  <table class="t xs">
+    <tr><th class="n">Fold</th><th class="n">Tgt</th><th>Cluster</th><th class="n">Pool</th><th class="n">Ref rows</th>
+        <th class="n">Row ratio</th><th class="n">TZ</th><th class="n">L1 R</th><th class="n">L2 cells</th>
+        <th class="n">L3 F1</th><th class="n">L3 corr.</th><th>Crosswalk</th><th class="n">Crit</th><th class="n">$</th></tr>
+    <tr><td class="n">1</td><td class="n">1</td><td>sg_ph_micromet</td><td class="n">13</td><td class="n">1,253,839</td><td class="n">1.058</td><td class="n">—</td><td class="n">0.999</td><td class="n">0.985</td><td class="n">0.971</td><td class="n">0.971</td><td>identity</td><td class="n">0</td><td class="n">5.14</td></tr>
+    <tr><td class="n">2</td><td class="n">2</td><td>sg_ph_micromet</td><td class="n">13</td><td class="n">154,242</td><td class="n">1.000</td><td class="n">—</td><td class="n">1.000</td><td class="n">1.000</td><td class="n ok">1.000</td><td class="n">1.000</td><td>identity</td><td class="n">0</td><td class="n">4.27</td></tr>
+    <tr><td class="n">3</td><td class="n">3</td><td>sg_ph_micromet</td><td class="n">13</td><td class="n">139,770</td><td class="n bad">0.688</td><td class="n">—</td><td class="n">0.457</td><td class="n">—</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="bad">none</td><td class="n">3</td><td class="n">6.22</td></tr>
+    <tr><td class="n">4</td><td class="n">6</td><td>sg_ph_micromet</td><td class="n">13</td><td class="n">618,408</td><td class="n">1.000</td><td class="n">—</td><td class="n">0.999</td><td class="n">0.886</td><td class="n">0.999</td><td class="n">0.999</td><td>identity</td><td class="n">0</td><td class="n">4.33</td></tr>
+    <tr><td class="n">5</td><td class="n">16</td><td>sg_ph_micromet</td><td class="n">13</td><td class="n">226,080</td><td class="n">1.152</td><td class="n">—</td><td class="n">0.956</td><td class="n">0.865</td><td class="n">0.874</td><td class="n">0.874</td><td>identity</td><td class="n">0</td><td class="n">6.04</td></tr>
+    <tr><td class="n">6</td><td class="n">27</td><td>sg_ph_micromet</td><td class="n">13</td><td class="n">195,524</td><td class="n">1.008</td><td class="n">—</td><td class="n">0.999</td><td class="n">0.994</td><td class="n">0.995</td><td class="n">0.995</td><td>identity</td><td class="n">1</td><td class="n">4.57</td></tr>
+    <tr><td class="n">7</td><td class="n">15</td><td>neon_point</td><td class="n">17</td><td class="n">552</td><td class="n">0.953</td><td class="n">—</td><td class="n bad">0.000</td><td class="n">—</td><td class="n bad">0.000</td><td class="n">0.000</td><td>exact</td><td class="n">1</td><td class="n">5.29</td></tr>
+    <tr><td class="n">8</td><td class="n">26</td><td>neon_point</td><td class="n">17</td><td class="n">1,089,621</td><td class="n bad">0.725</td><td class="n">+7</td><td class="n bad">0.000</td><td class="n">1.000</td><td class="n bad">0.000</td><td class="n ok">0.839</td><td>exact</td><td class="n">4</td><td class="n">13.57</td></tr>
+    <tr><td class="n">9</td><td class="n">4</td><td>independent</td><td class="n">18</td><td class="n">309</td><td class="n bad">1.813</td><td class="n">−6</td><td class="n bad">0.000</td><td class="n">1.000</td><td class="n bad">0.000</td><td class="n ok">0.645</td><td>exact</td><td class="n">3</td><td class="n">4.69</td></tr>
+    <tr><td class="n">10</td><td class="n">5</td><td>independent</td><td class="n">18</td><td class="n">471,893</td><td class="n">1.000</td><td class="n">—</td><td class="n">0.897</td><td class="n">0.986</td><td class="n">0.897</td><td class="n">0.897</td><td>identity</td><td class="n">1</td><td class="n">4.44</td></tr>
+    <tr><td class="n">11</td><td class="n">7</td><td>independent</td><td class="n">18</td><td class="n">586</td><td class="n">1.000</td><td class="n">—</td><td class="n ok">1.000</td><td class="n">1.000</td><td class="n ok">1.000</td><td class="n">1.000</td><td>identity</td><td class="n">0</td><td class="n">3.56</td></tr>
+    <tr><td class="n">12</td><td class="n">8</td><td>independent</td><td class="n">18</td><td class="n">300</td><td class="n">1.000</td><td class="n">—</td><td class="n ok">1.000</td><td class="n">—</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="bad">none</td><td class="n">2</td><td class="n">4.94</td></tr>
+    <tr><td class="n">13</td><td class="n">9</td><td>independent</td><td class="n">18</td><td class="n">672</td><td class="n">1.116</td><td class="n">—</td><td class="n ok">1.000</td><td class="n">1.000</td><td class="n">0.945</td><td class="n">0.945</td><td>exact</td><td class="n">1</td><td class="n">3.91</td></tr>
+    <tr><td class="n">14</td><td class="n">10</td><td>independent</td><td class="n">18</td><td class="n">3,204</td><td class="n">0.987</td><td class="n">+1</td><td class="n bad">0.000</td><td class="n">—</td><td class="n bad">0.000</td><td class="n">0.000</td><td>identity</td><td class="n">2</td><td class="n">4.55</td></tr>
+    <tr><td class="n">15</td><td class="n">17</td><td>independent</td><td class="n">18</td><td class="n">56,861</td><td class="n">0.998</td><td class="n">—</td><td class="n">0.998</td><td class="n">1.000</td><td class="n">0.999</td><td class="n">0.999</td><td>identity</td><td class="n">0</td><td class="n">4.82</td></tr>
+    <tr><td class="n">16</td><td class="n">18</td><td>independent</td><td class="n">18</td><td class="n">48,708</td><td class="n">0.990</td><td class="n">−7</td><td class="n bad">0.000</td><td class="n">—</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="bad">none</td><td class="n">3</td><td class="n">6.85</td></tr>
+    <tr><td class="n">17</td><td class="n">23</td><td>independent</td><td class="n">18</td><td class="n">912,417</td><td class="n bad">1.888</td><td class="n">—</td><td class="n ok">1.000</td><td class="n">0.951</td><td class="n bad">0.000</td><td class="n">0.000</td><td>suffix_stripped</td><td class="n">3</td><td class="n">6.01</td></tr>
+    <tr><td class="n">18</td><td class="n">24</td><td>independent</td><td class="n">18</td><td class="n">420</td><td class="n">1.000</td><td class="n">+6</td><td class="n bad">0.000</td><td class="n">1.000</td><td class="n bad">0.000</td><td class="n ok">0.764</td><td>identity</td><td class="n">1</td><td class="n">4.23</td></tr>
+    <tr><td class="n">19</td><td class="n">25</td><td>independent</td><td class="n">18</td><td class="n">471,893</td><td class="n">1.005</td><td class="n">—</td><td class="n">1.000</td><td class="n">—</td><td class="n bad">0.000</td><td class="n">0.000</td><td class="bad">none</td><td class="n">2</td><td class="n">4.47</td></tr>
+  </table>
+  <p class="tiny muted">Pool = exemplar datasets available. TZ = detected uniform offset (hours).
+  L1 R = L1 recall. Crit = critical findings. Source: <code>results/tables/per_fold.csv</code>.</p>
+</section>
+
+<!-- ================= APPENDIX: FINDINGS ================= -->
+<section>
+  <p class="eyebrow">Appendix B</p>
+  <h2>All 53 findings</h2>
+  <div class="rule"></div>
+  <div class="scroll">
+  <table class="t xs">
+    <tr><th class="n">Fold</th><th class="n">Tgt</th><th>Severity</th><th>Code</th><th>Message</th></tr>
+    <tr><td class="n">1</td><td class="n">1</td><td>major</td><td>ROW_INFLATION</td><td>agent emitted 1.06× the reference row count (more rows)</td></tr>
+    <tr><td class="n">1</td><td class="n">1</td><td>major</td><td>DUPLICATE_KEYS</td><td>72,852 agent rows duplicate the natural key (reference has 0)</td></tr>
+    <tr><td class="n">1</td><td class="n">1</td><td>major</td><td>NULL_PATTERN_MISMATCH</td><td>water_potential_kPa null positions disagree on 5.8% of paired rows</td></tr>
+    <tr><td class="n">1</td><td class="n">1</td><td>major</td><td>SYSTEMATIC_GAP</td><td>100% of unmatched reference rows fall in a single site</td></tr>
+    <tr><td class="n">2</td><td class="n">2</td><td>major</td><td>DUPLICATE_KEYS</td><td>54 agent rows duplicate the natural key (reference has 0)</td></tr>
+    <tr><td class="n">3</td><td class="n">3</td><td class="bad">critical</td><td>ROW_DEFICIT</td><td>agent emitted 0.688× the reference row count (fewer rows)</td></tr>
+    <tr><td class="n">3</td><td class="n">3</td><td class="bad">critical</td><td>SITE_SUPERSET</td><td>2 sites present in the agent output have no reference counterpart</td></tr>
+    <tr><td class="n">3</td><td class="n">3</td><td class="bad">critical</td><td>SITE_MISSING</td><td>1 reference site absent from the agent output</td></tr>
+    <tr><td class="n">3</td><td class="n">3</td><td>major</td><td>NULL_DEFICIT</td><td>water_potential_kPa populated in agent (0.0% null) where reference is 23.8% null</td></tr>
+    <tr><td class="n">3</td><td class="n">3</td><td>major</td><td>SYSTEMATIC_GAP</td><td>100% of unmatched reference rows fall in a single site</td></tr>
+    <tr><td class="n">5</td><td class="n">16</td><td>major</td><td>ROW_INFLATION</td><td>agent emitted 1.15× the reference row count (more rows)</td></tr>
+    <tr><td class="n">5</td><td class="n">16</td><td>major</td><td>NULL_INFLATION</td><td>volumetric_water_content null in 18.6% of agent rows vs 6.1% of reference</td></tr>
+    <tr><td class="n">5</td><td class="n">16</td><td>major</td><td>DUPLICATE_KEYS</td><td>264,810 agent rows duplicate the natural key (reference has 0)</td></tr>
+    <tr><td class="n">5</td><td class="n">16</td><td>major</td><td>NULL_PATTERN_MISMATCH</td><td>water_potential_kPa null positions disagree on 22.5% of paired rows</td></tr>
+    <tr><td class="n">6</td><td class="n">27</td><td class="bad">critical</td><td>COORD_UNRESOLVED</td><td>agent emitted no coordinates; reference resolves 4 sites</td></tr>
+    <tr><td class="n">6</td><td class="n">27</td><td>major</td><td>DUPLICATE_KEYS</td><td>397 agent rows duplicate the natural key (reference has 0)</td></tr>
+    <tr><td class="n">6</td><td class="n">27</td><td>major</td><td>QC_FLAG_MISMATCH</td><td>qc_flag disagrees on 100% of 4 compared sites</td></tr>
+    <tr><td class="n">7</td><td class="n">15</td><td class="bad">critical</td><td>SITE_SUPERSET</td><td>1 site present in the agent output has no reference counterpart</td></tr>
+    <tr><td class="n">8</td><td class="n">26</td><td class="bad">critical</td><td>ROW_DEFICIT</td><td>agent emitted 0.725× the reference row count (fewer rows)</td></tr>
+    <tr><td class="n">8</td><td class="n">26</td><td class="bad">critical</td><td>TZ_SHIFT</td><td>every timestamp offset by +7 h; correcting raises L3 F1 to 0.839</td></tr>
+    <tr><td class="n">8</td><td class="n">26</td><td class="bad">critical</td><td>SITE_MISSING</td><td>3 reference sites absent from the agent output</td></tr>
+    <tr><td class="n">8</td><td class="n">26</td><td class="bad">critical</td><td>COORD_UNRESOLVED</td><td>agent emitted no coordinates; reference resolves 416 sites</td></tr>
+    <tr><td class="n">8</td><td class="n">26</td><td>major</td><td>NULL_DEFICIT</td><td>volumetric_water_content populated in agent (0.0% null) where reference is 27.5% null</td></tr>
+    <tr><td class="n">8</td><td class="n">26</td><td>major</td><td>QC_FLAG_MISMATCH</td><td>qc_flag disagrees on 100% of 425 compared sites</td></tr>
+    <tr><td class="n">9</td><td class="n">4</td><td class="bad">critical</td><td>ROW_INFLATION</td><td>agent emitted 1.81× the reference row count (more rows)</td></tr>
+    <tr><td class="n">9</td><td class="n">4</td><td class="bad">critical</td><td>TZ_SHIFT</td><td>every timestamp offset by −6 h; correcting raises L3 F1 to 0.645</td></tr>
+    <tr><td class="n">9</td><td class="n">4</td><td class="bad">critical</td><td>SITE_SUPERSET</td><td>1 site present in the agent output has no reference counterpart</td></tr>
+    <tr><td class="n">10</td><td class="n">5</td><td class="bad">critical</td><td>COORD_UNRESOLVED</td><td>agent emitted no coordinates; reference resolves 26 sites</td></tr>
+    <tr><td class="n">10</td><td class="n">5</td><td>major</td><td>QC_FLAG_MISMATCH</td><td>qc_flag disagrees on 79% of 33 compared sites</td></tr>
+    <tr><td class="n">12</td><td class="n">8</td><td class="bad">critical</td><td>SITE_SUPERSET</td><td>1 site present in the agent output has no reference counterpart</td></tr>
+    <tr><td class="n">12</td><td class="n">8</td><td class="bad">critical</td><td>SITE_MISSING</td><td>1 reference site absent from the agent output</td></tr>
+    <tr><td class="n">12</td><td class="n">8</td><td>major</td><td>SYSTEMATIC_GAP</td><td>100% of unmatched reference rows fall in a single site</td></tr>
+    <tr><td class="n">13</td><td class="n">9</td><td class="bad">critical</td><td>SITE_SUPERSET</td><td>20 sites present in the agent output have no reference counterpart</td></tr>
+    <tr><td class="n">13</td><td class="n">9</td><td>major</td><td>ROW_INFLATION</td><td>agent emitted 1.12× the reference row count (more rows)</td></tr>
+    <tr><td class="n">13</td><td class="n">9</td><td>major</td><td>NULL_INFLATION</td><td>volumetric_water_content null in 10.4% of agent rows vs 0.0% of reference</td></tr>
+    <tr><td class="n">14</td><td class="n">10</td><td class="bad">critical</td><td>TZ_SHIFT</td><td>every timestamp offset by +1 h; correcting raises L3 F1 to 0.000</td></tr>
+    <tr><td class="n">14</td><td class="n">10</td><td class="bad">critical</td><td>COORD_UNRESOLVED</td><td>agent emitted no coordinates; reference resolves 3 sites</td></tr>
+    <tr><td class="n">14</td><td class="n">10</td><td>major</td><td>NULL_INFLATION</td><td>depth_m null in 100.0% of agent rows vs 0.0% of reference</td></tr>
+    <tr><td class="n">14</td><td class="n">10</td><td>major</td><td>QC_FLAG_MISMATCH</td><td>qc_flag disagrees on 100% of 3 compared sites</td></tr>
+    <tr><td class="n">15</td><td class="n">17</td><td>major</td><td>SYSTEMATIC_GAP</td><td>100% of unmatched reference rows fall in a single site</td></tr>
+    <tr><td class="n">16</td><td class="n">18</td><td class="bad">critical</td><td>TZ_SHIFT</td><td>every timestamp offset by −7 h; correcting raises L3 F1 to 0.000</td></tr>
+    <tr><td class="n">16</td><td class="n">18</td><td class="bad">critical</td><td>SITE_SUPERSET</td><td>20 sites present in the agent output have no reference counterpart</td></tr>
+    <tr><td class="n">16</td><td class="n">18</td><td class="bad">critical</td><td>SITE_MISSING</td><td>20 reference sites absent from the agent output</td></tr>
+    <tr><td class="n">17</td><td class="n">23</td><td class="bad">critical</td><td>ROW_INFLATION</td><td>agent emitted 1.89× the reference row count (more rows)</td></tr>
+    <tr><td class="n">17</td><td class="n">23</td><td class="bad">critical</td><td>SITE_SUPERSET</td><td>10 sites present in the agent output have no reference counterpart</td></tr>
+    <tr><td class="n">17</td><td class="n">23</td><td class="bad">critical</td><td>COORD_UNRESOLVED</td><td>agent emitted no coordinates; reference resolves 10 sites</td></tr>
+    <tr><td class="n">17</td><td class="n">23</td><td>major</td><td>SITE_VOCAB_COLLAPSE</td><td>reference site names extend the agent's with a qualifier it did not emit</td></tr>
+    <tr><td class="n">17</td><td class="n">23</td><td>major</td><td>EMPTY_SITE_ID</td><td>36 agent rows have an empty site_id (a required field)</td></tr>
+    <tr><td class="n">17</td><td class="n">23</td><td>major</td><td>QC_FLAG_MISMATCH</td><td>qc_flag disagrees on 100% of 10 compared sites</td></tr>
+    <tr><td class="n">18</td><td class="n">24</td><td class="bad">critical</td><td>TZ_SHIFT</td><td>every timestamp offset by +6 h; correcting raises L3 F1 to 0.764</td></tr>
+    <tr><td class="n">19</td><td class="n">25</td><td class="bad">critical</td><td>SITE_SUPERSET</td><td>2 sites present in the agent output have no reference counterpart</td></tr>
+    <tr><td class="n">19</td><td class="n">25</td><td class="bad">critical</td><td>SITE_MISSING</td><td>2 reference sites absent from the agent output</td></tr>
+    <tr><td class="n">19</td><td class="n">25</td><td>major</td><td>DUPLICATE_KEYS</td><td>4,365 agent rows duplicate the natural key (reference has 4,260)</td></tr>
+  </table>
+  </div>
+  <p class="tiny muted">Folds 4 and 11 produced no findings. Source:
+  <code>results/tables/findings.csv</code>.</p>
+</section>
+
+<!-- ================= APPENDIX: COLUMNS ================= -->
+<section>
+  <p class="eyebrow">Appendix C</p>
+  <h2>Per-column agreement and figures</h2>
+  <div class="rule"></div>
+  <table class="t">
+    <tr><th>Column</th><th class="n">Median agreement</th><th class="n">Worst fold</th><th class="n">Median null-mask</th><th>Reference coverage</th></tr>
+    <tr><td><code>is_timeseries</code></td><td class="n">1.000</td><td class="n">1.000</td><td class="n">1.000</td><td>100%</td></tr>
+    <tr><td><code>water_potential_kPa</code></td><td class="n">1.000</td><td class="n">0.773</td><td class="n">1.000</td><td>9.3%</td></tr>
+    <tr><td><code>volumetric_water_content_m3_m3</code></td><td class="n">0.991</td><td class="n">0.544</td><td class="n">1.000</td><td>94.9%</td></tr>
+    <tr><td><code>gravimetric_water_content_gH2O_gs</code></td><td class="n">1.000</td><td class="n">1.000</td><td class="n">1.000</td><td class="bad">0.0065% (416 rows)</td></tr>
   </table>
   <div class="caveat"><strong>Do not report gravimetric water content as a success.</strong>
-  It is non-null in 416 of 6.4M reference rows (0.0065%). Its perfect score reflects
-  agreement that almost nothing is there, not a demonstrated capability. Null-mask
-  agreement is 1.000 for every column — where the expert recorded missing, so did the
-  agent. No zero-filling anywhere.</div>
-
-  <figure>
-    <img src="../../results/figures/fig1_match_ladder.png" alt="Output equivalence by match level across folds">
-    <figcaption>Figure 1 — output equivalence by match level. The spread between L1 and L3
-    is the gap between correct values and exact correspondence.</figcaption>
-  </figure>
-  <figure>
-    <img src="../../results/figures/fig2_finding_frequency.png" alt="Diagnostic findings across the corpus">
-    <figcaption>Figure 2 — diagnostic findings by number of folds affected.</figcaption>
-  </figure>
-  <figure>
-    <img src="../../results/figures/fig3_column_agreement.png" alt="Per-column agreement">
-    <figcaption>Figure 3 — median per-column cell agreement across folds.</figcaption>
-  </figure>
+  Its perfect score reflects agreement that almost nothing is there. Null-mask agreement is
+  1.000 for every column, so where the expert recorded missing, so did the agent — no
+  zero-filling anywhere in the corpus.</div>
+  <div class="cols2">
+    <div><img src="../../results/figures/fig1_match_ladder.png" style="width:100%;border:1px solid var(--line);"/>
+      <p class="tiny muted">Fig 1 — equivalence by match level.</p></div>
+    <div><img src="../../results/figures/fig2_finding_frequency.png" style="width:100%;border:1px solid var(--line);"/>
+      <p class="tiny muted">Fig 2 — findings by folds affected.</p></div>
+  </div>
 </section>
 
+</div></div>
+<script src="../vendor/reveal/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash:true, slideNumber:"c/t", controls:true, progress:true,
+    transition:"slide", transitionSpeed:"fast", center:false,
+    width:1280, height:720, margin:0.06,
+  });
+  Reveal.on("ready", () => Reveal.layout());
+</script>
 </body>
 </html>
