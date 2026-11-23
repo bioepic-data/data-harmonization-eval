@@ -1,49 +1,35 @@
-%% Figure 1. Agent-pair workflow and evaluation design.
+%% Figure 1. Current leave-one-cluster-out evaluation workflow.
 %% Render in browser via figure1_workflow.html, or paste into https://mermaid.live
 flowchart TB
+    classDef prep fill:#e9f3f5,stroke:#0e7180,color:#23303a,stroke-width:1.5px;
+    classDef gold fill:#f8efd9,stroke:#c9962f,color:#23303a,stroke-width:1.5px;
     classDef agent fill:#0e7c7b,stroke:#0a5a59,color:#ffffff,stroke-width:1.5px;
-    classDef artifact fill:#f3efe6,stroke:#c9bfa6,color:#2b2b2b;
-    classDef gold fill:#c9962f,stroke:#9c7421,color:#ffffff;
-    classDef score fill:#3b5b8c,stroke:#28406a,color:#ffffff;
-    classDef io fill:#ffffff,stroke:#8a8a8a,color:#2b2b2b,stroke-dasharray:3 3;
+    classDef audit fill:#eef4df,stroke:#7ba527,color:#23303a,stroke-width:1.5px;
+    classDef score fill:#3b5b8c,stroke:#28406a,color:#ffffff,stroke-width:1.5px;
+    classDef io fill:#ffffff,stroke:#8a8a8a,color:#23303a,stroke-dasharray:3 3;
 
-    ID["ESS-DIVE dataset identifier<br/>(DOI / package ID)"]:::io
-    EX["19 expert exemplars<br/>(in-context references)"]:::gold
+    GOLD["Expert gold corpus<br/>mapping JSON + dataset_NN.py"]:::gold
+    SKILLS["Curator + harmonizer<br/>skills"]:::prep
+    FOLD["Resolve target fold<br/>hold out whole source/instrument cluster"]:::prep
+    BUILD["Build answer-free workspace<br/>filtered mapping + held-out-free expert modules"]:::prep
+    RAW["Stage target raw inputs<br/>ESS-DIVE files + target package metadata"]:::io
 
-    subgraph PIPE["Agent pair under evaluation"]
+    GOLD --> FOLD
+    SKILLS --> BUILD
+    FOLD --> BUILD
+    FOLD --> RAW
+    BUILD --> RUN
+    RAW --> RUN
+
+    subgraph ISO["Isolated agent workspace"]
         direction TB
-        C["<b>Curator — Skill 1</b><br/>retrieve · classify files · resolve location<br/>infer time series · detect manipulation · pick exemplar"]:::agent
-        B["Curator bundle<br/>decision · payload/location files · coords · interval · qc_flag"]:::artifact
-        H["<b>Harmonizer — Skill 2</b><br/>map variables · convert units · generate code + change-mapping"]:::agent
-        OUT["Python transform code<br/>+ change-mapping JSON"]:::artifact
-        C --> B --> H --> OUT
+        RUN["AGENT_INSTRUCTIONS.md + MANIFEST.json<br/>no held-out gold · no parent dirs · no network"]:::prep
+        AGENT["LLM agent uses curator/harmonizer skills"]:::agent
+        OUT["output/<br/>harmonized CSV · location CSV · transform code<br/>change-mapping JSON · notes"]:::gold
+        RUN --> AGENT --> OUT
     end
 
-    RAW[("Raw package files")]:::io
-    GC["Expert transform code"]:::gold
-    AGT["Agent harmonized table"]:::artifact
-    GLD["Expert harmonized table<br/>(gold standard)"]:::gold
-    CMP{{"PRIMARY ENDPOINT<br/>output-data equivalence<br/>cell-by-cell on the natural key"}}:::score
-
-    ID --> C
-    EX -. exemplars .-> C
-    EX -. exemplars .-> H
-    OUT -- execute --> AGT
-    RAW --> AGT
-    RAW --> GLD
-    GC --> GLD
-    AGT --> CMP
-    GLD --> CMP
-
-    subgraph MODES["Evaluation modes (error attribution)"]
-        direction TB
-        M1["Mode 1 · Skill-1 isolated — bundle vs expert labels"]:::score
-        M2["Mode 2 · Skill-2 oracle — gold bundle into harmonizer"]:::score
-        M3["Mode 3 · end-to-end — full pipeline, errors propagate"]:::score
-        GAP["Error-propagation gap = Mode 2 − Mode 3"]:::score
-        M2 --- GAP
-        M3 --- GAP
-    end
-
-    B -. scored .-> M1
-    OUT -. scored .-> M3
+    OUT --> AUDIT["Invigilator audit<br/>tool trace checked for out-of-bounds access"]:::audit
+    AUDIT --> ARCHIVE["eval/* orphan branch<br/>+ complete workflow artifact"]:::audit
+    OUT --> SCORE["Trusted post-run scoring<br/>agent outputs vs expert BERDL reference"]:::score
+    SCORE --> DIAG["Metrics + diagnostics<br/>row equivalence · cell agreement · locations · mappings"]:::score
